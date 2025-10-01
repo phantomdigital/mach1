@@ -1,0 +1,112 @@
+{
+  "id": "content_block",
+  "type": "SharedSlice",
+  "name": "ContentBlock",
+  "description": "Reusable content block with optional image, flexible text alignment, and separator toggles",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Decades of dedication to Australian business."
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "OUR STORY"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Since our early days, Mach1 has been committed to one goal: making logistics work better for Australian companies."
+          }
+        },
+        "text_alignment": {
+          "type": "Select",
+          "config": {
+            "label": "Text Alignment",
+            "placeholder": "Choose text alignment",
+            "options": [
+              "left",
+              "center", 
+              "right"
+            ],
+            "default_value": "left"
+          }
+        },
+        "content_width": {
+          "type": "Select",
+          "config": {
+            "label": "Content Width",
+            "placeholder": "Choose content width",
+            "options": [
+              "full",
+              "three-quarters",
+              "two-thirds",
+              "half",
+              "one-third"
+            ],
+            "default_value": "full"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "show_image": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Image",
+            "placeholder_false": "Hide Image",
+            "placeholder_true": "Show Image",
+            "default_value": true
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Full Width Image",
+            "constraint": {
+              "width": 1200,
+              "height": 400
+            },
+            "thumbnails": []
+          }
+        },
+        "show_bottom_separator": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Bottom Separator",
+            "placeholder_false": "Hide Bottom Separator",
+            "placeholder_true": "Show Bottom Separator",
+            "default_value": false
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

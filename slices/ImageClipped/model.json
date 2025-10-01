@@ -1,0 +1,52 @@
+{
+  "id": "image_clipped",
+  "type": "SharedSlice",
+  "name": "ImageClipped",
+  "description": "Image slice with geometric SVG clipping path",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default image with geometric clipping",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading (Optional)",
+            "placeholder": "Optional heading above the image"
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Image",
+            "constraint": {
+              "width": 1279,
+              "height": 579
+            },
+            "thumbnails": []
+          }
+        },
+        "caption": {
+          "type": "Text",
+          "config": {
+            "label": "Caption (Optional)",
+            "placeholder": "Optional caption below the image"
+          }
+        },
+        "priority_loading": {
+          "type": "Boolean",
+          "config": {
+            "label": "Priority Loading",
+            "placeholder_false": "Normal loading",
+            "placeholder_true": "Priority loading (for above-the-fold images)",
+            "default_value": false
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

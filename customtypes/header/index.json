@@ -1,0 +1,128 @@
+{
+  "format": "custom",
+  "id": "header",
+  "json": {
+    "Main": {
+      "site_title": {
+        "type": "Text",
+        "config": {
+          "label": "Site Title",
+          "placeholder": "Enter your site title"
+        }
+      },
+      "logo": {
+        "type": "Image",
+        "config": {
+          "label": "Logo",
+          "thumbnails": []
+        }
+      },
+      "navigation": {
+        "type": "Group",
+        "config": {
+          "label": "Navigation Menu",
+          "repeat": true,
+          "fields": {
+            "label": {
+              "type": "Text",
+              "config": {
+                "label": "Menu Item Label",
+                "placeholder": "Home, About, Services, etc."
+              }
+            },
+            "link": {
+              "type": "Link",
+              "config": {
+                "label": "Menu Item Link",
+                "placeholder": "Select a page or enter URL",
+                "allowTargetBlank": true
+              }
+            },
+            "has_dropdown": {
+              "type": "Boolean",
+              "config": {
+                "label": "Has Dropdown Menu",
+                "placeholder_false": "No dropdown",
+                "placeholder_true": "Has dropdown",
+                "default_value": false
+              }
+            },
+            "dropdown_title": {
+              "type": "Text",
+              "config": {
+                "label": "Dropdown Title (Optional)",
+                "placeholder": "Custom title for dropdown header (defaults to menu item label if empty)"
+              }
+            },
+            "dropdown_items": {
+              "type": "Group",
+              "config": {
+                "label": "Dropdown Items",
+                "repeat": true,
+                "fields": {
+                  "label": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Dropdown Item Label",
+                      "placeholder": "Customs & AQIS, Over Dimensional Cargo, etc."
+                    }
+                  },
+                  "link": {
+                    "type": "Link",
+                    "config": {
+                      "label": "Dropdown Item Link",
+                      "placeholder": "Select a page or enter URL",
+                      "allowTargetBlank": true
+                    }
+                  },
+                  "image": {
+                    "type": "Image",
+                    "config": {
+                      "label": "Item Image",
+                      "placeholder": "Image that appears when hovering this item",
+                      "thumbnails": []
+                    }
+                  }
+                }
+              }
+            },
+            "dropdown_image": {
+              "type": "Image",
+              "config": {
+                "label": "Dropdown Image (Optional)",
+                "thumbnails": []
+              }
+            }
+          }
+        }
+      },
+      "buttons": {
+        "type": "Group",
+        "config": {
+          "label": "Header Buttons",
+          "repeat": true,
+          "fields": {
+            "label": {
+              "type": "Text",
+              "config": {
+                "label": "Button Text",
+                "placeholder": "Get A Quote, Tracking, etc."
+              }
+            },
+            "link": {
+              "type": "Link",
+              "config": {
+                "label": "Button Link",
+                "placeholder": "Select a page or enter URL",
+                "allowTargetBlank": true
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "label": "Header",
+  "repeatable": false,
+  "status": true
+}

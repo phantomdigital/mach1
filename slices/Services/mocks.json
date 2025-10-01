@@ -1,0 +1,113 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "heading": "How We Work",
+      "description": "Join our team to receive an above award remuneration and flexible work conditions.",
+      "button_text": "SEE OUR NETWORK",
+      "button_link": {
+        "__TYPE__": "ExternalLink",
+        "url": "#"
+      }
+    },
+    "items": [
+      {
+        "service_icon": {
+          "__TYPE__": "ImageContent",
+          "origin": {
+            "id": "main",
+            "url": "https://images.unsplash.com/photo-1544077960-604201fe74bc?w=64&h=64&fit=crop",
+            "width": 64,
+            "height": 64
+          },
+          "url": "https://images.unsplash.com/photo-1544077960-604201fe74bc?w=64&h=64&fit=crop",
+          "width": 64,
+          "height": 64
+        },
+        "service_title": "FCL import & export service",
+        "service_description": "Parcels, boxes, pallets. Importing and exporting solutions. Full Container Load (FCL) or Full Trailer Load (FTL) shipping. We've got you covered."
+      },
+      {
+        "service_icon": {
+          "__TYPE__": "ImageContent",
+          "origin": {
+            "id": "main",
+            "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=64&h=64&fit=crop",
+            "width": 64,
+            "height": 64
+          },
+          "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=64&h=64&fit=crop",
+          "width": 64,
+          "height": 64
+        },
+        "service_title": "LCL import & export service",
+        "service_description": "Experts in handling dangerous and medical goods, as well as temperature-controlled distribution services."
+      },
+      {
+        "service_icon": {
+          "__TYPE__": "ImageContent",
+          "origin": {
+            "id": "main",
+            "url": "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=64&h=64&fit=crop",
+            "width": 64,
+            "height": 64
+          },
+          "url": "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=64&h=64&fit=crop",
+          "width": 64,
+          "height": 64
+        },
+        "service_title": "Hazardous and dangerous goods",
+        "service_description": "Parcels, boxes, pallets. Importing and exporting solutions. Full Container Load (FCL) or Full Trailer Load (FTL) shipping. We've got you covered."
+      },
+      {
+        "service_icon": {
+          "__TYPE__": "ImageContent",
+          "origin": {
+            "id": "main",
+            "url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=64&h=64&fit=crop",
+            "width": 64,
+            "height": 64
+          },
+          "url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=64&h=64&fit=crop",
+          "width": 64,
+          "height": 64
+        },
+        "service_title": "Airfreight import & export service",
+        "service_description": "Experts in handling dangerous and medical goods, as well as temperature-controlled distribution services."
+      },
+      {
+        "service_icon": {
+          "__TYPE__": "ImageContent",
+          "origin": {
+            "id": "main",
+            "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=64&h=64&fit=crop",
+            "width": 64,
+            "height": 64
+          },
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=64&h=64&fit=crop",
+          "width": 64,
+          "height": 64
+        },
+        "service_title": "Solutions that meet your needs",
+        "service_description": "Parcels, boxes, pallets. Importing and exporting solutions. Full Container Load (FCL) or Full Trailer Load (FTL) shipping. We've got you covered."
+      },
+      {
+        "service_icon": {
+          "__TYPE__": "ImageContent",
+          "origin": {
+            "id": "main",
+            "url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=64&h=64&fit=crop",
+            "width": 64,
+            "height": 64
+          },
+          "url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=64&h=64&fit=crop",
+          "width": 64,
+          "height": 64
+        },
+        "service_title": "Transporting specialty goods",
+        "service_description": "Experts in handling dangerous and medical goods, as well as temperature-controlled distribution services."
+      }
+    ]
+  }
+]

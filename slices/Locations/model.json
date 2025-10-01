@@ -1,0 +1,69 @@
+{
+  "id": "locations",
+  "type": "SharedSlice",
+  "name": "Locations",
+  "description": "Locations with map integration",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Where you can find us."
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "OUR LOCATIONS"
+          }
+        }
+      },
+      "items": {
+        "location_name": {
+          "type": "Text",
+          "config": {
+            "label": "Location Name",
+            "placeholder": "Lancefield"
+          }
+        },
+        "location_type": {
+          "type": "Text",
+          "config": {
+            "label": "Location Type",
+            "placeholder": "Head Office"
+          }
+        },
+        "address": {
+          "type": "Text",
+          "config": {
+            "label": "Address",
+            "placeholder": "13 High Street Lancefield, VIC 3435"
+          }
+        },
+        "phone": {
+          "type": "Text",
+          "config": {
+            "label": "Phone",
+            "placeholder": "+61 3 5428 3680"
+          }
+        },
+        "email": {
+          "type": "Text",
+          "config": {
+            "label": "Email",
+            "placeholder": "admin@mach1logistics.com.au"
+          }
+        }
+      }
+    }
+  ]
+}

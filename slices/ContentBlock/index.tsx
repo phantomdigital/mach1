@@ -1,0 +1,130 @@
+import { Content } from "@prismicio/client";
+import { SliceComponentProps } from "@prismicio/react";
+import { PrismicNextImage } from "@prismicio/next";
+import { ContentClippedShape } from "./content-clipped-shape";
+import { HeaderSeparator } from "@/components/ui/header-separator";
+
+/**
+ * Props for `ContentBlock`.
+ */
+export type ContentBlockProps = SliceComponentProps<Content.ContentBlockSlice>;
+
+/**
+ * Component for "ContentBlock" Slices.
+ */
+const ContentBlock = ({ slice }: ContentBlockProps): JSX.Element => {
+  // Get alignment class based on selection
+  const getAlignmentClass = () => {
+    switch (slice.primary.text_alignment) {
+      case 'left':
+        return 'text-left';
+      case 'center':
+        return 'text-center';
+      case 'right':
+        return 'text-right';
+      default:
+        return 'text-left';
+    }
+  };
+
+  // Get content alignment for flex positioning
+  const getContentAlignment = () => {
+    switch (slice.primary.text_alignment) {
+      case 'center':
+        return 'items-center';
+      case 'right':
+        return 'items-end';
+      default:
+        return 'items-start';
+    }
+  };
+
+  // Get width class based on selection
+  const getWidthClass = () => {
+    switch (slice.primary.content_width) {
+      case 'three-quarters':
+        return 'w-3/4';
+      case 'two-thirds':
+        return 'w-2/3';
+      case 'half':
+        return 'w-1/2';
+      case 'one-third':
+        return 'w-1/3';
+      default:
+        return 'w-full';
+    }
+  };
+
+  // Get margin top class based on selection
+  const getMarginTopClass = () => {
+    switch (slice.primary.margin_top) {
+      case 'none':
+        return 'mt-0';
+      case 'small':
+        return 'mt-12';
+      case 'medium':
+        return 'mt-24';
+      case 'large':
+        return 'mt-48';
+      case 'extra-large':
+        return 'mt-64';
+      default:
+        return 'mt-48'; // Default to large (mt-48)
+    }
+  };
+
+  return (
+    <section className="w-full py-16 lg:py-24 bg-white">
+      <div className={`w-full ${getMarginTopClass()} mx-auto px-4 lg:px-20`}>
+        {/* Header */}
+        <div className="mb-16">
+          <div className={`flex flex-col ${getContentAlignment()}`}>
+            <div className={`${getWidthClass()}`}>
+              {slice.primary.subheading && (
+                <div 
+                  className={`text-neutral-800 text-sm font-medium mb-4 ${getAlignmentClass()}`}
+                  style={{ fontFamily: 'var(--font-jetbrains-mono)' }}
+                >
+                  {slice.primary.subheading}
+                </div>
+              )}
+              {slice.primary.heading && (
+                <h2 className={`text-neutral-800 text-4xl lg:text-6xl font-bold font-inter-tight leading-tight ${getAlignmentClass()}`}>
+                  {slice.primary.heading}
+                </h2>
+              )}
+              {slice.primary.description && (
+                <p className={`text-neutral-600 text-lg font-normal font-inter-tight leading-relaxed mt-6 ${getAlignmentClass()}`}>
+                  {slice.primary.description}
+                </p>
+              )}
+            </div>
+          </div>
+        
+        </div>
+
+        {/* Full Width Image with Clipping */}
+        {slice.primary.show_image && slice.primary.image && slice.primary.image.url && (
+          <div className="mb-16">
+            <ContentClippedShape className="w-full aspect-[2.8/1] bg-neutral-100">
+              <PrismicNextImage
+                field={slice.primary.image}
+                className="w-full h-full object-cover"
+                alt=""
+              />
+            </ContentClippedShape>
+          </div>
+        )}
+
+        {/* Bottom Separator */}
+        {slice.primary.show_bottom_separator && (
+          <div className="mt-16">
+            <HeaderSeparator />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+export default ContentBlock;

@@ -1,0 +1,118 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "subheading": {
+        "__TYPE__": "FieldContent",
+        "value": "THE MACH 1 DIFFERENCE",
+        "type": "Text"
+      },
+      "title": {
+        "__TYPE__": "FieldContent",
+        "value": "Tailored logistics that work for your business.",
+        "type": "Text"
+      },
+      "description": {
+        "__TYPE__": "FieldContent",
+        "value": "Our experienced team develops customised solutions, that save you time and money.",
+        "type": "Text"
+      }
+    },
+    "items": [
+      {
+        "__TYPE__": "GroupItemContent",
+        "value": [
+          [
+            "image",
+            {
+              "__TYPE__": "ImageContent",
+              "origin": {
+                "id": "main",
+                "url": "https://images.unsplash.com/photo-1519003722824-194d4455a60c",
+                "width": 6016,
+                "height": 4016
+              },
+              "url": "https://images.unsplash.com/photo-1519003722824-194d4455a60c",
+              "width": 6016,
+              "height": 4016,
+              "edit": {
+                "zoom": 1,
+                "crop": {
+                  "x": 0,
+                  "y": 0
+                },
+                "background": "transparent"
+              },
+              "credits": null,
+              "alt": "Logistics warehouse scene",
+              "thumbnails": {}
+            }
+          ]
+        ]
+      },
+      {
+        "__TYPE__": "GroupItemContent",
+        "value": [
+          [
+            "image",
+            {
+              "__TYPE__": "ImageContent",
+              "origin": {
+                "id": "main",
+                "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
+                "width": 5184,
+                "height": 3456
+              },
+              "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d",
+              "width": 5184,
+              "height": 3456,
+              "edit": {
+                "zoom": 1,
+                "crop": {
+                  "x": 0,
+                  "y": 0
+                },
+                "background": "transparent"
+              },
+              "credits": null,
+              "alt": "Transportation and logistics",
+              "thumbnails": {}
+            }
+          ]
+        ]
+      },
+      {
+        "__TYPE__": "GroupItemContent",
+        "value": [
+          [
+            "image",
+            {
+              "__TYPE__": "ImageContent",
+              "origin": {
+                "id": "main",
+                "url": "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55",
+                "width": 6720,
+                "height": 4480
+              },
+              "url": "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55",
+              "width": 6720,
+              "height": 4480,
+              "edit": {
+                "zoom": 1,
+                "crop": {
+                  "x": 0,
+                  "y": 0
+                },
+                "background": "transparent"
+              },
+              "credits": null,
+              "alt": "Supply chain management",
+              "thumbnails": {}
+            }
+          ]
+        ]
+      }
+    ]
+  }
+]

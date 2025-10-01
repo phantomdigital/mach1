@@ -1,0 +1,39 @@
+{
+  "id": "solutions",
+  "type": "SharedSlice",
+  "name": "Solutions",
+  "description": "Display freight solutions in card format",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default solutions grid layout",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "SOLUTIONS"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Our Freight Solutions"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Discover our comprehensive range of logistics and freight solutions"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

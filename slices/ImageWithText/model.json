@@ -1,0 +1,87 @@
+{
+  "id": "image_with_text",
+  "type": "SharedSlice",
+  "name": "ImageWithText",
+  "description": "Image and text layout with flexible positioning and clipped image shape",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "About Us"
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "BUILT ON RELATIONSHIPS"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "The conception of Ron Firestone Transport signalled the re-emergence of Ron Firestone back into the transport industry following the sale of Firestone Holdings in 2001, the company went he built from the ground up during the 1960s.\n\nWith our head office located in Wodonga on the New South Wales/Victoria border, directly in the centre of the Sydney, Melbourne Adelaide freight triangle, RFT provides regional and inter-capital city line-haul transport services across two major operating divisions - Food, Produce (either ambient or temperature controlled) & Manufactured Goods and Bulk Liquids."
+          }
+        },
+        "layout_direction": {
+          "type": "Select",
+          "config": {
+            "label": "Layout Direction",
+            "placeholder": "Choose layout direction",
+            "options": [
+              "image-left",
+              "text-left"
+            ],
+            "default_value": "image-left"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Image",
+            "constraint": {
+              "width": 600,
+              "height": 600
+            },
+            "thumbnails": []
+          }
+        },
+        "show_bottom_separator": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Bottom Separator",
+            "placeholder_false": "Hide Bottom Separator",
+            "placeholder_true": "Show Bottom Separator",
+            "default_value": false
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

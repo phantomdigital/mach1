@@ -1,0 +1,25 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "heading": "Our Modern Facilities",
+      "image": {
+        "__TYPE__": "ImageContent",
+        "origin": {
+          "id": "main",
+          "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1279&h=579&fit=crop",
+          "width": 1279,
+          "height": 579
+        },
+        "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1279&h=579&fit=crop",
+        "width": 1279,
+        "height": 579,
+        "alt": "Modern logistics facility"
+      },
+      "caption": "State-of-the-art warehouse and distribution center equipped with the latest technology",
+      "priority_loading": false
+    },
+    "items": []
+  }
+]

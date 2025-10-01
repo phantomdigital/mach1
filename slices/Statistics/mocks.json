@@ -1,0 +1,33 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "subheading": "SHIPBROKING",
+      "heading": "The key contributors.",
+      "description": "We are the leading provider in the market, with decades of experience and several satisfied customers. Our dedicated team of specialists is the largest in the world, responsible for completing thousands of successful trips."
+    },
+    "items": [
+      {
+        "percentage": "35%+",
+        "title": "IMPROVED EFFICIENCY",
+        "description": "Drive efficiency at scale with hands-free, distraction-free focus."
+      },
+      {
+        "percentage": "35%+",
+        "title": "IMPROVED EFFICIENCY", 
+        "description": "Drive efficiency at scale with hands-free, distraction-free focus."
+      },
+      {
+        "percentage": "20%+",
+        "title": "IMPROVED EFFICIENCY",
+        "description": "Drive efficiency at scale with hands-free, distraction-free focus."
+      },
+      {
+        "percentage": "20%+",
+        "title": "IMPROVED EFFICIENCY",
+        "description": "Drive efficiency at scale with hands-free, distraction-free focus."
+      }
+    ]
+  }
+]

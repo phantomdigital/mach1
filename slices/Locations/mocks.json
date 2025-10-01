@@ -1,0 +1,26 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "heading": "Where you can find us.",
+      "subheading": "OUR LOCATIONS"
+    },
+    "items": [
+      {
+        "location_name": "Lancefield",
+        "location_type": "Head Office",
+        "address": "13 High Street Lancefield, VIC 3435",
+        "phone": "+61 3 5428 3680",
+        "email": "admin@mach1logistics.com.au"
+      },
+      {
+        "location_name": "Melbourne",
+        "location_type": "Distribution Center",
+        "address": "45 Industrial Drive Melbourne, VIC 3000",
+        "phone": "+61 3 9876 5432",
+        "email": "melbourne@mach1logistics.com.au"
+      }
+    ]
+  }
+]

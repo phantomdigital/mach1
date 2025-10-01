@@ -1,0 +1,279 @@
+{
+  "format": "custom",
+  "id": "footer",
+  "json": {
+    "Main": {
+      "cta_section": {
+        "type": "Group",
+        "config": {
+          "label": "CTA Section",
+          "fields": {
+            "eyebrow_text": {
+              "type": "Text",
+              "config": {
+                "label": "Eyebrow Text",
+                "placeholder": "WORK WITH US"
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "CTA Title",
+                "placeholder": "Ready to optimise your logistics?"
+              }
+            },
+            "description": {
+              "type": "Text",
+              "config": {
+                "label": "CTA Description",
+                "placeholder": "Our logistics experts are ready to provide a customised quote..."
+              }
+            },
+            "primary_button_text": {
+              "type": "Text",
+              "config": {
+                "label": "Primary Button Text",
+                "placeholder": "Get a Quote"
+              }
+            },
+            "primary_button_link": {
+              "type": "Link",
+              "config": {
+                "label": "Primary Button Link",
+                "allowTargetBlank": true
+              }
+            },
+            "secondary_button_text": {
+              "type": "Text",
+              "config": {
+                "label": "Secondary Button Text",
+                "placeholder": "Tracking"
+              }
+            },
+            "secondary_button_link": {
+              "type": "Link",
+              "config": {
+                "label": "Secondary Button Link",
+                "allowTargetBlank": true
+              }
+            },
+            "background_image": {
+              "type": "Image",
+              "config": {
+                "label": "Background Image (Optional)",
+                "placeholder": "Optional background image for the CTA section",
+                "thumbnails": []
+              }
+            }
+          }
+        }
+      },
+      "logo": {
+        "type": "Image",
+        "config": {
+          "label": "Footer Logo",
+          "thumbnails": []
+        }
+      },
+      "solutions_section": {
+        "type": "Group",
+        "config": {
+          "label": "Solutions Section",
+          "fields": {
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Section Title",
+                "placeholder": "Solutions"
+              }
+            },
+            "links": {
+              "type": "Group",
+              "config": {
+                "label": "Solution Links",
+                "repeat": true,
+                "fields": {
+                  "label": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Link Text",
+                      "placeholder": "Ocean Freight, National Road Freight, etc."
+                    }
+                  },
+                  "link": {
+                    "type": "Link",
+                    "config": {
+                      "label": "Link URL",
+                      "allowTargetBlank": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "specialties_section": {
+        "type": "Group",
+        "config": {
+          "label": "Specialties Section",
+          "fields": {
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Section Title",
+                "placeholder": "Specialties"
+              }
+            },
+            "links": {
+              "type": "Group",
+              "config": {
+                "label": "Specialty Links",
+                "repeat": true,
+                "fields": {
+                  "label": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Link Text",
+                      "placeholder": "Customs & AQIS, Over Dimensional Cargo, etc."
+                    }
+                  },
+                  "link": {
+                    "type": "Link",
+                    "config": {
+                      "label": "Link URL",
+                      "allowTargetBlank": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "contact_section": {
+        "type": "Group",
+        "config": {
+          "label": "Contact Section",
+          "fields": {
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Section Title",
+                "placeholder": "Contact Us"
+              }
+            },
+            "locations": {
+              "type": "Group",
+              "config": {
+                "label": "Locations",
+                "repeat": true,
+                "fields": {
+                  "location_name": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Location Name",
+                      "placeholder": "Brisbane Warehouse, Geelong Depot"
+                    }
+                  },
+                  "address": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Address",
+                      "placeholder": "186 Boundary Road Rocklea, QLD 4106"
+                    }
+                  },
+                  "phone": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Phone Number",
+                      "placeholder": "+61 7 3517 0604"
+                    }
+                  }
+                }
+              }
+            },
+            "additional_info": {
+              "type": "Group",
+              "config": {
+                "label": "Additional Information",
+                "repeat": true,
+                "fields": {
+                  "label": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Info Label",
+                      "placeholder": "Import & Export, Locations"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "legal_links": {
+        "type": "Group",
+        "config": {
+          "label": "Legal Links",
+          "repeat": true,
+          "fields": {
+            "label": {
+              "type": "Text",
+              "config": {
+                "label": "Link Text",
+                "placeholder": "Privacy Policy, Terms of Service"
+              }
+            },
+            "link": {
+              "type": "Link",
+              "config": {
+                "label": "Link URL",
+                "allowTargetBlank": true
+              }
+            }
+          }
+        }
+      },
+      "copyright_text": {
+        "type": "Text",
+        "config": {
+          "label": "Copyright Text",
+          "placeholder": "© MACH1 Logistics Pty Ltd. All rights reserved."
+        }
+      },
+      "website_credit": {
+        "type": "Group",
+        "config": {
+          "label": "Website Credit",
+          "fields": {
+            "text": {
+              "type": "Text",
+              "config": {
+                "label": "Credit Text",
+                "placeholder": "Website by"
+              }
+            },
+            "link_text": {
+              "type": "Text",
+              "config": {
+                "label": "Link Text",
+                "placeholder": "Phantom"
+              }
+            },
+            "link": {
+              "type": "Link",
+              "config": {
+                "label": "Credit Link",
+                "allowTargetBlank": true
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "label": "Footer",
+  "repeatable": false,
+  "status": true
+}

@@ -1,0 +1,68 @@
+{
+  "id": "services",
+  "type": "SharedSlice",
+  "name": "Services",
+  "description": "Services grid section with repeatable service items",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default services grid layout",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Section Heading",
+            "placeholder": "How We Work"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Section Description",
+            "placeholder": "Join our team to receive an above award remuneration and flexible work conditions."
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "SEE OUR NETWORK"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link"
+          }
+        }
+      },
+      "items": {
+        "service_icon": {
+          "type": "Image",
+          "config": {
+            "label": "Service Icon",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "service_title": {
+          "type": "Text",
+          "config": {
+            "label": "Service Title",
+            "placeholder": "FCL import & export service"
+          }
+        },
+        "service_description": {
+          "type": "Text",
+          "config": {
+            "label": "Service Description",
+            "placeholder": "Parcels, boxes, pallets. Importing and exporting solutions. Full Container Load (FCL) or Full Trailer Load (FTL) shipping. We've got you covered."
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "statistics",
+  "type": "SharedSlice",
+  "name": "Statistics",
+  "description": "Statistics section with percentage cards and descriptions",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default statistics layout with cards",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "SHIPBROKING"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Main Heading",
+            "placeholder": "The key contributors."
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "We are the leading provider in the market, with decades of experience and several satisfied customers. Our dedicated team of specialists is the largest in the world, responsible for completing thousands of successful trips."
+          }
+        }
+      },
+      "items": {
+        "percentage": {
+          "type": "Text",
+          "config": {
+            "label": "Percentage",
+            "placeholder": "35%+"
+          }
+        },
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": "IMPROVED EFFICIENCY"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Drive efficiency at scale with hands-free, distraction-free focus."
+          }
+        }
+      }
+    }
+  ]
+}
