@@ -13,6 +13,7 @@ const config: Config = {
         'mach1-red': '#ed1e24',
         'mach1-black': '#262626',
         'dark-blue': '#141433',
+        'mach-gray': '#747474',
         mach1: {
           black: '#262626',
         },

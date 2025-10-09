@@ -185,7 +185,7 @@ export function RegionLanguageSelector() {
                   
                   <button
                     onClick={() => handleLocaleChange(locale.code)}
-                    className="w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer text-mach-gray hover:text-black relative"
+                    className="w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer text-gray-700 hover:text-black relative"
                     style={{
                       fontFamily: 'var(--font-inter-tight), sans-serif',
                       fontWeight: 500,
@@ -232,7 +232,7 @@ export function RegionLanguageSelector() {
                     
                     <button
                       onClick={() => handleLocaleChange(locale.code)}
-                      className="w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer text-mach-gray hover:text-black relative"
+                      className="w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer text-gray-700 hover:text-black relative"
                       style={{
                         fontFamily: 'var(--font-inter-tight), sans-serif',
                         fontWeight: 500,
@@ -280,7 +280,7 @@ export function RegionLanguageSelector() {
                     
                     <button
                       onClick={() => handleLocaleChange(locale.code)}
-                      className="w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer text-mach-gray hover:text-black relative"
+                      className="w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer text-gray-700 hover:text-black relative"
                       style={{
                         fontFamily: 'var(--font-inter-tight), sans-serif',
                         fontWeight: 500,
