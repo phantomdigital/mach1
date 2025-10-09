@@ -16,7 +16,7 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
   return (
     <section className="w-full">
       {/* Dark Blue Header Section */}
-      <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden h-[85vh]">
+      <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden h-[89vh]">
         {/* Background Image */}
         {slice.primary.hero_image?.url && (
           <div className="absolute inset-0 z-0">
