@@ -76,7 +76,7 @@ const Services = ({ slice }: ServicesProps): JSX.Element => {
                                                 {item.service_title && (
                                                     <h3
                                                         className="text-lg font-semibold text-gray-900 mb-3 leading-tight group-hover:text-black transition-colors duration-300"
-                                                        style={{ fontFamily: 'var(--font-inter-tight)' }}
+                                                        style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 600' }}
                                                     >
                                                         {item.service_title}
                                                     </h3>
@@ -86,7 +86,7 @@ const Services = ({ slice }: ServicesProps): JSX.Element => {
                                                 {item.service_description && (
                                                     <p
                                                         className="text-sm text-gray-600 leading-relaxed"
-                                                        style={{ fontFamily: 'var(--font-inter)' }}
+                                                        style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                                                     >
                                                         {item.service_description}
                                                     </p>
@@ -105,7 +105,7 @@ const Services = ({ slice }: ServicesProps): JSX.Element => {
                                 {slice.primary.heading && (
                                     <h2
                                         className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight"
-                                        style={{ fontFamily: 'var(--font-inter-tight)' }}
+                                        style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 700' }}
                                     >
                                         {slice.primary.heading}
                                     </h2>
@@ -115,7 +115,7 @@ const Services = ({ slice }: ServicesProps): JSX.Element => {
                                 {slice.primary.description && (
                                     <p
                                         className="text-base text-gray-600 leading-relaxed mb-8"
-                                        style={{ fontFamily: 'var(--font-inter)' }}
+                                        style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                                     >
                                         {slice.primary.description}
                                     </p>

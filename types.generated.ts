@@ -483,6 +483,31 @@ interface FooterDocumentData {
 export type FooterDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<FooterDocumentData>, "footer", Lang>;
 
 /**
+ * Item in *Header → Sub-Header Links*
+ */
+export interface HeaderDocumentDataSubheaderItemsItem {
+	/**
+	 * Link Label field in *Header → Sub-Header Links*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: e.g., Careers, Contact, etc.
+	 * - **API ID Path**: header.subheader_items[].label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	label: prismic.KeyTextField;
+	
+	/**
+	 * Link URL field in *Header → Sub-Header Links*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Select a page or enter URL
+	 * - **API ID Path**: header.subheader_items[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
  * Item in *Header → Navigation Menu → Dropdown Items*
  */
 export interface HeaderDocumentDataNavigationDropdownItemsItem {
@@ -613,6 +638,74 @@ export interface HeaderDocumentDataButtonsItem {
  */
 interface HeaderDocumentData {
 	/**
+	 * Show Announcement Bar field in *Header*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: header.show_announcement
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_announcement: prismic.BooleanField;
+	
+	/**
+	 * Announcement Text field in *Header*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Enter announcement message
+	 * - **API ID Path**: header.announcement_text
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	announcement_text: prismic.KeyTextField;
+	
+	/**
+	 * Announcement Link (Optional) field in *Header*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Link when clicking the announcement
+	 * - **API ID Path**: header.announcement_link
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	announcement_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Announcement Link Text (Optional) field in *Header*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: e.g., Learn More, Read More
+	 * - **API ID Path**: header.announcement_link_text
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	announcement_link_text: prismic.KeyTextField;
+	
+	/**
+	 * Show Sub-Header field in *Header*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: header.show_subheader
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_subheader: prismic.BooleanField;
+	
+	/**
+	 * Sub-Header Links field in *Header*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: header.subheader_items[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	subheader_items: prismic.GroupField<Simplify<HeaderDocumentDataSubheaderItemsItem>>;
+	
+	/**
 	 * Site Title field in *Header*
 	 *
 	 * - **Field Type**: Text
@@ -728,7 +821,7 @@ interface HomeDocumentData {
  */
 export type HomeDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HomeDocumentData>, "home", Lang>;
 
-type PageDocumentDataSlicesSlice = ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -1263,31 +1356,6 @@ type ImageWithTextSliceVariation = ImageWithTextSliceDefault
 export type ImageWithTextSlice = prismic.SharedSlice<"image_with_text", ImageWithTextSliceVariation>;
 
 /**
- * Primary content in *Locations → Default → Primary*
- */
-export interface LocationsSliceDefaultPrimary {
-	/**
-	 * Heading field in *Locations → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Where you can find us.
-	 * - **API ID Path**: locations.default.primary.heading
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	heading: prismic.KeyTextField;
-	
-	/**
-	 * Subheading field in *Locations → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: OUR LOCATIONS
-	 * - **API ID Path**: locations.default.primary.subheading
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	subheading: prismic.KeyTextField;
-}
-
-/**
  * Primary content in *Locations → Items*
  */
 export interface LocationsSliceDefaultItem {
@@ -1349,7 +1417,7 @@ export interface LocationsSliceDefaultItem {
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type LocationsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<LocationsSliceDefaultPrimary>, Simplify<LocationsSliceDefaultItem>>;
+export type LocationsSliceDefault = prismic.SharedSliceVariation<"default", Record<string, never>, Simplify<LocationsSliceDefaultItem>>;
 
 /**
  * Slice variation for *Locations*
@@ -1457,6 +1525,64 @@ type OurTeamSliceVariation = OurTeamSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type OurTeamSlice = prismic.SharedSlice<"our_team", OurTeamSliceVariation>;
+
+/**
+ * Primary content in *PageTopper → Default → Primary*
+ */
+export interface PageTopperSliceDefaultPrimary {
+	/**
+	 * Subheading field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: OUR LOCATIONS
+	 * - **API ID Path**: page_topper.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Page Title
+	 * - **API ID Path**: page_topper.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Hero Image field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: page_topper.default.primary.hero_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	hero_image: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for PageTopper Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PageTopperSliceDefault = prismic.SharedSliceVariation<"default", Simplify<PageTopperSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *PageTopper*
+ */
+type PageTopperSliceVariation = PageTopperSliceDefault
+
+/**
+ * PageTopper Shared Slice
+ *
+ * - **API ID**: `page_topper`
+ * - **Description**: Hero section for page headers with background image and title
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type PageTopperSlice = prismic.SharedSlice<"page_topper", PageTopperSliceVariation>;
 
 /**
  * Primary content in *Services → Default → Primary*
@@ -1741,6 +1867,7 @@ declare module "@prismicio/client" {
 			FooterDocumentDataWebsiteCreditItem,
 			HeaderDocument,
 			HeaderDocumentData,
+			HeaderDocumentDataSubheaderItemsItem,
 			HeaderDocumentDataNavigationDropdownItemsItem,
 			HeaderDocumentDataNavigationItem,
 			HeaderDocumentDataButtonsItem,
@@ -1772,7 +1899,6 @@ declare module "@prismicio/client" {
 			ImageWithTextSliceVariation,
 			ImageWithTextSliceDefault,
 			LocationsSlice,
-			LocationsSliceDefaultPrimary,
 			LocationsSliceDefaultItem,
 			LocationsSliceVariation,
 			LocationsSliceDefault,
@@ -1781,6 +1907,10 @@ declare module "@prismicio/client" {
 			OurTeamSliceDefaultItem,
 			OurTeamSliceVariation,
 			OurTeamSliceDefault,
+			PageTopperSlice,
+			PageTopperSliceDefaultPrimary,
+			PageTopperSliceVariation,
+			PageTopperSliceDefault,
 			ServicesSlice,
 			ServicesSliceDefaultPrimary,
 			ServicesSliceDefaultItem,

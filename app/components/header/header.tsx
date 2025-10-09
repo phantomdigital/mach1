@@ -4,6 +4,7 @@ import { NavigationDropdown } from "./navigation-dropdown";
 import { HeaderButtons } from "./header-buttons";
 import { DropdownStateProvider } from "./dropdown-state-context";
 import { ScrollDropdownCloser } from "./scroll-dropdown-closer";
+import { RegionLanguageSelector } from "./region-language-selector";
 import type { HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 // Server component for simple navigation items
@@ -14,10 +15,11 @@ const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationIte
       <PrismicNextLink
         key={index}
         field={item.link}
-        className="text-black rounded-sm hover:bg-white/10 font-medium text-sm uppercase px-3 py-2 rounded-base transition-colors duration-300"
-        style={{ fontFamily: 'JetBrains Mono, monospace' }}
+        className="text-black font-semibold text-[1.25rem] px-5 inline-flex items-center group h-full"
       >
-        {item.label}
+        <span className="border-b-2 border-transparent group-hover:border-dark-blue transition-all duration-300 inline-block py-1">
+          {item.label}
+        </span>
       </PrismicNextLink>
     );
   }
@@ -42,67 +44,123 @@ export default async function Header() {
     const header = await client.getSingle("header");
     
     return (
-      <header className="fixed top-0 left-0 z-20 w-full h-auto bg-white/80 backdrop-blur-md border-b border-black/10 supports-[backdrop-filter]:bg-white/60">
-          <div className="w-full px-4 lg:px-8 relative">
-
-          <div className="relative min-h-[80px] lg:min-h-[80px] pt-2 max-w-[112rem] mx-auto">
-            <DropdownStateProvider>
-              <ScrollDropdownCloser />
-              
-              {/* Left-aligned Navigation */}
-              <div className="absolute top-1/2 left-0 -translate-y-1/2">
-                <nav className="hidden lg:flex items-center space-x-8">
-                  {header.data.navigation && header.data.navigation.length > 0 && (
-                    header.data.navigation.map((item: HeaderDocumentDataNavigationItem, index: number) => (
-                      <NavigationItem key={index} item={item} index={index} />
-                    ))
-                  )}
-                </nav>
-              </div>
-
-              {/* Centered Logo */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                {header.data.logo.url ? (
-                  <PrismicNextImage
-                    field={header.data.logo}
-                    className="w-auto object-contain"
-                    style={{ 
-                      height: '60px',
-                      imageRendering: 'crisp-edges',
-                      WebkitFontSmoothing: 'antialiased',
-                      MozOsxFontSmoothing: 'grayscale'
-                    }}
-                  />
-                ) : header.data.site_title ? (
-                <div 
-                  className="font-bold tracking-tight text-black"
-                  style={{ 
-                    fontSize: '28px',
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale',
-                    textRendering: 'optimizeLegibility'
-                  }}
+      <header className="absolute top-0 left-0 z-20 w-full h-auto">
+        {/* Announcement Bar */}
+        {header.data.show_announcement && header.data.announcement_text && (
+          <div className="w-full bg-dark-blue py-3 px-4">
+            <div className="max-w-[112rem] mx-auto flex items-center justify-center gap-4 text-center">
+              <p className="text-white text-xs font-medium">
+                {header.data.announcement_text}
+              </p>
+              {header.data.announcement_link && header.data.announcement_link_text && (
+                <PrismicNextLink
+                  field={header.data.announcement_link}
+                  className="text-white text-sm font-semibold underline hover:text-gray-200 transition-colors whitespace-nowrap"
                 >
-                  {header.data.site_title}
-                </div>
-                ) : null}
-              </div>
-
-              {/* Right-aligned Buttons */}
-              <div className="absolute top-1/2 right-0 flex items-center space-x-3 -translate-y-1/2">
-                {header.data.buttons && header.data.buttons.length > 0 && (
-                  <HeaderButtons buttons={header.data.buttons} />
-                )}
-
-                {/* Mobile Menu Button */}
-                <button className="lg:hidden flex items-center justify-center w-10 h-10 text-black">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </button>
-              </div>
-            </DropdownStateProvider>
+                  {header.data.announcement_link_text}
+                </PrismicNextLink>
+              )}
+            </div>
           </div>
+        )}
+
+        <div className="w-full relative">
+          <DropdownStateProvider>
+            <ScrollDropdownCloser />
+            
+            {/* White background - full width */}
+            <div className="w-full bg-neutral-100 border-b-3 border-neutral-200">
+              
+              {/* Content container with max-width and padding */}
+              <div className="max-w-[112rem] mx-auto px-4 lg:px-8 py-3">
+                {/* Grid Layout: Logo on left, Sub-header & Main nav stacked on right */}
+                <div className="grid grid-cols-[auto_1fr] gap-8">
+                  
+                  {/* Left Column: Logo (spans full height) */}
+                  <div className="flex items-center">
+                    {header.data.logo.url ? (
+                      <PrismicNextImage
+                        field={header.data.logo}
+                        className="w-auto object-contain"
+                        style={{ 
+                          height: '90px',
+                          imageRendering: 'crisp-edges',
+                          WebkitFontSmoothing: 'antialiased',
+                          MozOsxFontSmoothing: 'grayscale'
+                        }}
+                      />
+                    ) : header.data.site_title ? (
+                    <div 
+                      className="font-bold tracking-tight text-black"
+                      style={{ 
+                        fontSize: '36px',
+                        WebkitFontSmoothing: 'antialiased',
+                        MozOsxFontSmoothing: 'grayscale',
+                        textRendering: 'optimizeLegibility'
+                      }}
+                    >
+                      {header.data.site_title}
+                    </div>
+                    ) : null}
+                  </div>
+
+                  {/* Right Column: Sub-header & Main Navigation stacked */}
+                  <div className="flex flex-col self-center gap-5">
+                    
+                    {/* Top: Sub-Header / Utility Bar */}
+                    {header.data.show_subheader && (
+                      <div className="flex items-center gap-6 justify-end border-b-2 border-gray-200 pb-3">
+                        {/* Sub-header links */}
+                        {header.data.subheader_items && header.data.subheader_items.length > 0 && (
+                          header.data.subheader_items.map((item, index) => (
+                            <PrismicNextLink
+                              key={index}
+                              field={item.link}
+                              className="text-sm text-gray-700 hover:text-dark-blue hover:underline transition-colors"
+                            >
+                              {item.label}
+                            </PrismicNextLink>
+                          ))
+                        )}
+                        
+                        {/* Location Selector */}
+                        <RegionLanguageSelector />
+                      </div>
+                    )}
+
+                    {/* Bottom: Main Navigation & Buttons */}
+                    <div className="flex items-center justify-between gap-8">
+                      {/* Centered Navigation */}
+                      <div className="flex-1 flex justify-center">
+                        <nav className="hidden lg:flex items-center gap-8">
+                          {header.data.navigation && header.data.navigation.length > 0 && (
+                            header.data.navigation.map((item: HeaderDocumentDataNavigationItem, index: number) => (
+                              <NavigationItem key={index} item={item} index={index} />
+                            ))
+                          )}
+                        </nav>
+                      </div>
+
+                      {/* Right-aligned Buttons */}
+                      <div className="flex items-center">
+                        {header.data.buttons && header.data.buttons.length > 0 && (
+                          <HeaderButtons buttons={header.data.buttons} />
+                        )}
+
+                        {/* Mobile Menu Button */}
+                        <button className="lg:hidden flex items-center justify-center w-10 h-10 text-black">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </DropdownStateProvider>
         </div>
       </header>
     );
@@ -110,52 +168,78 @@ export default async function Header() {
     console.warn("No header document found in Prismic");
     // Return minimal fallback header - no content, just structure
     return (
-      <header className="fixed top-0 left-0 z-20 w-full h-auto bg-white/90 backdrop-blur-md border-b border-black/10 supports-[backdrop-filter]:bg-white/60">
-        <div className="w-full px-4 lg:px-8 relative">
+      <header className="absolute top-0 left-0 z-20 w-full h-auto">
+        {/* No announcement bar in fallback */}
 
-          <div className="relative min-h-[80px] lg:min-h-[90px] pt-2 max-w-[112rem] mx-auto">
-            <DropdownStateProvider>
-              <ScrollDropdownCloser />
+        <div className="w-full relative">
+          <DropdownStateProvider>
+            <ScrollDropdownCloser />
+            
+            {/* White background - full width */}
+            <div className="w-full bg-neutral-200">
               
-              {/* Left-aligned Navigation Placeholder */}
-              <div className="absolute top-1/2 left-0 -translate-y-1/2">
-                <nav className="hidden lg:flex items-center space-x-8">
-                  <span className="text-black/50 font-medium text-sm uppercase tracking-widest" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                    No navigation configured
-                  </span>
-                </nav>
-              </div>
+              {/* Content container with max-width and padding */}
+              <div className="max-w-[112rem] mx-auto px-4 lg:px-8 py-3">
+                {/* Grid Layout: Logo on left, Sub-header & Main nav stacked on right */}
+                <div className="grid grid-cols-[auto_1fr] gap-8">
+                  
+                  {/* Left Column: Logo Placeholder (spans full height) */}
+                  <div className="flex items-center">
+                    <div 
+                      className="font-bold tracking-tight text-black"
+                      style={{ 
+                        fontSize: '36px',
+                        WebkitFontSmoothing: 'antialiased',
+                        MozOsxFontSmoothing: 'grayscale',
+                        textRendering: 'optimizeLegibility'
+                      }}
+                    >
+                      Logo
+                    </div>
+                  </div>
 
-              {/* Centered Logo Placeholder */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <div 
-                  className="font-bold tracking-tight text-black"
-                  style={{ 
-                    fontSize: '28px',
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale',
-                    textRendering: 'optimizeLegibility'
-                  }}
-                >
-                  Logo
+                  {/* Right Column: Sub-header & Main Navigation stacked */}
+                  <div className="flex flex-col self-center gap-12">
+                    
+                    {/* Top: Sub-Header / Utility Bar */}
+                    <div className="flex items-center gap-6 justify-end">
+                      <span className="text-sm text-gray-500">No utility links configured</span>
+                      
+                      {/* Location Selector */}
+                      <RegionLanguageSelector />
+                    </div>
+
+                    {/* Bottom: Main Navigation & Buttons Placeholder */}
+                    <div className="flex items-center justify-between gap-8">
+                      {/* Centered Navigation Placeholder */}
+                      <div className="flex-1 flex justify-center">
+                        <nav className="hidden lg:flex items-center">
+                          <span className="text-black/50 font-medium text-sm tracking-widest px-5">
+                            No navigation configured
+                          </span>
+                        </nav>
+                      </div>
+
+                      {/* Right-aligned Buttons Placeholder */}
+                      <div className="flex items-center">
+                        <span className="text-black/50 font-medium text-sm tracking-widest">
+                          No buttons configured
+                        </span>
+
+                        {/* Mobile Menu Button */}
+                        <button className="lg:hidden flex items-center justify-center w-10 h-10 text-black">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
-
-              {/* Right-aligned Buttons Placeholder */}
-              <div className="absolute top-1/2 right-0 flex items-center space-x-3 -translate-y-1/2">
-                <span className="text-black/50 font-medium text-sm uppercase tracking-widest" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                  No buttons configured
-                </span>
-
-                {/* Mobile Menu Button */}
-                <button className="lg:hidden flex items-center justify-center w-10 h-10 text-black">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </button>
-              </div>
-            </DropdownStateProvider>
-          </div>
+            </div>
+          </DropdownStateProvider>
         </div>
       </header>
     );

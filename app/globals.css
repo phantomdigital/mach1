@@ -29,10 +29,29 @@
 
 /* Moderate text and image rendering */
 @layer base {
-  /* Only apply moderate smoothing to text elements that need it */
-  h1, h2, h3, h4, h5, h6 {
+  /* Global font family settings */
+  h1, h2, h3, h4, h6 {
+    font-family: var(--font-manrope), sans-serif;
+    font-weight: 700;
+    font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Subheadings use mono font */
+  h5 {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-weight: 400;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Paragraphs use Manrope */
+  p {
+    font-family: var(--font-manrope), sans-serif;
+    font-weight: 400;
+    font-style: normal;
   }
   
   /* SVG rendering - keep moderate */
@@ -48,13 +67,14 @@
   --color-foreground: var(--foreground);
 
   /* Font Families */
-  --font-jetbrains: var(--font-jetbrains-mono);
+  --font-space-mono: "space-mono", monospace;
 
   /* Primary Brand Colors */
-  --color-mach1-blue: #00008A;
+  --color-mach1-blue: #0000FF;
   --color-mach1-red: #ED1E24;
   --color-mach1-black: #262626;
   --color-mach-gray: #747474;
+  --color-dark-blue: #141433;
 
   /* Functional Minimalism Palette */
   --color-neutral-50: #fafafa;
@@ -76,12 +96,14 @@
   --color-error: #dc2626;
 
   /* Typography */
-  --font-family-sans: var(--font-inter-tight), system-ui, sans-serif;
+  --font-family-sans: var(--font-manrope), sans-serif;
   --font-family-mono: var(--font-jetbrains-mono), monospace;
 }
 
 body {
-  font-family: var(--font-inter-tight), system-ui, sans-serif;
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 @theme inline {

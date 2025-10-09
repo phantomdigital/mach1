@@ -101,7 +101,7 @@ export function NavigationDropdown({
   };
 
   const calculateHeaderTextWidth = (text: string): number => {
-    // JetBrains Mono at 0.5rem (8px) - monospace so more predictable
+    // Space Mono at 0.5rem (8px) - monospace so more predictable
     const avgCharWidth = 4; // Much smaller due to 0.5rem size
     return text.length * avgCharWidth;
   };
@@ -206,23 +206,26 @@ export function NavigationDropdown({
           ================================================================= */}
       
       <button 
-        className={`
-          flex items-center font-medium text-sm uppercase tracking-widest 
-          px-3 py-2 h-auto rounded-sm border-none outline-none cursor-pointer
-          transition-colors duration-150 ease-out
-          ${isOpen 
-            ? 'bg-white/10 text-black' 
-            : 'text-black bg-transparent hover:bg-white/10'
-          }
-        `}
-        style={{ fontFamily: 'JetBrains Mono, monospace' }}
+        className="text-black font-semibold text-[1.25rem] px-5 h-full outline-none cursor-pointer bg-transparent inline-flex items-center"
       >
-        {label}
-        <ChevronDown 
-          className={`ml-1 h-4 w-4 transition-transform duration-150 ease-out ${
-            isOpen ? 'rotate-180' : 'rotate-0'
-          }`} 
-        />
+        <span 
+          className={`
+            flex items-center border-b-2 transition-all duration-150 ease-out py-1
+            ${isOpen 
+              ? 'border-dark-blue' 
+              : 'border-transparent hover:border-dark-blue'
+            }
+          `}
+        >
+          <span className="inline whitespace-nowrap">
+            {label}
+          </span>
+          <ChevronDown 
+            className={`ml-1 h-4 w-4 transition-transform duration-150 ease-out flex-shrink-0 ${
+              isOpen ? 'rotate-180' : 'rotate-0'
+            }`} 
+          />
+        </span>
       </button>
       
       {/* =================================================================
@@ -239,41 +242,17 @@ export function NavigationDropdown({
       />
       
       {/* =================================================================
-          CONNECTING LINE ABOVE DROPDOWN
-          ================================================================= */}
-      
-      {/* Small vertical line connecting nav button to dropdown */}
-      <div 
-        className={`absolute top-full left-0 z-40 ${
-          isOpen ? 'block' : 'hidden'
-        }`}
-        style={{
-          left: `${37 - 18}px`, // Align with main vertical line (37px) minus dropdown offset (-18px)
-          top: '100%',
-          marginTop: '6px' // Small gap from button
-        }}
-      >
-        <div 
-          className="w-px"
-          style={{
-            height: '108px', // Line that goes down to the dropdown (120px header - 12px gap)
-            backgroundColor: '#DFDFDF'
-          }}
-        />
-      </div>
-
-      {/* =================================================================
           DROPDOWN CONTENT
           ================================================================= */}
       
       {/* Dropdown Content with CSS-only transitions */}
       <div 
-        className={`absolute left-[-18px] z-50 ${
+        className={`absolute left-1/2 -translate-x-1/2 z-50 ${
           isOpen 
             ? 'pointer-events-auto' 
             : 'pointer-events-none hidden'
         }`}
-        style={{ top: '39px' }}
+        style={{ top: '38px' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -332,16 +311,15 @@ export function NavigationDropdown({
               <div className="flex-1 px-5 pt-10 pb-8">
                 
                 {/* Category Header */}
-                <div 
+                <h5 
                   className="font-medium text-gray-500 uppercase tracking-widest mb-2 pl-4" 
                   style={{ 
                     color: '#747474',
-                    fontFamily: 'var(--font-inter-tight)',
                     fontSize: '0.55rem'
                   }}
                 >
                   {dropdownTitle || label}
-                </div>
+                </h5>
                 
                 {/* Navigation Items List */}
                 <div className={`space-y-0 pl-7 relative pt-2 ${hasDropdownImage ? 'pr-8' : 'pr-20'}`}>
@@ -408,9 +386,9 @@ export function NavigationDropdown({
                         field={dropdownItem.link}
                         className={`flex items-center py-4 px-4 transition-colors duration-200 text-mach-gray hover:text-black ${hasDropdownImage ? 'justify-start' : 'justify-between'}`}
                         style={{
-                          fontFamily: 'var(--font-inter-tight), system-ui, sans-serif',
+                          fontFamily: 'var(--font-inter-tight), sans-serif',
+                          fontWeight: 500,
                           fontSize: '1.25rem',        // 20px
-                          fontWeight: '500',          // Medium
                           lineHeight: '100%',         // Tight line height
                           letterSpacing: '0%'         // No letter spacing
                         }}

@@ -58,7 +58,9 @@ const ServiceCarousel = (): JSX.Element => {
                     top: `calc(50% + ${y}px)`,
                     transform: `translate(-50%, -50%) rotate(${angle}deg)`,
                     transformOrigin: "center",
-                    fontFamily: 'var(--font-jetbrains-mono)',
+                    fontFamily: '"space-mono", monospace',
+                    fontWeight: 400,
+                    fontStyle: 'normal',
                     letterSpacing: '0.5px'
                   }}
                 >
@@ -78,7 +80,7 @@ const ServiceCarousel = (): JSX.Element => {
           >
             <div 
               className="text-white text-xs lg:text-sm font-bold"
-              style={{ fontFamily: 'var(--font-jetbrains-mono)' }}
+              style={{ fontFamily: '"space-mono", monospace', fontWeight: 400, fontStyle: 'normal' }}
             >
               M1
             </div>

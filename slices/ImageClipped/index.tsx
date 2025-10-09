@@ -25,7 +25,7 @@ const ImageClipped = ({ slice, maxWidth = "max-w-[110rem]" }: ImageClippedProps)
           <div className="text-center">
             <h2 
               className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900"
-              style={{ fontFamily: 'var(--font-inter-tight)' }}
+              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 700' }}
             >
               {slice.primary.heading}
             </h2>
@@ -89,7 +89,7 @@ const ImageClipped = ({ slice, maxWidth = "max-w-[110rem]" }: ImageClippedProps)
           <div className="text-center">
             <p 
               className="text-lg text-gray-600 max-w-3xl mx-auto"
-              style={{ fontFamily: 'var(--font-inter)' }}
+              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
             >
               {slice.primary.caption}
             </p>

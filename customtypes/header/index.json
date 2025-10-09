@@ -3,6 +3,70 @@
   "id": "header",
   "json": {
     "Main": {
+      "show_announcement": {
+        "type": "Boolean",
+        "config": {
+          "label": "Show Announcement Bar",
+          "placeholder_false": "Hidden",
+          "placeholder_true": "Visible",
+          "default_value": false
+        }
+      },
+      "announcement_text": {
+        "type": "Text",
+        "config": {
+          "label": "Announcement Text",
+          "placeholder": "Enter announcement message"
+        }
+      },
+      "announcement_link": {
+        "type": "Link",
+        "config": {
+          "label": "Announcement Link (Optional)",
+          "placeholder": "Link when clicking the announcement",
+          "allowTargetBlank": true
+        }
+      },
+      "announcement_link_text": {
+        "type": "Text",
+        "config": {
+          "label": "Announcement Link Text (Optional)",
+          "placeholder": "e.g., Learn More, Read More"
+        }
+      },
+      "show_subheader": {
+        "type": "Boolean",
+        "config": {
+          "label": "Show Sub-Header",
+          "placeholder_false": "Hidden",
+          "placeholder_true": "Visible",
+          "default_value": true
+        }
+      },
+      "subheader_items": {
+        "type": "Group",
+        "config": {
+          "label": "Sub-Header Links",
+          "repeat": true,
+          "fields": {
+            "label": {
+              "type": "Text",
+              "config": {
+                "label": "Link Label",
+                "placeholder": "e.g., Careers, Contact, etc."
+              }
+            },
+            "link": {
+              "type": "Link",
+              "config": {
+                "label": "Link URL",
+                "placeholder": "Select a page or enter URL",
+                "allowTargetBlank": true
+              }
+            }
+          }
+        }
+      },
       "site_title": {
         "type": "Text",
         "config": {

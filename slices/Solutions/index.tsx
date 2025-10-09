@@ -31,7 +31,9 @@ const Solutions = async ({ slice }: SolutionsProps): Promise<JSX.Element> => {
             <div 
               className="text-sm text-mach1-black font-medium mb-6 uppercase tracking-wide" 
               style={{ 
-                fontFamily: 'var(--font-jetbrains-mono)',
+                fontFamily: '"space-mono", monospace',
+                fontWeight: 400,
+                fontStyle: 'normal',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
                 textRendering: 'optimizeLegibility',

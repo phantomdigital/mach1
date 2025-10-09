@@ -68,7 +68,9 @@ export default function SolutionCard({ solution }: SolutionCardProps) {
           <span 
             className="inline-block px-3 py-1 text-xs font-medium text-mach1-black bg-white rounded-full mb-3 uppercase tracking-wide"
             style={{ 
-              fontFamily: 'var(--font-jetbrains-mono)',
+              fontFamily: '"space-mono", monospace',
+              fontWeight: 400,
+              fontStyle: 'normal',
             }}
           >
             {solution.data.category}

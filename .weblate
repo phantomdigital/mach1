@@ -1,0 +1,13 @@
+[weblate]
+url = https://hosted.weblate.org/
+translation_component = mach1-logistics
+
+[files]
+base = messages/
+format = json
+template = messages/en-AU.json
+
+[locales]
+source_language = en-AU
+languages = en-AU, en-NZ, en-US, en-GB, en-SG, zh-CN, zh-TW, ja, ko, es, fr, de, vi, th, id
+

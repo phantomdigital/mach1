@@ -143,7 +143,7 @@ export function DropdownBackground({
             {/* Main container path with dynamic height */}
             <path 
               d={`M18 19H772L827.5 58L860 81.5V${safeHeight - bottomEdgeHeight}C860 ${safeHeight - bottomEdgeHeight + 3}.761 857.761 ${safeHeight - bottomEdgeHeight + 5} 855 ${safeHeight - bottomEdgeHeight + 5}H23C20.2386 ${safeHeight - bottomEdgeHeight + 5} 18 ${safeHeight - bottomEdgeHeight + 3}.761 18 ${safeHeight - bottomEdgeHeight}V19Z`} 
-              fill="white"
+              fill="#f5f5f5"
             />
             
             {/* Border stroke path */}

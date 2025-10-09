@@ -65,7 +65,9 @@ const StatisticsCard = ({ percentage, title, description, index }: StatisticsCar
           <motion.div 
             className="text-4xl md:text-5xl font-bold text-mach1-black leading-tight"
             style={{ 
-              fontFamily: 'var(--font-jetbrains-mono)',
+              fontFamily: '"space-mono", monospace',
+              fontWeight: 400,
+              fontStyle: 'normal',
               textRendering: 'optimizeLegibility'
             }}
             initial={{ scale: 0.9, opacity: 0 }}
@@ -82,7 +84,9 @@ const StatisticsCard = ({ percentage, title, description, index }: StatisticsCar
           <motion.h3 
             className="text-lg md:text-xl font-semibold text-mach1-black leading-tight"
             style={{ 
-              fontFamily: 'var(--font-jetbrains-mono)',
+              fontFamily: '"space-mono", monospace',
+              fontWeight: 400,
+              fontStyle: 'normal',
               letterSpacing: '-0.01em'
             }}
             initial={{ opacity: 0, x: -15 }}
@@ -125,7 +129,9 @@ const StatisticsCard = ({ percentage, title, description, index }: StatisticsCar
           <motion.p 
             className="text-neutral-700 text-sm md:text-base leading-relaxed font-normal"
             style={{ 
-              fontFamily: 'var(--font-jetbrains-mono)',
+              fontFamily: '"space-mono", monospace',
+              fontWeight: 400,
+              fontStyle: 'normal',
               lineHeight: '1.5'
             }}
             initial={{ opacity: 0, y: 10 }}

@@ -1,0 +1,47 @@
+import { Content } from "@prismicio/client";
+import { SliceComponentProps } from "@prismicio/react";
+import { PrismicNextImage } from "@prismicio/next";
+import { PageTopperAnimation } from "./page-topper-animation";
+
+/**
+ * Props for `PageTopper`.
+ */
+export type PageTopperProps = SliceComponentProps<Content.PageTopperSlice>;
+
+/**
+ * Component for "PageTopper" Slices.
+ */
+const PageTopper = ({ slice }: PageTopperProps): JSX.Element => {
+  return (
+    <section className="w-full">
+      {/* Dark Blue Header Section */}
+      <div className="w-full bg-mach1-blue pt-48 flex items-end relative overflow-hidden h-[85vh]">
+        {/* Background Image */}
+        {slice.primary.hero_image?.url && (
+          <div className="absolute inset-0 z-0">
+            <PrismicNextImage 
+              field={slice.primary.hero_image} 
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        )}
+        {/* Vignette Overlay - Dark edges, lighter center */}
+        <div className="absolute inset-0 z-5 bg-gradient-to-b from-black/70 via-black/10 to-black/85"></div>
+
+        {/* Content */}
+        <div className="w-full max-w-[112rem] mx-auto px-4 lg:px-8 pb-8 lg:pb-12 relative z-10">
+          {/* Header with Animation */}
+          <PageTopperAnimation 
+            subheading={slice.primary.subheading || undefined}
+            heading={slice.primary.heading || undefined}
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default PageTopper;
+

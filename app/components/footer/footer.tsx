@@ -11,11 +11,11 @@ export default async function Footer() {
     const footer = await client.getSingle("footer");
     
     return (
-      <footer className="relative bg-mach1-blue text-white overflow-hidden">
+      <footer className="relative bg-dark-blue text-white overflow-hidden">
         {/* CTA Section with geometric background */}
         <div className="relative">
           {/* Full background */}
-          <div className="absolute inset-0 w-full h-full bg-mach1-blue"></div>
+          <div className="absolute inset-0 w-full h-full bg-dark-blue"></div>
           
           {/* Clipped section container */}
           <div className="relative w-full max-w-[110rem] mx-auto py-24">
@@ -62,7 +62,7 @@ export default async function Footer() {
                       className={`text-sm font-medium uppercase tracking-wide mb-4 ${
                         footer.data.cta_section[0]?.background_image?.url ? 'text-white' : 'text-neutral-800'
                       }`}
-                      style={{ fontFamily: 'var(--font-jetbrains-mono)' }}
+                      style={{ fontFamily: '"space-mono", monospace', fontWeight: 400, fontStyle: 'normal' }}
                     >
                       {footer.data.cta_section[0].eyebrow_text}
                     </div>
@@ -74,7 +74,7 @@ export default async function Footer() {
                       className={`text-4xl lg:text-5xl font-bold mb-6 ${
                         footer.data.cta_section[0]?.background_image?.url ? 'text-white' : 'text-neutral-800'
                       }`}
-                      style={{ fontFamily: 'var(--font-inter-tight)' }}
+                      style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 700' }}
                     >
                       {footer.data.cta_section[0].title}
                     </h2>
@@ -86,7 +86,7 @@ export default async function Footer() {
                       className={`text-xl leading-relaxed mb-12 max-w-2xl mx-auto ${
                         footer.data.cta_section[0]?.background_image?.url ? 'text-white/90' : 'text-neutral-800'
                       }`}
-                      style={{ fontFamily: 'var(--font-inter-tight)' }}
+                      style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                     >
                       {footer.data.cta_section[0].description}
                     </p>
@@ -127,7 +127,7 @@ export default async function Footer() {
                 <div>
                   <h3 
                     className="text-base font-semibold text-white mb-6"
-                    style={{ fontFamily: 'var(--font-inter-tight)' }}
+                              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                   >
                     {footer.data.solutions_section[0].title || 'Solutions'}
                   </h3>
@@ -138,7 +138,7 @@ export default async function Footer() {
                           <PrismicNextLink
                             field={link.link}
                             className="text-white text-[9.74px] font-medium underline hover:text-gray-200 transition-colors"
-                            style={{ fontFamily: 'var(--font-inter-tight)' }}
+                            style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                           >
                             {link.label}
                           </PrismicNextLink>
@@ -154,7 +154,7 @@ export default async function Footer() {
                 <div>
                   <h3 
                     className="text-base font-semibold text-white mb-6"
-                    style={{ fontFamily: 'var(--font-inter-tight)' }}
+                              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                   >
                     {footer.data.specialties_section[0].title || 'Specialties'}
                   </h3>
@@ -165,7 +165,7 @@ export default async function Footer() {
                           <PrismicNextLink
                             field={link.link}
                             className="text-white text-[9.74px] font-medium underline hover:text-gray-200 transition-colors"
-                            style={{ fontFamily: 'var(--font-inter-tight)' }}
+                            style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                           >
                             {link.label}
                           </PrismicNextLink>
@@ -181,7 +181,7 @@ export default async function Footer() {
                 <div>
                   <h3 
                     className="text-base font-semibold text-white mb-6"
-                    style={{ fontFamily: 'var(--font-inter-tight)' }}
+                              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                   >
                     {footer.data.contact_section[0].title || 'Contact Us'}
                   </h3>
@@ -194,7 +194,7 @@ export default async function Footer() {
                           {location.location_name && (
                             <div 
                               className="text-zinc-300/90 text-[8.64px] font-medium"
-                              style={{ fontFamily: 'var(--font-inter-tight)' }}
+                              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                             >
                               {location.location_name}
                             </div>
@@ -202,7 +202,7 @@ export default async function Footer() {
                           {location.address && (
                             <div 
                               className="text-white text-[9.74px] font-medium"
-                              style={{ fontFamily: 'var(--font-inter-tight)' }}
+                              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                             >
                               <svg 
                                 width="16" 
@@ -221,7 +221,7 @@ export default async function Footer() {
                           {location.phone && (
                             <div 
                               className="text-white text-[9.74px] font-medium"
-                              style={{ fontFamily: 'var(--font-inter-tight)' }}
+                              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                             >
                               <svg 
                                 width="17" 
@@ -248,7 +248,7 @@ export default async function Footer() {
                         <div 
                           key={index}
                           className="text-zinc-300/90 text-[8.64px] font-medium"
-                          style={{ fontFamily: 'var(--font-inter-tight)' }}
+                              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                         >
                           {info.label}
                         </div>
@@ -278,7 +278,7 @@ export default async function Footer() {
                         key={index}
                         field={legalLink.link}
                         className="block text-white text-[9.74px] font-medium underline hover:text-gray-200 transition-colors"
-                        style={{ fontFamily: 'var(--font-inter-tight)' }}
+                              style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
                       >
                         {legalLink.label}
                       </PrismicNextLink>
@@ -307,7 +307,7 @@ export default async function Footer() {
             <div className="text-center lg:text-left">
               <div 
                 className="text-zinc-300/90 text-[8.99px] font-medium"
-                style={{ fontFamily: 'var(--font-inter-tight)' }}
+                style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 500' }}
               >
                 {footer.data.copyright_text}
                 {footer.data.website_credit[0] && (

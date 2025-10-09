@@ -1,26 +1,21 @@
 import type { Metadata } from "next";
-import { Archivo, JetBrains_Mono, Inter_Tight } from "next/font/google";
+import { JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header/header";
 import Footer from "./components/footer/footer";
 import LenisProvider from "@/components/lenis-provider";
 
-const archivo = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin"],
-});
+import { generateMetadata as generateBaseMetadata, generateOrganizationSchema } from "@/lib/metadata";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
-const interTight = Inter_Tight({
-  variable: "--font-inter-tight",
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
 });
-
-import { generateMetadata as generateBaseMetadata, generateOrganizationSchema } from "@/lib/metadata";
 
 export const metadata: Metadata = generateBaseMetadata({
   title: "Professional Logistics & Transportation Services",
@@ -43,14 +38,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
       </head>
-      <body
-        className={`${archivo.variable} ${jetbrainsMono.variable} ${interTight.variable} font-sans antialiased`}
-      >
-        <LenisProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </LenisProvider>
+      <body className={`${jetbrainsMono.variable} ${manrope.variable} font-sans antialiased`}>
+          <LenisProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </LenisProvider>
       </body>
     </html>
   );

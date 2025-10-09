@@ -18,12 +18,14 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
       return React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
         ...childProps,
         className: cn(
-          "inline-flex border border-mach1-black items-center bg-mach1-red text-white rounded-full pl-6 pr-1 h-[45px] w-auto font-medium text-[13px] uppercase  transition-all duration-200 gap-3 group",
+          "inline-flex items-center bg-dark-blue text-white rounded-2xl pl-6 pr-1 h-[45px] w-auto font-medium text-[13px] uppercase transition-all duration-200 gap-3 group",
           childProps.className,
           className
         ),
         style: { 
-          fontFamily: 'var(--font-jetbrains-mono)', 
+          fontFamily: 'var(--font-jetbrains-mono), monospace',
+          fontWeight: 400,
+          fontStyle: 'normal',
           ...(childProps.style || {})
         },
         ref,
@@ -58,7 +60,7 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
                 {childProps.children}
               </motion.span>
             </div>
-            <div className="w-[37px] h-[37px] bg-white  rounded-full flex items-center justify-center flex-shrink-0 relative overflow-hidden border border-mach1-black">
+            <div className="w-[37px] h-[37px] bg-white rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden">
               <motion.svg 
                 width="11" 
                 height="11" 
@@ -84,10 +86,10 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg"
                 className="absolute"
-                initial={{ x: "-150%", y: "150%" }}
+                initial={{ x: "-200%", y: "200%" }}
                 animate={{
-                  x: isHovered ? "0%" : "-150%",
-                  y: isHovered ? "0%" : "150%"
+                  x: isHovered ? "0%" : "-200%",
+                  y: isHovered ? "0%" : "200%"
                 }}
                 transition={{
                   duration: 0.35,
@@ -116,10 +118,10 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
     return (
       <motion.button
         className={cn(
-          "inline-flex items-center bg-[#575757] text-zinc-100 rounded-full pl-6 pr-1 h-[45px] w-auto font-medium text-[13px] uppercase hover:bg-[#4a4a4a] transition-all duration-200 gap-3",
+          "inline-flex items-center bg-mach1-blue text-white rounded-[80%] pl-6 pr-1 h-[45px] w-auto font-medium text-[13px] uppercase hover:bg-[#1e2366] transition-all duration-200 gap-3",
           className
         )}
-        style={{ fontFamily: 'var(--font-jetbrains-mono)', lineHeight: '1' }}
+        style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontWeight: 400, fontStyle: 'normal', lineHeight: '1' }}
         ref={ref}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
@@ -152,7 +154,7 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
             {children}
           </motion.span>
         </div>
-        <div className="w-[37px] h-[37px] bg-slate-100 border border-[#575757] rounded-full flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+        <div className="w-[37px] h-[37px] bg-slate-100 rounded-[80%] flex items-center justify-center flex-shrink-0 relative overflow-hidden">
           <motion.svg 
             width="11" 
             height="11" 
@@ -169,7 +171,7 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
               ease: [0.25, 0.46, 0.45, 0.94]
             }}
           >
-            <path d="M1 8L8 1M8 1H1M8 1V8" stroke="#575757" strokeLinejoin="round"/>
+            <path d="M1 8L8 1M8 1H1M8 1V8" stroke="#2b2e7f" strokeLinejoin="round"/>
           </motion.svg>
           <motion.svg 
             width="11" 
@@ -178,17 +180,17 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
             fill="none" 
             xmlns="http://www.w3.org/2000/svg"
             className="absolute"
-            initial={{ x: "-150%", y: "150%" }}
+            initial={{ x: "-200%", y: "200%" }}
             animate={{
-              x: isHovered ? "0%" : "-150%",
-              y: isHovered ? "0%" : "150%"
+              x: isHovered ? "0%" : "-200%",
+              y: isHovered ? "0%" : "200%"
             }}
             transition={{
               duration: 0.4,
               ease: [0.25, 0.46, 0.45, 0.94]
             }}
           >
-            <path d="M1 8L8 1M8 1H1M8 1V8" stroke="#575757" strokeLinejoin="round"/>
+            <path d="M1 8L8 1M8 1H1M8 1V8" stroke="#2b2e7f" strokeLinejoin="round"/>
           </motion.svg>
         </div>
       </motion.button>

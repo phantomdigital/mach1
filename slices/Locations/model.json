@@ -11,22 +11,7 @@
       "version": "initial",
       "description": "Default",
       "imageUrl": "",
-      "primary": {
-        "heading": {
-          "type": "Text",
-          "config": {
-            "label": "Heading",
-            "placeholder": "Where you can find us."
-          }
-        },
-        "subheading": {
-          "type": "Text",
-          "config": {
-            "label": "Subheading",
-            "placeholder": "OUR LOCATIONS"
-          }
-        }
-      },
+      "primary": {},
       "items": {
         "location_name": {
           "type": "Text",

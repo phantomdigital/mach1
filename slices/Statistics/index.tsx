@@ -22,37 +22,21 @@ const Statistics = ({ slice }: StatisticsProps): JSX.Element => {
         <div className="text-center mb-16">
           {/* Subheading */}
           {slice.primary.subheading && (
-            <div 
-              className="text-sm text-gray-900 font-medium mb-6 uppercase tracking-wide" 
-              style={{ 
-                fontFamily: 'var(--font-jetbrains-mono)',
-                WebkitFontSmoothing: 'antialiased',
-                MozOsxFontSmoothing: 'grayscale',
-                textRendering: 'optimizeLegibility',
-                fontFeatureSettings: '"kern" 1, "liga" 1',
-                fontVariantLigatures: 'common-ligatures'
-              }}
-            >
+            <h5 className="text-sm text-gray-900 font-medium mb-6 uppercase tracking-wide">
               {slice.primary.subheading}
-            </div>
+            </h5>
           )}
           
           {/* Main Heading */}
           {slice.primary.heading && (
-            <h2 
-              className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6"
-              style={{ fontFamily: 'var(--font-inter-tight)' }}
-            >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               {slice.primary.heading}
             </h2>
           )}
           
           {/* Description */}
           {slice.primary.description && (
-            <p 
-              className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed">
               {slice.primary.description}
             </p>
           )}

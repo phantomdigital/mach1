@@ -77,20 +77,20 @@ const ImageWithText = ({ slice }: ImageWithTextProps): JSX.Element => {
             {slice.primary.subheading && (
               <div 
                 className="text-neutral-800 text-sm font-medium mb-4"
-                style={{ fontFamily: 'var(--font-jetbrains-mono)' }}
+                style={{ fontFamily: '"space-mono", monospace', fontWeight: 400, fontStyle: 'normal' }}
               >
                 {slice.primary.subheading}
               </div>
             )}
             
             {slice.primary.heading && (
-              <h2 className="text-neutral-800 text-4xl lg:text-5xl font-bold font-inter-tight leading-tight mb-6">
+              <h2 className="text-neutral-800 text-4xl lg:text-5xl font-bold leading-tight mb-6" style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 700' }}>
                 {slice.primary.heading}
               </h2>
             )}
             
             {slice.primary.description && (
-              <div className="text-neutral-600 text-base font-normal font-inter-tight leading-relaxed space-y-4">
+              <div className="text-neutral-600 text-base font-normal leading-relaxed space-y-4" style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}>
                 {slice.primary.description.split('\n').map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}

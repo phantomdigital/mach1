@@ -123,6 +123,19 @@ rules:
       - "Content sections should follow the header with appropriate spacing (typically mb-16 or space-y-24)"
       - "When creating new slices, copy the exact container and header structure from Locations slice"
 
+  - name: "Typography and Semantic HTML"
+    description: "Global font system using semantic HTML tags"
+    patterns:
+      - "Use semantic HTML tags (h1-h6, p) for typography - fonts are applied globally in globals.css"
+      - "h5 tags: Use for subheadings/labels - automatically styled with JetBrains Mono (monospace)"
+      - "h1, h2, h3, h4, h6 tags: Use for main headings - automatically styled with Inter Tight (sans-serif), font-weight: 700"
+      - "p tags: Use for body text/paragraphs - automatically styled with Inter Tight (sans-serif), font-weight: 400"
+      - "NEVER add inline fontFamily styles - let global CSS handle font families"
+      - "Only add Tailwind classes for sizing, colors, spacing, and weights - not font families"
+      - "Pattern: Subheading (h5) + Main heading (h1/h2) + Description (p)"
+      - "For buttons and special UI: Use var(--font-jetbrains-mono) for monospace consistency"
+      - "Global font setup in globals.css @layer base ensures consistent typography across entire site"
+      
   - name: "Development Environment"
     description: "Development server and environment management"
     patterns:

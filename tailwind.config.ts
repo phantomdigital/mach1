@@ -9,15 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'mach1-blue': '#2b2e7f',
+        'mach1-blue': '#06038D',
         'mach1-red': '#ed1e24',
         'mach1-black': '#262626',
+        'dark-blue': '#141433',
         mach1: {
           black: '#262626',
         },
       },
       fontFamily: {
-        'inter-tight': ['var(--font-inter-tight)', 'sans-serif'],
         'mono': ['var(--font-jetbrains-mono)', 'monospace'],
       },
     },
