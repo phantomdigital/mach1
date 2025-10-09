@@ -1551,6 +1551,16 @@ export interface PageTopperSliceDefaultPrimary {
 	heading: prismic.KeyTextField;
 	
 	/**
+	 * Paragraph (Optional) field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Optional description text below heading
+	 * - **API ID Path**: page_topper.default.primary.paragraph
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	paragraph: prismic.KeyTextField;
+	
+	/**
 	 * Hero Image field in *PageTopper → Default → Primary*
 	 *
 	 * - **Field Type**: Image
@@ -1559,6 +1569,68 @@ export interface PageTopperSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
 	hero_image: prismic.ImageField<never>;
+	
+	/**
+	 * Button 1 Text field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Get Started
+	 * - **API ID Path**: page_topper.default.primary.button_1_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_1_text: prismic.KeyTextField;
+	
+	/**
+	 * Button 1 Link field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: page_topper.default.primary.button_1_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_1_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Button 1 Style field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: default
+	 * - **API ID Path**: page_topper.default.primary.button_1_style
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	button_1_style: prismic.SelectField<"default" | "hero-light" | "secondary", "filled">;
+	
+	/**
+	 * Button 2 Text field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Learn More
+	 * - **API ID Path**: page_topper.default.primary.button_2_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_2_text: prismic.KeyTextField;
+	
+	/**
+	 * Button 2 Link field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: page_topper.default.primary.button_2_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_2_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Button 2 Style field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: secondary
+	 * - **API ID Path**: page_topper.default.primary.button_2_style
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	button_2_style: prismic.SelectField<"default" | "hero-light" | "secondary", "filled">;
 }
 
 /**

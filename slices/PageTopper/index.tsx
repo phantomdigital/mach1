@@ -2,6 +2,7 @@ import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
 import { PageTopperAnimation } from "./page-topper-animation";
+import { PageTopperButtons } from "./page-topper-buttons";
 
 /**
  * Props for `PageTopper`.
@@ -15,7 +16,7 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
   return (
     <section className="w-full">
       {/* Dark Blue Header Section */}
-      <div className="w-full bg-mach1-blue pt-48 flex items-end relative overflow-hidden h-[85vh]">
+      <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden h-[85vh]">
         {/* Background Image */}
         {slice.primary.hero_image?.url && (
           <div className="absolute inset-0 z-0">
@@ -36,6 +37,17 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
           <PageTopperAnimation 
             subheading={slice.primary.subheading || undefined}
             heading={slice.primary.heading || undefined}
+            paragraph={slice.primary.paragraph || undefined}
+          />
+          
+          {/* Buttons */}
+          <PageTopperButtons
+            button1Text={slice.primary.button_1_text}
+            button1Link={slice.primary.button_1_link}
+            button1Style={slice.primary.button_1_style}
+            button2Text={slice.primary.button_2_text}
+            button2Link={slice.primary.button_2_link}
+            button2Style={slice.primary.button_2_style}
           />
         </div>
       </div>

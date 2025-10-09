@@ -1,8 +1,8 @@
 export function LocationDivider() {
   return (
-    <div className="w-full max-w-[1300px] h-5 relative">
+    <div className="w-full max-w-[10rem] h-5 relative">
       <svg 
-        width="1302" 
+        width="2000" 
         height="23" 
         viewBox="0 0 1302 23" 
         fill="none" 

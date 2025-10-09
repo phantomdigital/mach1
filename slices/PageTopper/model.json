@@ -26,12 +26,67 @@
             "placeholder": "Page Title"
           }
         },
+        "paragraph": {
+          "type": "Text",
+          "config": {
+            "label": "Paragraph (Optional)",
+            "placeholder": "Optional description text below heading"
+          }
+        },
         "hero_image": {
           "type": "Image",
           "config": {
             "label": "Hero Image",
             "constraint": {},
             "thumbnails": []
+          }
+        },
+        "button_1_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button 1 Text",
+            "placeholder": "Get Started"
+          }
+        },
+        "button_1_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button 1 Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "button_1_style": {
+          "type": "Select",
+          "config": {
+            "label": "Button 1 Style",
+            "placeholder": "",
+            "options": ["default", "hero-light", "secondary"],
+            "default_value": "default"
+          }
+        },
+        "button_2_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button 2 Text",
+            "placeholder": "Learn More"
+          }
+        },
+        "button_2_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button 2 Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "button_2_style": {
+          "type": "Select",
+          "config": {
+            "label": "Button 2 Style",
+            "placeholder": "",
+            "options": ["default", "hero-light", "secondary"],
+            "default_value": "secondary"
           }
         }
       },

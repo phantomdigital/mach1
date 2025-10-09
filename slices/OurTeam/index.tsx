@@ -21,33 +21,26 @@ const OurTeam = ({ slice }: OurTeamProps): React.ReactElement => {
   }));
 
   return (
-    <section className="w-full py-16 lg:py-24 bg-white">
-      <div className="w-full mt-48 mx-auto px-4 lg:px-20">
+    <section className="w-full py-16 lg:py-26 bg-white">
+      <div className="w-full mx-auto px-4 lg:px-48">
       {/* Header */}
       <div className="mb-16">
         {slice.primary.subheading && (
-          <div 
-            className="text-neutral-800 text-sm font-medium mb-4 uppercase"
-            style={{ fontFamily: '"space-mono", monospace', fontWeight: 400, fontStyle: 'normal' }}
-          >
+          <h5 className="text-neutral-800 text-sm font-medium mb-4 uppercase tracking-wider">
             {slice.primary.subheading}
-          </div>
+          </h5>
         )}
         {slice.primary.heading && (
-          <h2 className="text-neutral-800 text-4xl lg:text-6xl font-bold leading-tight" style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 700' }}>
+          <h2 className="text-neutral-800 text-4xl lg:text-6xl font-bold leading-tight">
             {slice.primary.heading}
           </h2>
         )}
         {slice.primary.description && (
-          <p className="text-neutral-600 text-lg font-normal leading-relaxed mt-6 max-w-2xl" style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}>
+          <p className="text-neutral-600 text-lg lg:text-xl font-normal leading-relaxed mt-6 max-w-2xl">
             {slice.primary.description}
           </p>
         )}
         
-        {/* Header Separator */}
-        <div className="mt-12">
-          <HeaderSeparator />
-        </div>
       </div>
 
         {/* Team Members Grid */}
@@ -63,7 +56,7 @@ const OurTeam = ({ slice }: OurTeamProps): React.ReactElement => {
                       {member.image && member.image.url ? (
                         <PrismicNextImage
                           field={member.image}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:cursor-pointer"
                           alt=""
                         />
                       ) : (
@@ -84,23 +77,16 @@ const OurTeam = ({ slice }: OurTeamProps): React.ReactElement => {
 
                     {/* Team Member Info */}
                     <div className="mt-6">
-                      <h3 className="text-neutral-800 text-xl font-semibold leading-tight" style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 600' }}>
+                      <h3 className="text-neutral-800 text-xl font-semibold leading-tight">
                         {member.name}
                       </h3>
-                      <p className="text-neutral-600 text-base font-normal leading-relaxed mt-1" style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}>
+                      <p className="text-neutral-600 text-base font-normal leading-relaxed mt-1">
                         {member.position}
                       </p>
                     </div>
                   </div>
                 ))}
               </div>
-
-              {/* Divider between rows (except last) */}
-              {rowIndex < Math.ceil(teamMembers.length / 3) - 1 && (
-                <div className="mt-24">
-                  <TeamDivider />
-                </div>
-              )}
             </div>
           ))}
         </div>

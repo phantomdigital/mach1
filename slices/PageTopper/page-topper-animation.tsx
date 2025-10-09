@@ -9,12 +9,14 @@ import Link from "next/link";
 interface PageTopperAnimationProps {
   subheading?: string;
   heading?: string;
+  paragraph?: string;
 }
 
-export function PageTopperAnimation({ subheading, heading }: PageTopperAnimationProps) {
+export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopperAnimationProps) {
   const homeIconRef = useRef<HTMLAnchorElement>(null);
   const subheadingRef = useRef<HTMLHeadingElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const paragraphRef = useRef<HTMLParagraphElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const splitsRef = useRef<SplitText[]>([]);
   const hasAnimatedRef = useRef(false);
@@ -54,6 +56,10 @@ export function PageTopperAnimation({ subheading, heading }: PageTopperAnimation
     
     if (headingRef.current && heading) {
       textElements.push(headingRef.current);
+    }
+    
+    if (paragraphRef.current && paragraph) {
+      textElements.push(paragraphRef.current);
     }
 
     // Create timeline with performance optimizations
@@ -126,7 +132,7 @@ export function PageTopperAnimation({ subheading, heading }: PageTopperAnimation
     }
 
     hasAnimatedRef.current = true;
-  }, [subheading, heading, cleanup]);
+  }, [subheading, heading, paragraph, cleanup]);
 
   useEffect(() => {
     // Use requestAnimationFrame for better performance
@@ -185,6 +191,17 @@ export function PageTopperAnimation({ subheading, heading }: PageTopperAnimation
         >
           {heading}
         </h2>
+      )}
+
+      {/* Paragraph */}
+      {paragraph && (
+        <p 
+          ref={paragraphRef}
+          className="text-neutral-200 text-lg lg:text-xl max-w-3xl opacity-0 transform-gpu mt-6"
+          style={{ willChange: 'auto' }}
+        >
+          {paragraph}
+        </p>
       )}
     </div>
   );
