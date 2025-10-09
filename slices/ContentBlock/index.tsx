@@ -12,7 +12,7 @@ export type ContentBlockProps = SliceComponentProps<Content.ContentBlockSlice>;
 /**
  * Component for "ContentBlock" Slices.
  */
-const ContentBlock = ({ slice }: ContentBlockProps): JSX.Element => {
+const ContentBlock = ({ slice }: ContentBlockProps): React.ReactElement => {
   // Get alignment class based on selection
   const getAlignmentClass = () => {
     switch (slice.primary.text_alignment) {

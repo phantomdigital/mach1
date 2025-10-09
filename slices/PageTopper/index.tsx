@@ -11,7 +11,7 @@ export type PageTopperProps = SliceComponentProps<Content.PageTopperSlice>;
 /**
  * Component for "PageTopper" Slices.
  */
-const PageTopper = ({ slice }: PageTopperProps): JSX.Element => {
+const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
   return (
     <section className="w-full">
       {/* Dark Blue Header Section */}

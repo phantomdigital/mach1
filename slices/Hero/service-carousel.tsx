@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-const ServiceCarousel = (): JSX.Element => {
+const ServiceCarousel = (): React.ReactElement => {
   const [rotation, setRotation] = useState(0);
   const [mounted, setMounted] = useState(false);
 

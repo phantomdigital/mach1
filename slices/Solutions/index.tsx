@@ -11,7 +11,7 @@ export type SolutionsProps = SliceComponentProps<Content.SolutionsSlice>;
 /**
  * Component for "Solutions" Slices.
  */
-const Solutions = async ({ slice }: SolutionsProps): Promise<JSX.Element> => {
+const Solutions = async ({ slice }: SolutionsProps): Promise<React.ReactElement> => {
   const client = createClient();
   
   // Fetch all solutions from Prismic

@@ -11,7 +11,7 @@ export type LocationsProps = SliceComponentProps<Content.LocationsSlice>;
 /**
  * Component for "Locations" Slices.
  */
-const Locations = ({ slice }: LocationsProps): JSX.Element => {
+const Locations = ({ slice }: LocationsProps): React.ReactElement => {
   const locations = slice.items.map(item => ({
     name: item.location_name || "",
     type: item.location_type || "",

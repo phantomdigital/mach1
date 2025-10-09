@@ -12,7 +12,7 @@ export type ImageClippedProps = SliceComponentProps<Content.ImageClippedSlice> &
 /**
  * Component for "ImageClipped" Slices.
  */
-const ImageClipped = ({ slice, maxWidth = "max-w-[110rem]" }: ImageClippedProps): JSX.Element => {
+const ImageClipped = ({ slice, maxWidth = "max-w-[110rem]" }: ImageClippedProps): React.ReactElement => {
   return (
     <section
       data-slice-type={slice.slice_type}

@@ -12,7 +12,7 @@ export type ImageWithTextProps = SliceComponentProps<Content.ImageWithTextSlice>
 /**
  * Component for "ImageWithText" Slices.
  */
-const ImageWithText = ({ slice }: ImageWithTextProps): JSX.Element => {
+const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
   // Get flex direction based on selection
   const getFlexDirection = () => {
     return slice.primary.layout_direction === 'text-left' 

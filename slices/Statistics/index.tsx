@@ -10,7 +10,7 @@ export type StatisticsProps = SliceComponentProps<Content.StatisticsSlice>;
 /**
  * Component for "Statistics" Slices.
  */
-const Statistics = ({ slice }: StatisticsProps): JSX.Element => {
+const Statistics = ({ slice }: StatisticsProps): React.ReactElement => {
   return (
     <section
       data-slice-type={slice.slice_type}

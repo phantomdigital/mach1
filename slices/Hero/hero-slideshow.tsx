@@ -8,7 +8,7 @@ interface HeroSlideshowProps {
   images: { image: ImageField }[];
 }
 
-const HeroSlideshow = ({ images }: HeroSlideshowProps): JSX.Element => {
+const HeroSlideshow = ({ images }: HeroSlideshowProps): React.ReactElement => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 

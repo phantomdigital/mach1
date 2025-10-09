@@ -12,7 +12,7 @@ export type ServicesProps = SliceComponentProps<Content.ServicesSlice>;
 /**
  * Component for "Services" Slices.
  */
-const Services = ({ slice }: ServicesProps): JSX.Element => {
+const Services = ({ slice }: ServicesProps): React.ReactElement => {
     return (
         <>
 

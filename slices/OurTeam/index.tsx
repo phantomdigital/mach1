@@ -13,7 +13,7 @@ export type OurTeamProps = SliceComponentProps<Content.OurTeamSlice>;
 /**
  * Component for "OurTeam" Slices.
  */
-const OurTeam = ({ slice }: OurTeamProps): JSX.Element => {
+const OurTeam = ({ slice }: OurTeamProps): React.ReactElement => {
   const teamMembers = slice.items.map(item => ({
     name: item.name || "",
     position: item.position || "",
