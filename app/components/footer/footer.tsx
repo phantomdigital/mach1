@@ -1,7 +1,6 @@
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { createClient } from "@/prismicio";
 import { FooterCtaButtons } from "./footer-cta-buttons";
-import type { FooterDocument } from "@/types.generated";
 
 // Server component for footer
 export default async function Footer() {
@@ -133,7 +132,7 @@ export default async function Footer() {
                   </h3>
                   {footer.data.solutions_section[0].links && (
                     <ul className="space-y-3">
-                      {footer.data.solutions_section[0].links.map((link: any, index: number) => (
+                      {footer.data.solutions_section[0].links.map((link, index: number) => (
                         <li key={index}>
                           <PrismicNextLink
                             field={link.link}
@@ -160,7 +159,7 @@ export default async function Footer() {
                   </h3>
                   {footer.data.specialties_section[0].links && (
                     <ul className="space-y-3">
-                      {footer.data.specialties_section[0].links.map((link: any, index: number) => (
+                      {footer.data.specialties_section[0].links.map((link, index: number) => (
                         <li key={index}>
                           <PrismicNextLink
                             field={link.link}
@@ -189,7 +188,7 @@ export default async function Footer() {
                   {/* Locations */}
                   {footer.data.contact_section[0].locations && (
                     <div className="space-y-6">
-                      {footer.data.contact_section[0].locations.map((location: any, index: number) => (
+                      {footer.data.contact_section[0].locations.map((location, index: number) => (
                         <div key={index} className="space-y-2">
                           {location.location_name && (
                             <div 
@@ -244,7 +243,7 @@ export default async function Footer() {
                   {/* Additional Info */}
                   {footer.data.contact_section[0].additional_info && (
                     <div className="mt-6 space-y-2">
-                      {footer.data.contact_section[0].additional_info.map((info: any, index: number) => (
+                      {footer.data.contact_section[0].additional_info.map((info, index: number) => (
                         <div 
                           key={index}
                           className="text-zinc-300/90 text-[8.64px] font-medium"
@@ -273,7 +272,7 @@ export default async function Footer() {
                 {/* Legal Links */}
                 {footer.data.legal_links && footer.data.legal_links.length > 0 && (
                   <div className="space-y-2">
-                    {footer.data.legal_links.map((legalLink: any, index: number) => (
+                    {footer.data.legal_links.map((legalLink, index: number) => (
                       <PrismicNextLink
                         key={index}
                         field={legalLink.link}

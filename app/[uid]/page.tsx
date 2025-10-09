@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: Promise<Params> }) {
         <SliceZone slices={page.data.slices} components={components} />
       </main>
     );
-  } catch (error) {
+  } catch {
     // Page not found
     notFound();
   }
@@ -41,7 +41,7 @@ export async function generateMetadata({
       url: `/${uid}`,
       keywords: [uid.replace(/-/g, " "), "MACH1 Logistics", "logistics services"],
     });
-  } catch (error) {
+  } catch {
     // Return default metadata for pages that don't exist
     return {
       title: "Page Not Found | MACH1 Logistics",

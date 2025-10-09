@@ -59,6 +59,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         onAnimationIteration,
         ...buttonProps 
       } = props
+      
+      // Suppress unused variable warnings for destructured props
+      void onDrag; void onDragStart; void onDragEnd; void onAnimationStart; void onAnimationEnd; void onAnimationIteration;
       return (
         <motion.button
           className={cn(buttonVariants({ variant, size, className }))}
