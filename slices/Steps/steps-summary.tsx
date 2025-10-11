@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { ChevronDown, Mail, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { RTNode } from "@prismicio/client";
+import type { RichTextField } from "@prismicio/client";
 import { PrismicRichText } from "@prismicio/react";
 
 interface StepsSummaryProps {
   heading: string;
-  description: RTNode[];
+  description: RichTextField | null | undefined;
   contactEmail: string;
   contactTimeframe: string;
   onReset: () => void;
