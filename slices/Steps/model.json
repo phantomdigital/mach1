@@ -1,0 +1,241 @@
+{
+  "id": "steps",
+  "type": "SharedSlice",
+  "name": "Steps",
+  "description": "Multi-step quote flow - use multiple variations for each step",
+  "variations": [
+    {
+      "id": "cards",
+      "name": "Cards (Step 1)",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Step 1: Location selection cards",
+      "imageUrl": "",
+      "primary": {
+        "step_number": {
+          "type": "Number",
+          "config": {
+            "label": "Step Number",
+            "placeholder": "1"
+          }
+        },
+        "step_title": {
+          "type": "Text",
+          "config": {
+            "label": "Step Title",
+            "placeholder": "Location"
+          }
+        }
+      },
+      "items": {
+        "card_label": {
+          "type": "Text",
+          "config": {
+            "label": "Card Label",
+            "placeholder": "Australia"
+          }
+        },
+        "card_value": {
+          "type": "Text",
+          "config": {
+            "label": "Card Value",
+            "placeholder": "australia"
+          }
+        },
+        "has_link_icon": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Link Icon",
+            "placeholder_false": "No Icon",
+            "placeholder_true": "Show Icon",
+            "default_value": false
+          }
+        },
+        "card_image": {
+          "type": "Image",
+          "config": {
+            "label": "Card Background Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "is_text_option": {
+          "type": "Boolean",
+          "config": {
+            "label": "Text Option (not a card)",
+            "placeholder_false": "Full Card",
+            "placeholder_true": "Text Option Only",
+            "default_value": false
+          }
+        }
+      }
+    },
+    {
+      "id": "form",
+      "name": "Form (Step 2)",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Step 2: Dynamic form fields",
+      "imageUrl": "",
+      "primary": {
+        "step_number": {
+          "type": "Number",
+          "config": {
+            "label": "Step Number",
+            "placeholder": "2"
+          }
+        },
+        "step_title": {
+          "type": "Text",
+          "config": {
+            "label": "Step Title",
+            "placeholder": "Details"
+          }
+        },
+        "form_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Form Heading",
+            "placeholder": "DETAILS"
+          }
+        }
+      },
+      "items": {
+        "field_label": {
+          "type": "Text",
+          "config": {
+            "label": "Field Label",
+            "placeholder": "Full Name"
+          }
+        },
+        "field_name": {
+          "type": "Text",
+          "config": {
+            "label": "Field Name (ID)",
+            "placeholder": "fullName (must be unique, no spaces)"
+          }
+        },
+        "field_type": {
+          "type": "Select",
+          "config": {
+            "label": "Field Type",
+            "placeholder": "Select field type",
+            "options": [
+              "text",
+              "email",
+              "tel",
+              "number",
+              "date",
+              "textarea",
+              "radio",
+              "select"
+            ],
+            "default_value": "text"
+          }
+        },
+        "field_placeholder": {
+          "type": "Text",
+          "config": {
+            "label": "Placeholder Text",
+            "placeholder": "Enter first name..."
+          }
+        },
+        "field_required": {
+          "type": "Boolean",
+          "config": {
+            "label": "Required Field",
+            "placeholder_false": "Optional",
+            "placeholder_true": "Required",
+            "default_value": true
+          }
+        },
+        "field_options": {
+          "type": "Text",
+          "config": {
+            "label": "Options (for radio/select only)",
+            "placeholder": "Road Freight, Air Freight, Ocean Freight"
+          }
+        },
+        "field_unit": {
+          "type": "Text",
+          "config": {
+            "label": "Unit Label (optional)",
+            "placeholder": "KG, MM, NOS"
+          }
+        },
+        "field_column": {
+          "type": "Select",
+          "config": {
+            "label": "Column Position",
+            "placeholder": "Select column",
+            "options": ["left", "right", "full"],
+            "default_value": "left"
+          }
+        },
+        "field_width": {
+          "type": "Select",
+          "config": {
+            "label": "Field Width",
+            "placeholder": "Select width",
+            "options": ["full", "half", "third", "quarter", "fifth"],
+            "default_value": "full"
+          }
+        }
+      }
+    },
+    {
+      "id": "summary",
+      "name": "Summary (Step 3)",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Step 3: Thank you / confirmation page",
+      "imageUrl": "",
+      "primary": {
+        "step_number": {
+          "type": "Number",
+          "config": {
+            "label": "Step Number",
+            "placeholder": "4"
+          }
+        },
+        "step_title": {
+          "type": "Text",
+          "config": {
+            "label": "Step Title",
+            "placeholder": "Confirmation"
+          }
+        },
+        "summary_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Summary Heading",
+            "placeholder": "We have received your request."
+          }
+        },
+        "summary_description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Summary Description",
+            "placeholder": "One of our logistics specialists will contact you...",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "contact_email": {
+          "type": "Text",
+          "config": {
+            "label": "Contact Email",
+            "placeholder": "tom@phantomdigital.au"
+          }
+        },
+        "contact_timeframe": {
+          "type": "Text",
+          "config": {
+            "label": "Contact Timeframe",
+            "placeholder": "24 hours"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

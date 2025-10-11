@@ -136,6 +136,17 @@ rules:
       - "For buttons and special UI: Use var(--font-jetbrains-mono) for monospace consistency"
       - "Global font setup in globals.css @layer base ensures consistent typography across entire site"
       
+  - name: "Hover States and Interactive Elements"
+    description: "Consistent hover effects and interactive element styling"
+    patterns:
+      - "For text underlines on hover: Use 'border-b-2 border-transparent hover:border-dark-blue' instead of 'underline'"
+      - "Underline transition: 'transition-all duration-150 ease-out' for smooth animation"
+      - "This creates a bottom border that animates from transparent to dark-blue on hover"
+      - "Apply this pattern to navigation items, cards, links, and all interactive text elements"
+      - "Vertical hover bars: Use 'origin-bottom scale-y-0 group-hover:scale-y-100' for bottom-to-top animation"
+      - "Icon reveals on hover: Use 'opacity-0 group-hover:opacity-100 transition-opacity duration-200'"
+      - "Maintain consistency with header navigation hover patterns across all components"
+      
   - name: "Development Environment"
     description: "Development server and environment management"
     patterns:

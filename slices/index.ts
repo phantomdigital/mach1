@@ -13,4 +13,5 @@ export const components = {
   services: dynamic(() => import("./Services")),
   solutions: dynamic(() => import("./Solutions")),
   statistics: dynamic(() => import("./Statistics")),
+  steps: dynamic(() => import("./Steps")),
 };

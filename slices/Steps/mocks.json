@@ -1,0 +1,118 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "cards",
+    "primary": {
+      "step_number": 1,
+      "step_title": "Location"
+    },
+    "items": [
+      {
+        "card_label": "Australia",
+        "card_value": "australia",
+        "has_link_icon": true,
+        "card_image": {
+          "dimensions": {
+            "width": 900,
+            "height": 900
+          },
+          "alt": "Australia shipping",
+          "url": "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=900&h=900&fit=crop"
+        }
+      },
+      {
+        "card_label": "International",
+        "card_value": "international",
+        "has_link_icon": false,
+        "card_image": {
+          "dimensions": {
+            "width": 900,
+            "height": 900
+          },
+          "alt": "International shipping",
+          "url": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=900&h=900&fit=crop"
+        }
+      }
+    ]
+  },
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "form",
+    "primary": {
+      "step_number": 2,
+      "step_title": "Details",
+      "form_heading": "DETAILS"
+    },
+    "items": [
+      {
+        "field_label": "Full Name",
+        "field_name": "fullName",
+        "field_type": "text",
+        "field_placeholder": "Enter first name...",
+        "field_required": true,
+        "field_options": null,
+        "field_unit": null,
+        "field_column": "left",
+        "field_width": "full"
+      },
+      {
+        "field_label": "Email Address",
+        "field_name": "email",
+        "field_type": "email",
+        "field_placeholder": "Enter email address...",
+        "field_required": true,
+        "field_options": null,
+        "field_unit": null,
+        "field_column": "left",
+        "field_width": "full"
+      },
+      {
+        "field_label": "Origin",
+        "field_name": "origin",
+        "field_type": "text",
+        "field_placeholder": "Enter to search address...",
+        "field_required": true,
+        "field_options": null,
+        "field_unit": null,
+        "field_column": "right",
+        "field_width": "full"
+      },
+      {
+        "field_label": "Destination",
+        "field_name": "destination",
+        "field_type": "text",
+        "field_placeholder": "Enter to search address...",
+        "field_required": true,
+        "field_options": null,
+        "field_unit": null,
+        "field_column": "right",
+        "field_width": "full"
+      }
+    ]
+  },
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "summary",
+    "primary": {
+      "step_number": 3,
+      "step_title": "Confirmation",
+      "summary_heading": "We have received your request.",
+      "summary_description": [
+        {
+          "type": "paragraph",
+          "text": "One of our logistics specialists will contact you at tom@phantomdigital.au within 24 hours to discuss your requirements. We're looking forward to hearing how we can help optimize your supply chain.",
+          "spans": [
+            {
+              "start": 56,
+              "end": 79,
+              "type": "strong"
+            }
+          ]
+        }
+      ],
+      "contact_email": "tom@phantomdigital.au",
+      "contact_timeframe": "24 hours"
+    },
+    "items": []
+  }
+]
