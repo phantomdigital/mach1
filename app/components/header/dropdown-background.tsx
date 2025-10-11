@@ -329,7 +329,7 @@ export function DropdownBackground({
           {/* Main container path - preserves corner angles, scales middle section */}
           <path 
             d={`M18 19H${scaledH}L${scaledL1} 56.8983L${scaledL2} 79.7345V${safeHeight - bottomEdgeHeight}C${scaledL2} ${safeHeight - bottomEdgeHeight + 3}.761 ${scaledRightEdge + 2.761} ${safeHeight - bottomEdgeHeight + 5} ${scaledRightEdge} ${safeHeight - bottomEdgeHeight + 5}H23C20.2386 ${safeHeight - bottomEdgeHeight + 5} 18 ${safeHeight - bottomEdgeHeight + 3}.761 18 ${safeHeight - bottomEdgeHeight}V19Z`} 
-            fill="white"
+            fill="#f5f5f5"
           />
           
           {/* Border stroke path - follows same scaling pattern */}

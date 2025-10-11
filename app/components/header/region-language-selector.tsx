@@ -127,7 +127,7 @@ export function RegionLanguageSelector() {
         <div className="relative" style={{ width: `${dropdownWidth}px`, height: `${dropdownHeight}px` }}>
           {/* Simple rounded rectangle background */}
           <div 
-            className="absolute inset-0 bg-white rounded-md shadow-lg border border-gray-200"
+            className="absolute inset-0 bg-neutral-100 rounded-md shadow-lg border border-gray-200"
             style={{ width: `${dropdownWidth}px`, height: `${dropdownHeight}px` }}
           />
 
