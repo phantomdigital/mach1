@@ -2069,7 +2069,7 @@ export interface StepsSliceFormItem {
 	 * - **API ID Path**: steps.items[].field_type
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	field_type: prismic.SelectField<"text" | "email" | "tel" | "number" | "date" | "textarea" | "radio" | "select", "filled">;
+	field_type: prismic.SelectField<"text" | "email" | "tel" | "number" | "date" | "textarea" | "radio" | "select" | "address", "filled">;
 	
 	/**
 	 * Placeholder Text field in *Steps → Items*
@@ -2093,20 +2093,20 @@ export interface StepsSliceFormItem {
 	field_required: prismic.BooleanField;
 	
 	/**
-	 * Options (for radio/select only) field in *Steps → Items*
+	 * Options (for radio/select/number units) field in *Steps → Items*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: Road Freight, Air Freight, Ocean Freight
+	 * - **Placeholder**: Road Freight, Air Freight, Ocean Freight OR kg, lbs, ton
 	 * - **API ID Path**: steps.items[].field_options
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	field_options: prismic.KeyTextField;
 	
 	/**
-	 * Unit Label (optional) field in *Steps → Items*
+	 * Unit Label (for number fields) field in *Steps → Items*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: KG, MM, NOS
+	 * - **Placeholder**: kg, mm, box (default unit if field_options provided)
 	 * - **API ID Path**: steps.items[].field_unit
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
@@ -2143,6 +2143,50 @@ export interface StepsSliceFormItem {
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type StepsSliceForm = prismic.SharedSliceVariation<"form", Simplify<StepsSliceFormPrimary>, Simplify<StepsSliceFormItem>>;
+
+/**
+ * Primary content in *Steps → Packages (Step 2b) → Primary*
+ */
+export interface StepsSlicePackagesPrimary {
+	/**
+	 * Step Number field in *Steps → Packages (Step 2b) → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 3
+	 * - **API ID Path**: steps.packages.primary.step_number
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	step_number: prismic.NumberField;
+	
+	/**
+	 * Step Title field in *Steps → Packages (Step 2b) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Package Details
+	 * - **API ID Path**: steps.packages.primary.step_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	step_title: prismic.KeyTextField;
+	
+	/**
+	 * Packages Heading field in *Steps → Packages (Step 2b) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: PACKAGE DETAILS
+	 * - **API ID Path**: steps.packages.primary.packages_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	packages_heading: prismic.KeyTextField;
+}
+
+/**
+ * Packages (Step 2b) variation for Steps Slice
+ *
+ * - **API ID**: `packages`
+ * - **Description**: Step for adding package/shipment details - dynamic package builder
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type StepsSlicePackages = prismic.SharedSliceVariation<"packages", Simplify<StepsSlicePackagesPrimary>, never>;
 
 /**
  * Primary content in *Steps → Summary (Step 3) → Primary*
@@ -2221,7 +2265,7 @@ export type StepsSliceSummary = prismic.SharedSliceVariation<"summary", Simplify
 /**
  * Slice variation for *Steps*
  */
-type StepsSliceVariation = StepsSliceCards | StepsSliceForm | StepsSliceSummary
+type StepsSliceVariation = StepsSliceCards | StepsSliceForm | StepsSlicePackages | StepsSliceSummary
 
 /**
  * Steps Shared Slice
@@ -2324,10 +2368,12 @@ declare module "@prismicio/client" {
 			StepsSliceCardsItem,
 			StepsSliceFormPrimary,
 			StepsSliceFormItem,
+			StepsSlicePackagesPrimary,
 			StepsSliceSummaryPrimary,
 			StepsSliceVariation,
 			StepsSliceCards,
 			StepsSliceForm,
+			StepsSlicePackages,
 			StepsSliceSummary
 		}
 	}

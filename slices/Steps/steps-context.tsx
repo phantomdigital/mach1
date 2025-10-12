@@ -102,6 +102,11 @@ export function useStepsFlow(stepNumber: number) {
     goToStep(1);
   };
 
+  const goToSummary = () => {
+    // Navigate to the summary page
+    router.push("/quote/summary");
+  };
+
   return {
     currentStep,
     selectedCard: data.selectedCard,
@@ -109,6 +114,7 @@ export function useStepsFlow(stepNumber: number) {
     goToNextStep,
     goToPreviousStep,
     goToStep,
+    goToSummary,
     setSelectedCard,
     setFormData,
     resetFlow,

@@ -128,7 +128,8 @@
               "date",
               "textarea",
               "radio",
-              "select"
+              "select",
+              "address"
             ],
             "default_value": "text"
           }
@@ -152,15 +153,15 @@
         "field_options": {
           "type": "Text",
           "config": {
-            "label": "Options (for radio/select only)",
-            "placeholder": "Road Freight, Air Freight, Ocean Freight"
+            "label": "Options (for radio/select/number units)",
+            "placeholder": "Road Freight, Air Freight, Ocean Freight OR kg, lbs, ton"
           }
         },
         "field_unit": {
           "type": "Text",
           "config": {
-            "label": "Unit Label (optional)",
-            "placeholder": "KG, MM, NOS"
+            "label": "Unit Label (for number fields)",
+            "placeholder": "kg, mm, box (default unit if field_options provided)"
           }
         },
         "field_column": {
@@ -182,6 +183,38 @@
           }
         }
       }
+    },
+    {
+      "id": "packages",
+      "name": "Packages (Step 2b)",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Step for adding package/shipment details - dynamic package builder",
+      "imageUrl": "",
+      "primary": {
+        "step_number": {
+          "type": "Number",
+          "config": {
+            "label": "Step Number",
+            "placeholder": "3"
+          }
+        },
+        "step_title": {
+          "type": "Text",
+          "config": {
+            "label": "Step Title",
+            "placeholder": "Package Details"
+          }
+        },
+        "packages_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Packages Heading",
+            "placeholder": "PACKAGE DETAILS"
+          }
+        }
+      },
+      "items": {}
     },
     {
       "id": "summary",

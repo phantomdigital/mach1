@@ -1,12 +1,14 @@
 "use client";
 
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStepsFlow } from "./steps-context";
 import StepsCards from "./steps-cards";
 import StepsForm from "./steps-form";
+import StepsPackages from "./steps-packages";
 import StepsSummary from "./steps-summary";
 import { StepNavigation } from "./step-navigation";
 import { StepIndicator } from "./step-indicator";
@@ -22,6 +24,7 @@ export type StepsProps = SliceComponentProps<Content.StepsSlice>;
  * Each variation renders as a different step in the multi-step flow.
  */
 const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
+  const router = useRouter();
   const sliceRef = useRef<HTMLElement>(null);
   
   // Get step number from Prismic (supports multiple card steps)
@@ -32,6 +35,8 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
     isCurrentStep,
     goToNextStep,
     goToPreviousStep,
+    goToSummary,
+    selectedCard,
     setSelectedCard,
     setFormData,
     formData,
@@ -48,9 +53,42 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
     goToNextStep(sliceRef.current);
   };
 
-  const handleFormSubmit = (data: Record<string, string>) => {
-    setFormData(data);
-    goToNextStep(sliceRef.current);
+  const handleFormSubmit = async (data: Record<string, string>) => {
+    try {
+      // Merge with existing formData instead of replacing
+      setFormData({ ...(formData || {}), ...data });
+      
+      // Check if selected service requires packages step
+      // Skip packages for warehousing, 3PL, or storage services
+      const skipPackages = selectedCard && (
+        selectedCard.toLowerCase().includes('warehousing') ||
+        selectedCard.toLowerCase().includes('3pl') ||
+        selectedCard.toLowerCase().includes('storage') ||
+        selectedCard.toLowerCase().includes('warehouse')
+      );
+      
+      if (skipPackages) {
+        // Show loading state for better UX
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        goToSummary();
+      } else {
+        // Transport/shipping services need package details
+        goToNextStep(sliceRef.current);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      router.push("/quote/error?message=" + encodeURIComponent("Failed to process form data. Please try again."));
+    }
+  };
+
+  const handlePackagesSubmit = async (packages: any[]) => {
+    // Merge packages with existing formData
+    setFormData({ ...(formData || {}), packages: JSON.stringify(packages) });
+    
+    // Show loading state for 1.5 seconds for better UX
+    await new Promise(resolve => setTimeout(resolve, 4500));
+    
+    goToSummary();
   };
 
   return (
@@ -120,6 +158,15 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
             />
           )}
 
+          {/* Step 2b: Packages */}
+          {slice.variation === ("packages" as any) && (
+            <StepsPackages
+              packagesHeading={(slice.primary as any).packages_heading || "PACKAGE DETAILS"}
+              selectedCard={selectedCard}
+              onSubmit={handlePackagesSubmit}
+            />
+          )}
+
           {/* Step 3: Summary */}
           {slice.variation === "summary" && (
             <StepsSummary
@@ -127,6 +174,8 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
               description={slice.primary.summary_description || []}
               contactEmail={slice.primary.contact_email || ""}
               contactTimeframe={slice.primary.contact_timeframe || ""}
+              selectedCard={selectedCard}
+              formData={formData}
               onReset={resetFlow}
             />
           )}

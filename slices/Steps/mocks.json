@@ -69,8 +69,8 @@
       {
         "field_label": "Origin",
         "field_name": "origin",
-        "field_type": "text",
-        "field_placeholder": "Enter to search address...",
+        "field_type": "address",
+        "field_placeholder": "Enter to search address",
         "field_required": true,
         "field_options": null,
         "field_unit": null,
@@ -80,15 +80,80 @@
       {
         "field_label": "Destination",
         "field_name": "destination",
-        "field_type": "text",
-        "field_placeholder": "Enter to search address...",
+        "field_type": "address",
+        "field_placeholder": "Enter to search address",
         "field_required": true,
         "field_options": null,
         "field_unit": null,
         "field_column": "right",
         "field_width": "full"
+      },
+      {
+        "field_label": "Total Weight",
+        "field_name": "totalWeight",
+        "field_type": "number",
+        "field_placeholder": "1",
+        "field_required": true,
+        "field_options": "kg, lbs, ton",
+        "field_unit": "kg",
+        "field_column": "left",
+        "field_width": "half"
+      },
+      {
+        "field_label": "Length",
+        "field_name": "length",
+        "field_type": "number",
+        "field_placeholder": "2200",
+        "field_required": true,
+        "field_options": "mm, cm, m, in, ft",
+        "field_unit": "mm",
+        "field_column": "left",
+        "field_width": "half"
+      },
+      {
+        "field_label": "Width",
+        "field_name": "width",
+        "field_type": "number",
+        "field_placeholder": "2200",
+        "field_required": true,
+        "field_options": "mm, cm, m, in, ft",
+        "field_unit": "mm",
+        "field_column": "right",
+        "field_width": "half"
+      },
+      {
+        "field_label": "Height",
+        "field_name": "height",
+        "field_type": "number",
+        "field_placeholder": "2200",
+        "field_required": true,
+        "field_options": "mm, cm, m, in, ft",
+        "field_unit": "mm",
+        "field_column": "right",
+        "field_width": "half"
+      },
+      {
+        "field_label": "Number of Packages",
+        "field_name": "numberOfPackages",
+        "field_type": "number",
+        "field_placeholder": "3",
+        "field_required": true,
+        "field_options": "box, pallet, container",
+        "field_unit": "box",
+        "field_column": "full",
+        "field_width": "full"
       }
     ]
+  },
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "packages",
+    "primary": {
+      "step_number": 3,
+      "step_title": "Package Details",
+      "packages_heading": "PACKAGE DETAILS"
+    },
+    "items": []
   },
   {
     "__TYPE__": "SharedSliceContent",
