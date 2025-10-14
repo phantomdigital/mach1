@@ -40,7 +40,6 @@ const Tracking = ({ slice }: TrackingProps): React.ReactElement => {
             </h1>
             <TrackingWidget 
               urlPrefix={slice.primary.url_prefix}
-              variant={slice.primary.variant as 'compact' | 'large'}
               placeholderText={(slice.primary as any).placeholder_text || undefined}
             />
           </div>
