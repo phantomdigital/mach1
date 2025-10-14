@@ -221,6 +221,12 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
 }
 
 /* Extra Crispy Text Rendering for Hero Elements */

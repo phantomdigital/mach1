@@ -821,7 +821,7 @@ interface HomeDocumentData {
  */
 export type HomeDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HomeDocumentData>, "home", Lang>;
 
-type PageDocumentDataSlicesSlice = StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -2340,6 +2340,128 @@ type StepsSliceVariation = StepsSliceStart | StepsSliceCards | StepsSliceForm | 
  */
 export type StepsSlice = prismic.SharedSlice<"steps", StepsSliceVariation>;
 
+/**
+ * Primary content in *Tracking → Default → Primary*
+ */
+export interface TrackingSliceDefaultPrimary {
+	/**
+	 * Heading field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Track Your Shipment
+	 * - **API ID Path**: tracking.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Subheading field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: TRACKING
+	 * - **API ID Path**: tracking.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Search for your shipment or brokerage file using the widget below.
+	 * - **API ID Path**: tracking.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Logixboard URL Prefix field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: mach1
+	 * - **API ID Path**: tracking.default.primary.url_prefix
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	url_prefix: prismic.KeyTextField;
+	
+	/**
+	 * Input Placeholder Text field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Enter tracking number...
+	 * - **API ID Path**: tracking.default.primary.placeholder_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	placeholder_text: prismic.KeyTextField;
+	
+	/**
+	 * Widget Variant field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose widget size
+	 * - **Default Value**: large
+	 * - **API ID Path**: tracking.default.primary.variant
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	variant: prismic.SelectField<"compact" | "large", "filled">;
+	
+	/**
+	 * Text Alignment field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose text alignment
+	 * - **Default Value**: center
+	 * - **API ID Path**: tracking.default.primary.text_alignment
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	text_alignment: prismic.SelectField<"left" | "center" | "right", "filled">;
+	
+	/**
+	 * Content Width field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose content width
+	 * - **Default Value**: two-thirds
+	 * - **API ID Path**: tracking.default.primary.content_width
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	content_width: prismic.SelectField<"full" | "three-quarters" | "two-thirds" | "half" | "one-third", "filled">;
+	
+	/**
+	 * Top Margin field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: tracking.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+}
+
+/**
+ * Default variation for Tracking Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TrackingSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TrackingSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Tracking*
+ */
+type TrackingSliceVariation = TrackingSliceDefault
+
+/**
+ * Tracking Shared Slice
+ *
+ * - **API ID**: `tracking`
+ * - **Description**: Logixboard shipment tracking widget with customisable settings
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TrackingSlice = prismic.SharedSlice<"tracking", TrackingSliceVariation>;
+
 declare module "@prismicio/client" {
 	interface CreateClient {
 		(repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
@@ -2440,7 +2562,11 @@ declare module "@prismicio/client" {
 			StepsSliceCards,
 			StepsSliceForm,
 			StepsSlicePackages,
-			StepsSliceSummary
+			StepsSliceSummary,
+			TrackingSlice,
+			TrackingSliceDefaultPrimary,
+			TrackingSliceVariation,
+			TrackingSliceDefault
 		}
 	}
 }
