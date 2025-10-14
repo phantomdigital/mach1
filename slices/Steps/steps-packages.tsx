@@ -183,13 +183,13 @@ export default function StepsPackages({
             >
               {/* Package Header - Always Visible with neutral-50 background */}
               <motion.div 
-                className="flex items-center justify-between p-4 cursor-pointer bg-neutral-50 transition-colors"
+                className="flex items-center justify-between p-3 md:p-4 cursor-pointer bg-neutral-50 transition-colors"
                 onClick={() => togglePackage(pkg.id)}
                 whileHover={{ backgroundColor: 'rgb(245, 245, 245)' }}
               >
-                <div className="flex items-center gap-4 flex-1">
+                <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
                   <motion.h6 
-                    className={`font-medium transition-colors ${isExpanded ? 'text-dark-blue' : 'text-neutral-800'}`}
+                    className={`font-medium transition-colors text-sm md:text-base ${isExpanded ? 'text-dark-blue' : 'text-neutral-800'}`}
                     animate={{ color: isExpanded ? '#141433' : '#262626' }}
                     transition={{ duration: 0.2 }}
                   >
@@ -202,7 +202,7 @@ export default function StepsPackages({
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="text-xs text-neutral-500"
+                        className="text-xs text-neutral-500 truncate hidden sm:block"
                       >
                         {pkg.description && `${pkg.description.substring(0, 30)}${pkg.description.length > 30 ? '...' : ''}`}
                         {pkg.origin && pkg.destination && ` • ${pkg.origin.substring(0, 20)} → ${pkg.destination.substring(0, 20)}`}
@@ -260,7 +260,7 @@ export default function StepsPackages({
                     }}
                     className="overflow-hidden"
                   >
-                    <div className="px-4 pb-6 pt-6 border-t border-neutral-200 space-y-6">
+                    <div className="px-3 md:px-4 pb-6 pt-6 border-t border-neutral-200 space-y-6">
               {/* Description */}
               <div className="w-full">
                 <label className="block text-neutral-800 text-sm mb-2">
@@ -278,8 +278,8 @@ export default function StepsPackages({
                 />
               </div>
 
-              {/* Address Fields */}
-              <div className="grid grid-cols-2 gap-8">
+              {/* Address Fields - responsive: 1 column on mobile, 2 on tablet+ */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 <AddressAutocompleteInput
                   name={`origin-${pkg.id}`}
                   value={pkg.origin}
@@ -300,12 +300,12 @@ export default function StepsPackages({
                 />
               </div>
 
-              {/* Two Column Grid */}
-              <div className="grid grid-cols-2 gap-8">
+              {/* Two Column Grid - responsive: 1 column on mobile, 2 on tablet+ */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 {/* Left Column */}
                 <div className="space-y-6">
                   {/* Weight & Quantity */}
-                  <div className="flex gap-4">
+                  <div className="flex flex-col sm:flex-row gap-4">
                     <div className="flex-1">
                       <NumberInputWithUnit
                         name={`weight-${pkg.id}`}
@@ -428,23 +428,28 @@ export default function StepsPackages({
       </motion.div>
 
       {/* Submit Button */}
-      <div className="mt-12 flex justify-center gap-4">
-        <Button type="submit" size="lg" className="px-8" disabled={isSubmitting}>
+      <div className="mt-12 space-y-4">
+        <Button 
+          type="submit" 
+          variant="submit"
+          disabled={isSubmitting}
+          className="w-full"
+        >
           {isSubmitting ? "SUBMITTING..." : "CONTINUE"}
         </Button>
         
         {/* Development Skip Button */}
         {process.env.NODE_ENV === "development" && (
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            className="px-8"
-            onClick={() => onSubmit([])}
-            disabled={isSubmitting}
-          >
-            SKIP (DEV)
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => onSubmit([])}
+              disabled={isSubmitting}
+            >
+              SKIP
+            </Button>
+          </div>
         )}
       </div>
 

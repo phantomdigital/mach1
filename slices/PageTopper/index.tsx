@@ -1,3 +1,6 @@
+"use client";
+
+import { useSearchParams, usePathname } from "next/navigation";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
@@ -11,8 +14,20 @@ export type PageTopperProps = SliceComponentProps<Content.PageTopperSlice>;
 
 /**
  * Component for "PageTopper" Slices.
+ * Automatically hides when ?step query param is present (e.g., during quote flow).
  */
-const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
+const PageTopper = ({ slice }: PageTopperProps): React.ReactElement | null => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  
+  // Hide PageTopper when in quote flow (step query param exists)
+  // This allows the quote page to show the hero, but hide it once the user starts
+  const hasStepParam = searchParams.has("step");
+  
+  if (hasStepParam) {
+    return null;
+  }
+
   return (
     <section className="w-full">
       {/* Dark Blue Header Section */}

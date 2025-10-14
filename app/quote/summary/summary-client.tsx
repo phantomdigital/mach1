@@ -5,9 +5,14 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import StepsSummary from "@/slices/Steps/steps-summary";
 
+interface SummaryData {
+  selectedCard: string;
+  formData: Record<string, string>;
+}
+
 export default function SummaryClient() {
   const router = useRouter();
-  const [summaryData, setSummaryData] = useState<any>(null);
+  const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

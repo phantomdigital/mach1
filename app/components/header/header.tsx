@@ -5,6 +5,7 @@ import { HeaderButtons } from "./header-buttons";
 import { DropdownStateProvider } from "./dropdown-state-context";
 import { ScrollDropdownCloser } from "./scroll-dropdown-closer";
 import { RegionLanguageSelector } from "./region-language-selector";
+import { MobileMenu } from "./mobile-menu";
 import type { HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 // Server component for simple navigation items
@@ -48,14 +49,14 @@ export default async function Header() {
         {/* Announcement Bar */}
         {header.data.show_announcement && header.data.announcement_text && (
           <div className="w-full bg-dark-blue py-3 px-4">
-            <div className="max-w-[112rem] mx-auto flex items-center justify-center gap-4 text-center">
-              <p className="text-white text-xs font-medium">
+            <div className="max-w-[112rem] mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
+              <p className="text-white text-xs sm:text-sm font-medium">
                 {header.data.announcement_text}
               </p>
               {header.data.announcement_link && header.data.announcement_link_text && (
                 <PrismicNextLink
                   field={header.data.announcement_link}
-                  className="text-white text-sm font-semibold underline hover:text-gray-200 transition-colors whitespace-nowrap"
+                  className="text-white text-xs sm:text-sm font-semibold underline hover:text-gray-200 transition-colors whitespace-nowrap"
                 >
                   {header.data.announcement_link_text}
                 </PrismicNextLink>
@@ -73,35 +74,37 @@ export default async function Header() {
               
               {/* Content container with max-width and padding */}
               <div className="max-w-[112rem] mx-auto px-4 lg:px-8 py-3">
-                {/* Grid Layout: Logo on left, Sub-header & Main nav stacked on right */}
-                <div className="grid grid-cols-[auto_1fr] gap-8">
+                {/* Desktop Layout: Grid with Logo and Navigation */}
+                <div className="hidden lg:grid lg:grid-cols-[auto_1fr] gap-8">
                   
                   {/* Left Column: Logo (spans full height) */}
                   <div className="flex items-center">
-                    {header.data.logo.url ? (
-                      <PrismicNextImage
-                        field={header.data.logo}
-                        className="w-auto object-contain"
+                    <PrismicNextLink href="/" className="block">
+                      {header.data.logo.url ? (
+                        <PrismicNextImage
+                          field={header.data.logo}
+                          className="w-auto object-contain"
+                          style={{ 
+                            height: '90px',
+                            imageRendering: 'crisp-edges',
+                            WebkitFontSmoothing: 'antialiased',
+                            MozOsxFontSmoothing: 'grayscale'
+                          }}
+                        />
+                      ) : header.data.site_title ? (
+                      <div 
+                        className="font-bold tracking-tight text-black"
                         style={{ 
-                          height: '90px',
-                          imageRendering: 'crisp-edges',
+                          fontSize: '36px',
                           WebkitFontSmoothing: 'antialiased',
-                          MozOsxFontSmoothing: 'grayscale'
+                          MozOsxFontSmoothing: 'grayscale',
+                          textRendering: 'optimizeLegibility'
                         }}
-                      />
-                    ) : header.data.site_title ? (
-                    <div 
-                      className="font-bold tracking-tight text-black"
-                      style={{ 
-                        fontSize: '36px',
-                        WebkitFontSmoothing: 'antialiased',
-                        MozOsxFontSmoothing: 'grayscale',
-                        textRendering: 'optimizeLegibility'
-                      }}
-                    >
-                      {header.data.site_title}
-                    </div>
-                    ) : null}
+                      >
+                        {header.data.site_title}
+                      </div>
+                      ) : null}
+                    </PrismicNextLink>
                   </div>
 
                   {/* Right Column: Sub-header & Main Navigation stacked */}
@@ -132,7 +135,7 @@ export default async function Header() {
                     <div className="flex items-center justify-between gap-8">
                       {/* Centered Navigation */}
                       <div className="flex-1 flex justify-center">
-                        <nav className="hidden lg:flex items-center gap-8">
+                        <nav className="flex items-center gap-8">
                           {header.data.navigation && header.data.navigation.length > 0 && (
                             header.data.navigation.map((item: HeaderDocumentDataNavigationItem, index: number) => (
                               <NavigationItem key={index} item={item} index={index} />
@@ -146,17 +149,49 @@ export default async function Header() {
                         {header.data.buttons && header.data.buttons.length > 0 && (
                           <HeaderButtons buttons={header.data.buttons} />
                         )}
-
-                        {/* Mobile Menu Button */}
-                        <button className="lg:hidden flex items-center justify-center w-10 h-10 text-black">
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                          </svg>
-                        </button>
                       </div>
                     </div>
 
                   </div>
+                </div>
+
+                {/* Mobile Layout: Simplified header with logo and menu */}
+                <div className="flex lg:hidden items-center justify-between">
+                  {/* Logo */}
+                  <div className="flex items-center">
+                    <PrismicNextLink href="/" className="block">
+                      {header.data.logo.url ? (
+                        <PrismicNextImage
+                          field={header.data.logo}
+                          className="w-auto object-contain"
+                          style={{ 
+                            height: '60px',
+                            imageRendering: 'crisp-edges',
+                            WebkitFontSmoothing: 'antialiased',
+                            MozOsxFontSmoothing: 'grayscale'
+                          }}
+                        />
+                      ) : header.data.site_title ? (
+                        <div 
+                          className="font-bold tracking-tight text-black"
+                          style={{ 
+                            fontSize: '24px',
+                            WebkitFontSmoothing: 'antialiased',
+                            MozOsxFontSmoothing: 'grayscale',
+                            textRendering: 'optimizeLegibility'
+                          }}
+                        >
+                          {header.data.site_title}
+                        </div>
+                      ) : null}
+                    </PrismicNextLink>
+                  </div>
+
+                  {/* Mobile Menu */}
+                  <MobileMenu 
+                    navigation={header.data.navigation} 
+                    buttons={header.data.buttons}
+                  />
                 </div>
               </div>
             </div>
@@ -180,22 +215,24 @@ export default async function Header() {
               
               {/* Content container with max-width and padding */}
               <div className="max-w-[112rem] mx-auto px-4 lg:px-8 py-3">
-                {/* Grid Layout: Logo on left, Sub-header & Main nav stacked on right */}
-                <div className="grid grid-cols-[auto_1fr] gap-8">
+                {/* Desktop Layout: Grid with Logo and Navigation */}
+                <div className="hidden lg:grid lg:grid-cols-[auto_1fr] gap-8">
                   
                   {/* Left Column: Logo Placeholder (spans full height) */}
                   <div className="flex items-center">
-                    <div 
-                      className="font-bold tracking-tight text-black"
-                      style={{ 
-                        fontSize: '36px',
-                        WebkitFontSmoothing: 'antialiased',
-                        MozOsxFontSmoothing: 'grayscale',
-                        textRendering: 'optimizeLegibility'
-                      }}
-                    >
-                      Logo
-                    </div>
+                    <PrismicNextLink href="/" className="block">
+                      <div 
+                        className="font-bold tracking-tight text-black"
+                        style={{ 
+                          fontSize: '36px',
+                          WebkitFontSmoothing: 'antialiased',
+                          MozOsxFontSmoothing: 'grayscale',
+                          textRendering: 'optimizeLegibility'
+                        }}
+                      >
+                        Logo
+                      </div>
+                    </PrismicNextLink>
                   </div>
 
                   {/* Right Column: Sub-header & Main Navigation stacked */}
@@ -213,7 +250,7 @@ export default async function Header() {
                     <div className="flex items-center justify-between gap-8">
                       {/* Centered Navigation Placeholder */}
                       <div className="flex-1 flex justify-center">
-                        <nav className="hidden lg:flex items-center">
+                        <nav className="flex items-center">
                           <span className="text-black/50 font-medium text-sm tracking-widest px-5">
                             No navigation configured
                           </span>
@@ -225,17 +262,36 @@ export default async function Header() {
                         <span className="text-black/50 font-medium text-sm tracking-widest">
                           No buttons configured
                         </span>
-
-                        {/* Mobile Menu Button */}
-                        <button className="lg:hidden flex items-center justify-center w-10 h-10 text-black">
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                          </svg>
-                        </button>
                       </div>
                     </div>
 
                   </div>
+                </div>
+
+                {/* Mobile Layout: Simplified header with logo */}
+                <div className="flex lg:hidden items-center justify-between">
+                  {/* Logo */}
+                  <div className="flex items-center">
+                    <PrismicNextLink href="/" className="block">
+                      <div 
+                        className="font-bold tracking-tight text-black"
+                        style={{ 
+                          fontSize: '24px',
+                          WebkitFontSmoothing: 'antialiased',
+                          MozOsxFontSmoothing: 'grayscale',
+                          textRendering: 'optimizeLegibility'
+                        }}
+                      >
+                        Logo
+                      </div>
+                    </PrismicNextLink>
+                  </div>
+
+                  {/* Mobile Menu - Fallback with empty data */}
+                  <MobileMenu 
+                    navigation={[]} 
+                    buttons={[]}
+                  />
                 </div>
               </div>
             </div>

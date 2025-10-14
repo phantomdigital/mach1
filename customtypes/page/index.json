@@ -17,6 +17,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "tracking": {
+              "type": "SharedSlice"
+            },
             "steps": {
               "type": "SharedSlice"
             },

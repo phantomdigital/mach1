@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface NumberInputWithUnitProps {
   name: string;

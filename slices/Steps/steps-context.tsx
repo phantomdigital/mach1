@@ -1,27 +1,29 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface StepsState {
   selectedCard: string;
   formData: Record<string, string> | null;
+  isTransitioning: boolean;
 }
 
 const STORAGE_KEY = "steps_flow_data";
 
 function getStoredData(): StepsState {
-  if (typeof window === "undefined") return { selectedCard: "", formData: null };
+  if (typeof window === "undefined") return { selectedCard: "", formData: null, isTransitioning: false };
   
   const stored = sessionStorage.getItem(STORAGE_KEY);
   if (stored) {
     try {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      return { ...parsed, isTransitioning: false }; // Never persist transition state
     } catch {
-      return { selectedCard: "", formData: null };
+      return { selectedCard: "", formData: null, isTransitioning: false };
     }
   }
-  return { selectedCard: "", formData: null };
+  return { selectedCard: "", formData: null, isTransitioning: false };
 }
 
 function setStoredData(state: StepsState) {
@@ -36,8 +38,8 @@ export function useStepsFlow(stepNumber: number) {
   const searchParams = useSearchParams();
   const [data, setData] = useState<StepsState>(getStoredData);
 
-  // Get current step from URL, default to 1
-  const currentStep = parseInt(searchParams.get("step") || "1", 10);
+  // Get current step from URL, default to 0 (start screen) if no step param
+  const currentStep = searchParams.get("step") ? parseInt(searchParams.get("step")!, 10) : 0;
   const isCurrentStep = currentStep === stepNumber;
 
   // Listen for data changes from other slices
@@ -59,31 +61,43 @@ export function useStepsFlow(stepNumber: number) {
     setStoredData(newData);
   };
 
-  const goToStep = (step: number, sliceRef?: HTMLElement | null) => {
-    // Only scroll if the slice top is out of view
-    if (sliceRef) {
-      const rect = sliceRef.getBoundingClientRect();
-      const isAboveViewport = rect.top < 0;
-      
-      if (isAboveViewport) {
-        // Scroll to the slice position
-        sliceRef.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
+  const goToStep = useCallback((step: number, scrollToTop: boolean = false) => {
+    // Save current scroll position (unless we want to scroll to top)
+    const scrollY = scrollToTop ? 0 : window.scrollY;
     
-    // Update URL with new step
+    // Start transition with loading state
+    setData(prev => ({ ...prev, isTransitioning: true }));
+    
+    // Update URL
     const params = new URLSearchParams(searchParams.toString());
     params.set("step", step.toString());
+    
     router.push(`?${params.toString()}`, { scroll: false });
+    
+    // Scroll to top if requested, otherwise restore scroll position
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: scrollY, behavior: scrollToTop ? 'smooth' : 'auto' });
+      
+      // End transition after navigation
+      setTimeout(() => {
+        setData(prev => ({ ...prev, isTransitioning: false }));
+      }, 500);
+    });
+  }, [router, searchParams]);
+
+  const goToNextStep = (scrollToTop: boolean = false) => {
+    goToStep(currentStep + 1, scrollToTop);
   };
 
-  const goToNextStep = (sliceRef?: HTMLElement | null) => {
-    goToStep(currentStep + 1, sliceRef);
-  };
-
-  const goToPreviousStep = (sliceRef?: HTMLElement | null) => {
+  const goToPreviousStep = () => {
     if (currentStep > 1) {
-      goToStep(currentStep - 1, sliceRef);
+      goToStep(currentStep - 1);
+    } else if (currentStep === 1) {
+      // Go back to start screen (step 0) - remove step param
+      const resetData = { selectedCard: "", formData: null, isTransitioning: false };
+      setData(resetData);
+      setStoredData(resetData);
+      router.push(window.location.pathname, { scroll: false });
     }
   };
 
@@ -96,10 +110,11 @@ export function useStepsFlow(stepNumber: number) {
   };
 
   const resetFlow = () => {
-    const resetData = { selectedCard: "", formData: null };
+    const resetData = { selectedCard: "", formData: null, isTransitioning: false };
     setData(resetData);
     setStoredData(resetData);
-    goToStep(1);
+    // Return to start screen (step 0) - remove step param
+    router.push(window.location.pathname, { scroll: false });
   };
 
   const goToSummary = () => {
@@ -111,6 +126,7 @@ export function useStepsFlow(stepNumber: number) {
     currentStep,
     selectedCard: data.selectedCard,
     formData: data.formData,
+    isTransitioning: data.isTransitioning,
     goToNextStep,
     goToPreviousStep,
     goToStep,

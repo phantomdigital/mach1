@@ -5,6 +5,53 @@
   "description": "Multi-step quote flow - use multiple variations for each step",
   "variations": [
     {
+      "id": "start",
+      "name": "Start (Step 0)",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Initial landing for quote flow - displays before step 1",
+      "imageUrl": "",
+      "primary": {
+        "step_number": {
+          "type": "Number",
+          "config": {
+            "label": "Step Number",
+            "placeholder": "0"
+          }
+        },
+        "step_title": {
+          "type": "Text",
+          "config": {
+            "label": "Step Title",
+            "placeholder": "Start"
+          }
+        },
+        "start_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Ready to get started?"
+          }
+        },
+        "start_description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "Let's gather some details about your shipment...",
+            "single": "paragraph,strong,em"
+          }
+        },
+        "start_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "Start Quote"
+          }
+        }
+      },
+      "items": {}
+    },
+    {
       "id": "cards",
       "name": "Cards (Step 1)",
       "docURL": "...",

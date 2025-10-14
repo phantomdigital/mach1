@@ -1,7 +1,6 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-import { motion } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -20,8 +19,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        HeroButtonMain:
-          "bg-gray-700 text-white rounded-full px-6 py-3 font-medium text-sm uppercase tracking-wide hover:bg-gray-600 transition-all duration-200 relative overflow-hidden group",
+        submit:
+          "bg-dark-blue text-white rounded-sm px-6 py-3 font-medium text-sm uppercase tracking-wide hover:bg-gray-600 transition-all duration-200 cursor-pointer",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -46,59 +45,6 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
-    const [isHovered, setIsHovered] = React.useState(false)
-    
-    // Special handling for HeroButtonMain variant with text roll-up animation
-    if (variant === "HeroButtonMain" && !asChild) {
-      const { 
-        onDrag, 
-        onDragStart, 
-        onDragEnd, 
-        onAnimationStart,
-        onAnimationEnd,
-        onAnimationIteration,
-        ...buttonProps 
-      } = props
-      
-      // Suppress unused variable warnings for destructured props
-      void onDrag; void onDragStart; void onDragEnd; void onAnimationStart; void onAnimationEnd; void onAnimationIteration;
-      return (
-        <motion.button
-          className={cn(buttonVariants({ variant, size, className }))}
-          ref={ref}
-          onHoverStart={() => setIsHovered(true)}
-          onHoverEnd={() => setIsHovered(false)}
-          {...buttonProps}
-        >
-          <div className="relative overflow-hidden h-[1.2em] flex items-center">
-            <motion.span
-              className="block"
-              animate={{
-                y: isHovered ? "-100%" : "0%"
-              }}
-              transition={{
-                duration: 0.3,
-                ease: [0.4, 0, 0.2, 1]
-              }}
-            >
-              {children}
-            </motion.span>
-            <motion.span
-              className="absolute top-0 left-0"
-              animate={{
-                y: isHovered ? "-100%" : "100%"
-              }}
-              transition={{
-                duration: 0.3,
-                ease: [0.4, 0, 0.2, 1]
-              }}
-            >
-              {children}
-            </motion.span>
-          </div>
-        </motion.button>
-      )
-    }
     
     return (
       <Comp

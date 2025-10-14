@@ -1911,6 +1911,70 @@ type StatisticsSliceVariation = StatisticsSliceDefault
 export type StatisticsSlice = prismic.SharedSlice<"statistics", StatisticsSliceVariation>;
 
 /**
+ * Primary content in *Steps → Start (Step 0) → Primary*
+ */
+export interface StepsSliceStartPrimary {
+	/**
+	 * Step Number field in *Steps → Start (Step 0) → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 0
+	 * - **API ID Path**: steps.start.primary.step_number
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	step_number: prismic.NumberField;
+	
+	/**
+	 * Step Title field in *Steps → Start (Step 0) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Start
+	 * - **API ID Path**: steps.start.primary.step_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	step_title: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *Steps → Start (Step 0) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Ready to get started?
+	 * - **API ID Path**: steps.start.primary.start_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	start_heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Steps → Start (Step 0) → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Let's gather some details about your shipment...
+	 * - **API ID Path**: steps.start.primary.start_description
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	start_description: prismic.RichTextField;
+	
+	/**
+	 * Button Text field in *Steps → Start (Step 0) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Start Quote
+	 * - **API ID Path**: steps.start.primary.start_button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	start_button_text: prismic.KeyTextField;
+}
+
+/**
+ * Start (Step 0) variation for Steps Slice
+ *
+ * - **API ID**: `start`
+ * - **Description**: Initial landing for quote flow - displays before step 1
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type StepsSliceStart = prismic.SharedSliceVariation<"start", Simplify<StepsSliceStartPrimary>, never>;
+
+/**
  * Primary content in *Steps → Cards (Step 1) → Primary*
  */
 export interface StepsSliceCardsPrimary {
@@ -2265,7 +2329,7 @@ export type StepsSliceSummary = prismic.SharedSliceVariation<"summary", Simplify
 /**
  * Slice variation for *Steps*
  */
-type StepsSliceVariation = StepsSliceCards | StepsSliceForm | StepsSlicePackages | StepsSliceSummary
+type StepsSliceVariation = StepsSliceStart | StepsSliceCards | StepsSliceForm | StepsSlicePackages | StepsSliceSummary
 
 /**
  * Steps Shared Slice
@@ -2364,6 +2428,7 @@ declare module "@prismicio/client" {
 			StatisticsSliceVariation,
 			StatisticsSliceDefault,
 			StepsSlice,
+			StepsSliceStartPrimary,
 			StepsSliceCardsPrimary,
 			StepsSliceCardsItem,
 			StepsSliceFormPrimary,
@@ -2371,6 +2436,7 @@ declare module "@prismicio/client" {
 			StepsSlicePackagesPrimary,
 			StepsSliceSummaryPrimary,
 			StepsSliceVariation,
+			StepsSliceStart,
 			StepsSliceCards,
 			StepsSliceForm,
 			StepsSlicePackages,

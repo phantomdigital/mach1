@@ -24,15 +24,24 @@ interface StepsFormProps {
   formHeading: string;
   fields: FormField[];
   onSubmit: (data: Record<string, string>) => Promise<void> | void;
+  initialData?: Record<string, string> | null;
 }
 
 export default function StepsForm({
   formHeading,
   fields,
   onSubmit,
+  initialData,
 }: StepsFormProps) {
-  const [formData, setFormData] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState<Record<string, string>>(initialData || {});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Update form data if initialData changes (e.g., when navigating back)
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    }
+  }, [initialData]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -59,33 +68,6 @@ export default function StepsForm({
       setIsSubmitting(false);
     }
   };
-
-  // Prevent scrolling during submission
-  useEffect(() => {
-    if (isSubmitting) {
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      // Just unlock scrolling without changing position
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    }
-
-    return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, [isSubmitting]);
 
   // Separate fields by column
   const leftFields = fields.filter((f) => f.column === "left");
@@ -306,7 +288,7 @@ export default function StepsForm({
 
       {/* Two Column Layout - matches card grid */}
       {(leftFields.length > 0 || rightFields.length > 0) && (
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8 grid-cols-1">
           {/* Left Column */}
           <div className="space-y-8">
             {(() => {
@@ -348,6 +330,32 @@ export default function StepsForm({
                 return renderField(field);
               });
             })()}
+            
+            {/* Submit Button - in left column */}
+            <div className="mt-12 space-y-4">
+              <Button 
+                type="submit" 
+                variant="submit"
+                disabled={isSubmitting}
+                className="w-full"
+              >
+                SUBMIT
+              </Button>
+              
+              {/* Development Skip Button */}
+              {process.env.NODE_ENV === "development" && (
+                <div className="flex justify-start">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => onSubmit({})}
+                    disabled={isSubmitting}
+                  >
+                    SKIP
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Right Column */}
@@ -395,55 +403,6 @@ export default function StepsForm({
         </div>
       )}
 
-      {/* Submit Button */}
-      <div className="mt-12 flex justify-center gap-4">
-        <Button type="submit" size="lg" className="px-8" disabled={isSubmitting}>
-          SUBMIT
-        </Button>
-        
-        {/* Development Skip Button */}
-        {process.env.NODE_ENV === "development" && (
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            className="px-8"
-            onClick={() => onSubmit({})}
-            disabled={isSubmitting}
-          >
-            SKIP (DEV)
-          </Button>
-        )}
-      </div>
-
-      {/* Loading Overlay */}
-      <AnimatePresence>
-        {isSubmitting && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-white/80 backdrop-blur-sm z-[9999] flex items-center justify-center"
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              overscrollBehavior: 'none',
-              touchAction: 'none'
-            }}
-            onWheel={(e) => e.preventDefault()}
-            onTouchMove={(e) => e.preventDefault()}
-          >
-            <div className="text-center">
-              <Loader2 className="w-12 h-12 text-dark-blue animate-spin mx-auto mb-4" />
-              <p className="text-neutral-800 font-medium">Processing your quote request...</p>
-              <p className="text-neutral-500 text-sm mt-2">Please wait while we send your request...</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </form>
   );
 }

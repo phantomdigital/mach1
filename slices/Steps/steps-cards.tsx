@@ -121,14 +121,14 @@ function CardButton({ card, onSelect }: CardButtonProps) {
 
 
           {/* Content */}
-          <div className="relative h-full flex items-center justify-center px-12">
+          <div className="relative h-full flex items-center justify-center px-4 sm:px-8 md:px-12">
             {/* Text container centered in card with text left-aligned inside */}
-            <div className="relative" style={{ maxWidth: '75%' }}>
+            <div className="relative" style={{ maxWidth: '85%' }}>
               {/* Vertical hover bar - positioned to the left of text */}
               <div 
-                className="absolute w-0.5 bg-white transition-all duration-300 ease-out origin-bottom scale-y-0 group-hover:scale-y-100"
+                className="absolute w-0.5 bg-white transition-all duration-300 ease-out origin-bottom scale-y-0 group-hover:scale-y-100 hidden sm:block"
                 style={{
-                  left: '-2rem',
+                  left: '-1rem',
                   bottom: 0,
                   height: '100%',
                 }}
@@ -136,7 +136,7 @@ function CardButton({ card, onSelect }: CardButtonProps) {
               
               <div className="text-left">
                 <span
-                  className={`text-4xl lg:text-5xl font-bold transition-all duration-150 ease-out inline ${
+                  className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-all duration-150 ease-out inline ${
                     card.image && card.image.url ? 'text-white' : 'text-neutral-800'
                   }`}
                   style={{ 
@@ -149,9 +149,9 @@ function CardButton({ card, onSelect }: CardButtonProps) {
                 
                 {/* Arrow icon - inline with the last line of text */}
                 {card.hasLinkIcon && (
-                  <span className="inline-block align-baseline ml-6">
+                  <span className="inline-block align-baseline ml-3 sm:ml-6">
                     <ExternalLinkIcon 
-                      className={`w-[28px] h-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
+                      className={`w-[20px] h-[20px] sm:w-[28px] sm:h-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
                         card.image && card.image.url ? 'text-white' : 'text-neutral-800'
                       }`}
                       color={card.image && card.image.url ? "#FFFFFF" : "#262626"}
@@ -172,12 +172,12 @@ export default function StepsCards({ cards, onSelect }: StepsCardsProps) {
 
   return (
     <div className="w-full flex flex-col items-center gap-8">
-      {/* Full Card Grid */}
+      {/* Full Card Grid - responsive: 1 column on mobile, 2 on tablet+ */}
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full grid grid-cols-2 gap-8"
+        className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8"
       >
         {fullCards.map((card, idx) => (
           <CardButton key={card.value} card={card} onSelect={onSelect} />
@@ -190,7 +190,7 @@ export default function StepsCards({ cards, onSelect }: StepsCardsProps) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.3 }}
-          className="flex items-center justify-center gap-6 mt-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mt-4"
         >
           {textOptions.map((option) => (
             <motion.button
@@ -198,7 +198,7 @@ export default function StepsCards({ cards, onSelect }: StepsCardsProps) {
               onClick={() => onSelect(option.value)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="text-neutral-600 hover:text-dark-blue text-base font-medium transition-colors duration-200 underline underline-offset-4 decoration-neutral-300 hover:decoration-dark-blue cursor-pointer"
+              className="text-neutral-600 hover:text-dark-blue text-sm sm:text-base font-medium transition-colors duration-200 underline underline-offset-4 decoration-neutral-300 hover:decoration-dark-blue cursor-pointer"
               style={{ fontFamily: "var(--font-inter-tight)" }}
             >
               {option.label}

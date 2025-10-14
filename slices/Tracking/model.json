@@ -1,0 +1,110 @@
+{
+  "id": "tracking",
+  "type": "SharedSlice",
+  "name": "Tracking",
+  "description": "Logixboard shipment tracking widget with customisable settings",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Track Your Shipment"
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "TRACKING"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Search for your shipment or brokerage file using the widget below."
+          }
+        },
+        "url_prefix": {
+          "type": "Text",
+          "config": {
+            "label": "Logixboard URL Prefix",
+            "placeholder": "mach1"
+          }
+        },
+        "placeholder_text": {
+          "type": "Text",
+          "config": {
+            "label": "Input Placeholder Text",
+            "placeholder": "Enter tracking number..."
+          }
+        },
+        "variant": {
+          "type": "Select",
+          "config": {
+            "label": "Widget Variant",
+            "placeholder": "Choose widget size",
+            "options": [
+              "compact",
+              "large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "text_alignment": {
+          "type": "Select",
+          "config": {
+            "label": "Text Alignment",
+            "placeholder": "Choose text alignment",
+            "options": [
+              "left",
+              "center",
+              "right"
+            ],
+            "default_value": "center"
+          }
+        },
+        "content_width": {
+          "type": "Select",
+          "config": {
+            "label": "Content Width",
+            "placeholder": "Choose content width",
+            "options": [
+              "full",
+              "three-quarters",
+              "two-thirds",
+              "half",
+              "one-third"
+            ],
+            "default_value": "two-thirds"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
+

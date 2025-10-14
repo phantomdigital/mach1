@@ -16,7 +16,7 @@ const Hero = ({ slice }: HeroProps): React.ReactElement => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full min-h-[100dvh] relative bg-neutral-50"
+      className="w-full min-h-[100dvh] relative bg-neutral-50 pt-32"
     >
       {/* Container matching header width and padding */}
       <div className="w-full px-4 lg:px-8 relative">

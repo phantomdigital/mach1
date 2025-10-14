@@ -121,7 +121,7 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
     return (
       <motion.button
         className={cn(
-          "inline-flex items-center bg-mach1-blue text-white rounded-[80%] pl-6 pr-1 h-[45px] w-auto font-medium text-[13px] uppercase hover:bg-[#1e2366] transition-all duration-200 gap-3",
+          "inline-flex items-center bg-dark-blue text-white rounded-2xl pl-6 pr-1 h-[45px] w-auto font-medium text-[13px] uppercase transition-all duration-200 gap-3 group",
           className
         )}
         style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontWeight: 400, fontStyle: 'normal', lineHeight: '1' }}
@@ -137,7 +137,7 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
               y: isHovered ? "-150%" : "0%"
             }}
             transition={{
-              duration: 0.4,
+              duration: 0.35,
               ease: [0.25, 0.46, 0.45, 0.94]
             }}
           >
@@ -150,14 +150,14 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
               y: isHovered ? "0%" : "150%"
             }}
             transition={{
-              duration: 0.4,
+              duration: 0.35,
               ease: [0.25, 0.46, 0.45, 0.94]
             }}
           >
             {children}
           </motion.span>
         </div>
-        <div className="w-[37px] h-[37px] bg-slate-100 rounded-[80%] flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+        <div className="w-[37px] h-[37px] bg-white rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden">
           <motion.svg 
             width="11" 
             height="11" 
@@ -170,11 +170,11 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
               y: isHovered ? "-150%" : "0%"
             }}
             transition={{
-              duration: 0.4,
+              duration: 0.35,
               ease: [0.25, 0.46, 0.45, 0.94]
             }}
           >
-            <path d="M1 8L8 1M8 1H1M8 1V8" stroke="#2b2e7f" strokeLinejoin="round"/>
+            <path d="M1 8L8 1M8 1H1M8 1V8" stroke="#2b2b2b" strokeLinejoin="round"/>
           </motion.svg>
           <motion.svg 
             width="11" 
@@ -189,11 +189,11 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
               y: isHovered ? "0%" : "200%"
             }}
             transition={{
-              duration: 0.4,
+              duration: 0.35,
               ease: [0.25, 0.46, 0.45, 0.94]
             }}
           >
-            <path d="M1 8L8 1M8 1H1M8 1V8" stroke="#2b2e7f" strokeLinejoin="round"/>
+            <path d="M1 8L8 1M8 1H1M8 1V8" stroke="#2b2b2b" strokeLinejoin="round"/>
           </motion.svg>
         </div>
       </motion.button>

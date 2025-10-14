@@ -2,11 +2,13 @@
 
 import { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft } from "lucide-react";
 
 interface StepIndicatorProps {
   stepNumber: number;
   stepTitle: string;
   totalSteps: number;
+  onBack?: () => void;
 }
 
 interface TickerDigitProps {
@@ -50,6 +52,7 @@ export function StepIndicator({
   stepNumber,
   stepTitle,
   totalSteps,
+  onBack,
 }: StepIndicatorProps) {
   const previousStepRef = useRef<number>(stepNumber);
   const currentDigits = String(stepNumber).padStart(2, "0").split("");
@@ -61,9 +64,25 @@ export function StepIndicator({
   }, [stepNumber]);
   
   return (
-    <div className="flex items-start gap-6">
+    <div className="flex items-center gap-4 md:gap-6">
+      {/* Back Button - only show if onBack is provided (step 2+) */}
+      {onBack && (
+        <motion.button
+          onClick={onBack}
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          className="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-neutral-200 hover:bg-neutral-300 text-neutral-800 cursor-pointer transition-colors duration-200 flex-shrink-0"
+          aria-label="Previous step"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </motion.button>
+      )}
+      
       {/* Large background number with overlaid title */}
-      <div className="relative">
+      <div className="relative flex items-center">
         {/* Individual digits - only animate the ones that change */}
         <div className="flex">
           {currentDigits.map((digit, index) => (
@@ -100,8 +119,7 @@ export function StepIndicator({
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex-1 h-px bg-neutral-200 mt-12"
-        style={{ maxWidth: "200px" }}
+        className="hidden md:block flex-1 h-px bg-neutral-200"
       />
     </div>
   );

@@ -1,0 +1,19 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "heading": "Track Your Shipment",
+      "subheading": "TRACKING",
+      "description": "Search for your shipment or brokerage file using the widget below.",
+      "url_prefix": "mach1logistics",
+      "placeholder_text": "Enter tracking number...",
+      "variant": "large",
+      "text_alignment": "center",
+      "content_width": "two-thirds",
+      "margin_top": "large"
+    },
+    "items": []
+  }
+]
+

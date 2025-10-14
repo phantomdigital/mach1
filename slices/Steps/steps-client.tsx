@@ -1,16 +1,17 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStepsFlow } from "./steps-context";
+import StepsStart from "./steps-start";
 import StepsCards from "./steps-cards";
 import StepsForm from "./steps-form";
 import StepsPackages from "./steps-packages";
 import StepsSummary from "./steps-summary";
-import { StepNavigation } from "./step-navigation";
+
 import { StepIndicator } from "./step-indicator";
 import { stepContentVariants } from "./step-animations";
 
@@ -26,13 +27,15 @@ export type StepsProps = SliceComponentProps<Content.StepsSlice>;
 const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
   const router = useRouter();
   const sliceRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   
-  // Get step number from Prismic (supports multiple card steps)
-  const stepNumber = slice.primary.step_number || (index + 1);
+  // Get step number from Prismic (0 for start, then 1, 2, 3...)
+  const stepNumber = slice.variation === "start" ? 0 : (slice.primary.step_number || (index + 1));
 
   const {
     currentStep,
     isCurrentStep,
+    isTransitioning,
     goToNextStep,
     goToPreviousStep,
     goToSummary,
@@ -50,34 +53,29 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
 
   const handleCardSelect = (value: string) => {
     setSelectedCard(value);
-    goToNextStep(sliceRef.current);
+    goToNextStep();
   };
 
   const handleFormSubmit = async (data: Record<string, string>) => {
-    try {
-      // Merge with existing formData instead of replacing
-      setFormData({ ...(formData || {}), ...data });
-      
-      // Check if selected service requires packages step
-      // Skip packages for warehousing, 3PL, or storage services
-      const skipPackages = selectedCard && (
-        selectedCard.toLowerCase().includes('warehousing') ||
-        selectedCard.toLowerCase().includes('3pl') ||
-        selectedCard.toLowerCase().includes('storage') ||
-        selectedCard.toLowerCase().includes('warehouse')
-      );
-      
-      if (skipPackages) {
-        // Show loading state for better UX
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        goToSummary();
-      } else {
-        // Transport/shipping services need package details
-        goToNextStep(sliceRef.current);
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      router.push("/quote/error?message=" + encodeURIComponent("Failed to process form data. Please try again."));
+    // Merge with existing formData instead of replacing
+    setFormData({ ...(formData || {}), ...data });
+    
+    // Check if selected service requires packages step
+    // Skip packages for warehousing, 3PL, or storage services
+    const skipPackages = selectedCard && (
+      selectedCard.toLowerCase().includes('warehousing') ||
+      selectedCard.toLowerCase().includes('3pl') ||
+      selectedCard.toLowerCase().includes('storage') ||
+      selectedCard.toLowerCase().includes('warehouse')
+    );
+    
+    if (skipPackages) {
+      // Show loading state for better UX
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      goToSummary();
+    } else {
+      // Transport/shipping services need package details
+      goToNextStep();
     }
   };
 
@@ -85,31 +83,38 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
     // Merge packages with existing formData
     setFormData({ ...(formData || {}), packages: JSON.stringify(packages) });
     
-    // Show loading state for 1.5 seconds for better UX
-    await new Promise(resolve => setTimeout(resolve, 4500));
-    
+    // Show loading state for better UX
+    await new Promise(resolve => setTimeout(resolve, 1500));
     goToSummary();
   };
 
   return (
-    <section
-      ref={sliceRef}
-      data-slice-type={slice.slice_type}
-      data-slice-variation={slice.variation}
-      className="w-full bg-white py-16 lg:py-24"
-    >
-      <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
-        {/* Step Indicator - single, aligned left */}
-        <div className="w-full mb-16">
-          <StepIndicator
-            stepNumber={currentStep}
-            stepTitle={slice.primary.step_title || "Step"}
-            totalSteps={6}
-          />
-        </div>
+    <>
+      <section
+        ref={sliceRef}
+        data-slice-type={slice.slice_type}
+        data-slice-variation={slice.variation}
+        className={`w-full bg-white ${
+          currentStep > 0 
+            ? "pt-62 pb-16 lg:pb-24" 
+            : "py-16 lg:py-24"
+        }`}
+      >
+        <div ref={containerRef} className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+          {/* Step Indicator - only show for steps 1+ (not start) */}
+          {currentStep > 0 && (
+            <div className="w-full mb-12 md:mb-16">
+              <StepIndicator
+                stepNumber={currentStep}
+                stepTitle={slice.primary.step_title || "Step"}
+                totalSteps={6}
+                onBack={currentStep > 1 ? () => goToPreviousStep() : undefined}
+              />
+            </div>
+          )}
 
-        {/* Current Step Content */}
-        <AnimatePresence mode="wait">
+          {/* Current Step Content */}
+          <AnimatePresence mode="wait">
           <motion.div
             key={`step-${currentStep}`}
             variants={stepContentVariants}
@@ -118,6 +123,16 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
             exit="exit"
             className="w-full flex flex-col items-center"
           >
+            {/* Step 0: Start */}
+            {slice.variation === "start" && (
+              <StepsStart
+                heading={(slice.primary as any).start_heading}
+                description={(slice.primary as any).start_description}
+                buttonText={(slice.primary as any).start_button_text}
+                onStart={() => goToNextStep(true)}
+              />
+            )}
+
             {/* Step 1: Cards */}
             {slice.variation === "cards" && (
               <StepsCards
@@ -135,7 +150,16 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
           {/* Step 2: Form */}
           {slice.variation === "form" && (
             <StepsForm
-              formHeading={slice.primary.form_heading || "DETAILS"}
+              formHeading={
+                selectedCard && (
+                  selectedCard.toLowerCase().includes('warehousing') ||
+                  selectedCard.toLowerCase().includes('3pl') ||
+                  selectedCard.toLowerCase().includes('storage') ||
+                  selectedCard.toLowerCase().includes('warehouse')
+                )
+                  ? "WAREHOUSING DETAILS"
+                  : (slice.primary.form_heading || "SHIPMENT DETAILS")
+              }
               fields={slice.items.map((item) => ({
                 label: item.field_label || "",
                 name: item.field_name || "",
@@ -155,6 +179,7 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
                   | "fifth",
               }))}
               onSubmit={handleFormSubmit}
+              initialData={formData}
             />
           )}
 
@@ -180,17 +205,11 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
             />
           )}
 
-            {/* Step Navigation - back button only, hidden on step 1 and summary */}
-            {slice.variation !== "summary" && (
-              <StepNavigation
-                currentStep={currentStep}
-                onPrevious={() => goToPreviousStep(sliceRef.current)}
-              />
-            )}
           </motion.div>
-        </AnimatePresence>
-      </div>
-    </section>
+          </AnimatePresence>
+        </div>
+      </section>
+    </>
   );
 };
 

@@ -13,6 +13,14 @@ interface AddressAutocompleteInputProps {
   country?: string; // Optional country filter (e.g., 'AU', 'US', 'GB')
 }
 
+const COUNTRY_NAMES: Record<string, string> = {
+  'AU': 'Australia',
+  'US': 'United States',
+  'GB': 'United Kingdom',
+  'CA': 'Canada',
+  'NZ': 'New Zealand',
+};
+
 interface MapboxFeature {
   id: string;
   place_name: string;
@@ -33,6 +41,7 @@ export default function AddressAutocompleteInput({
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [inputValue, setInputValue] = useState(value);
+  const [selectedFromSuggestions, setSelectedFromSuggestions] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -89,6 +98,7 @@ export default function AddressAutocompleteInput({
     const newValue = e.target.value;
     setInputValue(newValue);
     onChange(name, newValue);
+    setSelectedFromSuggestions(false); // Reset flag when manually typing
 
     // Debounce the API call
     if (debounceTimer.current) {
@@ -105,6 +115,7 @@ export default function AddressAutocompleteInput({
     onChange(name, suggestion.place_name);
     setSuggestions([]);
     setShowSuggestions(false);
+    setSelectedFromSuggestions(true); // Mark as selected from filtered suggestions
   };
 
   const handleClear = () => {
@@ -112,6 +123,7 @@ export default function AddressAutocompleteInput({
     onChange(name, "");
     setSuggestions([]);
     setShowSuggestions(false);
+    setSelectedFromSuggestions(false);
   };
 
   return (
@@ -181,6 +193,21 @@ export default function AddressAutocompleteInput({
             </button>
           ))}
         </div>
+      )}
+
+      {/* Helper Text for Country Restriction */}
+      {country && (
+        <p className="mt-2 text-xs text-neutral-500">
+          {!selectedFromSuggestions && inputValue ? (
+            <span className="text-amber-600">
+              ⚠️ Please select an address from the dropdown to ensure it's in {COUNTRY_NAMES[country] || country}
+            </span>
+          ) : (
+            <span>
+              Only {COUNTRY_NAMES[country] || country} addresses accepted. Select from suggestions.
+            </span>
+          )}
+        </p>
       )}
     </div>
   );
