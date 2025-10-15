@@ -3,11 +3,13 @@
 import dynamic from "next/dynamic";
 
 export const components = {
+  contact_us: dynamic(() => import("./ContactUs")),
   content_block: dynamic(() => import("./ContentBlock")),
   hero: dynamic(() => import("./Hero")),
   image_clipped: dynamic(() => import("./ImageClipped")),
   image_with_text: dynamic(() => import("./ImageWithText")),
   locations: dynamic(() => import("./Locations")),
+  news: dynamic(() => import("./News")),
   our_team: dynamic(() => import("./OurTeam")),
   page_topper: dynamic(() => import("./PageTopper")),
   services: dynamic(() => import("./Services")),

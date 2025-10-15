@@ -1,0 +1,31 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "heading": "Schedule a consultation with our team:",
+      "email": "admin@mach1logistics.com.au",
+      "form_heading": "Get in touch",
+      "success_message": "Thank you! We'll be in touch soon.",
+      "margin_top": "large"
+    },
+    "items": [
+      {
+        "location_name": "Lancefield, Victoria",
+        "location_type": "Office",
+        "phone_number": "+61 3 9112 3880"
+      },
+      {
+        "location_name": "Rocklea, Queensland",
+        "location_type": "Warehouse",
+        "phone_number": "+61 3 9112 3880"
+      },
+      {
+        "location_name": "Moolap, Victoria",
+        "location_type": "Depot",
+        "phone_number": "+61 3 9112 3880"
+      }
+    ]
+  }
+]
+

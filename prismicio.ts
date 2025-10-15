@@ -49,6 +49,7 @@ export const defaultLocale: LocaleCode = 'en-au';
  * - home: Homepage with optional locale prefix (e.g., /, /es, /zh-cn)
  * - page: Dynamic pages with optional locale (e.g., /about, /es/about)
  * - solution: Solution pages with optional locale (e.g., /solutions/freight, /es/solutions/freight)
+ * - news: News article pages with optional locale (e.g., /news/article-slug, /es/news/article-slug)
  *
  * {@link https://prismic.io/docs/route-resolver#route-resolver}
  */
@@ -56,6 +57,8 @@ const routes: Route[] = [
   { type: "home", path: "/:lang?" },
   { type: "page", path: "/:lang?/:uid" },
   { type: "solution", path: "/:lang?/solutions/:uid" },
+  { type: "news", path: "/:lang?/news/:uid" },
+  { type: "author", path: "/:lang?/authors/:uid" },
 ];
 
 /**

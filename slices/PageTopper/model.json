@@ -88,6 +88,21 @@
             "options": ["default", "hero-light", "secondary"],
             "default_value": "secondary"
           }
+        },
+        "content_width": {
+          "type": "Select",
+          "config": {
+            "label": "Content Width",
+            "placeholder": "Choose content width",
+            "options": [
+              "full",
+              "three-quarters",
+              "two-thirds",
+              "half",
+              "one-third"
+            ],
+            "default_value": "full"
+          }
         }
       },
       "items": {}

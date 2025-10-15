@@ -49,6 +49,88 @@ type ContentRelationshipFieldWithData<
 }[Exclude<TCustomType[number], string>["id"]];
 
 /**
+ * Content for Author documents
+ */
+interface AuthorDocumentData {
+	/**
+	 * Full Name field in *Author*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: John Smith
+	 * - **API ID Path**: author.name
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	name: prismic.KeyTextField;
+	
+	/**
+	 * Role/Title field in *Author*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Senior Logistics Manager
+	 * - **API ID Path**: author.role
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	role: prismic.KeyTextField;
+	
+	/**
+	 * Biography field in *Author*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Author biography
+	 * - **API ID Path**: author.bio
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	bio: prismic.RichTextField;
+	
+	/**
+	 * Profile Photo field in *Author*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: author.profile_photo
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	profile_photo: prismic.ImageField<never>;
+	
+	/**
+	 * Email (Optional) field in *Author*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: author@mach1logistics.com.au
+	 * - **API ID Path**: author.email
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	email: prismic.KeyTextField;
+	
+	/**
+	 * LinkedIn Profile (Optional) field in *Author*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: LinkedIn URL
+	 * - **API ID Path**: author.linkedin
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	linkedin: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Author document from Prismic
+ *
+ * - **API ID**: `author`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type AuthorDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<AuthorDocumentData>, "author", Lang>;
+
+/**
  * Item in *Footer → CTA Section*
  */
 export interface FooterDocumentDataCtaSectionItem {
@@ -134,153 +216,93 @@ export interface FooterDocumentDataCtaSectionItem {
 }
 
 /**
- * Item in *Footer → Solutions Section → Solution Links*
+ * Item in *Footer → Link Sections → Links*
  */
-export interface FooterDocumentDataSolutionsSectionLinksItem {
+export interface FooterDocumentDataLinkSectionsLinksItem {
 	/**
-	 * Link Text field in *Footer → Solutions Section → Solution Links*
+	 * Link Text field in *Footer → Link Sections → Links*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: Ocean Freight, National Road Freight, etc.
-	 * - **API ID Path**: footer.solutions_section[].links[].label
+	 * - **Placeholder**: Link label
+	 * - **API ID Path**: footer.link_sections[].links[].label
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	label: prismic.KeyTextField;
 	
 	/**
-	 * Link URL field in *Footer → Solutions Section → Solution Links*
+	 * Link URL field in *Footer → Link Sections → Links*
 	 *
 	 * - **Field Type**: Link
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: footer.solutions_section[].links[].link
+	 * - **API ID Path**: footer.link_sections[].links[].link
 	 * - **Documentation**: https://prismic.io/docs/fields/link
 	 */
 	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
 /**
- * Item in *Footer → Solutions Section*
+ * Item in *Footer → Link Sections*
  */
-export interface FooterDocumentDataSolutionsSectionItem {
+export interface FooterDocumentDataLinkSectionsItem {
 	/**
-	 * Section Title field in *Footer → Solutions Section*
+	 * Section Title field in *Footer → Link Sections*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: Solutions
-	 * - **API ID Path**: footer.solutions_section[].title
+	 * - **Placeholder**: Solutions, Specialties, Company, etc.
+	 * - **API ID Path**: footer.link_sections[].section_title
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	title: prismic.KeyTextField;
+	section_title: prismic.KeyTextField;
 	
 	/**
-	 * Solution Links field in *Footer → Solutions Section*
+	 * Links field in *Footer → Link Sections*
 	 *
 	 * - **Field Type**: Group
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: footer.solutions_section[].links[]
+	 * - **API ID Path**: footer.link_sections[].links[]
 	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
-	links: prismic.NestedGroupField<Simplify<FooterDocumentDataSolutionsSectionLinksItem>>;
+	links: prismic.NestedGroupField<Simplify<FooterDocumentDataLinkSectionsLinksItem>>;
 }
 
 /**
- * Item in *Footer → Specialties Section → Specialty Links*
+ * Item in *Footer → Contact Section → Addresses (under location icon)*
  */
-export interface FooterDocumentDataSpecialtiesSectionLinksItem {
+export interface FooterDocumentDataContactSectionAddressesItem {
 	/**
-	 * Link Text field in *Footer → Specialties Section → Specialty Links*
+	 * Address field in *Footer → Contact Section → Addresses (under location icon)*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: Customs & AQIS, Over Dimensional Cargo, etc.
-	 * - **API ID Path**: footer.specialties_section[].links[].label
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	label: prismic.KeyTextField;
-	
-	/**
-	 * Link URL field in *Footer → Specialties Section → Specialty Links*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: footer.specialties_section[].links[].link
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
-}
-
-/**
- * Item in *Footer → Specialties Section*
- */
-export interface FooterDocumentDataSpecialtiesSectionItem {
-	/**
-	 * Section Title field in *Footer → Specialties Section*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Specialties
-	 * - **API ID Path**: footer.specialties_section[].title
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	title: prismic.KeyTextField;
-	
-	/**
-	 * Specialty Links field in *Footer → Specialties Section*
-	 *
-	 * - **Field Type**: Group
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: footer.specialties_section[].links[]
-	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
-	 */
-	links: prismic.NestedGroupField<Simplify<FooterDocumentDataSpecialtiesSectionLinksItem>>;
-}
-
-/**
- * Item in *Footer → Contact Section → Locations*
- */
-export interface FooterDocumentDataContactSectionLocationsItem {
-	/**
-	 * Location Name field in *Footer → Contact Section → Locations*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Brisbane Warehouse, Geelong Depot
-	 * - **API ID Path**: footer.contact_section[].locations[].location_name
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	location_name: prismic.KeyTextField;
-	
-	/**
-	 * Address field in *Footer → Contact Section → Locations*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: 186 Boundary Road Rocklea, QLD 4106
-	 * - **API ID Path**: footer.contact_section[].locations[].address
+	 * - **Placeholder**: 13 High Street Lancefield, VIC 3435
+	 * - **API ID Path**: footer.contact_section[].addresses[].address
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	address: prismic.KeyTextField;
-	
-	/**
-	 * Phone Number field in *Footer → Contact Section → Locations*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: +61 7 3517 0604
-	 * - **API ID Path**: footer.contact_section[].locations[].phone
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	phone: prismic.KeyTextField;
 }
 
 /**
- * Item in *Footer → Contact Section → Additional Information*
+ * Item in *Footer → Contact Section → Phone Contacts (under phone icon)*
  */
-export interface FooterDocumentDataContactSectionAdditionalInfoItem {
+export interface FooterDocumentDataContactSectionPhoneContactsItem {
 	/**
-	 * Info Label field in *Footer → Contact Section → Additional Information*
+	 * Contact Name field in *Footer → Contact Section → Phone Contacts (under phone icon)*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: Import & Export, Locations
-	 * - **API ID Path**: footer.contact_section[].additional_info[].label
+	 * - **Placeholder**: Import & Export, Brisbane Warehouse, Geelong Depot
+	 * - **API ID Path**: footer.contact_section[].phone_contacts[].contact_name
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	label: prismic.KeyTextField;
+	contact_name: prismic.KeyTextField;
+	
+	/**
+	 * Phone Number field in *Footer → Contact Section → Phone Contacts (under phone icon)*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: +61 3 9112 3880
+	 * - **API ID Path**: footer.contact_section[].phone_contacts[].phone_number
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	phone_number: prismic.KeyTextField;
 }
 
 /**
@@ -298,24 +320,49 @@ export interface FooterDocumentDataContactSectionItem {
 	title: prismic.KeyTextField;
 	
 	/**
-	 * Locations field in *Footer → Contact Section*
+	 * Addresses (under location icon) field in *Footer → Contact Section*
 	 *
 	 * - **Field Type**: Group
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: footer.contact_section[].locations[]
+	 * - **API ID Path**: footer.contact_section[].addresses[]
 	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
-	locations: prismic.NestedGroupField<Simplify<FooterDocumentDataContactSectionLocationsItem>>;
+	addresses: prismic.NestedGroupField<Simplify<FooterDocumentDataContactSectionAddressesItem>>;
 	
 	/**
-	 * Additional Information field in *Footer → Contact Section*
+	 * Phone Contacts (under phone icon) field in *Footer → Contact Section*
 	 *
 	 * - **Field Type**: Group
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: footer.contact_section[].additional_info[]
+	 * - **API ID Path**: footer.contact_section[].phone_contacts[]
 	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
-	additional_info: prismic.NestedGroupField<Simplify<FooterDocumentDataContactSectionAdditionalInfoItem>>;
+	phone_contacts: prismic.NestedGroupField<Simplify<FooterDocumentDataContactSectionPhoneContactsItem>>;
+}
+
+/**
+ * Item in *Footer → Social Media*
+ */
+export interface FooterDocumentDataSocialMediaItem {
+	/**
+	 * Platform field in *Footer → Social Media*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select platform
+	 * - **API ID Path**: footer.social_media[].platform
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	platform: prismic.SelectField<"LinkedIn" | "Twitter" | "Facebook" | "Instagram" | "YouTube">;
+	
+	/**
+	 * Profile URL field in *Footer → Social Media*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: https://...
+	 * - **API ID Path**: footer.social_media[].url
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	url: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
 /**
@@ -405,26 +452,15 @@ interface FooterDocumentData {
 	logo: prismic.ImageField<never>;
 	
 	/**
-	 * Solutions Section field in *Footer*
+	 * Link Sections field in *Footer*
 	 *
 	 * - **Field Type**: Group
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: footer.solutions_section[]
+	 * - **API ID Path**: footer.link_sections[]
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
-	solutions_section: prismic.GroupField<Simplify<FooterDocumentDataSolutionsSectionItem>>;
-	
-	/**
-	 * Specialties Section field in *Footer*
-	 *
-	 * - **Field Type**: Group
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: footer.specialties_section[]
-	 * - **Tab**: Main
-	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
-	 */
-	specialties_section: prismic.GroupField<Simplify<FooterDocumentDataSpecialtiesSectionItem>>;
+	link_sections: prismic.GroupField<Simplify<FooterDocumentDataLinkSectionsItem>>;
 	
 	/**
 	 * Contact Section field in *Footer*
@@ -436,6 +472,17 @@ interface FooterDocumentData {
 	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
 	contact_section: prismic.GroupField<Simplify<FooterDocumentDataContactSectionItem>>;
+	
+	/**
+	 * Social Media field in *Footer*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: footer.social_media[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	social_media: prismic.GroupField<Simplify<FooterDocumentDataSocialMediaItem>>;
 	
 	/**
 	 * Legal Links field in *Footer*
@@ -821,7 +868,157 @@ interface HomeDocumentData {
  */
 export type HomeDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HomeDocumentData>, "home", Lang>;
 
-type PageDocumentDataSlicesSlice = TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type NewsDocumentDataSlicesSlice = ImageWithTextSlice | ContentBlockSlice | ImageClippedSlice
+
+/**
+ * Content for News documents
+ */
+interface NewsDocumentData {
+	/**
+	 * Title field in *News*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Article title
+	 * - **API ID Path**: news.title
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Category field in *News*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select category
+	 * - **API ID Path**: news.category
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	category: prismic.SelectField<"Company News" | "Industry Insights" | "Case Studies" | "Product Updates" | "Events">;
+	
+	/**
+	 * Article Type field in *News*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select type
+	 * - **Default Value**: Article
+	 * - **API ID Path**: news.article_type
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	article_type: prismic.SelectField<"Article" | "Press Release" | "Update" | "Announcement" | "Event", "filled">;
+	
+	/**
+	 * Featured Article field in *News*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: news.featured
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	featured: prismic.BooleanField;
+	
+	/**
+	 * Featured Image field in *News*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: news.featured_image
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	featured_image: prismic.ImageField<never>;
+	
+	/**
+	 * Excerpt field in *News*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Short description for preview (150-160 characters)
+	 * - **API ID Path**: news.excerpt
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	excerpt: prismic.KeyTextField;
+	
+	/**
+	 * Author field in *News*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Link to author
+	 * - **API ID Path**: news.author
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	author: prismic.ContentRelationshipField<"author">;
+	
+	/**
+	 * Content field in *News*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Article content
+	 * - **API ID Path**: news.content
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	content: prismic.RichTextField;
+	
+	/**
+	 * Slice Zone field in *News*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: news.slices[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/slices
+	 */
+	slices: prismic.SliceZone<NewsDocumentDataSlicesSlice>;/**
+	 * Meta Title field in *News*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: SEO title (60 characters max)
+	 * - **API ID Path**: news.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_title: prismic.KeyTextField;
+	
+	/**
+	 * Meta Description field in *News*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: SEO description (150-160 characters)
+	 * - **API ID Path**: news.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_description: prismic.KeyTextField;
+	
+	/**
+	 * Meta Image field in *News*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: news.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * News document from Prismic
+ *
+ * - **API ID**: `news`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
+
+type PageDocumentDataSlicesSlice = NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -985,7 +1182,121 @@ interface SolutionDocumentData {
  */
 export type SolutionDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<SolutionDocumentData>, "solution", Lang>;
 
-export type AllDocumentTypes = FooterDocument | HeaderDocument | HomeDocument | PageDocument | SolutionDocument;
+export type AllDocumentTypes = AuthorDocument | FooterDocument | HeaderDocument | HomeDocument | NewsDocument | PageDocument | SolutionDocument;
+
+/**
+ * Primary content in *ContactUs → Default → Primary*
+ */
+export interface ContactUsSliceDefaultPrimary {
+	/**
+	 * Heading field in *ContactUs → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Schedule a consultation with our team:
+	 * - **API ID Path**: contact_us.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Contact Email field in *ContactUs → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: admin@mach1logistics.com.au
+	 * - **API ID Path**: contact_us.default.primary.email
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	email: prismic.KeyTextField;
+	
+	/**
+	 * Form Heading field in *ContactUs → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Get in touch
+	 * - **API ID Path**: contact_us.default.primary.form_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	form_heading: prismic.KeyTextField;
+	
+	/**
+	 * Success Message field in *ContactUs → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Thank you! We'll be in touch soon.
+	 * - **API ID Path**: contact_us.default.primary.success_message
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	success_message: prismic.KeyTextField;
+	
+	/**
+	 * Top Margin field in *ContactUs → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: contact_us.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+}
+
+/**
+ * Primary content in *ContactUs → Items*
+ */
+export interface ContactUsSliceDefaultItem {
+	/**
+	 * Location Name field in *ContactUs → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Lancefield, Victoria
+	 * - **API ID Path**: contact_us.items[].location_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	location_name: prismic.KeyTextField;
+	
+	/**
+	 * Location Type field in *ContactUs → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Office
+	 * - **API ID Path**: contact_us.items[].location_type
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	location_type: prismic.KeyTextField;
+	
+	/**
+	 * Phone Number field in *ContactUs → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: +61 3 9112 3880
+	 * - **API ID Path**: contact_us.items[].phone_number
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	phone_number: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for ContactUs Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ContactUsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ContactUsSliceDefaultPrimary>, Simplify<ContactUsSliceDefaultItem>>;
+
+/**
+ * Slice variation for *ContactUs*
+ */
+type ContactUsSliceVariation = ContactUsSliceDefault
+
+/**
+ * ContactUs Shared Slice
+ *
+ * - **API ID**: `contact_us`
+ * - **Description**: Contact form with company information
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ContactUsSlice = prismic.SharedSlice<"contact_us", ContactUsSliceVariation>;
 
 /**
  * Primary content in *ContentBlock → Default → Primary*
@@ -1434,6 +1745,119 @@ type LocationsSliceVariation = LocationsSliceDefault
 export type LocationsSlice = prismic.SharedSlice<"locations", LocationsSliceVariation>;
 
 /**
+ * Primary content in *News → Default → Primary*
+ */
+export interface NewsSliceDefaultPrimary {
+	/**
+	 * Heading field in *News → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Latest News & Insights
+	 * - **API ID Path**: news.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Show Featured Article Hero field in *News → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: news.default.primary.show_featured_hero
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_featured_hero: prismic.BooleanField;
+	
+	/**
+	 * Featured Article (Hero) field in *News → Default → Primary*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Select article to feature as hero
+	 * - **API ID Path**: news.default.primary.featured_article
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	featured_article: prismic.ContentRelationshipField<"news">;
+	
+	/**
+	 * Enable Load More Button field in *News → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: news.default.primary.enable_load_more
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	enable_load_more: prismic.BooleanField;
+	
+	/**
+	 * Initial Articles (for Load More) field in *News → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 9
+	 * - **Default Value**: 9
+	 * - **API ID Path**: news.default.primary.initial_articles_count
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	initial_articles_count: prismic.NumberField;
+	
+	/**
+	 * Show 'View All' Button field in *News → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: news.default.primary.show_all_button
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_all_button: prismic.BooleanField;
+	
+	/**
+	 * View All Link field in *News → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Link to news archive page
+	 * - **API ID Path**: news.default.primary.view_all_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	view_all_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Top Margin field in *News → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: news.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+}
+
+/**
+ * Default variation for News Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type NewsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<NewsSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *News*
+ */
+type NewsSliceVariation = NewsSliceDefault
+
+/**
+ * News Shared Slice
+ *
+ * - **API ID**: `news`
+ * - **Description**: Display a grid of news articles
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type NewsSlice = prismic.SharedSlice<"news", NewsSliceVariation>;
+
+/**
  * Primary content in *OurTeam → Default → Primary*
  */
 export interface OurTeamSliceDefaultPrimary {
@@ -1631,6 +2055,17 @@ export interface PageTopperSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	button_2_style: prismic.SelectField<"default" | "hero-light" | "secondary", "filled">;
+	
+	/**
+	 * Content Width field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose content width
+	 * - **Default Value**: full
+	 * - **API ID Path**: page_topper.default.primary.content_width
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	content_width: prismic.SelectField<"full" | "three-quarters" | "two-thirds" | "half" | "one-third", "filled">;
 }
 
 /**
@@ -2440,13 +2875,38 @@ export interface TrackingSliceDefaultPrimary {
 }
 
 /**
+ * Primary content in *Tracking → Items*
+ */
+export interface TrackingSliceDefaultItem {
+	/**
+	 * FAQ Question field in *Tracking → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Enter your question
+	 * - **API ID Path**: tracking.items[].faq_question
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	faq_question: prismic.KeyTextField;
+	
+	/**
+	 * FAQ Answer field in *Tracking → Items*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Enter the answer (supports rich text, links, bold, etc.)
+	 * - **API ID Path**: tracking.items[].faq_answer
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	faq_answer: prismic.RichTextField;
+}
+
+/**
  * Default variation for Tracking Slice
  *
  * - **API ID**: `default`
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type TrackingSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TrackingSliceDefaultPrimary>, never>;
+export type TrackingSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TrackingSliceDefaultPrimary>, Simplify<TrackingSliceDefaultItem>>;
 
 /**
  * Slice variation for *Tracking*
@@ -2477,16 +2937,17 @@ declare module "@prismicio/client" {
 	
 	namespace Content {
 		export type {
+			AuthorDocument,
+			AuthorDocumentData,
 			FooterDocument,
 			FooterDocumentData,
 			FooterDocumentDataCtaSectionItem,
-			FooterDocumentDataSolutionsSectionLinksItem,
-			FooterDocumentDataSolutionsSectionItem,
-			FooterDocumentDataSpecialtiesSectionLinksItem,
-			FooterDocumentDataSpecialtiesSectionItem,
-			FooterDocumentDataContactSectionLocationsItem,
-			FooterDocumentDataContactSectionAdditionalInfoItem,
+			FooterDocumentDataLinkSectionsLinksItem,
+			FooterDocumentDataLinkSectionsItem,
+			FooterDocumentDataContactSectionAddressesItem,
+			FooterDocumentDataContactSectionPhoneContactsItem,
 			FooterDocumentDataContactSectionItem,
+			FooterDocumentDataSocialMediaItem,
 			FooterDocumentDataLegalLinksItem,
 			FooterDocumentDataWebsiteCreditItem,
 			HeaderDocument,
@@ -2498,6 +2959,9 @@ declare module "@prismicio/client" {
 			HomeDocument,
 			HomeDocumentData,
 			HomeDocumentDataSlicesSlice,
+			NewsDocument,
+			NewsDocumentData,
+			NewsDocumentDataSlicesSlice,
 			PageDocument,
 			PageDocumentData,
 			PageDocumentDataSlicesSlice,
@@ -2505,6 +2969,11 @@ declare module "@prismicio/client" {
 			SolutionDocumentData,
 			SolutionDocumentDataSlicesSlice,
 			AllDocumentTypes,
+			ContactUsSlice,
+			ContactUsSliceDefaultPrimary,
+			ContactUsSliceDefaultItem,
+			ContactUsSliceVariation,
+			ContactUsSliceDefault,
 			ContentBlockSlice,
 			ContentBlockSliceDefaultPrimary,
 			ContentBlockSliceVariation,
@@ -2526,6 +2995,10 @@ declare module "@prismicio/client" {
 			LocationsSliceDefaultItem,
 			LocationsSliceVariation,
 			LocationsSliceDefault,
+			NewsSlice,
+			NewsSliceDefaultPrimary,
+			NewsSliceVariation,
+			NewsSliceDefault,
 			OurTeamSlice,
 			OurTeamSliceDefaultPrimary,
 			OurTeamSliceDefaultItem,
@@ -2565,6 +3038,7 @@ declare module "@prismicio/client" {
 			StepsSliceSummary,
 			TrackingSlice,
 			TrackingSliceDefaultPrimary,
+			TrackingSliceDefaultItem,
 			TrackingSliceVariation,
 			TrackingSliceDefault
 		}

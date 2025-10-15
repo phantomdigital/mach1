@@ -21,6 +21,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         submit:
           "bg-dark-blue text-white rounded-sm px-6 py-3 font-medium text-sm uppercase tracking-wide hover:bg-gray-600 transition-all duration-200 cursor-pointer",
+        hero: "bg-neutral-800 text-white rounded-md px-6 py-3 font-medium text-sm uppercase tracking-wide hover:bg-neutral-700 transition-all duration-200 cursor-pointer",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -46,9 +47,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, children, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     
+    // Apply JetBrains Mono font for hero variant
+    const style = variant === "hero" ? {
+      fontFamily: 'var(--font-jetbrains-mono), monospace',
+      fontWeight: 400,
+      fontStyle: 'normal',
+    } : undefined;
+    
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
+        style={style}
         ref={ref}
         {...props}
       >

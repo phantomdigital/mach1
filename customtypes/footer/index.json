@@ -75,67 +75,30 @@
           "thumbnails": []
         }
       },
-      "solutions_section": {
+      "link_sections": {
         "type": "Group",
         "config": {
-          "label": "Solutions Section",
+          "label": "Link Sections",
+          "repeat": true,
           "fields": {
-            "title": {
+            "section_title": {
               "type": "Text",
               "config": {
                 "label": "Section Title",
-                "placeholder": "Solutions"
+                "placeholder": "Solutions, Specialties, Company, etc."
               }
             },
             "links": {
               "type": "Group",
               "config": {
-                "label": "Solution Links",
+                "label": "Links",
                 "repeat": true,
                 "fields": {
                   "label": {
                     "type": "Text",
                     "config": {
                       "label": "Link Text",
-                      "placeholder": "Ocean Freight, National Road Freight, etc."
-                    }
-                  },
-                  "link": {
-                    "type": "Link",
-                    "config": {
-                      "label": "Link URL",
-                      "allowTargetBlank": true
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "specialties_section": {
-        "type": "Group",
-        "config": {
-          "label": "Specialties Section",
-          "fields": {
-            "title": {
-              "type": "Text",
-              "config": {
-                "label": "Section Title",
-                "placeholder": "Specialties"
-              }
-            },
-            "links": {
-              "type": "Group",
-              "config": {
-                "label": "Specialty Links",
-                "repeat": true,
-                "fields": {
-                  "label": {
-                    "type": "Text",
-                    "config": {
-                      "label": "Link Text",
-                      "placeholder": "Customs & AQIS, Over Dimensional Cargo, etc."
+                      "placeholder": "Link label"
                     }
                   },
                   "link": {
@@ -163,50 +126,68 @@
                 "placeholder": "Contact Us"
               }
             },
-            "locations": {
+            "addresses": {
               "type": "Group",
               "config": {
-                "label": "Locations",
+                "label": "Addresses (under location icon)",
                 "repeat": true,
                 "fields": {
-                  "location_name": {
-                    "type": "Text",
-                    "config": {
-                      "label": "Location Name",
-                      "placeholder": "Brisbane Warehouse, Geelong Depot"
-                    }
-                  },
                   "address": {
                     "type": "Text",
                     "config": {
                       "label": "Address",
-                      "placeholder": "186 Boundary Road Rocklea, QLD 4106"
-                    }
-                  },
-                  "phone": {
-                    "type": "Text",
-                    "config": {
-                      "label": "Phone Number",
-                      "placeholder": "+61 7 3517 0604"
+                      "placeholder": "13 High Street Lancefield, VIC 3435"
                     }
                   }
                 }
               }
             },
-            "additional_info": {
+            "phone_contacts": {
               "type": "Group",
               "config": {
-                "label": "Additional Information",
+                "label": "Phone Contacts (under phone icon)",
                 "repeat": true,
                 "fields": {
-                  "label": {
+                  "contact_name": {
                     "type": "Text",
                     "config": {
-                      "label": "Info Label",
-                      "placeholder": "Import & Export, Locations"
+                      "label": "Contact Name",
+                      "placeholder": "Import & Export, Brisbane Warehouse, Geelong Depot"
+                    }
+                  },
+                  "phone_number": {
+                    "type": "Text",
+                    "config": {
+                      "label": "Phone Number",
+                      "placeholder": "+61 3 9112 3880"
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+      },
+      "social_media": {
+        "type": "Group",
+        "config": {
+          "label": "Social Media",
+          "repeat": true,
+          "fields": {
+            "platform": {
+              "type": "Select",
+              "config": {
+                "label": "Platform",
+                "options": ["LinkedIn", "Twitter", "Facebook", "Instagram", "YouTube"],
+                "placeholder": "Select platform"
+              }
+            },
+            "url": {
+              "type": "Link",
+              "config": {
+                "label": "Profile URL",
+                "allowTargetBlank": true,
+                "placeholder": "https://..."
               }
             }
           }

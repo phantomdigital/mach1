@@ -1,0 +1,92 @@
+{
+  "id": "news",
+  "type": "SharedSlice",
+  "name": "News",
+  "description": "Display a grid of news articles",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Latest News & Insights"
+          }
+        },
+        "show_featured_hero": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Featured Article Hero",
+            "placeholder_false": "No Hero",
+            "placeholder_true": "Show Hero",
+            "default_value": true
+          }
+        },
+        "featured_article": {
+          "type": "Link",
+          "config": {
+            "label": "Featured Article (Hero)",
+            "select": "document",
+            "customtypes": ["news"],
+            "placeholder": "Select article to feature as hero"
+          }
+        },
+        "enable_load_more": {
+          "type": "Boolean",
+          "config": {
+            "label": "Enable Load More Button",
+            "placeholder_false": "Show All",
+            "placeholder_true": "Load More",
+            "default_value": false
+          }
+        },
+        "initial_articles_count": {
+          "type": "Number",
+          "config": {
+            "label": "Initial Articles (for Load More)",
+            "placeholder": "9",
+            "default_value": 9
+          }
+        },
+        "show_all_button": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show 'View All' Button",
+            "default_value": true
+          }
+        },
+        "view_all_link": {
+          "type": "Link",
+          "config": {
+            "label": "View All Link",
+            "placeholder": "Link to news archive page",
+            "select": null
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
+

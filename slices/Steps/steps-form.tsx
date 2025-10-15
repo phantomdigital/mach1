@@ -335,7 +335,7 @@ export default function StepsForm({
             <div className="mt-12 space-y-4">
               <Button 
                 type="submit" 
-                variant="submit"
+                variant="hero"
                 disabled={isSubmitting}
                 className="w-full"
               >

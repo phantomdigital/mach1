@@ -103,7 +103,24 @@
           }
         }
       },
-      "items": {}
+      "items": {
+        "faq_question": {
+          "type": "Text",
+          "config": {
+            "label": "FAQ Question",
+            "placeholder": "Enter your question"
+          }
+        },
+        "faq_answer": {
+          "type": "StructuredText",
+          "config": {
+            "label": "FAQ Answer",
+            "placeholder": "Enter the answer (supports rich text, links, bold, etc.)",
+            "allowTargetBlank": true,
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          }
+        }
+      }
     }
   ]
 }

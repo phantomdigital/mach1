@@ -20,21 +20,21 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
       : 'lg:flex-row';
   };
 
-  // Get margin top class based on selection
+  // Get margin top class based on selection (responsive: smaller on mobile)
   const getMarginTopClass = () => {
     switch (slice.primary.margin_top) {
       case 'none':
         return 'mt-0';
       case 'small':
-        return 'mt-12';
+        return 'mt-6 lg:mt-12';
       case 'medium':
-        return 'mt-24';
+        return 'mt-12 lg:mt-24';
       case 'large':
-        return 'mt-48';
+        return 'mt-30 lg:mt-48';
       case 'extra-large':
-        return 'mt-64';
+        return 'mt-40 lg:mt-64';
       default:
-        return 'mt-48'; // Default to large (mt-48)
+        return 'mt-30 lg:mt-48';
     }
   };
 
@@ -75,22 +75,19 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
           {/* Text Section */}
           <div className="w-full lg:w-1/2 flex flex-col justify-center">
             {slice.primary.subheading && (
-              <div 
-                className="text-neutral-800 text-sm font-medium mb-4"
-                style={{ fontFamily: '"space-mono", monospace', fontWeight: 400, fontStyle: 'normal' }}
-              >
+              <h5 className="text-neutral-800 text-sm mb-4">
                 {slice.primary.subheading}
-              </div>
+              </h5>
             )}
             
             {slice.primary.heading && (
-              <h2 className="text-neutral-800 text-4xl lg:text-5xl font-bold leading-tight mb-6" style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 700' }}>
+              <h2 className="text-neutral-800 text-4xl lg:text-5xl leading-tight mb-6">
                 {slice.primary.heading}
               </h2>
             )}
             
             {slice.primary.description && (
-              <div className="text-neutral-600 text-base font-normal leading-relaxed space-y-4" style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}>
+              <div className="text-neutral-600 text-base leading-relaxed space-y-4">
                 {slice.primary.description.split('\n').map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}

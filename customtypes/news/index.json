@@ -1,0 +1,144 @@
+{
+  "id": "news",
+  "label": "News",
+  "format": "page",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "UID",
+          "placeholder": "unique-article-slug"
+        }
+      },
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": "Article title"
+        }
+      },
+      "category": {
+        "type": "Select",
+        "config": {
+          "label": "Category",
+          "placeholder": "Select category",
+          "options": [
+            "Company News",
+            "Industry Insights",
+            "Case Studies",
+            "Product Updates",
+            "Events"
+          ]
+        }
+      },
+      "article_type": {
+        "type": "Select",
+        "config": {
+          "label": "Article Type",
+          "placeholder": "Select type",
+          "options": [
+            "Article",
+            "Press Release",
+            "Update",
+            "Announcement",
+            "Event"
+          ],
+          "default_value": "Article"
+        }
+      },
+      "featured": {
+        "type": "Boolean",
+        "config": {
+          "label": "Featured Article",
+          "placeholder_false": "Not Featured",
+          "placeholder_true": "Featured",
+          "default_value": false
+        }
+      },
+      "featured_image": {
+        "type": "Image",
+        "config": {
+          "label": "Featured Image",
+          "constraint": {
+            "width": 1200,
+            "height": 630
+          },
+          "thumbnails": []
+        }
+      },
+      "excerpt": {
+        "type": "Text",
+        "config": {
+          "label": "Excerpt",
+          "placeholder": "Short description for preview (150-160 characters)"
+        }
+      },
+      "author": {
+        "type": "Link",
+        "config": {
+          "label": "Author",
+          "placeholder": "Link to author",
+          "select": "document",
+          "customtypes": ["author"]
+        }
+      },
+      "content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Content",
+          "placeholder": "Article content",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "image_with_text": {
+              "type": "SharedSlice"
+            },
+            "content_block": {
+              "type": "SharedSlice"
+            },
+            "image_clipped": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    },
+    "SEO & Metadata": {
+      "meta_title": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Title",
+          "placeholder": "SEO title (60 characters max)"
+        }
+      },
+      "meta_description": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Description",
+          "placeholder": "SEO description (150-160 characters)"
+        }
+      },
+      "meta_image": {
+        "type": "Image",
+        "config": {
+          "label": "Meta Image",
+          "constraint": {
+            "width": 1200,
+            "height": 630
+          },
+          "thumbnails": []
+        }
+      }
+    }
+  }
+}
+

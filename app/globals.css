@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
 
 /* Mapbox custom styling for MACH1 theme */
 @import "mapbox-gl/dist/mapbox-gl.css";

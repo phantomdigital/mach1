@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 interface TrackingWidgetProps {
   urlPrefix: string;
@@ -38,12 +39,18 @@ export function TrackingWidget({ urlPrefix, placeholderText }: TrackingWidgetPro
           required
         />
       </div>
-      <button
-        type="submit"
-        className="w-full px-6 py-3 font-medium bg-neutral-800 text-white rounded-md hover:bg-neutral-700 transition-all duration-200 uppercase text-sm tracking-wider"
-      >
-        Track
-      </button>
+      <div className="space-y-3">
+        <Button
+          type="submit"
+          variant="hero"
+          className="w-full"
+        >
+          Track
+        </Button>
+        <p className="text-xs text-neutral-400 text-left pt-4">
+          This will open a new window to Logixboard tracking
+        </p>
+      </div>
     </form>
   );
 }

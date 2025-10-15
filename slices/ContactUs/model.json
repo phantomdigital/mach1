@@ -1,0 +1,85 @@
+{
+  "id": "contact_us",
+  "type": "SharedSlice",
+  "name": "ContactUs",
+  "description": "Contact form with company information",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Schedule a consultation with our team:"
+          }
+        },
+        "email": {
+          "type": "Text",
+          "config": {
+            "label": "Contact Email",
+            "placeholder": "admin@mach1logistics.com.au"
+          }
+        },
+        "form_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Form Heading",
+            "placeholder": "Get in touch"
+          }
+        },
+        "success_message": {
+          "type": "Text",
+          "config": {
+            "label": "Success Message",
+            "placeholder": "Thank you! We'll be in touch soon."
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "location_name": {
+          "type": "Text",
+          "config": {
+            "label": "Location Name",
+            "placeholder": "Lancefield, Victoria"
+          }
+        },
+        "location_type": {
+          "type": "Text",
+          "config": {
+            "label": "Location Type",
+            "placeholder": "Office"
+          }
+        },
+        "phone_number": {
+          "type": "Text",
+          "config": {
+            "label": "Phone Number",
+            "placeholder": "+61 3 9112 3880"
+          }
+        }
+      }
+    }
+  ]
+}
+

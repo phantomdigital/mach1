@@ -17,6 +17,23 @@ export type PageTopperProps = SliceComponentProps<Content.PageTopperSlice>;
  * Content is server-rendered for SEO, client component only handles conditional visibility.
  */
 const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
+  // Get width class based on selection (full width on mobile, constrained on desktop)
+  const getWidthClass = () => {
+    const contentWidth = (slice.primary as any).content_width;
+    switch (contentWidth) {
+      case 'three-quarters':
+        return 'w-full lg:w-3/4';
+      case 'two-thirds':
+        return 'w-full lg:w-2/3';
+      case 'half':
+        return 'w-full lg:w-1/2';
+      case 'one-third':
+        return 'w-full lg:w-1/3';
+      default:
+        return 'w-full';
+    }
+  };
+
   return (
     <Suspense fallback={<div className="w-full h-[89vh] bg-dark-blue" />}>
       <PageTopperClient>
@@ -39,22 +56,24 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
 
             {/* Content */}
             <div className="w-full max-w-[112rem] mx-auto px-4 lg:px-8 pb-8 lg:pb-12 relative z-10">
-              {/* Header with Animation */}
-              <PageTopperAnimation 
-                subheading={slice.primary.subheading || undefined}
-                heading={slice.primary.heading || undefined}
-                paragraph={slice.primary.paragraph || undefined}
-              />
+              <div className={getWidthClass()}>
+                {/* Header with Animation */}
+                <PageTopperAnimation 
+                  subheading={slice.primary.subheading || undefined}
+                  heading={slice.primary.heading || undefined}
+                  paragraph={slice.primary.paragraph || undefined}
+                />
               
-              {/* Buttons */}
-              <PageTopperButtons
-                button1Text={slice.primary.button_1_text}
-                button1Link={slice.primary.button_1_link}
-                button1Style={slice.primary.button_1_style}
-                button2Text={slice.primary.button_2_text}
-                button2Link={slice.primary.button_2_link}
-                button2Style={slice.primary.button_2_style}
-              />
+                {/* Buttons */}
+                <PageTopperButtons
+                  button1Text={slice.primary.button_1_text}
+                  button1Link={slice.primary.button_1_link}
+                  button1Style={slice.primary.button_1_style}
+                  button2Text={slice.primary.button_2_text}
+                  button2Link={slice.primary.button_2_link}
+                  button2Style={slice.primary.button_2_style}
+                />
+              </div>
             </div>
           </div>
         </section>

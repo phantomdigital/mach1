@@ -1,0 +1,113 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "heading": "Latest News & Insights",
+      "show_featured_hero": true,
+      "featured_article": {
+        "link_type": "Document"
+      },
+      "enable_load_more": false,
+      "initial_articles_count": 9,
+      "show_all_button": false,
+      "view_all_link": {
+        "link_type": "Document"
+      },
+      "margin_top": "large"
+    },
+    "items": [
+      {
+        "news_article": {
+          "id": "mock-article-1",
+          "link_type": "Document",
+          "type": "news",
+          "tags": [],
+          "lang": "en-us",
+          "slug": "expanding-our-services",
+          "first_publication_date": "2024-01-15",
+          "last_publication_date": "2024-01-15",
+          "data": {
+            "title": "Expanding Our Services to Queensland",
+            "category": "Company News",
+            "excerpt": "We're excited to announce the opening of our new warehouse facility in Rocklea, Queensland.",
+            "featured_image": {
+              "dimensions": { "width": 1200, "height": 630 },
+              "alt": "New Queensland facility",
+              "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d"
+            },
+            "author": {
+              "id": "mock-author-1",
+              "link_type": "Document",
+              "type": "author",
+              "data": {
+                "name": "MACH1 Team"
+              }
+            }
+          }
+        }
+      },
+      {
+        "news_article": {
+          "id": "mock-article-2",
+          "link_type": "Document",
+          "type": "news",
+          "tags": [],
+          "lang": "en-us",
+          "slug": "industry-trends-2024",
+          "first_publication_date": "2024-01-10",
+          "last_publication_date": "2024-01-10",
+          "data": {
+            "title": "2024 Logistics Industry Trends",
+            "category": "Industry Insights",
+            "excerpt": "Explore the key trends shaping the logistics industry in 2024 and how MACH1 is adapting.",
+            "featured_image": {
+              "dimensions": { "width": 1200, "height": 630 },
+              "alt": "Logistics trends",
+              "url": "https://images.unsplash.com/photo-1494412519320-aa613dfb7738"
+            },
+            "author": {
+              "id": "mock-author-2",
+              "link_type": "Document",
+              "type": "author",
+              "data": {
+                "name": "Sarah Johnson"
+              }
+            }
+          }
+        }
+      },
+      {
+        "news_article": {
+          "id": "mock-article-3",
+          "link_type": "Document",
+          "type": "news",
+          "tags": [],
+          "lang": "en-us",
+          "slug": "successful-delivery",
+          "first_publication_date": "2024-01-05",
+          "last_publication_date": "2024-01-05",
+          "data": {
+            "title": "Case Study: Complex International Shipment",
+            "category": "Case Studies",
+            "excerpt": "How we successfully managed a complex international shipment with tight deadlines.",
+            "featured_image": {
+              "dimensions": { "width": 1200, "height": 630 },
+              "alt": "International shipment",
+              "url": "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55"
+            },
+            "author": {
+              "id": "mock-author-3",
+              "link_type": "Document",
+              "type": "author",
+              "data": {
+                "name": "Michael Chen"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+]
+

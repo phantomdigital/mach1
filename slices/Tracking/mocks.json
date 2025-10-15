@@ -13,7 +13,69 @@
       "content_width": "two-thirds",
       "margin_top": "large"
     },
-    "items": []
+    "items": [
+      {
+        "faq_question": "How do I track my shipment?",
+        "faq_answer": [
+          {
+            "type": "paragraph",
+            "text": "Enter your tracking number in the widget above to see real-time updates on your shipment's location and estimated delivery time.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "faq_question": "What if my tracking number isn't working?",
+        "faq_answer": [
+          {
+            "type": "paragraph",
+            "text": "Please ensure you've entered the correct tracking number. If the issue persists, it may take up to 24 hours for tracking information to become available after your shipment is picked up.",
+            "spans": [
+              {
+                "start": 41,
+                "end": 58,
+                "type": "strong"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "faq_question": "Can I track multiple shipments at once?",
+        "faq_answer": [
+          {
+            "type": "paragraph",
+            "text": "Currently, you need to track each shipment individually. Simply enter one tracking number at a time in the widget above.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "faq_question": "How often is tracking information updated?",
+        "faq_answer": [
+          {
+            "type": "paragraph",
+            "text": "Tracking information is updated in real-time as your shipment moves through our network. For more details, visit our help center or contact support.",
+            "spans": [
+              {
+                "start": 39,
+                "end": 48,
+                "type": "strong"
+              },
+              {
+                "start": 110,
+                "end": 126,
+                "type": "hyperlink",
+                "data": {
+                  "link_type": "Web",
+                  "url": "/help"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
 

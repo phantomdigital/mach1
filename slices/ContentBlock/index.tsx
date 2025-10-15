@@ -39,37 +39,37 @@ const ContentBlock = ({ slice }: ContentBlockProps): React.ReactElement => {
     }
   };
 
-  // Get width class based on selection
+  // Get width class based on selection (full width on mobile, constrained on desktop)
   const getWidthClass = () => {
     switch (slice.primary.content_width) {
       case 'three-quarters':
-        return 'w-3/4';
+        return 'w-full lg:w-3/4';
       case 'two-thirds':
-        return 'w-2/3';
+        return 'w-full lg:w-2/3';
       case 'half':
-        return 'w-1/2';
+        return 'w-full lg:w-1/2';
       case 'one-third':
-        return 'w-1/3';
+        return 'w-full lg:w-1/3';
       default:
         return 'w-full';
     }
   };
 
-  // Get margin top class based on selection
+  // Get margin top class based on selection (responsive: smaller on mobile)
   const getMarginTopClass = () => {
     switch (slice.primary.margin_top) {
       case 'none':
         return 'mt-0';
       case 'small':
-        return 'mt-12';
+        return 'mt-6 lg:mt-12';
       case 'medium':
-        return 'mt-24';
+        return 'mt-12 lg:mt-24';
       case 'large':
-        return 'mt-48';
+        return 'mt-30 lg:mt-48';
       case 'extra-large':
-        return 'mt-64';
+        return 'mt-40 lg:mt-64';
       default:
-        return 'mt-48'; // Default to large (mt-48)
+        return 'mt-30 lg:mt-48';
     }
   };
 
@@ -81,20 +81,17 @@ const ContentBlock = ({ slice }: ContentBlockProps): React.ReactElement => {
           <div className={`flex flex-col ${getContentAlignment()}`}>
             <div className={`${getWidthClass()}`}>
               {slice.primary.subheading && (
-                <div 
-                  className={`text-neutral-800 text-sm font-medium mb-4 ${getAlignmentClass()}`}
-                  style={{ fontFamily: '"space-mono", monospace', fontWeight: 400, fontStyle: 'normal' }}
-                >
+                <h5 className={`text-neutral-800 text-sm mb-4 ${getAlignmentClass()}`}>
                   {slice.primary.subheading}
-                </div>
+                </h5>
               )}
               {slice.primary.heading && (
-                <h2 className={`text-neutral-800 text-4xl lg:text-6xl font-bold leading-tight ${getAlignmentClass()}`} style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 700' }}>
+                <h2 className={`text-neutral-800 text-4xl lg:text-6xl leading-tight ${getAlignmentClass()}`}>
                   {slice.primary.heading}
                 </h2>
               )}
               {slice.primary.description && (
-                <p className={`text-neutral-600 text-lg font-normal leading-relaxed mt-6 ${getAlignmentClass()}`} style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}>
+                <p className={`text-neutral-600 text-lg leading-relaxed mt-6 ${getAlignmentClass()}`}>
                   {slice.primary.description}
                 </p>
               )}
