@@ -6,6 +6,9 @@
 /* Mapbox custom styling for MACH1 theme */
 @import "mapbox-gl/dist/mapbox-gl.css";
 
+/* Lightbox styling */
+@import "yet-another-react-lightbox/styles.css";
+
 .mach1-popup .mapboxgl-popup-content {
   background-color: #262626 !important;
   border-radius: 8px !important;

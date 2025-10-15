@@ -5,9 +5,10 @@ import { SliceZone, PrismicRichText } from "@prismicio/react";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import { PrismicNextImage } from "@prismicio/next";
-import type { Content } from "@prismicio/client";
+import type { Content, RichTextField, ImageField } from "@prismicio/client";
 import { ShareButtons } from "./share-buttons";
 import { RelatedArticles } from "./related-articles";
+import { LightboxWrapper } from "./lightbox-wrapper";
 
 type Params = { uid: string };
 
@@ -40,7 +41,7 @@ export default async function NewsArticlePage({
       console.warn("Failed to fetch with author data, trying without:", fetchError);
       page = await client.getByUID("news", uid);
     }
-  } catch (error) {
+  } catch {
     notFound();
   }
 
@@ -78,9 +79,9 @@ export default async function NewsArticlePage({
   };
 
   // Calculate reading time
-  const calculateReadingTime = (content: any) => {
+  const calculateReadingTime = (content: RichTextField) => {
     if (!content) return 0;
-    const text = content.map((block: any) => block.text || "").join(" ");
+    const text = content.map((block) => ('text' in block ? block.text : '') || "").join(" ");
     const words = text.split(/\s+/).length;
     return Math.ceil(words / 200); // Average reading speed: 200 words per minute
   };
@@ -88,15 +89,10 @@ export default async function NewsArticlePage({
 
   // Get author data from relationship
   const authorData = page.data.author && typeof page.data.author !== 'string' && 'data' in page.data.author
-    ? (page.data.author as any).data
+    ? (page.data.author as { data?: { name?: string; profile_photo?: ImageField } }).data
     : null;
   const authorName = authorData?.name;
   const authorPhoto = authorData?.profile_photo;
-  
-  // Debug: Log author data
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Author data:', { authorData, authorName, authorPhoto });
-  }
 
   // Get full URL for sharing
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mach1logistics.com.au";
@@ -176,7 +172,7 @@ export default async function NewsArticlePage({
 
             {/* Featured Image */}
             {page.data.featured_image?.url && (
-              <div className="relative aspect-[16/9] bg-neutral-100 mb-12">
+              <div className="relative aspect-[16/9] bg-neutral-100 mb-12 cursor-pointer">
                 <PrismicNextImage
                   field={page.data.featured_image}
                   fill
@@ -206,10 +202,16 @@ export default async function NewsArticlePage({
                              prose-blockquote:border-l-4 prose-blockquote:border-dark-blue prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-neutral-700
                              prose-code:text-dark-blue prose-code:bg-neutral-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
                              prose-pre:bg-neutral-800 prose-pre:text-neutral-100
-                             prose-img:rounded-lg prose-img:shadow-md">
+                             prose-img:rounded-lg prose-img:shadow-md prose-img:cursor-pointer">
                 <PrismicRichText field={page.data.content} />
               </div>
             )}
+
+            {/* Lightbox functionality (client-side only) */}
+            <LightboxWrapper 
+              featuredImage={page.data.featured_image}
+              content={page.data.content}
+            />
 
             {/* Share Buttons */}
             <div className="pt-8 border-t border-neutral-200">
@@ -285,7 +287,7 @@ export async function generateMetadata({
       console.warn("Failed to fetch with author data, trying without:", fetchError);
       page = await client.getByUID("news", uid);
     }
-  } catch (error) {
+  } catch {
     return {
       title: "Article Not Found",
     };
@@ -298,7 +300,7 @@ export async function generateMetadata({
   
   // Get author name from relationship
   const authorName = page.data.author && typeof page.data.author !== 'string' && 'data' in page.data.author
-    ? (page.data.author as any).data?.name
+    ? (page.data.author as { data?: { name?: string } }).data?.name
     : null;
 
   return {

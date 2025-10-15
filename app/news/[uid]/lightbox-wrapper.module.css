@@ -1,0 +1,49 @@
+/* Lightbox Custom Styles */
+.lightbox :global(.yarl__container) {
+  background-color: rgba(0, 0, 0, 0.95) !important;
+}
+
+.lightbox :global(.yarl__button) {
+  background-color: rgba(31, 41, 55, 0.8) !important;
+  color: white !important;
+  border-radius: 9999px !important;
+  width: 48px !important;
+  height: 48px !important;
+  transition: all 0.2s ease !important;
+}
+
+.lightbox :global(.yarl__button:hover) {
+  background-color: #1e3a8a !important;
+}
+
+.lightbox :global(.yarl__toolbar) {
+  padding: 24px !important;
+}
+
+.lightbox :global(.yarl__slide_image) {
+  max-width: 95vw !important;
+  max-height: 95vh !important;
+  object-fit: contain !important;
+}
+
+.lightbox :global(.yarl__navigation_prev),
+.lightbox :global(.yarl__navigation_next) {
+  padding: 24px !important;
+}
+
+@media (max-width: 768px) {
+  .lightbox :global(.yarl__button) {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .lightbox :global(.yarl__toolbar) {
+    padding: 16px !important;
+  }
+  
+  .lightbox :global(.yarl__navigation_prev),
+  .lightbox :global(.yarl__navigation_next) {
+    padding: 16px !important;
+  }
+}
+
