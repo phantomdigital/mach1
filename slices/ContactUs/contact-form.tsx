@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -173,14 +174,13 @@ export default function ContactForm({ successMessage }: ContactFormProps) {
         <label htmlFor="message" className="block text-sm text-neutral-900 mb-2">
           Message <span className="text-red-500">*</span>
         </label>
-        <textarea
+        <Textarea
           id="message"
           value={formData.message}
           onChange={(e) => handleChange("message", e.target.value)}
           placeholder="Enter your message..."
           required
           rows={6}
-          className="flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
         />
       </div>
 
