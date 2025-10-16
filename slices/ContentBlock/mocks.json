@@ -9,6 +9,8 @@
       "text_alignment": "left",
       "content_width": "two-thirds",
       "margin_top": "large",
+      "padding_top": "medium",
+      "padding_bottom": "medium",
       "show_image": true,
       "image": {
         "dimensions": {

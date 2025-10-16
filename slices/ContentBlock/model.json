@@ -76,6 +76,36 @@
             "default_value": "large"
           }
         },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Padding",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "medium"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Bottom Padding",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "medium"
+          }
+        },
         "show_image": {
           "type": "Boolean",
           "config": {

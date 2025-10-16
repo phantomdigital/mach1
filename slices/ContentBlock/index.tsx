@@ -1,7 +1,6 @@
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
-import { ContentClippedShape } from "./content-clipped-shape";
 import { HeaderSeparator } from "@/components/ui/header-separator";
 
 /**
@@ -73,9 +72,45 @@ const ContentBlock = ({ slice }: ContentBlockProps): React.ReactElement => {
     }
   };
 
+  // Get padding top class based on selection (responsive: smaller on mobile)
+  const getPaddingTopClass = () => {
+    switch (slice.primary.padding_top) {
+      case 'none':
+        return 'pt-0';
+      case 'small':
+        return 'pt-6 lg:pt-12';
+      case 'medium':
+        return 'pt-12 lg:pt-24';
+      case 'large':
+        return 'pt-16 lg:pt-32';
+      case 'extra-large':
+        return 'pt-24 lg:pt-48';
+      default:
+        return 'pt-12 lg:pt-24';
+    }
+  };
+
+  // Get padding bottom class based on selection (responsive: smaller on mobile)
+  const getPaddingBottomClass = () => {
+    switch (slice.primary.padding_bottom) {
+      case 'none':
+        return 'pb-0';
+      case 'small':
+        return 'pb-6 lg:pb-12';
+      case 'medium':
+        return 'pb-12 lg:pb-24';
+      case 'large':
+        return 'pb-16 lg:pb-32';
+      case 'extra-large':
+        return 'pb-24 lg:pb-48';
+      default:
+        return 'pb-12 lg:pb-24';
+    }
+  };
+
   return (
-    <section className="w-full py-16 lg:py-24 bg-white">
-      <div className={`w-full ${getMarginTopClass()} mx-auto px-4 lg:px-20`}>
+    <section className={`w-full bg-white ${getPaddingTopClass()} ${getPaddingBottomClass()}`}>
+      <div className={`w-full max-w-[110rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
         {/* Header */}
         <div className="mb-16">
           <div className={`flex flex-col ${getContentAlignment()}`}>
@@ -100,16 +135,21 @@ const ContentBlock = ({ slice }: ContentBlockProps): React.ReactElement => {
         
         </div>
 
-        {/* Full Width Image with Clipping */}
+        {/* Full Width Image */}
         {slice.primary.show_image && slice.primary.image && slice.primary.image.url && (
           <div className="mb-16">
-            <ContentClippedShape className="w-full aspect-[2.8/1] bg-neutral-100">
+            <div 
+              className="w-full aspect-[2.8/1] bg-neutral-100 overflow-hidden"
+              style={{
+                clipPath: 'polygon(0% 0%, 98% 0%, 100% 4%, 100% 100%, 2% 100%, 0% 98%)'
+              }}
+            >
               <PrismicNextImage
                 field={slice.primary.image}
                 className="w-full h-full object-cover"
                 alt=""
               />
-            </ContentClippedShape>
+            </div>
           </div>
         )}
 

@@ -1018,7 +1018,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -1366,6 +1366,28 @@ export interface ContentBlockSliceDefaultPrimary {
 	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
 	
 	/**
+	 * Top Padding field in *ContentBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: medium
+	 * - **API ID Path**: content_block.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *ContentBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: medium
+	 * - **API ID Path**: content_block.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
 	 * Show Image field in *ContentBlock → Default → Primary*
 	 *
 	 * - **Field Type**: Boolean
@@ -1620,6 +1642,28 @@ export interface ImageWithTextSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *ImageWithText → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: medium
+	 * - **API ID Path**: image_with_text.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *ImageWithText → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: medium
+	 * - **API ID Path**: image_with_text.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
 	
 	/**
 	 * Image field in *ImageWithText → Default → Primary*
@@ -2346,6 +2390,132 @@ type StatisticsSliceVariation = StatisticsSliceDefault
 export type StatisticsSlice = prismic.SharedSlice<"statistics", StatisticsSliceVariation>;
 
 /**
+ * Item in *StatisticsV2 → Default → Primary → Statistics*
+ */
+export interface StatisticsV2SliceDefaultPrimaryStatisticsItem {
+	/**
+	 * Number field in *StatisticsV2 → Default → Primary → Statistics*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: 280
+	 * - **API ID Path**: statistics_v2.default.primary.statistics[].number
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	number: prismic.KeyTextField;
+	
+	/**
+	 * Suffix field in *StatisticsV2 → Default → Primary → Statistics*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: + (optional, e.g., +, M, K)
+	 * - **API ID Path**: statistics_v2.default.primary.statistics[].suffix
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	suffix: prismic.KeyTextField;
+	
+	/**
+	 * Label field in *StatisticsV2 → Default → Primary → Statistics*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Prime Movers
+	 * - **API ID Path**: statistics_v2.default.primary.statistics[].label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	label: prismic.KeyTextField;
+}
+
+/**
+ * Primary content in *StatisticsV2 → Default → Primary*
+ */
+export interface StatisticsV2SliceDefaultPrimary {
+	/**
+	 * Heading field in *StatisticsV2 → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our Impact in Numbers
+	 * - **API ID Path**: statistics_v2.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Subheading field in *StatisticsV2 → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: BY THE NUMBERS
+	 * - **API ID Path**: statistics_v2.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Top Margin field in *StatisticsV2 → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: statistics_v2.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *StatisticsV2 → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: medium
+	 * - **API ID Path**: statistics_v2.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *StatisticsV2 → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: medium
+	 * - **API ID Path**: statistics_v2.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Statistics field in *StatisticsV2 → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: statistics_v2.default.primary.statistics[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	statistics: prismic.GroupField<Simplify<StatisticsV2SliceDefaultPrimaryStatisticsItem>>;
+}
+
+/**
+ * Default variation for StatisticsV2 Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type StatisticsV2SliceDefault = prismic.SharedSliceVariation<"default", Simplify<StatisticsV2SliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *StatisticsV2*
+ */
+type StatisticsV2SliceVariation = StatisticsV2SliceDefault
+
+/**
+ * StatisticsV2 Shared Slice
+ *
+ * - **API ID**: `statistics_v2`
+ * - **Description**: Statistics section with repeatable stat items - optimized for company metrics like fleet size, years in operation, etc.
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type StatisticsV2Slice = prismic.SharedSlice<"statistics_v2", StatisticsV2SliceVariation>;
+
+/**
  * Primary content in *Steps → Start (Step 0) → Primary*
  */
 export interface StepsSliceStartPrimary {
@@ -2368,6 +2538,16 @@ export interface StepsSliceStartPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	step_title: prismic.KeyTextField;
+	
+	/**
+	 * Start Image field in *Steps → Start (Step 0) → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: steps.start.primary.start_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	start_image: prismic.ImageField<never>;
 	
 	/**
 	 * Heading field in *Steps → Start (Step 0) → Primary*
@@ -3022,6 +3202,11 @@ declare module "@prismicio/client" {
 			StatisticsSliceDefaultItem,
 			StatisticsSliceVariation,
 			StatisticsSliceDefault,
+			StatisticsV2Slice,
+			StatisticsV2SliceDefaultPrimaryStatisticsItem,
+			StatisticsV2SliceDefaultPrimary,
+			StatisticsV2SliceVariation,
+			StatisticsV2SliceDefault,
 			StepsSlice,
 			StepsSliceStartPrimary,
 			StepsSliceCardsPrimary,

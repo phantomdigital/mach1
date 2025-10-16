@@ -1,7 +1,6 @@
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
-import { TeamClippedShape } from "../OurTeam/team-clipped-shape";
 import { HeaderSeparator } from "@/components/ui/header-separator";
 
 /**
@@ -38,25 +37,71 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
     }
   };
 
+  // Get padding top class based on selection (responsive: smaller on mobile)
+  const getPaddingTopClass = () => {
+    switch (slice.primary.padding_top) {
+      case 'none':
+        return 'pt-0';
+      case 'small':
+        return 'pt-6 lg:pt-12';
+      case 'medium':
+        return 'pt-12 lg:pt-24';
+      case 'large':
+        return 'pt-16 lg:pt-32';
+      case 'extra-large':
+        return 'pt-24 lg:pt-48';
+      default:
+        return 'pt-12 lg:pt-24';
+    }
+  };
+
+  // Get padding bottom class based on selection (responsive: smaller on mobile)
+  const getPaddingBottomClass = () => {
+    switch (slice.primary.padding_bottom) {
+      case 'none':
+        return 'pb-0';
+      case 'small':
+        return 'pb-6 lg:pb-12';
+      case 'medium':
+        return 'pb-12 lg:pb-24';
+      case 'large':
+        return 'pb-16 lg:pb-32';
+      case 'extra-large':
+        return 'pb-24 lg:pb-48';
+      default:
+        return 'pb-12 lg:pb-24';
+    }
+  };
+
   return (
-    <section className="w-full py-16 lg:py-24 bg-white">
-      <div className={`w-full ${getMarginTopClass()} mx-auto px-4 lg:px-20`}>
+    <section className={`w-full bg-white ${getPaddingTopClass()} ${getPaddingBottomClass()}`}>
+      <div className={`w-full max-w-[110rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
         {/* Content Layout */}
         <div className={`flex flex-col ${getFlexDirection()} gap-12 lg:gap-16 items-center`}>
           
           {/* Image Section */}
           <div className="w-full lg:w-1/2">
             {slice.primary.image && slice.primary.image.url ? (
-              <TeamClippedShape className="aspect-square bg-neutral-100">
+              <div 
+                className="w-full aspect-video bg-neutral-100 overflow-hidden"
+                style={{
+                  clipPath: 'polygon(0% 0%, 98% 0%, 100% 4%, 100% 100%, 2% 100%, 0% 98%)'
+                }}
+              >
                 <PrismicNextImage
                   field={slice.primary.image}
                   className="w-full h-full object-cover"
                   alt=""
                 />
-              </TeamClippedShape>
+              </div>
             ) : (
               // Placeholder when no image is provided
-              <TeamClippedShape className="aspect-square bg-neutral-200">
+              <div 
+                className="w-full aspect-video bg-neutral-200 overflow-hidden"
+                style={{
+                  clipPath: 'polygon(0% 0%, 98% 0%, 100% 4%, 100% 100%, 2% 100%, 0% 98%)'
+                }}
+              >
                 <div className="w-full h-full flex items-center justify-center">
                   <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center">
                     <svg 
@@ -68,26 +113,26 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
                     </svg>
                   </div>
                 </div>
-              </TeamClippedShape>
+              </div>
             )}
           </div>
 
           {/* Text Section */}
           <div className="w-full lg:w-1/2 flex flex-col justify-center">
             {slice.primary.subheading && (
-              <h5 className="text-neutral-800 text-sm mb-4">
+              <h5 className="text-black text-sm mb-4">
                 {slice.primary.subheading}
               </h5>
             )}
             
             {slice.primary.heading && (
-              <h2 className="text-neutral-800 text-4xl lg:text-5xl leading-tight mb-6">
+              <h2 className="text-black leading-tight mb-6">
                 {slice.primary.heading}
               </h2>
             )}
             
             {slice.primary.description && (
-              <div className="text-neutral-600 text-base leading-relaxed space-y-4">
+              <div className="text-black leading-relaxed space-y-4">
                 {slice.primary.description.split('\n').map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}

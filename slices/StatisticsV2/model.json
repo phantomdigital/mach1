@@ -1,0 +1,109 @@
+{
+  "id": "statistics_v2",
+  "type": "SharedSlice",
+  "name": "StatisticsV2",
+  "description": "Statistics section with repeatable stat items - optimized for company metrics like fleet size, years in operation, etc.",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Our Impact in Numbers"
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "BY THE NUMBERS"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Padding",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "medium"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Bottom Padding",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "medium"
+          }
+        },
+        "statistics": {
+          "type": "Group",
+          "config": {
+            "label": "Statistics",
+            "repeat": true,
+            "fields": {
+              "number": {
+                "type": "Text",
+                "config": {
+                  "label": "Number",
+                  "placeholder": "280"
+                }
+              },
+              "suffix": {
+                "type": "Text",
+                "config": {
+                  "label": "Suffix",
+                  "placeholder": "+ (optional, e.g., +, M, K)"
+                }
+              },
+              "label": {
+                "type": "Text",
+                "config": {
+                  "label": "Label",
+                  "placeholder": "Prime Movers"
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
+

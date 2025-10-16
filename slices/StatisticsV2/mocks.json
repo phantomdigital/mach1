@@ -1,0 +1,37 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "heading": "Our Impact in Numbers",
+      "subheading": "BY THE NUMBERS",
+      "margin_top": "large",
+      "padding_top": "medium",
+      "padding_bottom": "medium",
+      "statistics": [
+        {
+          "number": "280",
+          "suffix": "+",
+          "label": "Prime Movers"
+        },
+        {
+          "number": "550",
+          "suffix": "+",
+          "label": "Trailers"
+        },
+        {
+          "number": "70",
+          "suffix": "M",
+          "label": "KM Annually"
+        },
+        {
+          "number": "900",
+          "suffix": "+",
+          "label": "Employees"
+        }
+      ]
+    },
+    "items": []
+  }
+]
+

@@ -8,6 +8,8 @@
       "description": "The conception of Ron Firestone Transport signalled the re-emergence of Ron Firestone back into the transport industry following the sale of Firestone Holdings in 2001, the company went he built from the ground up during the 1960s.\n\nWith our head office located in Wodonga on the New South Wales/Victoria border, directly in the centre of the Sydney, Melbourne Adelaide freight triangle, RFT provides regional and inter-capital city line-haul transport services across two major operating divisions - Food, Produce (either ambient or temperature controlled) & Manufactured Goods and Bulk Liquids.",
       "layout_direction": "image-left",
       "margin_top": "large",
+      "padding_top": "medium",
+      "padding_bottom": "medium",
       "image": {
         "dimensions": {
           "width": 600,

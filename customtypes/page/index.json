@@ -17,6 +17,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "statistics_v2": {
+              "type": "SharedSlice"
+            },
             "news": {
               "type": "SharedSlice"
             },

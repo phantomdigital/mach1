@@ -1,6 +1,31 @@
 [
   {
     "__TYPE__": "SharedSliceContent",
+    "variation": "start",
+    "primary": {
+      "step_number": 0,
+      "step_title": "Start",
+      "start_image": {
+        "link_type": "Media",
+        "name": "truck-animation.svg",
+        "kind": "document",
+        "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=800&fit=crop",
+        "size": "12345"
+      },
+      "start_heading": "Ready to get started?",
+      "start_description": [
+        {
+          "type": "paragraph",
+          "text": "Let's gather some details about your shipment so we can provide you with an accurate quote. This should only take a few minutes.",
+          "spans": []
+        }
+      ],
+      "start_button_text": "Start Quote"
+    },
+    "items": []
+  },
+  {
+    "__TYPE__": "SharedSliceContent",
     "variation": "cards",
     "primary": {
       "step_number": 1,

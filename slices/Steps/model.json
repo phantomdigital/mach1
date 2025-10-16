@@ -26,6 +26,13 @@
             "placeholder": "Start"
           }
         },
+        "start_image": {
+          "type": "Link",
+          "config": {
+            "label": "Start Image (SVG File Upload)",
+            "select": "media"
+          }
+        },
         "start_heading": {
           "type": "Text",
           "config": {

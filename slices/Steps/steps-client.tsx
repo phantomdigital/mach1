@@ -126,6 +126,7 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
             {/* Step 0: Start */}
             {slice.variation === "start" && (
               <StepsStart
+                image={(slice.primary as any).start_image}
                 heading={(slice.primary as any).start_heading}
                 description={(slice.primary as any).start_description}
                 buttonText={(slice.primary as any).start_button_text}
