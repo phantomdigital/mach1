@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/header/header";
 import Footer from "./components/footer/footer";
 import LenisProvider from "@/components/lenis-provider";
+import { DropdownStateProvider } from "./components/header/dropdown-state-context";
 
 import { generateMetadata as generateBaseMetadata, generateOrganizationSchema } from "@/lib/metadata";
 
@@ -19,7 +20,7 @@ const manrope = Manrope({
 
 export const metadata: Metadata = generateBaseMetadata({
   title: "Professional Logistics & Transportation Services",
-  description: "MACH1 Logistics provides expert logistics solutions including FCL/LCL import/export, dangerous goods handling, airfreight services, and specialized transportation across Australia.",
+  description: "MACH 1 Logistics provides expert logistics solutions including FCL/LCL import/export, dangerous goods handling, airfreight services, and specialized transportation across Australia.",
   keywords: ["professional logistics", "transportation services", "freight forwarding", "Australia logistics"],
 });
 
@@ -40,9 +41,11 @@ export default function RootLayout({
       </head>
       <body className={`${jetbrainsMono.variable} ${manrope.variable} font-sans antialiased`}>
           <LenisProvider>
-            <Header />
-            <main>{children}</main>
-            <Footer />
+            <DropdownStateProvider>
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </DropdownStateProvider>
           </LenisProvider>
       </body>
     </html>

@@ -2,7 +2,6 @@ import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { createClient } from "@/prismicio";
 import { NavigationDropdown } from "./navigation-dropdown";
 import { HeaderButtons } from "./header-buttons";
-import { DropdownStateProvider } from "./dropdown-state-context";
 import { ScrollDropdownCloser } from "./scroll-dropdown-closer";
 import { RegionLanguageSelector } from "./region-language-selector";
 import { MobileMenu } from "./mobile-menu";
@@ -66,11 +65,10 @@ export default async function Header() {
         )}
 
         <div className="w-full relative">
-          <DropdownStateProvider>
-            <ScrollDropdownCloser />
-            
-            {/* White background - full width */}
-            <div className="w-full bg-neutral-100 border-b-3 border-neutral-200">
+          <ScrollDropdownCloser />
+          
+          {/* White background - full width */}
+          <div className="w-full bg-neutral-100 border-b-3 border-neutral-200">
               
               {/* Content container with max-width and padding */}
               <div className="max-w-[112rem] mx-auto px-4 lg:px-8 py-3">
@@ -195,7 +193,6 @@ export default async function Header() {
                 </div>
               </div>
             </div>
-          </DropdownStateProvider>
         </div>
       </header>
     );
@@ -207,8 +204,7 @@ export default async function Header() {
         {/* No announcement bar in fallback */}
 
         <div className="w-full relative">
-          <DropdownStateProvider>
-            <ScrollDropdownCloser />
+          <ScrollDropdownCloser />
             
             {/* White background - full width */}
             <div className="w-full bg-neutral-200">
@@ -295,7 +291,6 @@ export default async function Header() {
                 </div>
               </div>
             </div>
-          </DropdownStateProvider>
         </div>
       </header>
     );
