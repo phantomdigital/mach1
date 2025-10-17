@@ -3,6 +3,11 @@ import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
 import { ImageOff } from "lucide-react";
 import ServicesButton from "./services-button";
+import {
+    ServicesGridAnimation,
+    ServiceCardAnimation,
+    ServicesRightSideAnimation,
+} from "./services-animation-wrapper";
 
 /**
  * Props for `Services`.
@@ -14,127 +19,84 @@ export type ServicesProps = SliceComponentProps<Content.ServicesSlice>;
  */
 const Services = ({ slice }: ServicesProps): React.ReactElement => {
     return (
-        <>
-
-
-            <section
-                data-slice-type={slice.slice_type}
-                data-slice-variation={slice.variation}
-                className="w-full py-16 lg:py-24 bg-white"
-            >
-                <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
-                    {/* Separator Line */}
-                    <div className="w-full max-w-[110rem] mx-auto  mb-8">
-                        <div className="w-full h-[40px] flex items-center bg-transparent">
-                            <svg
-                                width="100%"
-                                height="40"
-                                viewBox="0 0 1273 23"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="w-full h-auto"
-                            >
-                                <path
-                                    d="M0.499998 1.00003L1235.63 1C1242.96 1 1250.12 3.689 1256.12 8.70996L1272 22"
-                                    stroke="#262626"
-                                    strokeWidth="0.5"
-                                    strokeMiterlimit="10"
-                                    opacity="0.75"
-                                />
-                            </svg>
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-
-                        {/* Left Side - Services Grid */}
-                        <div className="lg:col-span-8">
-                            {slice.items && slice.items.length > 0 && (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-10 ">
-                                    {slice.items.map((item, index) => {
-                                        console.log('Service item:', index, 'has icon:', !!item.service_icon?.url);
-                                        return (
-                                            <div
-                                                key={index}
-                                                className="group hover:translate-y-[-2px] transition-transform duration-300"
-                                            >
-                                                {/* Service Icon */}
-                                                <div className="mb-4">
-                                                    <div className="w-12 h-12 flex items-start justify-start overflow-hidden">
-                                                        {item.service_icon && item.service_icon.url ? (
-                                                            <PrismicNextImage
-                                                                field={item.service_icon}
-                                                                className="w-8 h-8 object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
-                                                                alt=""
-                                                            />
-                                                        ) : (
-                                                            <ImageOff className="w-8 h-8 text-mach1-red opacity-100 transition-opacity duration-300" />
-                                                        )}
-                                                    </div>
-                                                </div>
-
-                                                {/* Service Title */}
-                                                {item.service_title && (
-                                                    <h3
-                                                        className="text-lg font-semibold text-gray-900 mb-3 leading-tight group-hover:text-black transition-colors duration-300"
-                                                        style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 600' }}
-                                                    >
-                                                        {item.service_title}
-                                                    </h3>
-                                                )}
-
-                                                {/* Service Description */}
-                                                {item.service_description && (
-                                                    <p
-                                                        className="text-sm text-gray-600 leading-relaxed"
-                                                        style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
-                                                    >
-                                                        {item.service_description}
-                                                    </p>
-                                                )}
+        <section
+            data-slice-type={slice.slice_type}
+            data-slice-variation={slice.variation}
+            className="w-full py-16 lg:py-24 bg-white"
+        >
+            <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+                    {/* Left Side - Services Grid */}
+                    <div className="lg:col-span-8">
+                        {slice.items && slice.items.length > 0 && (
+                            <ServicesGridAnimation>
+                                {slice.items.map((item, index) => (
+                                    <ServiceCardAnimation key={index} index={index}>
+                                        {/* Service Icon */}
+                                        {item.service_icon && item.service_icon.url ? (
+                                            <div className="h-14 lg:h-16 w-auto flex items-center justify-start my-8">
+                                                <PrismicNextImage
+                                                    field={item.service_icon}
+                                                    className="h-full w-auto object-contain"
+                                                    alt=""
+                                                />
                                             </div>
-                                        );
-                                    })}
-                                </div>
+                                        ) : (
+                                            <div className="h-14 lg:h-16 w-auto flex items-center justify-start mb-4">
+                                                <ImageOff className="h-12 lg:h-14 w-auto text-mach-gray" />
+                                            </div>
+                                        )}
+
+                                        {/* Service Title */}
+                                        {item.service_title && (
+                                            <h3 className="text-xl lg:text-2xl font-bold text-neutral-900 leading-tight">
+                                                {item.service_title}
+                                            </h3>
+                                        )}
+
+                                        {/* Service Description */}
+                                        {item.service_description && (
+                                            <p className="text-base lg:text-lg text-neutral-600 leading-relaxed">
+                                                {item.service_description}
+                                            </p>
+                                        )}
+                                    </ServiceCardAnimation>
+                                ))}
+                            </ServicesGridAnimation>
+                        )}
+                    </div>
+
+                    {/* Right Side - Content */}
+                    <ServicesRightSideAnimation>
+                        <div className="lg:pl-8 space-y-6">
+                            {/* Section Heading */}
+                            {slice.primary.heading && (
+                                <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight">
+                                    {slice.primary.heading}
+                                </h2>
                             )}
-                        </div>
 
-                        {/* Right Side - Content */}
-                        <div className="lg:col-span-4 flex flex-col align-start justify-start">
-                            <div className="lg:pl-8">
-                                {/* Section Heading */}
-                                {slice.primary.heading && (
-                                    <h2
-                                        className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight"
-                                        style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 700' }}
-                                    >
-                                        {slice.primary.heading}
-                                    </h2>
-                                )}
+                            {/* Section Description */}
+                            {slice.primary.description && (
+                                <p className="text-lg text-neutral-600 leading-relaxed">
+                                    {slice.primary.description}
+                                </p>
+                            )}
 
-                                {/* Section Description */}
-                                {slice.primary.description && (
-                                    <p
-                                        className="text-base text-gray-600 leading-relaxed mb-8"
-                                        style={{ fontFamily: '"nextexit-variable", sans-serif', fontVariationSettings: '"ROUN" 0, "wght" 400' }}
-                                    >
-                                        {slice.primary.description}
-                                    </p>
-                                )}
-
-                                {/* CTA Button */}
-                                {slice.primary.button_text && slice.primary.button_link && (
+                            {/* CTA Button */}
+                            {slice.primary.button_text && slice.primary.button_link && (
+                                <div className="pt-2">
                                     <ServicesButton
                                         buttonText={slice.primary.button_text}
                                         buttonLink={slice.primary.button_link}
                                     />
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
-
-                    </div>
+                    </ServicesRightSideAnimation>
                 </div>
-            </section>
-        </>
+            </div>
+        </section>
     );
 };
 

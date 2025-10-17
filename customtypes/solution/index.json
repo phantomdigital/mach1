@@ -55,6 +55,12 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "statistics_v2": {
+              "type": "SharedSlice"
+            },
+            "page_topper": {
+              "type": "SharedSlice"
+            },
             "image_clipped": {
               "type": "SharedSlice"
             },
