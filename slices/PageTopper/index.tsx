@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
-import { PrismicNextImage } from "@prismicio/next";
 import { PageTopperClient } from "./page-topper-client";
 import { PageTopperAnimation } from "./page-topper-animation";
 import { PageTopperButtons } from "./page-topper-buttons";
+import { PageTopperBgImage } from "./page-topper-bg-image";
 
 /**
  * Props for `PageTopper`.
@@ -40,22 +40,15 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
         <section className="w-full">
           {/* Dark Blue Header Section */}
           <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden h-[89vh]">
-            {/* Background Image */}
+            {/* Background Image with scale animation */}
             {slice.primary.hero_image?.url && (
-              <div className="absolute inset-0 z-0">
-                <PrismicNextImage 
-                  field={slice.primary.hero_image} 
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
+              <PageTopperBgImage heroImage={slice.primary.hero_image} />
             )}
             {/* Vignette Overlay - Dark edges, lighter center */}
             <div className="absolute inset-0 z-5 bg-gradient-to-b from-black/70 via-black/10 to-black/85"></div>
 
             {/* Content */}
-            <div className="w-full max-w-[112rem] mx-auto px-4 lg:px-8 pb-8 lg:pb-12 relative z-10">
+            <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 pb-8 lg:pb-12 relative z-10">
               <div className={getWidthClass()}>
                 {/* Header with Animation */}
                 <PageTopperAnimation 
