@@ -58,6 +58,7 @@ const routes: Route[] = [
   { type: "page", path: "/:lang?/:uid" },
   { type: "solution", path: "/:lang?/solutions/:uid" },
   { type: "news", path: "/:lang?/news/:uid" },
+  { type: "job", path: "/:lang?/job/:uid" },
   { type: "author", path: "/:lang?/authors/:uid" },
 ];
 

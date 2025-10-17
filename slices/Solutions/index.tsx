@@ -23,7 +23,7 @@ const Solutions = async ({ slice }: SolutionsProps): Promise<React.ReactElement>
       data-slice-variation={slice.variation}
       className="py-16 lg:py-24"
     >
-      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           {/* Subheading */}

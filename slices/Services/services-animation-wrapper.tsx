@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 
 interface ServicesAnimationWrapperProps {
     children: ReactNode;
+    className?: string;
 }
 
 interface ServiceCardAnimationProps {
@@ -73,21 +74,21 @@ export function ServiceCardAnimation({ children, index }: ServiceCardAnimationPr
             whileInView="visible"
             viewport={{ once: true, margin: "-50px", amount: 0.3 }}
             variants={cardVariants}
-            className="space-y-5 border-b-4 border-mach1-green px-6 py-8 lg:px-8 lg:py-10 rounded-t-sm bg-neutral-50"
+            className="space-y-5 border-b-4 border-neutral-200 px-6 py-8 lg:px-8 lg:py-10 rounded-t-sm bg-neutral-50"
         >
             {children}
         </motion.div>
     );
 }
 
-export function ServicesRightSideAnimation({ children }: ServicesAnimationWrapperProps) {
+export function ServicesRightSideAnimation({ children, className = "" }: ServicesAnimationWrapperProps) {
     return (
         <motion.div
             variants={rightSideVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="lg:col-span-4 flex flex-col justify-start"
+            className={`flex flex-col justify-start ${className}`}
         >
             {children}
         </motion.div>

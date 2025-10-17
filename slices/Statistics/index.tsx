@@ -17,7 +17,7 @@ const Statistics = ({ slice }: StatisticsProps): React.ReactElement => {
       data-slice-variation={slice.variation}
       className="w-full py-16 lg:py-24 bg-slate-50"
     >
-      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
         {/* Header Section */}
         <div className="text-center mb-16">
           {/* Subheading */}

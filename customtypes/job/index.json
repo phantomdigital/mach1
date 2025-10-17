@@ -1,0 +1,235 @@
+{
+  "id": "job",
+  "label": "Job",
+  "format": "page",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "UID",
+          "placeholder": "senior-logistics-manager"
+        }
+      },
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Job Title",
+          "placeholder": "Senior Logistics Manager"
+        }
+      },
+      "department": {
+        "type": "Select",
+        "config": {
+          "label": "Department",
+          "placeholder": "Select department",
+          "options": [
+            "Operations",
+            "Sales & Business Development",
+            "Customer Service",
+            "Technology & IT",
+            "Finance & Administration",
+            "Human Resources",
+            "Warehouse & Distribution",
+            "Transportation",
+            "Management"
+          ]
+        }
+      },
+      "location": {
+        "type": "Select",
+        "config": {
+          "label": "Location",
+          "placeholder": "Select location",
+          "options": [
+            "Sydney, NSW",
+            "Newcastle, NSW",
+            "Wollongong, NSW",
+            "Central Coast, NSW",
+            "Hunter Valley, NSW",
+            "Port Macquarie, NSW",
+            "Taree, NSW",
+            "Gunnedah, NSW",
+            "Narrabri, NSW",
+            "Moree, NSW",
+            "Tamworth, NSW",
+            "Inverell, NSW",
+            "Lismore, NSW",
+            "Ballina, NSW",
+            "Byron Bay, NSW",
+            "Tweed Heads, NSW",
+            "Gold Coast, QLD",
+            "Sunshine Coast, QLD",
+            "Brisbane, QLD",
+            "Ipswich, QLD",
+            "Toowoomba, QLD",
+            "Maryborough, QLD",
+            "Hervey Bay, QLD",
+            "Bundaberg, QLD",
+            "Rockhampton, QLD",
+            "Rocklea, QLD",
+            "Geelong, VIC",
+            "Wodonga, VIC",
+            "Albury, VIC",
+            "Shepparton, VIC",
+            "Melbourne, VIC",
+            "Brisbane, QLD",
+            "Perth, WA",
+            "Adelaide, SA",
+            "Remote",
+            "Hybrid",
+            "Multiple Locations"
+          ]
+        }
+      },
+      "employment_type": {
+        "type": "Select",
+        "config": {
+          "label": "Employment Type",
+          "placeholder": "Select employment type",
+          "options": [
+            "Full-Time",
+            "Part-Time",
+            "Contract",
+            "Casual",
+            "Internship"
+          ],
+          "default_value": "Full-Time"
+        }
+      },
+      "salary_range": {
+        "type": "Text",
+        "config": {
+          "label": "Salary Range",
+          "placeholder": "$80,000 - $120,000 per year"
+        }
+      },
+      "experience_level": {
+        "type": "Select",
+        "config": {
+          "label": "Experience Level",
+          "placeholder": "Select experience level",
+          "options": [
+            "Entry Level",
+            "Mid Level",
+            "Senior Level",
+            "Executive"
+          ]
+        }
+      },
+      "active": {
+        "type": "Boolean",
+        "config": {
+          "label": "Active Position",
+          "placeholder_false": "Inactive",
+          "placeholder_true": "Active",
+          "default_value": true
+        }
+      },
+      "featured": {
+        "type": "Boolean",
+        "config": {
+          "label": "Featured Position",
+          "placeholder_false": "Not Featured",
+          "placeholder_true": "Featured",
+          "default_value": false
+        }
+      },
+      "summary": {
+        "type": "Text",
+        "config": {
+          "label": "Job Summary",
+          "placeholder": "Brief description of the role (150-200 characters)"
+        }
+      },
+      "description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Job Description",
+          "placeholder": "Detailed description of the role and responsibilities",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading2,heading3,heading4,strong,em,hyperlink,list-item,o-list-item"
+        }
+      },
+      "responsibilities": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Key Responsibilities",
+          "placeholder": "List of main responsibilities",
+          "allowTargetBlank": false,
+          "multi": "paragraph,list-item,o-list-item,strong,em"
+        }
+      },
+      "requirements": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Requirements & Qualifications",
+          "placeholder": "Required skills, experience, and qualifications",
+          "allowTargetBlank": false,
+          "multi": "paragraph,list-item,o-list-item,strong,em"
+        }
+      },
+      "benefits": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Benefits & Perks",
+          "placeholder": "What we offer",
+          "allowTargetBlank": false,
+          "multi": "paragraph,list-item,o-list-item,strong,em"
+        }
+      },
+      "application_email": {
+        "type": "Text",
+        "config": {
+          "label": "Application Email",
+          "placeholder": "careers@mach1logistics.com.au"
+        }
+      },
+      "application_url": {
+        "type": "Link",
+        "config": {
+          "label": "External Application URL",
+          "placeholder": "Link to external application form (optional)",
+          "select": null
+        }
+      },
+      "closing_date": {
+        "type": "Date",
+        "config": {
+          "label": "Application Closing Date",
+          "placeholder": "YYYY-MM-DD"
+        }
+      }
+    },
+    "SEO & Metadata": {
+      "meta_title": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Title",
+          "placeholder": "SEO title (60 characters max)"
+        }
+      },
+      "meta_description": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Description",
+          "placeholder": "SEO description (150-160 characters)"
+        }
+      },
+      "meta_image": {
+        "type": "Image",
+        "config": {
+          "label": "Meta Image",
+          "constraint": {
+            "width": 1200,
+            "height": 630
+          },
+          "thumbnails": []
+        }
+      }
+    }
+  }
+}
+

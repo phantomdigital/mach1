@@ -17,6 +17,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "careers": {
+              "type": "SharedSlice"
+            },
             "statistics_v2": {
               "type": "SharedSlice"
             },

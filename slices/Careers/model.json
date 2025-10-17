@@ -1,0 +1,91 @@
+{
+  "id": "careers",
+  "type": "SharedSlice",
+  "name": "Careers",
+  "description": "Display current job openings with filtering",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Current Opportunities"
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "Join our team and help shape the future of logistics"
+          }
+        },
+        "show_featured_jobs": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Featured Jobs Section",
+            "placeholder_false": "No Featured",
+            "placeholder_true": "Show Featured",
+            "default_value": true
+          }
+        },
+        "featured_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Featured Jobs Heading",
+            "placeholder": "Featured Opportunities"
+          }
+        },
+        "enable_load_more": {
+          "type": "Boolean",
+          "config": {
+            "label": "Enable Load More Button",
+            "placeholder_false": "Show All",
+            "placeholder_true": "Load More",
+            "default_value": false
+          }
+        },
+        "initial_jobs_count": {
+          "type": "Number",
+          "config": {
+            "label": "Initial Jobs to Display (for Load More)",
+            "placeholder": "9",
+            "default_value": 9
+          }
+        },
+        "show_inactive_jobs": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Inactive/Closed Positions",
+            "placeholder_false": "Active Only",
+            "placeholder_true": "Show All",
+            "default_value": false
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
+

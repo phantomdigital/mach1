@@ -868,6 +868,232 @@ interface HomeDocumentData {
  */
 export type HomeDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HomeDocumentData>, "home", Lang>;
 
+/**
+ * Content for Job documents
+ */
+interface JobDocumentData {
+	/**
+	 * Job Title field in *Job*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Senior Logistics Manager
+	 * - **API ID Path**: job.title
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Department field in *Job*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select department
+	 * - **API ID Path**: job.department
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	department: prismic.SelectField<"Operations" | "Sales & Business Development" | "Customer Service" | "Technology & IT" | "Finance & Administration" | "Human Resources" | "Warehouse & Distribution" | "Transportation" | "Management">;
+	
+	/**
+	 * Location field in *Job*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select location
+	 * - **API ID Path**: job.location
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	location: prismic.SelectField<"Sydney, NSW" | "Newcastle, NSW" | "Wollongong, NSW" | "Central Coast, NSW" | "Hunter Valley, NSW" | "Port Macquarie, NSW" | "Taree, NSW" | "Gunnedah, NSW" | "Narrabri, NSW" | "Moree, NSW" | "Tamworth, NSW" | "Inverell, NSW" | "Lismore, NSW" | "Ballina, NSW" | "Byron Bay, NSW" | "Tweed Heads, NSW" | "Gold Coast, QLD" | "Sunshine Coast, QLD" | "Brisbane, QLD" | "Ipswich, QLD" | "Toowoomba, QLD" | "Maryborough, QLD" | "Hervey Bay, QLD" | "Bundaberg, QLD" | "Rockhampton, QLD" | "Rocklea, QLD" | "Geelong, VIC" | "Wodonga, VIC" | "Albury, VIC" | "Shepparton, VIC" | "Melbourne, VIC" | "Brisbane, QLD" | "Perth, WA" | "Adelaide, SA" | "Remote" | "Hybrid" | "Multiple Locations">;
+	
+	/**
+	 * Employment Type field in *Job*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select employment type
+	 * - **Default Value**: Full-Time
+	 * - **API ID Path**: job.employment_type
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	employment_type: prismic.SelectField<"Full-Time" | "Part-Time" | "Contract" | "Casual" | "Internship", "filled">;
+	
+	/**
+	 * Salary Range field in *Job*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: $80,000 - $120,000 per year
+	 * - **API ID Path**: job.salary_range
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	salary_range: prismic.KeyTextField;
+	
+	/**
+	 * Experience Level field in *Job*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select experience level
+	 * - **API ID Path**: job.experience_level
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	experience_level: prismic.SelectField<"Entry Level" | "Mid Level" | "Senior Level" | "Executive">;
+	
+	/**
+	 * Active Position field in *Job*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: job.active
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	active: prismic.BooleanField;
+	
+	/**
+	 * Featured Position field in *Job*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: job.featured
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	featured: prismic.BooleanField;
+	
+	/**
+	 * Job Summary field in *Job*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Brief description of the role (150-200 characters)
+	 * - **API ID Path**: job.summary
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	summary: prismic.KeyTextField;
+	
+	/**
+	 * Job Description field in *Job*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Detailed description of the role and responsibilities
+	 * - **API ID Path**: job.description
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	description: prismic.RichTextField;
+	
+	/**
+	 * Key Responsibilities field in *Job*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: List of main responsibilities
+	 * - **API ID Path**: job.responsibilities
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	responsibilities: prismic.RichTextField;
+	
+	/**
+	 * Requirements & Qualifications field in *Job*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Required skills, experience, and qualifications
+	 * - **API ID Path**: job.requirements
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	requirements: prismic.RichTextField;
+	
+	/**
+	 * Benefits & Perks field in *Job*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: What we offer
+	 * - **API ID Path**: job.benefits
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	benefits: prismic.RichTextField;
+	
+	/**
+	 * Application Email field in *Job*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: careers@mach1logistics.com.au
+	 * - **API ID Path**: job.application_email
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	application_email: prismic.KeyTextField;
+	
+	/**
+	 * External Application URL field in *Job*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Link to external application form (optional)
+	 * - **API ID Path**: job.application_url
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	application_url: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Application Closing Date field in *Job*
+	 *
+	 * - **Field Type**: Date
+	 * - **Placeholder**: YYYY-MM-DD
+	 * - **API ID Path**: job.closing_date
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/date
+	 */
+	closing_date: prismic.DateField;/**
+	 * Meta Title field in *Job*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: SEO title (60 characters max)
+	 * - **API ID Path**: job.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_title: prismic.KeyTextField;
+	
+	/**
+	 * Meta Description field in *Job*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: SEO description (150-160 characters)
+	 * - **API ID Path**: job.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_description: prismic.KeyTextField;
+	
+	/**
+	 * Meta Image field in *Job*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: job.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * Job document from Prismic
+ *
+ * - **API ID**: `job`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type JobDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<JobDocumentData>, "job", Lang>;
+
 type NewsDocumentDataSlicesSlice = ImageWithTextSlice | ContentBlockSlice | ImageClippedSlice
 
 /**
@@ -1018,7 +1244,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -1078,7 +1304,7 @@ interface PageDocumentData {
  */
 export type PageDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-type SolutionDocumentDataSlicesSlice = ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
+type SolutionDocumentDataSlicesSlice = StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Solution documents
@@ -1182,7 +1408,120 @@ interface SolutionDocumentData {
  */
 export type SolutionDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<SolutionDocumentData>, "solution", Lang>;
 
-export type AllDocumentTypes = AuthorDocument | FooterDocument | HeaderDocument | HomeDocument | NewsDocument | PageDocument | SolutionDocument;
+export type AllDocumentTypes = AuthorDocument | FooterDocument | HeaderDocument | HomeDocument | JobDocument | NewsDocument | PageDocument | SolutionDocument;
+
+/**
+ * Primary content in *Careers → Default → Primary*
+ */
+export interface CareersSliceDefaultPrimary {
+	/**
+	 * Heading field in *Careers → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Current Opportunities
+	 * - **API ID Path**: careers.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Subheading field in *Careers → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Join our team and help shape the future of logistics
+	 * - **API ID Path**: careers.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Show Featured Jobs Section field in *Careers → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: careers.default.primary.show_featured_jobs
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_featured_jobs: prismic.BooleanField;
+	
+	/**
+	 * Featured Jobs Heading field in *Careers → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Featured Opportunities
+	 * - **API ID Path**: careers.default.primary.featured_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	featured_heading: prismic.KeyTextField;
+	
+	/**
+	 * Enable Load More Button field in *Careers → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: careers.default.primary.enable_load_more
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	enable_load_more: prismic.BooleanField;
+	
+	/**
+	 * Initial Jobs to Display (for Load More) field in *Careers → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 9
+	 * - **Default Value**: 9
+	 * - **API ID Path**: careers.default.primary.initial_jobs_count
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	initial_jobs_count: prismic.NumberField;
+	
+	/**
+	 * Show Inactive/Closed Positions field in *Careers → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: careers.default.primary.show_inactive_jobs
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_inactive_jobs: prismic.BooleanField;
+	
+	/**
+	 * Top Margin field in *Careers → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: careers.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+}
+
+/**
+ * Default variation for Careers Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type CareersSliceDefault = prismic.SharedSliceVariation<"default", Simplify<CareersSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Careers*
+ */
+type CareersSliceVariation = CareersSliceDefault
+
+/**
+ * Careers Shared Slice
+ *
+ * - **API ID**: `careers`
+ * - **Description**: Display current job openings with filtering
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type CareersSlice = prismic.SharedSlice<"careers", CareersSliceVariation>;
 
 /**
  * Primary content in *ContactUs → Default → Primary*
@@ -2540,14 +2879,14 @@ export interface StepsSliceStartPrimary {
 	step_title: prismic.KeyTextField;
 	
 	/**
-	 * Start Image field in *Steps → Start (Step 0) → Primary*
+	 * Start Image (SVG File Upload) field in *Steps → Start (Step 0) → Primary*
 	 *
-	 * - **Field Type**: Image
+	 * - **Field Type**: Link to Media
 	 * - **Placeholder**: *None*
 	 * - **API ID Path**: steps.start.primary.start_image
-	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 * - **Documentation**: https://prismic.io/docs/fields/link-to-media
 	 */
-	start_image: prismic.ImageField<never>;
+	start_image: prismic.LinkToMediaField<prismic.FieldState, never>;
 	
 	/**
 	 * Heading field in *Steps → Start (Step 0) → Primary*
@@ -3139,6 +3478,8 @@ declare module "@prismicio/client" {
 			HomeDocument,
 			HomeDocumentData,
 			HomeDocumentDataSlicesSlice,
+			JobDocument,
+			JobDocumentData,
 			NewsDocument,
 			NewsDocumentData,
 			NewsDocumentDataSlicesSlice,
@@ -3149,6 +3490,10 @@ declare module "@prismicio/client" {
 			SolutionDocumentData,
 			SolutionDocumentDataSlicesSlice,
 			AllDocumentTypes,
+			CareersSlice,
+			CareersSliceDefaultPrimary,
+			CareersSliceVariation,
+			CareersSliceDefault,
 			ContactUsSlice,
 			ContactUsSliceDefaultPrimary,
 			ContactUsSliceDefaultItem,

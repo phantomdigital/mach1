@@ -42,9 +42,52 @@
     -moz-osx-font-smoothing: grayscale;
   }
   
-  /* H2 specific sizing */
+  /* Responsive Typography - H1 */
+  h1 {
+    font-size: 2.25rem; /* 36px on mobile */
+    line-height: 1.2;
+  }
+  
+  @media (min-width: 1024px) {
+    h1 {
+      font-size: 3.5rem; /* 56px on desktop */
+    }
+  }
+  
+  /* Responsive Typography - H2 */
   h2 {
-    font-size: 2.75rem;
+    font-size: 2rem; /* 32px on mobile */
+    line-height: 1.25;
+  }
+  
+  @media (min-width: 1024px) {
+    h2 {
+      font-size: 2.75rem; /* 44px on desktop */
+    }
+  }
+  
+  /* Responsive Typography - H3 */
+  h3 {
+    font-size: 1.5rem; /* 24px on mobile */
+    line-height: 1.3;
+  }
+  
+  @media (min-width: 1024px) {
+    h3 {
+      font-size: 2rem; /* 32px on desktop */
+    }
+  }
+  
+  /* Responsive Typography - H4 */
+  h4 {
+    font-size: 1.25rem; /* 20px on mobile */
+    line-height: 1.4;
+  }
+  
+  @media (min-width: 1024px) {
+    h4 {
+      font-size: 1.5rem; /* 24px on desktop */
+    }
   }
   
   /* Subheadings use mono font */
@@ -52,17 +95,49 @@
     font-family: var(--font-jetbrains-mono), monospace;
     font-weight: 400;
     font-style: normal;
+    font-size: 0.875rem; /* 14px on mobile */
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   
-  /* Paragraphs use Manrope */
+  @media (min-width: 1024px) {
+    h5 {
+      font-size: 1rem; /* 16px on desktop */
+    }
+  }
+  
+  /* H6 Typography */
+  h6 {
+    font-size: 0.875rem; /* 14px on mobile */
+    line-height: 1.5;
+  }
+  
+  @media (min-width: 1024px) {
+    h6 {
+      font-size: 1rem; /* 16px on desktop */
+    }
+  }
+  
+  /* Paragraphs use Manrope - Responsive */
   p {
     font-family: var(--font-manrope), sans-serif;
     font-weight: 400;
     font-style: normal;
     line-height: 1.75;
-    font-size: 1.175rem;
+    font-size: 0.875rem; /* 14px on mobile */
+  }
+  
+  @media (min-width: 768px) {
+    p {
+      font-size: 1rem; /* 16px on tablet */
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    p {
+      font-size: 1.125rem; /* 18px on desktop */
+    }
   }
   
   /* SVG rendering - keep moderate */

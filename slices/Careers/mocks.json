@@ -1,0 +1,19 @@
+[
+  {
+    "variation": "default",
+    "name": "Default",
+    "slice_type": "careers",
+    "items": [],
+    "primary": {
+      "heading": "Current Opportunities",
+      "subheading": "Join our team and help shape the future of logistics",
+      "show_featured_jobs": true,
+      "featured_heading": "Featured Opportunities",
+      "enable_load_more": false,
+      "initial_jobs_count": 9,
+      "show_inactive_jobs": false,
+      "margin_top": "large"
+    }
+  }
+]
+

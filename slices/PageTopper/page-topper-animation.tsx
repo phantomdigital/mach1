@@ -186,7 +186,7 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
       {heading && (
         <h2 
           ref={headingRef}
-          className="text-neutral-100 text-4xl lg:text-6xl font-bold leading-tight opacity-0 transform-gpu"
+          className="text-neutral-100 text-3xl md:text-4xl lg:text-6xl font-bold leading-tight opacity-0 transform-gpu"
           style={{ willChange: 'auto' }}
         >
           {heading}
@@ -197,7 +197,7 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
       {paragraph && (
         <p 
           ref={paragraphRef}
-          className="text-neutral-200 text-lg lg:text-xl max-w-3xl opacity-0 transform-gpu mt-6"
+          className="text-neutral-200 text-xs md:text-sm lg:text-lg max-w-3xl opacity-0 transform-gpu mt-6"
           style={{ willChange: 'auto' }}
         >
           {paragraph}
