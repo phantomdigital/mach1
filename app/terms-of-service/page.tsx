@@ -5,6 +5,7 @@ import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import type { Content } from "@prismicio/client";
 import { LegalDatesProvider } from "@/slices/LegalContent/legal-dates-context";
+import type { PageDocumentDataSlicesSlice } from "@/types.generated";
 
 export default async function TermsOfServicePage() {
   const client = createClient();
@@ -44,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   // Get title from the first LegalContent slice
   const legalContentSlice = page.data.slices?.find(
-    (slice: any) => slice.slice_type === "legal_content"
+    (slice: PageDocumentDataSlicesSlice) => slice.slice_type === "legal_content"
   ) as Content.LegalContentSlice | undefined;
 
   const title = legalContentSlice?.primary?.page_title || "Terms of Service";
