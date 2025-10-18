@@ -121,7 +121,7 @@ export default function StepsStart({
           {/* Bottom text container: Description + Button */}
           <div>
             {description && (
-              <div className="text-base md:text-lg text-gray-600 mb-8 prose prose-gray max-w-none [&_p]:mb-4 [&_p]:leading-relaxed">
+              <div className="prose max-w-none mb-8">
                 <PrismicRichText field={description} />
               </div>
             )}

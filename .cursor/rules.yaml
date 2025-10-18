@@ -60,6 +60,8 @@ rules:
       - "Keep server components for data fetching and layout, client components for interactivity"
       - "Minimize client component boundaries - only make interactive parts client components"
       - "Pass data from server to client components via props, not context when possible"
+      - "Mobile menu must receive all header data: navigation, buttons, AND subheader_items"
+      - "Ensure mobile menu parity with desktop - all links should be accessible on mobile"
       
   - name: "shadcn/ui Integration"
     description: "Use shadcn/ui components for consistent UI design"
@@ -173,3 +175,28 @@ rules:
       - "Don't start duplicate development processes"
       - "Check if processes are already running before starting new ones"
       - "Use background: false for commands that should complete and exit"
+      
+  - name: "Image Carousel Component"
+    description: "Infinite scrolling carousel with GSAP animations"
+    patterns:
+      - "Uses GSAP for smooth infinite loop animation"
+      - "Clipped edges: polygon clip-path with 20px angled corners matching site design"
+      - "Fixed image width, proportional height based on aspect ratio"
+      - "Pause on hover: Animation smoothly slows down (timeScale: 0)"
+      - "Configurable: image_width (px), gap (px), scroll_speed (multiplier)"
+      - "Duplicate tracks for seamless looping without gaps"
+      - "Uses spacing utilities: getSectionWrapperClass, getContainerClass"
+      - "Full-width carousel breaks out of container for edge-to-edge effect"
+      - "Header (heading + description) stays within container alignment"
+
+  - name: "Error Pages and Not Found"
+    description: "Custom 404 and error page design patterns"
+    patterns:
+      - "Use app/not-found.tsx for site-wide 404 pages"
+      - "Follow consistent design language with clipped shape containers"
+      - "Include error badge, heading, description, and helpful navigation links"
+      - "Use HeroButton components for primary actions"
+      - "Provide multiple navigation options (home, careers, solutions, quote)"
+      - "Set metadata with robots: {index: false, follow: true} for SEO"
+      - "Center content vertically and horizontally with proper spacing"
+      - "Include helpful links section with relevant site sections"

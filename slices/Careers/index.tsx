@@ -2,6 +2,8 @@ import { Content, isFilled } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { createClient } from "@/prismicio";
 import { CareersFilters } from "./careers-filters";
+import { getMarginTopClass, getContainerClass, getSectionWrapperClass } from "@/lib/spacing";
+import type { MarginTopSize } from "@/lib/spacing";
 
 /**
  * Props for `Careers`.
@@ -15,23 +17,8 @@ export type CareersProps = SliceComponentProps<Content.CareersSlice>;
 const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => {
   const client = createClient();
 
-  // Get margin top class based on selection (responsive: smaller on mobile)
-  const getMarginTopClass = () => {
-    switch (slice.primary.margin_top) {
-      case "none":
-        return "mt-0";
-      case "small":
-        return "mt-6 lg:mt-12";
-      case "medium":
-        return "mt-12 lg:mt-24";
-      case "large":
-        return "mt-30 lg:mt-48";
-      case "extra-large":
-        return "mt-40 lg:mt-64";
-      default:
-        return "mt-30 lg:mt-48";
-    }
-  };
+  // Get margin top size from slice configuration
+  const marginTopSize = (slice.primary.margin_top as MarginTopSize) || "large";
 
   // Get slice configuration
   const showFeaturedJobs = (slice.primary as any).show_featured_jobs ?? true;
@@ -57,6 +44,19 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
       allJobs = allJobs.filter((job) => job.data.active !== false);
     }
 
+    // Filter out jobs that closed more than 24 hours ago
+    allJobs = allJobs.filter((job) => {
+      const closingDate = job.data.closing_date;
+      if (!closingDate) return true; // Keep jobs without closing dates
+      
+      const closingDateTime = new Date(closingDate).getTime();
+      const now = new Date().getTime();
+      const hoursSinceClosed = (now - closingDateTime) / (1000 * 60 * 60);
+      
+      // Keep jobs that haven't closed yet, or closed within the last 24 hours
+      return hoursSinceClosed <= 24;
+    });
+
     // Separate featured jobs
     if (showFeaturedJobs) {
       featuredJobs = allJobs.filter((job) => job.data.featured === true);
@@ -70,8 +70,8 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
 
   if (featuredJobs.length === 0 && allJobs.length === 0) {
     return (
-      <section className={`w-full py-16 lg:py-24 bg-white ${getMarginTopClass()}`}>
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+      <section className={`${getSectionWrapperClass("white")} ${getMarginTopClass(marginTopSize)}`}>
+        <div className={getContainerClass()}>
           {slice.primary.heading && (
             <h2 className="text-neutral-800 text-2xl lg:text-4xl font-bold mb-8">
               {slice.primary.heading}
@@ -103,12 +103,12 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
       sameAs: baseUrl,
       logo: `${baseUrl}/logo.png`,
     },
-    jobLocation: job.data.location ? {
+    jobLocation: (job.data.city || job.data.state) ? {
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
-        addressLocality: job.data.location.split(",")[0],
-        addressRegion: job.data.location.split(",")[1]?.trim(),
+        addressLocality: job.data.city || undefined,
+        addressRegion: job.data.state || undefined,
         addressCountry: "AU",
       },
     } : undefined,
@@ -127,8 +127,8 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
     <>
       {/* Featured Jobs Section */}
       {showFeaturedJobs && featuredJobs.length > 0 && (
-        <section className={`w-full py-16 lg:py-24 bg-neutral-50 ${getMarginTopClass()}`}>
-          <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+        <section className={`${getSectionWrapperClass("neutral")} ${getMarginTopClass(marginTopSize)}`}>
+          <div className={getContainerClass()}>
             {slice.primary.featured_heading && (
               <h2 className="text-neutral-800 text-2xl lg:text-4xl font-bold mb-8 lg:mb-12">
                 {slice.primary.featured_heading}
@@ -148,8 +148,8 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
 
       {/* All Jobs Grid Section */}
       {allJobs.length > 0 && (
-        <section className={`w-full py-16 lg:py-24 bg-white ${!showFeaturedJobs || featuredJobs.length === 0 ? getMarginTopClass() : ''}`}>
-          <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+        <section className={`${getSectionWrapperClass("white")} ${!showFeaturedJobs || featuredJobs.length === 0 ? getMarginTopClass(marginTopSize) : ''}`}>
+          <div className={getContainerClass()}>
             {/* Heading */}
             {slice.primary.heading && (
               <div className="mb-8 lg:mb-12">

@@ -2,29 +2,45 @@
 
 import { useState, useEffect } from 'react';
 import { PrismicNextLink } from "@prismicio/next";
-import { X, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HeroButton } from "@/components/ui/hero-button";
+import Image from "next/image";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 interface MobileMenuProps {
   navigation: HeaderDocument["data"]["navigation"];
   buttons: HeaderDocument["data"]["buttons"];
+  subheaderItems?: HeaderDocument["data"]["subheader_items"];
 }
 
-export function MobileMenu({ navigation, buttons }: MobileMenuProps) {
+export function MobileMenu({ navigation, buttons, subheaderItems }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
     } else {
+      // Restore scroll position
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
       document.body.style.overflow = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
     }
     
     return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
       document.body.style.overflow = '';
     };
   }, [isOpen]);
@@ -42,91 +58,81 @@ export function MobileMenu({ navigation, buttons }: MobileMenuProps) {
 
   return (
     <>
-      {/* Hamburger Button */}
+      {/* Hamburger/Close Button - instant swap */}
       <button 
         onClick={toggleMenu}
-        className="lg:hidden flex items-center justify-center w-10 h-10 text-black"
+        className="xl:hidden flex items-center justify-center w-10 h-10 text-black"
         aria-label={isOpen ? "Close menu" : "Open menu"}
       >
-        <AnimatePresence mode="wait">
+        <div className="w-7 h-7 relative">
           {isOpen ? (
-            <motion.div
-              key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <X className="w-6 h-6" />
-            </motion.div>
+            <Image
+              src="/icons/Close.svg"
+              alt="Close"
+              fill
+              className="object-contain"
+            />
           ) : (
-            <motion.svg
-              key="menu"
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </motion.svg>
+            <Image
+              src="/icons/Hamburger.svg"
+              alt="Menu"
+              fill
+              className="object-contain"
+            />
           )}
-        </AnimatePresence>
+        </div>
       </button>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Panel - Slides up to meet header */}
       <AnimatePresence>
         {isOpen && (
           <motion.div 
-            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-            onClick={toggleMenu}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Mobile Menu Panel */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            className="fixed top-0 right-0 h-full w-[85%] max-w-sm bg-white z-50 lg:hidden overflow-y-auto shadow-2xl"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
+            className="fixed left-0 right-0 bg-neutral-50 z-40 xl:hidden overflow-hidden border-t-2 border-gray-200"
+            style={{ 
+              top: 'var(--header-height, 120px)',
+              bottom: 0
+            }}
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
             transition={{ 
-              type: "spring",
-              damping: 30,
-              stiffness: 300
+              duration: 0.4,
+              ease: [0.25, 0.1, 0.25, 1]
             }}
           >
-            {/* Menu Header */}
-            <motion.div 
-              className="flex items-center justify-between p-6 border-b border-gray-200"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <h2 className="text-lg font-semibold text-black">Menu</h2>
-              <button 
-                onClick={toggleMenu}
-                className="flex items-center justify-center w-8 h-8 text-black hover:bg-gray-100 rounded-full transition-colors"
-                aria-label="Close menu"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </motion.div>
 
-            {/* Menu Content */}
-            <div className="p-6">
-              {/* Navigation Items */}
+            {/* Menu Content - Scrollable container */}
+            <div 
+              className="px-6 py-6 flex flex-col h-full overflow-y-auto overscroll-contain"
+              style={{ WebkitOverflowScrolling: 'touch' }}
+            >
+              {/* Action Buttons - Top Priority */}
+              {buttons && buttons.length > 0 && (
+                <motion.div 
+                  className="space-y-3 mb-6 pb-6 border-b border-gray-200"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 }}
+                >
+                  {buttons.map((button, index) => (
+                    <div key={index} className="w-full">
+                      <HeroButton asChild>
+                        <PrismicNextLink
+                          field={button.link}
+                          className="w-full flex justify-center"
+                          onClick={toggleMenu}
+                        >
+                          {button.label}
+                        </PrismicNextLink>
+                      </HeroButton>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+
+              {/* Main Navigation Items */}
               {navigation && navigation.length > 0 && (
-                <nav className="space-y-2 mb-8">
+                <nav className="space-y-2 mb-6">
                   {navigation.map((item: HeaderDocumentDataNavigationItem, index: number) => {
                     const hasDropdown = item.has_dropdown && item.dropdown_items && item.dropdown_items.length > 0;
                     const isDropdownOpen = openDropdownIndex === index;
@@ -136,9 +142,9 @@ export function MobileMenu({ navigation, buttons }: MobileMenuProps) {
                       return (
                         <motion.div
                           key={index}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.1 + (index * 0.05) }}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 + (index * 0.05) }}
                         >
                           <PrismicNextLink
                             field={item.link}
@@ -155,9 +161,9 @@ export function MobileMenu({ navigation, buttons }: MobileMenuProps) {
                     return (
                       <motion.div 
                         key={index}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 + (index * 0.05) }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 + (index * 0.05) }}
                       >
                         <button
                           onClick={() => toggleDropdown(index)}
@@ -239,30 +245,32 @@ export function MobileMenu({ navigation, buttons }: MobileMenuProps) {
                 </nav>
               )}
 
-              {/* Action Buttons */}
-              {buttons && buttons.length > 0 && (
+              {/* Utility Links (Sub-header) - Bottom */}
+              {subheaderItems && subheaderItems.length > 0 && (
                 <motion.div 
-                  className="space-y-3 pt-4 border-t border-gray-200"
+                  className="pt-6 pb-2 border-t border-gray-200"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + (navigation?.length || 0) * 0.05 }}
+                  transition={{ delay: 0.4 }}
                 >
-                  {buttons.map((button, index) => (
-                    <div key={index} className="w-full">
-                      <HeroButton asChild>
-                        <PrismicNextLink
-                          field={button.link}
-                          className="w-full flex justify-center"
-                          onClick={toggleMenu}
-                        >
-                          {button.label}
-                        </PrismicNextLink>
-                      </HeroButton>
-                    </div>
-                  ))}
+                  <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center">
+                    {subheaderItems.map((item, index) => (
+                      <PrismicNextLink
+                        key={index}
+                        field={item.link}
+                        className="text-xs text-gray-600 hover:text-dark-blue transition-colors font-medium"
+                        onClick={toggleMenu}
+                      >
+                        {item.label}
+                      </PrismicNextLink>
+                    ))}
+                  </div>
                 </motion.div>
               )}
             </div>
+            
+            {/* Safe area padding for iOS */}
+            <div className="h-[env(safe-area-inset-bottom)]" />
           </motion.div>
         )}
       </AnimatePresence>

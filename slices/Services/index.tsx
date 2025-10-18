@@ -45,7 +45,7 @@ const Services = ({ slice }: ServicesProps): React.ReactElement => {
 
                             {/* CTA Button */}
                             {slice.primary.button_text && slice.primary.button_link && (
-                                <div className="pt-2">
+                                <div className="pt-2 inline-flex">
                                     <ServicesButton
                                         buttonText={slice.primary.button_text}
                                         buttonLink={slice.primary.button_link}

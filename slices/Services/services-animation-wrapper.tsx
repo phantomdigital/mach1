@@ -88,7 +88,7 @@ export function ServicesRightSideAnimation({ children, className = "" }: Service
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className={`flex flex-col justify-start ${className}`}
+            className={`flex flex-col justify-start lg:sticky lg:top-24 lg:self-start ${className}`}
         >
             {children}
         </motion.div>

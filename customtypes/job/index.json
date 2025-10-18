@@ -38,49 +38,29 @@
           ]
         }
       },
-      "location": {
+      "city": {
+        "type": "Text",
+        "config": {
+          "label": "City/Location",
+          "placeholder": "e.g., Sydney, Newcastle, Remote"
+        }
+      },
+      "state": {
         "type": "Select",
         "config": {
-          "label": "Location",
-          "placeholder": "Select location",
+          "label": "State/Territory",
+          "placeholder": "Select state",
           "options": [
-            "Sydney, NSW",
-            "Newcastle, NSW",
-            "Wollongong, NSW",
-            "Central Coast, NSW",
-            "Hunter Valley, NSW",
-            "Port Macquarie, NSW",
-            "Taree, NSW",
-            "Gunnedah, NSW",
-            "Narrabri, NSW",
-            "Moree, NSW",
-            "Tamworth, NSW",
-            "Inverell, NSW",
-            "Lismore, NSW",
-            "Ballina, NSW",
-            "Byron Bay, NSW",
-            "Tweed Heads, NSW",
-            "Gold Coast, QLD",
-            "Sunshine Coast, QLD",
-            "Brisbane, QLD",
-            "Ipswich, QLD",
-            "Toowoomba, QLD",
-            "Maryborough, QLD",
-            "Hervey Bay, QLD",
-            "Bundaberg, QLD",
-            "Rockhampton, QLD",
-            "Rocklea, QLD",
-            "Geelong, VIC",
-            "Wodonga, VIC",
-            "Albury, VIC",
-            "Shepparton, VIC",
-            "Melbourne, VIC",
-            "Brisbane, QLD",
-            "Perth, WA",
-            "Adelaide, SA",
+            "NSW",
+            "QLD",
+            "VIC",
+            "WA",
+            "SA",
+            "TAS",
+            "NT",
+            "ACT",
             "Remote",
-            "Hybrid",
-            "Multiple Locations"
+            "Multiple States"
           ]
         }
       },

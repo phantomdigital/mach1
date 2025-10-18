@@ -28,11 +28,11 @@ export function CareersFilters({
   isFeatured,
 }: CareersFiltersProps) {
   const [selectedDepartment, setSelectedDepartment] = useState<string>("All");
-  const [selectedLocation, setSelectedLocation] = useState<string>("All");
+  const [selectedState, setSelectedState] = useState<string>("All");
   const [selectedEmploymentType, setSelectedEmploymentType] = useState<string>("All");
   const [displayCount, setDisplayCount] = useState(initialCount);
 
-  // Get unique departments, locations, and employment types
+  // Get unique departments, states, and employment types
   const departments = useMemo(() => {
     const depts = new Set<string>();
     allJobs.forEach((job) => {
@@ -41,12 +41,12 @@ export function CareersFilters({
     return ["All", ...Array.from(depts).sort()];
   }, [allJobs]);
 
-  const locations = useMemo(() => {
-    const locs = new Set<string>();
+  const states = useMemo(() => {
+    const stateSet = new Set<string>();
     allJobs.forEach((job) => {
-      if (job.data.location) locs.add(job.data.location);
+      if (job.data.state) stateSet.add(job.data.state);
     });
-    return ["All", ...Array.from(locs).sort()];
+    return ["All", ...Array.from(stateSet).sort()];
   }, [allJobs]);
 
   const employmentTypes = useMemo(() => {
@@ -65,8 +65,8 @@ export function CareersFilters({
         return false;
       }
 
-      // Location filter
-      if (selectedLocation !== "All" && job.data.location !== selectedLocation) {
+      // State filter
+      if (selectedState !== "All" && job.data.state !== selectedState) {
         return false;
       }
 
@@ -77,7 +77,7 @@ export function CareersFilters({
 
       return true;
     });
-  }, [allJobs, selectedDepartment, selectedLocation, selectedEmploymentType]);
+  }, [allJobs, selectedDepartment, selectedState, selectedEmploymentType]);
 
   // Jobs to display (for load more functionality)
   const displayedJobs = enableLoadMore
@@ -115,16 +115,16 @@ export function CareersFilters({
 
           <div className="flex-1">
             <label className="block text-sm font-medium text-neutral-700 mb-2">
-              Filter by Location
+              Filter by State
             </label>
-            <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+            <Select value={selectedState} onValueChange={setSelectedState}>
               <SelectTrigger>
-                <SelectValue placeholder="All Locations" />
+                <SelectValue placeholder="All States" />
               </SelectTrigger>
               <SelectContent>
-                {locations.map((location) => (
-                  <SelectItem key={location} value={location}>
-                    {location === "All" ? "All Locations" : location}
+                {states.map((state) => (
+                  <SelectItem key={state} value={state}>
+                    {state === "All" ? "All States" : state}
                   </SelectItem>
                 ))}
               </SelectContent>

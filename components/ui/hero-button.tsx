@@ -20,7 +20,7 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
       return React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
         ...childProps,
         className: cn(
-          "inline-flex items-center bg-dark-blue text-white rounded-2xl pl-6 pr-1 h-[45px] w-auto font-medium text-[13px] uppercase transition-all duration-200 gap-3 group",
+          "flex items-center justify-between bg-dark-blue text-white rounded-2xl pl-6 pr-1 h-[45px] font-medium text-[13px] uppercase transition-all duration-200 group",
           childProps.className,
           className
         ),
@@ -35,34 +35,36 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
         onMouseLeave: () => setIsHovered(false),
         children: (
           <>
-            <div className="relative overflow-hidden h-[1em] flex items-center justify-center whitespace-nowrap" style={{ lineHeight: '1' }}>
-              <motion.span
-                className="flex items-center justify-center h-full"
-                animate={{
-                  y: isHovered ? "-150%" : "0%"
-                }}
-                transition={{
-                  duration: 0.35,
-                  ease: [0.25, 0.46, 0.45, 0.94]
-                }}
-              >
-                {childProps.children}
-              </motion.span>
-              <motion.span
-                className="absolute inset-0 flex items-center justify-center"
-                initial={{ y: "150%" }}
-                animate={{
-                  y: isHovered ? "0%" : "150%"
-                }}
-                transition={{
-                  duration: 0.35,
-                  ease: [0.25, 0.46, 0.45, 0.94]
-                }}
-              >
-                {childProps.children}
-              </motion.span>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="relative overflow-hidden h-[1em] flex items-center justify-center whitespace-nowrap" style={{ lineHeight: '1' }}>
+                <motion.span
+                  className="flex items-center justify-center h-full"
+                  animate={{
+                    y: isHovered ? "-150%" : "0%"
+                  }}
+                  transition={{
+                    duration: 0.35,
+                    ease: [0.25, 0.46, 0.45, 0.94]
+                  }}
+                >
+                  {childProps.children}
+                </motion.span>
+                <motion.span
+                  className="absolute inset-0 flex items-center justify-center"
+                  initial={{ y: "150%" }}
+                  animate={{
+                    y: isHovered ? "0%" : "150%"
+                  }}
+                  transition={{
+                    duration: 0.35,
+                    ease: [0.25, 0.46, 0.45, 0.94]
+                  }}
+                >
+                  {childProps.children}
+                </motion.span>
+              </div>
             </div>
-            <div className="w-[37px] h-[37px] bg-white rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+            <div className="w-[37px] h-[37px] bg-white rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden ml-3">
               <motion.svg 
                 width="11" 
                 height="11" 
@@ -71,8 +73,8 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
                 xmlns="http://www.w3.org/2000/svg"
                 className="absolute"
                 animate={{
-                  x: isHovered ? "150%" : "0%",
-                  y: isHovered ? "-150%" : "0%"
+                  x: isHovered ? "169%" : "0%",
+                  y: isHovered ? "-169%" : "0%"
                 }}
                 transition={{
                   duration: 0.35,
@@ -88,10 +90,10 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg"
                 className="absolute"
-                initial={{ x: "-200%", y: "200%" }}
+                initial={{ x: "-195%", y: "195%" }}
                 animate={{
-                  x: isHovered ? "0%" : "-200%",
-                  y: isHovered ? "0%" : "200%"
+                  x: isHovered ? "0%" : "-195%",
+                  y: isHovered ? "0%" : "195%"
                 }}
                 transition={{
                   duration: 0.35,
@@ -123,7 +125,7 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
     return (
       <motion.button
         className={cn(
-          "inline-flex items-center bg-dark-blue text-white rounded-2xl pl-6 pr-1 h-[45px] w-auto font-medium text-[13px] uppercase transition-all duration-200 gap-3 group",
+          "flex items-center justify-between bg-dark-blue text-white rounded-2xl pl-6 pr-1 h-[45px] font-medium text-[13px] uppercase transition-all duration-200 group",
           className
         )}
         style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontWeight: 400, fontStyle: 'normal', lineHeight: '1' }}
@@ -132,34 +134,36 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
         onHoverEnd={() => setIsHovered(false)}
         {...buttonProps}
       >
-        <div className="relative overflow-hidden h-[1em] flex items-center justify-center whitespace-nowrap" style={{ lineHeight: '1' }}>
-          <motion.span
-            className="flex items-center justify-center h-full"
-            animate={{
-              y: isHovered ? "-150%" : "0%"
-            }}
-            transition={{
-              duration: 0.35,
-              ease: [0.25, 0.46, 0.45, 0.94]
-            }}
-          >
-            {children}
-          </motion.span>
-          <motion.span
-            className="absolute inset-0 flex items-center justify-center"
-            initial={{ y: "150%" }}
-            animate={{
-              y: isHovered ? "0%" : "150%"
-            }}
-            transition={{
-              duration: 0.35,
-              ease: [0.25, 0.46, 0.45, 0.94]
-            }}
-          >
-            {children}
-          </motion.span>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="relative overflow-hidden h-[1em] flex items-center justify-center whitespace-nowrap" style={{ lineHeight: '1' }}>
+            <motion.span
+              className="flex items-center justify-center h-full"
+              animate={{
+                y: isHovered ? "-150%" : "0%"
+              }}
+              transition={{
+                duration: 0.35,
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }}
+            >
+              {children}
+            </motion.span>
+            <motion.span
+              className="absolute inset-0 flex items-center justify-center"
+              initial={{ y: "150%" }}
+              animate={{
+                y: isHovered ? "0%" : "150%"
+              }}
+              transition={{
+                duration: 0.35,
+                ease: [0.25, 0.46, 0.45, 0.94]
+              }}
+            >
+              {children}
+            </motion.span>
+          </div>
         </div>
-        <div className="w-[37px] h-[37px] bg-white rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+        <div className="w-[37px] h-[37px] bg-white rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden ml-3">
           <motion.svg 
             width="11" 
             height="11" 

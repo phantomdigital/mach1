@@ -73,7 +73,7 @@ export default async function Header() {
               {/* Content container with max-width and padding */}
               <div className="max-w-[112rem] mx-auto px-4 lg:px-8 py-3">
                 {/* Desktop Layout: Grid with Logo and Navigation */}
-                <div className="hidden lg:grid lg:grid-cols-[auto_1fr] gap-8">
+                <div className="hidden xl:grid xl:grid-cols-[auto_1fr] gap-8">
                   
                   {/* Left Column: Logo (spans full height) */}
                   <div className="flex items-center">
@@ -130,10 +130,10 @@ export default async function Header() {
                     )}
 
                     {/* Bottom: Main Navigation & Buttons */}
-                    <div className="flex items-center justify-between gap-8">
+                    <div className="flex items-center justify-between gap-4 xl:gap-8">
                       {/* Centered Navigation */}
                       <div className="flex-1 flex justify-center">
-                        <nav className="flex items-center gap-8">
+                        <nav className="flex items-center gap-4 xl:gap-8">
                           {header.data.navigation && header.data.navigation.length > 0 && (
                             header.data.navigation.map((item: HeaderDocumentDataNavigationItem, index: number) => (
                               <NavigationItem key={index} item={item} index={index} />
@@ -154,7 +154,7 @@ export default async function Header() {
                 </div>
 
                 {/* Mobile Layout: Simplified header with logo and menu */}
-                <div className="flex lg:hidden items-center justify-between">
+                <div className="flex xl:hidden items-center justify-between">
                   {/* Logo */}
                   <div className="flex items-center">
                     <PrismicNextLink href="/" className="block">
@@ -189,6 +189,7 @@ export default async function Header() {
                   <MobileMenu 
                     navigation={header.data.navigation} 
                     buttons={header.data.buttons}
+                    subheaderItems={header.data.show_subheader ? header.data.subheader_items : undefined}
                   />
                 </div>
               </div>
@@ -212,7 +213,7 @@ export default async function Header() {
               {/* Content container with max-width and padding */}
               <div className="max-w-[112rem] mx-auto px-4 lg:px-8 py-3">
                 {/* Desktop Layout: Grid with Logo and Navigation */}
-                <div className="hidden lg:grid lg:grid-cols-[auto_1fr] gap-8">
+                <div className="hidden xl:grid xl:grid-cols-[auto_1fr] gap-8">
                   
                   {/* Left Column: Logo Placeholder (spans full height) */}
                   <div className="flex items-center">
@@ -265,7 +266,7 @@ export default async function Header() {
                 </div>
 
                 {/* Mobile Layout: Simplified header with logo */}
-                <div className="flex lg:hidden items-center justify-between">
+                <div className="flex xl:hidden items-center justify-between">
                   {/* Logo */}
                   <div className="flex items-center">
                     <PrismicNextLink href="/" className="block">
@@ -285,8 +286,9 @@ export default async function Header() {
 
                   {/* Mobile Menu - Fallback with empty data */}
                   <MobileMenu 
-                    navigation={[]} 
+                    navigation={[]}
                     buttons={[]}
+                    subheaderItems={[]}
                   />
                 </div>
               </div>

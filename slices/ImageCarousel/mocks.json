@@ -1,0 +1,73 @@
+[
+  {
+    "variation": "default",
+    "version": "initial",
+    "items": [
+      {
+        "image": {
+          "dimensions": {
+            "width": 400,
+            "height": 300
+          },
+          "alt": "Logistics warehouse",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=300&fit=crop"
+        },
+        "alt_text": "Logistics warehouse"
+      },
+      {
+        "image": {
+          "dimensions": {
+            "width": 400,
+            "height": 300
+          },
+          "alt": "Delivery truck",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=400&h=300&fit=crop"
+        },
+        "alt_text": "Delivery truck"
+      },
+      {
+        "image": {
+          "dimensions": {
+            "width": 400,
+            "height": 300
+          },
+          "alt": "Package sorting",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=400&h=300&fit=crop"
+        },
+        "alt_text": "Package sorting"
+      },
+      {
+        "image": {
+          "dimensions": {
+            "width": 400,
+            "height": 300
+          },
+          "alt": "Distribution center",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=400&h=300&fit=crop"
+        },
+        "alt_text": "Distribution center"
+      }
+    ],
+    "primary": {
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large",
+      "heading": "Our Facilities",
+      "description": [
+        {
+          "type": "paragraph",
+          "text": "Explore our state-of-the-art logistics facilities across Australia.",
+          "spans": []
+        }
+      ],
+      "image_width": 400,
+      "scroll_speed": 1,
+      "gap": 32
+    }
+  }
+]
+

@@ -40,6 +40,28 @@ export default async function JobPage({
   const closingDate = page.data.closing_date;
   const hasClosingDate = closingDate && closingDate !== null;
   const isPastClosingDate = hasClosingDate && new Date(closingDate) < new Date();
+  
+  // Hide job completely if it's been more than 24 hours since closing date
+  if (hasClosingDate && isPastClosingDate) {
+    const closingDateTime = new Date(closingDate).getTime();
+    const now = new Date().getTime();
+    const hoursSinceClosed = (now - closingDateTime) / (1000 * 60 * 60);
+    
+    if (hoursSinceClosed > 24) {
+      notFound();
+    }
+  }
+  
+  // Also hide if manually set to inactive and past closing date
+  if (!isActive && isPastClosingDate && hasClosingDate) {
+    const closingDateTime = new Date(closingDate).getTime();
+    const now = new Date().getTime();
+    const hoursSinceClosed = (now - closingDateTime) / (1000 * 60 * 60);
+    
+    if (hoursSinceClosed > 24) {
+      notFound();
+    }
+  }
 
   // Get application method
   const applicationEmail = page.data.application_email;
@@ -94,13 +116,15 @@ export default async function JobPage({
 
             {/* Job Meta */}
             <div className="flex flex-wrap items-center gap-4 text-base text-neutral-600 mb-8 pb-8 border-b border-neutral-200">
-              {page.data.location && (
+              {(page.data.city || page.data.state) && (
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
-                  <span>{page.data.location}</span>
+                  <span>
+                    {[page.data.city, page.data.state].filter(Boolean).join(", ")}
+                  </span>
                 </div>
               )}
               {page.data.employment_type && (
@@ -189,16 +213,7 @@ export default async function JobPage({
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
                   About the Role
                 </h2>
-                <div className="prose prose-lg prose-neutral max-w-none
-                               prose-headings:font-bold prose-headings:text-neutral-800
-                               prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4
-                               prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
-                               prose-h4:text-lg prose-h4:mt-4 prose-h4:mb-2
-                               prose-p:text-neutral-600 prose-p:leading-relaxed prose-p:mb-4
-                               prose-strong:text-neutral-800 prose-strong:font-semibold
-                               prose-ul:text-neutral-600 prose-ul:my-4 prose-ul:pl-6
-                               prose-ol:text-neutral-600 prose-ol:my-4 prose-ol:pl-6
-                               prose-li:mb-2">
+                <div className="prose max-w-none">
                   <PrismicRichText field={page.data.description} />
                 </div>
               </div>
@@ -210,12 +225,7 @@ export default async function JobPage({
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
                   Key Responsibilities
                 </h2>
-                <div className="prose prose-lg prose-neutral max-w-none
-                               prose-p:text-neutral-600 prose-p:leading-relaxed prose-p:mb-4
-                               prose-strong:text-neutral-800 prose-strong:font-semibold
-                               prose-ul:text-neutral-600 prose-ul:my-4 prose-ul:pl-6
-                               prose-ol:text-neutral-600 prose-ol:my-4 prose-ol:pl-6
-                               prose-li:mb-2">
+                <div className="prose max-w-none">
                   <PrismicRichText field={page.data.responsibilities} />
                 </div>
               </div>
@@ -227,12 +237,7 @@ export default async function JobPage({
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
                   Requirements & Qualifications
                 </h2>
-                <div className="prose prose-lg prose-neutral max-w-none
-                               prose-p:text-neutral-600 prose-p:leading-relaxed prose-p:mb-4
-                               prose-strong:text-neutral-800 prose-strong:font-semibold
-                               prose-ul:text-neutral-600 prose-ul:my-4 prose-ul:pl-6
-                               prose-ol:text-neutral-600 prose-ol:my-4 prose-ol:pl-6
-                               prose-li:mb-2">
+                <div className="prose max-w-none">
                   <PrismicRichText field={page.data.requirements} />
                 </div>
               </div>
@@ -244,12 +249,7 @@ export default async function JobPage({
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
                   What We Offer
                 </h2>
-                <div className="prose prose-lg prose-neutral max-w-none
-                               prose-p:text-neutral-600 prose-p:leading-relaxed prose-p:mb-4
-                               prose-strong:text-neutral-800 prose-strong:font-semibold
-                               prose-ul:text-neutral-600 prose-ul:my-4 prose-ul:pl-6
-                               prose-ol:text-neutral-600 prose-ol:my-4 prose-ol:pl-6
-                               prose-li:mb-2">
+                <div className="prose max-w-none">
                   <PrismicRichText field={page.data.benefits} />
                 </div>
               </div>
@@ -352,12 +352,12 @@ export default async function JobPage({
               name: "MACH1 Logistics",
               sameAs: "https://mach1logistics.com.au",
             },
-            jobLocation: page.data.location ? {
+            jobLocation: (page.data.city || page.data.state) ? {
               "@type": "Place",
               address: {
                 "@type": "PostalAddress",
-                addressLocality: page.data.location.split(",")[0],
-                addressRegion: page.data.location.split(",")[1]?.trim(),
+                addressLocality: page.data.city || undefined,
+                addressRegion: page.data.state || undefined,
                 addressCountry: "AU",
               },
             } : undefined,
@@ -419,8 +419,24 @@ export async function generateStaticParams() {
   const client = createClient();
   const pages = await client.getAllByType("job");
 
-  return pages.map((page) => {
+  // Filter out jobs that closed more than 24 hours ago
+  const activePages = pages.filter((page) => {
+    const closingDate = page.data.closing_date;
+    if (!closingDate) return true; // Keep jobs without closing dates
+    
+    const closingDateTime = new Date(closingDate).getTime();
+    const now = new Date().getTime();
+    const hoursSinceClosed = (now - closingDateTime) / (1000 * 60 * 60);
+    
+    // Keep jobs that haven't closed yet, or closed within the last 24 hours
+    return hoursSinceClosed <= 24;
+  });
+
+  return activePages.map((page) => {
     return { uid: page.uid };
   });
 }
+
+// Revalidate every hour to check for expired jobs
+export const revalidate = 3600;
 

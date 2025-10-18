@@ -1,0 +1,100 @@
+{
+  "id": "image_carousel",
+  "type": "SharedSlice",
+  "name": "ImageCarousel",
+  "description": "ImageCarousel",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Margin Top",
+            "placeholder": "Select top margin size",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top (pt)",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom (pb)",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Optional heading for the carousel"
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "Optional description",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "image_width": {
+          "type": "Number",
+          "config": {
+            "label": "Image Width (px)",
+            "placeholder": "e.g., 400"
+          }
+        },
+        "scroll_speed": {
+          "type": "Number",
+          "config": {
+            "label": "Scroll Speed",
+            "placeholder": "1 = normal, 2 = faster, 0.5 = slower"
+          }
+        },
+        "gap": {
+          "type": "Number",
+          "config": {
+            "label": "Gap Between Images (px)",
+            "placeholder": "e.g., 32"
+          }
+        }
+      },
+      "items": {
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "alt_text": {
+          "type": "Text",
+          "config": {
+            "label": "Alt Text",
+            "placeholder": "Describe the image"
+          }
+        }
+      }
+    }
+  ]
+}
+

@@ -895,15 +895,26 @@ interface JobDocumentData {
 	department: prismic.SelectField<"Operations" | "Sales & Business Development" | "Customer Service" | "Technology & IT" | "Finance & Administration" | "Human Resources" | "Warehouse & Distribution" | "Transportation" | "Management">;
 	
 	/**
-	 * Location field in *Job*
+	 * City/Location field in *Job*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: e.g., Sydney, Newcastle, Remote
+	 * - **API ID Path**: job.city
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	city: prismic.KeyTextField;
+	
+	/**
+	 * State/Territory field in *Job*
 	 *
 	 * - **Field Type**: Select
-	 * - **Placeholder**: Select location
-	 * - **API ID Path**: job.location
+	 * - **Placeholder**: Select state
+	 * - **API ID Path**: job.state
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	location: prismic.SelectField<"Sydney, NSW" | "Newcastle, NSW" | "Wollongong, NSW" | "Central Coast, NSW" | "Hunter Valley, NSW" | "Port Macquarie, NSW" | "Taree, NSW" | "Gunnedah, NSW" | "Narrabri, NSW" | "Moree, NSW" | "Tamworth, NSW" | "Inverell, NSW" | "Lismore, NSW" | "Ballina, NSW" | "Byron Bay, NSW" | "Tweed Heads, NSW" | "Gold Coast, QLD" | "Sunshine Coast, QLD" | "Brisbane, QLD" | "Ipswich, QLD" | "Toowoomba, QLD" | "Maryborough, QLD" | "Hervey Bay, QLD" | "Bundaberg, QLD" | "Rockhampton, QLD" | "Rocklea, QLD" | "Geelong, VIC" | "Wodonga, VIC" | "Albury, VIC" | "Shepparton, VIC" | "Melbourne, VIC" | "Brisbane, QLD" | "Perth, WA" | "Adelaide, SA" | "Remote" | "Hybrid" | "Multiple Locations">;
+	state: prismic.SelectField<"NSW" | "QLD" | "VIC" | "WA" | "SA" | "TAS" | "NT" | "ACT" | "Remote" | "Multiple States">;
 	
 	/**
 	 * Employment Type field in *Job*
@@ -1244,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -1854,6 +1865,120 @@ type HeroSliceVariation = HeroSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
+
+/**
+ * Primary content in *ImageCarousel → Default → Primary*
+ */
+export interface ImageCarouselSliceDefaultPrimary {
+	/**
+	 * Margin Top field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top margin size
+	 * - **Default Value**: large
+	 * - **API ID Path**: image_carousel.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Heading field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Optional heading for the carousel
+	 * - **API ID Path**: image_carousel.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Optional description
+	 * - **API ID Path**: image_carousel.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	description: prismic.RichTextField;
+	
+	/**
+	 * Image Width (px) field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: e.g., 400
+	 * - **API ID Path**: image_carousel.default.primary.image_width
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	image_width: prismic.NumberField;
+	
+	/**
+	 * Scroll Speed field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 1 = normal, 2 = faster, 0.5 = slower
+	 * - **API ID Path**: image_carousel.default.primary.scroll_speed
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	scroll_speed: prismic.NumberField;
+	
+	/**
+	 * Gap Between Images (px) field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: e.g., 32
+	 * - **API ID Path**: image_carousel.default.primary.gap
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	gap: prismic.NumberField;
+}
+
+/**
+ * Primary content in *ImageCarousel → Items*
+ */
+export interface ImageCarouselSliceDefaultItem {
+	/**
+	 * Image field in *ImageCarousel → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: image_carousel.items[].image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Alt Text field in *ImageCarousel → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Describe the image
+	 * - **API ID Path**: image_carousel.items[].alt_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	alt_text: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for ImageCarousel Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ImageCarouselSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ImageCarouselSliceDefaultPrimary>, Simplify<ImageCarouselSliceDefaultItem>>;
+
+/**
+ * Slice variation for *ImageCarousel*
+ */
+type ImageCarouselSliceVariation = ImageCarouselSliceDefault
+
+/**
+ * ImageCarousel Shared Slice
+ *
+ * - **API ID**: `image_carousel`
+ * - **Description**: ImageCarousel
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ImageCarouselSlice = prismic.SharedSlice<"image_carousel", ImageCarouselSliceVariation>;
 
 /**
  * Primary content in *ImageClipped → Default → Primary*
@@ -3508,6 +3633,11 @@ declare module "@prismicio/client" {
 			HeroSliceDefaultItem,
 			HeroSliceVariation,
 			HeroSliceDefault,
+			ImageCarouselSlice,
+			ImageCarouselSliceDefaultPrimary,
+			ImageCarouselSliceDefaultItem,
+			ImageCarouselSliceVariation,
+			ImageCarouselSliceDefault,
 			ImageClippedSlice,
 			ImageClippedSliceDefaultPrimary,
 			ImageClippedSliceVariation,

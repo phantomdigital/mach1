@@ -186,23 +186,7 @@ export default async function NewsArticlePage({
 
             {/* Article Content */}
             {page.data.content && (
-              <div className="prose prose-lg prose-neutral max-w-none mb-12
-                             prose-headings:font-bold prose-headings:text-neutral-800
-                             prose-h1:text-4xl prose-h1:mt-12 prose-h1:mb-6
-                             prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-5
-                             prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                             prose-h4:text-xl prose-h4:mt-6 prose-h4:mb-3
-                             prose-p:text-neutral-600 prose-p:leading-relaxed prose-p:mb-6
-                             prose-a:text-dark-blue prose-a:no-underline prose-a:border-b-2 prose-a:border-transparent hover:prose-a:border-dark-blue prose-a:transition-all prose-a:duration-150
-                             prose-strong:text-neutral-800 prose-strong:font-semibold
-                             prose-em:text-neutral-700
-                             prose-ul:text-neutral-600 prose-ul:my-6 prose-ul:pl-6
-                             prose-ol:text-neutral-600 prose-ol:my-6 prose-ol:pl-6
-                             prose-li:mb-2
-                             prose-blockquote:border-l-4 prose-blockquote:border-dark-blue prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-neutral-700
-                             prose-code:text-dark-blue prose-code:bg-neutral-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-                             prose-pre:bg-neutral-800 prose-pre:text-neutral-100
-                             prose-img:rounded-lg prose-img:shadow-md prose-img:cursor-pointer">
+              <div className="prose max-w-none mb-12">
                 <PrismicRichText field={page.data.content} />
               </div>
             )}
