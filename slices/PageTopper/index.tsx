@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PageTopperClient } from "./page-topper-client";
@@ -35,11 +34,10 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
   };
 
   return (
-    <Suspense fallback={<div className="w-full h-[89dvh] bg-dark-blue" />}>
-      <PageTopperClient>
-        <section className="w-full">
-          {/* Dark Blue Header Section */}
-          <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden h-[89dvh]">
+    <PageTopperClient>
+      <section className="w-full">
+        {/* Dark Blue Header Section */}
+        <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden" style={{ height: 'calc(var(--vh, 1vh) * 89)' }}>
             {/* Background Image with scale animation */}
             {slice.primary.hero_image?.url && (
               <PageTopperBgImage heroImage={slice.primary.hero_image} />
@@ -71,7 +69,6 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
           </div>
         </section>
       </PageTopperClient>
-    </Suspense>
   );
 };
 

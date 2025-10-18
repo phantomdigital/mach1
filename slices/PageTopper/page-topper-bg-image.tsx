@@ -15,20 +15,20 @@ export function PageTopperBgImage({ heroImage }: PageTopperBgImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (!containerRef.current || hasAnimatedRef.current || !isLoaded) return;
+    if (!containerRef.current || hasAnimatedRef.current) return;
 
-    // Set initial scale
+    // Set initial scale immediately (don't wait for image load)
     gsap.set(containerRef.current, {
       scale: 1.05,
       willChange: "transform",
     });
 
-    // Animate scale down smoothly on mount
+    // Start animation immediately, but with a longer delay to allow image to load
     gsap.to(containerRef.current, {
       scale: 1,
       duration: 1.2,
       ease: "power2.out",
-      delay: 0.1,
+      delay: 0.3, // Increased delay to allow image loading
       onComplete: () => {
         // Remove will-change after animation completes
         if (containerRef.current) {
@@ -38,7 +38,7 @@ export function PageTopperBgImage({ heroImage }: PageTopperBgImageProps) {
     });
 
     hasAnimatedRef.current = true;
-  }, [isLoaded]);
+  }, []); // Remove isLoaded dependency
 
   return (
     <div ref={containerRef} className="absolute inset-0 z-0 transform-gpu">
