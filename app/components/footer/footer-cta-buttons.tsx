@@ -17,12 +17,12 @@ interface FooterCtaButtonsProps {
 
 export function FooterCtaButtons({ primaryButton, secondaryButton }: FooterCtaButtonsProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-4 items-start">
+    <div className="flex flex-row flex-wrap gap-2 lg:gap-4 items-start">
       {primaryButton && (
         <HeroButton asChild>
           <PrismicNextLink 
             field={primaryButton.link}
-            className="!bg-white/10 !text-white hover:!bg-white/20 backdrop-blur-sm border border-white/20"
+            className="!bg-white/10 !text-white hover:!bg-white/20 backdrop-blur-sm border border-white/20 text-sm lg:text-base"
           >
             {primaryButton.text}
           </PrismicNextLink>
@@ -33,7 +33,7 @@ export function FooterCtaButtons({ primaryButton, secondaryButton }: FooterCtaBu
         <HeroButton asChild>
           <PrismicNextLink 
             field={secondaryButton.link}
-            className="!bg-white/10 !text-white hover:!bg-white/20 backdrop-blur-sm border border-white/20"
+            className="!bg-white/10 !text-white hover:!bg-white/20 backdrop-blur-sm border border-white/20 text-sm lg:text-base"
           >
             {secondaryButton.text}
           </PrismicNextLink>

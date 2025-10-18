@@ -10,6 +10,7 @@ export const components = {
   image_carousel: dynamic(() => import("./ImageCarousel")),
   image_clipped: dynamic(() => import("./ImageClipped")),
   image_with_text: dynamic(() => import("./ImageWithText")),
+  legal_content: dynamic(() => import("./LegalContent")),
   locations: dynamic(() => import("./Locations")),
   news: dynamic(() => import("./News")),
   our_team: dynamic(() => import("./OurTeam")),

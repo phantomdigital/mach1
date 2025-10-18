@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import type { KeyTextField, ImageField } from "@prismicio/client";
 
-// Base metadata for MACH1 Logistics
+// Base metadata for MACH 1 Logistics
 export const baseMetadata = {
-  siteName: "MACH1 Logistics",
-  companyName: "MACH1 Logistics",
+  siteName: "MACH 1 Logistics",
+  companyName: "MACH 1 Logistics",
   description: "Professional logistics and transportation services. Expert solutions for import/export, freight management, and supply chain optimization.",
   keywords: [
     "logistics",

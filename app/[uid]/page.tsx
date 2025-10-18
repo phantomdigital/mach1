@@ -39,12 +39,12 @@ export async function generateMetadata({
     
     return generatePrismicMetadata(page, {
       url: `/${uid}`,
-      keywords: [uid.replace(/-/g, " "), "MACH1 Logistics", "logistics services"],
+      keywords: [uid.replace(/-/g, " "), "MACH 1 Logistics", "logistics services"],
     });
   } catch {
     // Return default metadata for pages that don't exist
     return {
-      title: "Page Not Found | MACH1 Logistics",
+      title: "Page Not Found | MACH 1 Logistics",
       description: "The requested page could not be found.",
     };
   }

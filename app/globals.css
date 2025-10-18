@@ -160,6 +160,12 @@
     --tw-prose-code: theme(colors.neutral.900);
   }
   
+  /* Disable automatic typographic replacements like (c) -> © */
+  .prose {
+    font-variant-ligatures: none;
+    text-rendering: geometricPrecision;
+  }
+  
   /* Prose headings use Manrope like semantic tags */
   .prose :where(h1, h2, h3, h4, h6):not(:where([class~="not-prose"] *)) {
     font-family: var(--font-manrope), sans-serif;

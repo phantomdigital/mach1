@@ -28,8 +28,8 @@ export function ShareButtons({ url, title }: ShareButtonsProps) {
   };
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-sm text-neutral-600 font-medium">Share:</span>
+    <div className="flex flex-wrap items-center gap-3 lg:gap-4">
+      <span className="text-sm lg:text-base text-neutral-600 font-medium w-full sm:w-auto mb-2 sm:mb-0">Share:</span>
       
       {/* LinkedIn */}
       <a

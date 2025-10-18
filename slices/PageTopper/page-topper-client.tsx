@@ -10,26 +10,31 @@ interface PageTopperClientProps {
 /**
  * Wrapper component that handles viewport height calculation.
  * Separated from visibility logic to avoid Suspense requirement.
+ * Sets the height ONCE on load to prevent jumping when mobile browser UI shows/hides.
  */
 export function PageTopperClient({ children }: PageTopperClientProps): React.ReactElement {
-  // Handle mobile viewport height changes
+  // Set viewport height ONCE on initial load only
   useEffect(() => {
     const setViewportHeight = () => {
-      // Get the actual viewport height
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      // Get the largest possible viewport height (when browser UI is hidden)
+      // This ensures the hero doesn't jump when address bar appears
+      const vh = Math.max(window.innerHeight, document.documentElement.clientHeight) * 0.01;
+      document.documentElement.style.setProperty('--page-topper-vh', `${vh}px`);
     };
 
-    // Set initial value
+    // Set initial value only once
     setViewportHeight();
 
-    // Update on resize (handles mobile browser UI changes)
-    window.addEventListener('resize', setViewportHeight);
-    window.addEventListener('orientationchange', setViewportHeight);
+    // Only update on orientation change (not on resize which includes browser UI changes)
+    const handleOrientationChange = () => {
+      // Small delay to let the orientation change complete
+      setTimeout(setViewportHeight, 100);
+    };
+
+    window.addEventListener('orientationchange', handleOrientationChange);
 
     return () => {
-      window.removeEventListener('resize', setViewportHeight);
-      window.removeEventListener('orientationchange', setViewportHeight);
+      window.removeEventListener('orientationchange', handleOrientationChange);
     };
   }, []);
 

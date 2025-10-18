@@ -17,6 +17,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "legal_content": {
+              "type": "SharedSlice"
+            },
             "image_carousel": {
               "type": "SharedSlice"
             },

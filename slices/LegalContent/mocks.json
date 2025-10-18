@@ -1,0 +1,105 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "page_title": {
+        "__TYPE__": "FieldContent",
+        "value": "Privacy Policy",
+        "type": "Text"
+      },
+      "show_table_of_contents": {
+        "__TYPE__": "FieldContent",
+        "value": true,
+        "type": "Boolean"
+      },
+      "margin_top": {
+        "__TYPE__": "FieldContent",
+        "value": "large",
+        "type": "Select"
+      },
+      "padding_top": {
+        "__TYPE__": "FieldContent",
+        "value": "large",
+        "type": "Select"
+      },
+      "padding_bottom": {
+        "__TYPE__": "FieldContent",
+        "value": "large",
+        "type": "Select"
+      },
+      "content": {
+        "__TYPE__": "StructuredTextContent",
+        "value": [
+          {
+            "type": "paragraph",
+            "text": "This Privacy Policy will help you better understand how we collect, use, and share your personal information.",
+            "spans": []
+          },
+          {
+            "type": "paragraph",
+            "text": "This privacy policy sets out how [Company Name] collects, uses, and discloses any personal information that you give us or that we collect when you use our website or Services. The term personal information allows users to purchase (or products and related services [Services]).",
+            "spans": []
+          },
+          {
+            "type": "heading2",
+            "text": "Purpose",
+            "spans": []
+          },
+          {
+            "type": "paragraph",
+            "text": "The purpose of this privacy policy (the Privacy Policy) is to inform users of our Site of the following:",
+            "spans": []
+          },
+          {
+            "type": "list-item",
+            "text": "The personal data we will collect",
+            "spans": []
+          },
+          {
+            "type": "list-item",
+            "text": "Use of collected data",
+            "spans": []
+          },
+          {
+            "type": "list-item",
+            "text": "Who has access to the data collected",
+            "spans": []
+          },
+          {
+            "type": "heading2",
+            "text": "Consent",
+            "spans": []
+          },
+          {
+            "type": "paragraph",
+            "text": "By using our Site users agree that they consent to:",
+            "spans": []
+          },
+          {
+            "type": "list-item",
+            "text": "The conditions set out in this Privacy Policy",
+            "spans": []
+          },
+          {
+            "type": "list-item",
+            "text": "The collection, use, and retention of the data listed in this Privacy Policy",
+            "spans": []
+          },
+          {
+            "type": "heading2",
+            "text": "Personal Data We Collect",
+            "spans": []
+          },
+          {
+            "type": "paragraph",
+            "text": "We only collect data that helps us achieve the purpose set out in this Privacy Policy. We will not collect any additional data beyond the data listed below without notifying you first.",
+            "spans": []
+          }
+        ]
+      }
+    },
+    "items": []
+  }
+]
+

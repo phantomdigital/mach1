@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import SummaryClient from "./summary-client";
 
 export const metadata: Metadata = {
-  title: "Quote Summary | Mach1 Logistics",
+  title: "Quote Summary | MACH 1 Logistics",
   robots: {
     index: false,
     follow: false,

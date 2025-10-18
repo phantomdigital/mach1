@@ -13,10 +13,10 @@ export default async function Footer() {
       <>
         {/* CTA Section - Lighter Dark Blue */}
         <div className="bg-dark-blue ">
-          <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 py-24 lg:py-32">
+          <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 py-16 lg:py-24">
             {/* Main title */}
             {footer.data.cta_section[0]?.title && (
-              <h2 className="text-neutral-200 text-4xl lg:text-6xl font-bold mb-8 lg:mb-12 max-w-4xl">
+              <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 lg:mb-10 max-w-4xl leading-tight">
                 {footer.data.cta_section[0].title}
               </h2>
             )}
@@ -45,23 +45,23 @@ export default async function Footer() {
         
         {/* Main Footer Content */}
         <footer className="bg-dark-blue text-neutral-200relative overflow-hidden">
-          <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 py-24 lg:py-32">
-            <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap gap-12 lg:gap-8 xl:gap-12 justify-between">
+          <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 py-16 lg:py-24">
+            <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap gap-8 lg:gap-8 xl:gap-12 justify-between">
               
               {/* Generic Link Sections */}
               {footer.data.link_sections && footer.data.link_sections.map((section, index: number) => (
                 section.section_title && section.links && section.links.length > 0 && (
-                  <div key={index}>
-                    <h3 className="text-lg font-semibold text-neutral-200 mb-6">
+                  <div key={index} className="w-full md:w-auto">
+                    <h3 className="text-base lg:text-lg font-semibold text-white mb-4 lg:mb-6">
                       {section.section_title}
                     </h3>
-                    <ul className="space-y-3">
+                    <ul className="space-y-2 lg:space-y-3">
                       {section.links.map((link, linkIndex: number) => (
                         link.label && (
                           <li key={linkIndex}>
                             <PrismicNextLink
                               field={link.link}
-                              className="text-neutral-200 text-sm font-medium hover:underline hover:text-gray-200 transition-colors"
+                              className="text-neutral-300 text-sm lg:text-base font-normal hover:text-white hover:underline transition-colors"
                             >
                               {link.label}
                             </PrismicNextLink>
@@ -75,19 +75,18 @@ export default async function Footer() {
               
               {/* Contact Section */}
               {footer.data.contact_section[0] && (
-                <div>
-                  <h3 className="text-lg font-semibold text-neutral-200 mb-6">
+                <div className="w-full lg:w-auto">
+                  <h3 className="text-base lg:text-lg font-semibold text-white mb-4 lg:mb-6">
                     {footer.data.contact_section[0].title || 'Contact Us'}
                   </h3>
                   
                   {/* Addresses Section with Location Icon */}
                   {footer.data.contact_section[0].addresses && footer.data.contact_section[0].addresses.length > 0 && (
-                    <div className="mb-16">
-                      <div className="flex items-start gap-3 mb-3 ">
-                        <div className="w-12 h-12 rounded-full bg-mach1-red flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="mb-8 lg:mb-12">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-mach1-red flex items-center justify-center flex-shrink-0 mt-0.5">
                           <svg 
-                            width="20" 
-                            height="24" 
+                            className="w-4 h-5 lg:w-5 lg:h-6"
                             viewBox="0 0 16 19" 
                             fill="none" 
                             xmlns="http://www.w3.org/2000/svg"
@@ -96,14 +95,14 @@ export default async function Footer() {
                             <path d="M8.19099 10.024C9.43122 10.024 10.4366 9.01859 10.4366 7.77836C10.4366 6.53813 9.43122 5.53271 8.19099 5.53271C6.95076 5.53271 5.94531 6.53813 5.94531 7.77836C5.94531 9.01859 6.95076 10.024 8.19099 10.024Z" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
                           </svg>
                         </div>
-                        <div className="flex-1 ">
-                          <h5 className="text-zinc-300/90 text-xs font-medium mb-4 uppercase tracking-wider">
+                        <div className="flex-1">
+                          <h5 className="text-neutral-400 text-xs lg:text-sm font-medium mb-3 lg:mb-4 uppercase tracking-wider">
                             Locations
                           </h5>
-                          <div className="space-y-5">
+                          <div className="space-y-3 lg:space-y-4">
                             {footer.data.contact_section[0].addresses.map((item, index: number) => (
                               item.address && (
-                                <p key={index} className="text-neutral-200 text-sm font-medium">
+                                <p key={index} className="text-neutral-200 text-sm lg:text-base font-normal leading-relaxed">
                                   {item.address}
                                 </p>
                               )
@@ -118,10 +117,9 @@ export default async function Footer() {
                   {footer.data.contact_section[0].phone_contacts && footer.data.contact_section[0].phone_contacts.length > 0 && (
                     <div>
                       <div className="flex items-start gap-3">
-                        <div className="w-12 h-12 rounded-full bg-mach1-red flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-mach1-red flex items-center justify-center flex-shrink-0 mt-0.5">
                           <svg 
-                            width="21" 
-                            height="21" 
+                            className="w-4 h-4 lg:w-5 lg:h-5"
                             viewBox="0 0 17 17" 
                             fill="none" 
                             xmlns="http://www.w3.org/2000/svg"
@@ -130,16 +128,16 @@ export default async function Footer() {
                           </svg>
                         </div>
                         <div className="flex-1">
-                          <div className="grid grid-cols-3 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                             {footer.data.contact_section[0].phone_contacts.map((contact, index: number) => (
                               <div key={index}>
                                 {contact.contact_name && (
-                                  <h5 className="text-zinc-300/90 text-xs font-medium uppercase tracking-wider mb-3">
+                                  <h5 className="text-neutral-400 text-xs lg:text-sm font-medium uppercase tracking-wider mb-2 lg:mb-3">
                                     {contact.contact_name}
                                   </h5>
                                 )}
                                 {contact.phone_number && (
-                                  <p className="text-neutral-200 text-sm font-medium">
+                                  <p className="text-neutral-200 text-sm lg:text-base font-normal">
                                     {contact.phone_number}
                                   </p>
                                 )}
@@ -154,18 +152,18 @@ export default async function Footer() {
               )}
               
               {/* Logo Section */}
-              <div className="flex flex-col items-start lg:items-end justify-start gap-6">
+              <div className="flex flex-col items-start lg:items-end justify-start gap-4 lg:gap-6 w-full lg:w-auto">
                 {footer.data.logo?.url && (
                   <PrismicNextImage
                     field={footer.data.logo}
-                    className="h-40 w-auto"
+                    className="h-24 lg:h-32 xl:h-40 w-auto"
                     alt=""
                   />
                 )}
                 
                   {/* Social Media */}
                   {footer.data.social_media && footer.data.social_media.length > 0 && (
-                    <div className="flex items-center gap-12 mt-auto">
+                    <div className="flex items-center gap-6 lg:gap-8 xl:gap-12 mt-auto">
                     {footer.data.social_media.map((social, index: number) => {
                       const platform = social.platform;
                       
@@ -224,7 +222,7 @@ export default async function Footer() {
             </div>
             
             {/* Decorative line */}
-            <div className="mt-16 mb-8">
+            <div className="mt-12 lg:mt-16 mb-6 lg:mb-8">
               <svg 
                 width="100%" 
                 height="24" 
@@ -240,14 +238,14 @@ export default async function Footer() {
             
 
             {/* Copyright and Legal */}
-            <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-4">
+            <div className="flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-6">
               {/* Legal Links - Left */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center flex-wrap justify-center lg:justify-start gap-3 lg:gap-4 order-2 lg:order-1">
                 {footer.data.legal_links && footer.data.legal_links.slice(0, 2).map((legalLink, index: number) => (
                   <PrismicNextLink
                     key={index}
                     field={legalLink.link}
-                    className="text-neutral-200 text-xs font-medium hover:underline hover:text-gray-200 transition-colors"
+                    className="text-neutral-400 text-xs lg:text-sm font-normal hover:text-white hover:underline transition-colors"
                   >
                     {legalLink.label}
                   </PrismicNextLink>
@@ -255,7 +253,7 @@ export default async function Footer() {
               </div>
 
               {/* Copyright - Right */}
-              <p className="text-neutral-200 text-xs font-medium text-center lg:text-right">
+              <p className="text-neutral-400 text-xs lg:text-sm font-normal text-center lg:text-right order-1 lg:order-2">
                 {footer.data.copyright_text}
                 {footer.data.website_credit[0] && (
                   <>
@@ -263,7 +261,7 @@ export default async function Footer() {
                     {footer.data.website_credit[0].text}{' '}
                     <PrismicNextLink
                       field={footer.data.website_credit[0].link}
-                      className="hover:underline hover:text-white transition-colors"
+                      className="text-neutral-400 hover:text-white hover:underline transition-colors"
                     >
                       {footer.data.website_credit[0].link_text}
                     </PrismicNextLink>

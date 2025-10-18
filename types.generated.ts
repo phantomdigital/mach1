@@ -1255,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -2195,6 +2195,98 @@ type ImageWithTextSliceVariation = ImageWithTextSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type ImageWithTextSlice = prismic.SharedSlice<"image_with_text", ImageWithTextSliceVariation>;
+
+/**
+ * Primary content in *LegalContent → Default → Primary*
+ */
+export interface LegalContentSliceDefaultPrimary {
+	/**
+	 * Page Title field in *LegalContent → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Privacy Policy
+	 * - **API ID Path**: legal_content.default.primary.page_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	page_title: prismic.KeyTextField;
+	
+	/**
+	 * Show Table of Contents field in *LegalContent → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: legal_content.default.primary.show_table_of_contents
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_table_of_contents: prismic.BooleanField;
+	
+	/**
+	 * Margin Top field in *LegalContent → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select margin size
+	 * - **Default Value**: large
+	 * - **API ID Path**: legal_content.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top field in *LegalContent → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select padding size
+	 * - **Default Value**: large
+	 * - **API ID Path**: legal_content.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom field in *LegalContent → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select padding size
+	 * - **Default Value**: large
+	 * - **API ID Path**: legal_content.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Content field in *LegalContent → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Legal content goes here...
+	 * - **API ID Path**: legal_content.default.primary.content
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	content: prismic.RichTextField;
+}
+
+/**
+ * Default variation for LegalContent Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type LegalContentSliceDefault = prismic.SharedSliceVariation<"default", Simplify<LegalContentSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *LegalContent*
+ */
+type LegalContentSliceVariation = LegalContentSliceDefault
+
+/**
+ * LegalContent Shared Slice
+ *
+ * - **API ID**: `legal_content`
+ * - **Description**: Legal content slice for Privacy Policy, Terms, and similar pages
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type LegalContentSlice = prismic.SharedSlice<"legal_content", LegalContentSliceVariation>;
 
 /**
  * Primary content in *Locations → Items*
@@ -3668,6 +3760,10 @@ declare module "@prismicio/client" {
 			ImageWithTextSliceDefaultPrimary,
 			ImageWithTextSliceVariation,
 			ImageWithTextSliceDefault,
+			LegalContentSlice,
+			LegalContentSliceDefaultPrimary,
+			LegalContentSliceVariation,
+			LegalContentSliceDefault,
 			LocationsSlice,
 			LocationsSliceDefaultItem,
 			LocationsSliceVariation,

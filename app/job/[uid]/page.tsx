@@ -71,16 +71,16 @@ export default async function JobPage({
   return (
     <main>
       {/* Job Header */}
-      <section className="w-full pt-40 pb-16 lg:pt-64 lg:pb-24 bg-white">
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+      <section className="w-full pt-32 pb-12 lg:pt-56 lg:pb-20 bg-white">
+        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Back Link */}
-            <div className="mb-8">
+            <div className="mb-6 lg:mb-8">
               <Link 
                 href="/careers/vacancies" 
-                className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-dark-blue transition"
+                className="inline-flex items-center gap-2 text-sm lg:text-base text-neutral-600 hover:text-dark-blue transition-colors"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
                 Back to Careers
@@ -88,34 +88,34 @@ export default async function JobPage({
             </div>
 
             {/* Status Badges */}
-            <div className="flex flex-wrap gap-3 mb-6">
+            <div className="flex flex-wrap gap-2 lg:gap-3 mb-4 lg:mb-6">
               {page.data.department && (
                 <span 
-                  className="inline-block text-green-200 text-xs font-bold tracking-wider uppercase px-4 py-2 bg-mach1-green rounded-2xl"
+                  className="inline-block text-green-200 text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-green rounded-2xl"
                   style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
                 >
                   {page.data.department}
                 </span>
               )}
               {page.data.featured && (
-                <span className="inline-block text-xs font-bold tracking-wider uppercase px-4 py-2 bg-dark-blue text-white rounded-2xl">
+                <span className="inline-block text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-dark-blue text-white rounded-2xl">
                   Featured
                 </span>
               )}
               {(!isActive || isPastClosingDate) && (
-                <span className="inline-block text-xs font-bold tracking-wider uppercase px-4 py-2 bg-neutral-400 text-white rounded-2xl">
+                <span className="inline-block text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-neutral-400 text-white rounded-2xl">
                   Position Closed
                 </span>
               )}
             </div>
 
             {/* Job Title */}
-            <h1 className="text-neutral-800 text-4xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-neutral-800 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 lg:mb-6 leading-tight">
               {page.data.title}
             </h1>
 
             {/* Job Meta */}
-            <div className="flex flex-wrap items-center gap-4 text-base text-neutral-600 mb-8 pb-8 border-b border-neutral-200">
+            <div className="flex flex-wrap items-center gap-3 lg:gap-4 text-sm lg:text-base text-neutral-600 mb-6 lg:mb-8 pb-6 lg:pb-8 border-b border-neutral-200">
               {(page.data.city || page.data.state) && (
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -349,7 +349,7 @@ export default async function JobPage({
             employmentType: page.data.employment_type || undefined,
             hiringOrganization: {
               "@type": "Organization",
-              name: "MACH1 Logistics",
+              name: "MACH 1 Logistics",
               sameAs: "https://mach1logistics.com.au",
             },
             jobLocation: (page.data.city || page.data.state) ? {
@@ -394,21 +394,21 @@ export async function generateMetadata({
   }
 
   const title = page.data.meta_title || `${page.data.title} - ${page.data.department || 'Career'}`;
-  const description = page.data.meta_description || page.data.summary || `Join MACH1 Logistics as a ${page.data.title}`;
+  const description = page.data.meta_description || page.data.summary || `Join MACH 1 Logistics as a ${page.data.title}`;
   const image = page.data.meta_image?.url;
 
   return {
-    title: `${title} | MACH1 Logistics Careers`,
+    title: `${title} | MACH 1 Logistics Careers`,
     description,
     openGraph: {
-      title: `${title} | MACH1 Logistics Careers`,
+      title: `${title} | MACH 1 Logistics Careers`,
       description,
       type: "website",
       images: image ? [{ url: image }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | MACH1 Logistics Careers`,
+      title: `${title} | MACH 1 Logistics Careers`,
       description,
       images: image ? [image] : undefined,
     },

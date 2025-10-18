@@ -109,16 +109,16 @@ export default async function NewsArticlePage({
   return (
     <main>
       {/* Article Header */}
-      <section className="w-full pt-40 pb-16 lg:pt-64 lg:pb-24 bg-white">
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+      <section className="w-full pt-32 pb-12 lg:pt-56 lg:pb-20 bg-white">
+        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Back Link */}
-            <div className="mb-8">
+            <div className="mb-6 lg:mb-8">
               <Link 
                 href="/news" 
-                className="inline-flex items-center gap-2 text-sm text-neutral-600 hover:text-dark-blue transition-colors"
+                className="inline-flex items-center gap-2 text-sm lg:text-base text-neutral-600 hover:text-dark-blue transition-colors"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
                 Back to News
@@ -128,7 +128,7 @@ export default async function NewsArticlePage({
             {/* Category */}
             {page.data.category && (
               <span 
-                className="inline-block text-green-200 text-xs font-bold tracking-wider uppercase px-4 py-2 bg-mach1-green rounded-2xl mb-4"
+                className="inline-block text-green-200 text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-green rounded-2xl mb-4 lg:mb-6"
                 style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
               >
                 {page.data.category}
@@ -136,12 +136,12 @@ export default async function NewsArticlePage({
             )}
 
             {/* Title */}
-            <h1 className="text-neutral-800 text-4xl lg:text-6xl mb-6">
+            <h1 className="text-neutral-800 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 lg:mb-6 leading-tight">
               {page.data.title}
             </h1>
 
             {/* Meta */}
-            <div className="flex items-center gap-4 text-sm text-neutral-600 mb-8">
+            <div className="flex flex-wrap items-center gap-3 lg:gap-4 text-xs sm:text-sm text-neutral-600 mb-6 lg:mb-8">
               {authorName && (
                 <div className="flex items-center gap-2">
                   {authorPhoto?.url ? (
@@ -172,7 +172,12 @@ export default async function NewsArticlePage({
 
             {/* Featured Image */}
             {page.data.featured_image?.url && (
-              <div className="relative aspect-[16/9] bg-neutral-100 mb-12 cursor-pointer">
+              <div 
+                className="relative aspect-[16/9] bg-neutral-100 mb-8 lg:mb-12 overflow-hidden"
+                style={{
+                  clipPath: 'polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px))'
+                }}
+              >
                 <PrismicNextImage
                   field={page.data.featured_image}
                   fill
@@ -186,7 +191,7 @@ export default async function NewsArticlePage({
 
             {/* Article Content */}
             {page.data.content && (
-              <div className="prose max-w-none mb-12">
+              <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none mb-8 lg:mb-12">
                 <PrismicRichText field={page.data.content} />
               </div>
             )}
@@ -198,7 +203,7 @@ export default async function NewsArticlePage({
             />
 
             {/* Share Buttons */}
-            <div className="pt-8 border-t border-neutral-200">
+            <div className="pt-6 lg:pt-8 border-t border-neutral-200">
               <ShareButtons url={fullUrl} title={page.data.title || ""} />
             </div>
           </div>
@@ -229,7 +234,7 @@ export default async function NewsArticlePage({
             } : undefined,
             publisher: {
               "@type": "Organization",
-              name: "MACH1 Logistics",
+              name: "MACH 1 Logistics",
               logo: {
                 "@type": "ImageObject",
                 url: `${baseUrl}/logo.png`,
@@ -288,10 +293,10 @@ export async function generateMetadata({
     : null;
 
   return {
-    title: `${title} | MACH1 Logistics`,
+    title: `${title} | MACH 1 Logistics`,
     description,
     openGraph: {
-      title: `${title} | MACH1 Logistics`,
+      title: `${title} | MACH 1 Logistics`,
       description,
       type: "article",
       publishedTime: page.first_publication_date,
@@ -301,7 +306,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | MACH1 Logistics`,
+      title: `${title} | MACH 1 Logistics`,
       description,
       images: image ? [image] : undefined,
     },

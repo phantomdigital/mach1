@@ -34,7 +34,7 @@ export function NewsCard({ article, index }: NewsCardProps) {
   const formatDate = (dateString: string | null | undefined) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString("en-AU", {
       year: "numeric",
       month: "long",
       day: "numeric",

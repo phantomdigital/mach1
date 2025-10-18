@@ -37,13 +37,13 @@ export async function generateMetadata(): Promise<Metadata> {
     
     return generatePrismicMetadata(page, {
       url: "/careers/vacancies",
-      keywords: ["careers", "jobs", "vacancies", "employment", "MACH1 Logistics"],
+      keywords: ["careers", "jobs", "vacancies", "employment", "MACH 1 Logistics"],
     });
   } catch {
     // Return default metadata if page doesn't exist
     return {
-      title: "Careers & Vacancies | MACH1 Logistics",
-      description: "Explore career opportunities at MACH1 Logistics. Join our team and help shape the future of logistics.",
+      title: "Careers & Vacancies | MACH 1 Logistics",
+      description: "Explore career opportunities at MACH 1 Logistics. Join our team and help shape the future of logistics.",
     };
   }
 }

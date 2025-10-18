@@ -1,0 +1,72 @@
+{
+  "id": "legal_content",
+  "type": "SharedSlice",
+  "name": "LegalContent",
+  "description": "Legal content slice for Privacy Policy, Terms, and similar pages",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "page_title": {
+          "type": "Text",
+          "config": {
+            "label": "Page Title",
+            "placeholder": "Privacy Policy"
+          }
+        },
+        "show_table_of_contents": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Table of Contents",
+            "default_value": true,
+            "placeholder_true": "Show",
+            "placeholder_false": "Hide"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Margin Top",
+            "placeholder": "Select margin size",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top",
+            "placeholder": "Select padding size",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom",
+            "placeholder": "Select padding size",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "content": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Content",
+            "placeholder": "Legal content goes here...",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,list-item,o-list-item"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
+
