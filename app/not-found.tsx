@@ -1,8 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { HeroButton } from "@/components/ui/hero-button";
-import { Button } from "@/components/ui/button";
-import { getMarginTopClass, getContainerClass } from "@/lib/spacing";
+import { getContainerClass } from "@/lib/spacing";
 
 export const metadata: Metadata = {
   title: "Page Not Found | MACH 1 Logistics",

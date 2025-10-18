@@ -7,12 +7,11 @@ interface PageTopperClientProps {
   children: ReactNode;
 }
 
-export function PageTopperClient({ children }: PageTopperClientProps): React.ReactElement | null {
-  const searchParams = useSearchParams();
-  
-  // Hide PageTopper when in quote flow (step query param exists)
-  const hasStepParam = searchParams.has("step");
-  
+/**
+ * Wrapper component that handles viewport height calculation.
+ * Separated from visibility logic to avoid Suspense requirement.
+ */
+export function PageTopperClient({ children }: PageTopperClientProps): React.ReactElement {
   // Handle mobile viewport height changes
   useEffect(() => {
     const setViewportHeight = () => {
@@ -33,6 +32,19 @@ export function PageTopperClient({ children }: PageTopperClientProps): React.Rea
       window.removeEventListener('orientationchange', setViewportHeight);
     };
   }, []);
+
+  return <>{children}</>;
+}
+
+/**
+ * Visibility controller that checks URL params.
+ * Must be wrapped in Suspense due to useSearchParams().
+ */
+export function PageTopperVisibilityController({ children }: PageTopperClientProps): React.ReactElement | null {
+  const searchParams = useSearchParams();
+  
+  // Hide PageTopper when in quote flow (step query param exists)
+  const hasStepParam = searchParams.has("step");
   
   if (hasStepParam) {
     return null;
