@@ -1882,6 +1882,28 @@ export interface ImageCarouselSliceDefaultPrimary {
 	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
 	
 	/**
+	 * Padding Top (pt) field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: image_carousel.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom (pb) field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: image_carousel.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
 	 * Heading field in *ImageCarousel → Default → Primary*
 	 *
 	 * - **Field Type**: Text
