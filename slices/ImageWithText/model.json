@@ -101,6 +101,14 @@
             "thumbnails": []
           }
         },
+        "background_accent_image": {
+          "type": "Image",
+          "config": {
+            "label": "Background Accent Image (Text Section)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
         "show_bottom_separator": {
           "type": "Boolean",
           "config": {

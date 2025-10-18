@@ -2162,6 +2162,16 @@ export interface ImageWithTextSliceDefaultPrimary {
 	image: prismic.ImageField<never>;
 	
 	/**
+	 * Background Accent Image (Text Section) field in *ImageWithText → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: image_with_text.default.primary.background_accent_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	background_accent_image: prismic.ImageField<never>;
+	
+	/**
 	 * Show Bottom Separator field in *ImageWithText → Default → Primary*
 	 *
 	 * - **Field Type**: Boolean
