@@ -1,4 +1,5 @@
 import { Content } from "@prismicio/client";
+import React from "react";
 import { SliceComponentProps, PrismicRichText } from "@prismicio/react";
 import { CarouselAnimation } from "./carousel-animation";
 import { 
@@ -18,7 +19,7 @@ export type ImageCarouselProps = SliceComponentProps<Content.ImageCarouselSlice>
 /**
  * Component for "ImageCarousel" Slices.
  */
-const ImageCarousel = ({ slice }: ImageCarouselProps): JSX.Element => {
+const ImageCarousel = ({ slice }: ImageCarouselProps): React.ReactElement => {
   const imageWidth = slice.primary.image_width || 400;
   const gap = slice.primary.gap || 32;
   const scrollSpeed = slice.primary.scroll_speed || 1;
