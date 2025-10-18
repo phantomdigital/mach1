@@ -89,7 +89,7 @@ export function MobileMenu({ navigation, buttons, subheaderItems }: MobileMenuPr
           <motion.div 
             className="fixed left-0 right-0 bg-neutral-50 z-40 xl:hidden overflow-hidden border-t-2 border-gray-200"
             style={{ 
-              top: 'var(--header-height, 120px)',
+              top: 'var(--header-height)',
               bottom: 0
             }}
             initial={{ y: '100%' }}

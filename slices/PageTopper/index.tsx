@@ -35,11 +35,11 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
   };
 
   return (
-    <Suspense fallback={<div className="w-full h-[89vh] bg-dark-blue" />}>
+    <Suspense fallback={<div className="w-full h-[89dvh] bg-dark-blue" />}>
       <PageTopperClient>
         <section className="w-full">
           {/* Dark Blue Header Section */}
-          <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden h-[89vh]">
+          <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden h-[89dvh]">
             {/* Background Image with scale animation */}
             {slice.primary.hero_image?.url && (
               <PageTopperBgImage heroImage={slice.primary.hero_image} />

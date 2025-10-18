@@ -5,6 +5,7 @@ import { HeaderButtons } from "./header-buttons";
 import { ScrollDropdownCloser } from "./scroll-dropdown-closer";
 import { RegionLanguageSelector } from "./region-language-selector";
 import { MobileMenu } from "./mobile-menu";
+import { HeaderHeightTracker } from "./header-height-tracker";
 import type { HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 // Server component for simple navigation items
@@ -45,6 +46,9 @@ export default async function Header() {
     
     return (
       <header className="absolute top-0 left-0 z-20 w-full h-auto">
+        {/* Track header height dynamically for mobile menu positioning */}
+        <HeaderHeightTracker />
+        
         {/* Announcement Bar */}
         {header.data.show_announcement && header.data.announcement_text && (
           <div className="w-full bg-dark-blue py-3 px-4">
@@ -202,6 +206,9 @@ export default async function Header() {
     // Return minimal fallback header - no content, just structure
     return (
       <header className="absolute top-0 left-0 z-20 w-full h-auto">
+        {/* Track header height dynamically for mobile menu positioning */}
+        <HeaderHeightTracker />
+        
         {/* No announcement bar in fallback */}
 
         <div className="w-full relative">
