@@ -94,14 +94,14 @@ rules:
       - "Easy width adjustments: change max-w-[110rem] to max-w-[80rem] or max-w-[120rem] as needed"
       
   - name: "SEO and Metadata Best Practices"
-    description: "Comprehensive SEO metadata implementation for MACH 1 Logistics"
+    description: "Comprehensive SEO metadata implementation for MACH1 Logistics"
     patterns:
       - "ALWAYS use generateMetadata() function for dynamic metadata in pages"
       - "Import and use generatePrismicMetadata() for all Prismic-based pages"
       - "Use generateMetadata() from @/lib/metadata for custom metadata needs"
-      - "Company name is 'MACH 1 Logistics' - use consistently across all metadata"
+      - "Company name is 'MACH1 Logistics' - use consistently across all metadata"
       - "Include structured data (JSON-LD) for organization and breadcrumbs where appropriate"
-      - "All titles should follow pattern: 'Page Title | MACH 1 Logistics'"
+      - "All titles should follow pattern: 'Page Title | MACH1 Logistics'"
       - "Descriptions should be 150-160 characters, include relevant keywords naturally"
       - "Use logistics-related keywords: freight, transportation, import/export, FCL, LCL, dangerous goods"
       - "Include Open Graph and Twitter Card metadata for social sharing"

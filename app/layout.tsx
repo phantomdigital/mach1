@@ -20,7 +20,7 @@ const manrope = Manrope({
 
 export const metadata: Metadata = generateBaseMetadata({
   title: "Professional Logistics & Transportation Services",
-  description: "MACH 1 Logistics provides expert logistics solutions including FCL/LCL import/export, dangerous goods handling, airfreight services, and specialized transportation across Australia.",
+  description: "MACH1 Logistics provides expert logistics solutions including FCL/LCL import/export, dangerous goods handling, airfreight services, and specialized transportation across Australia.",
   keywords: ["professional logistics", "transportation services", "freight forwarding", "Australia logistics"],
 });
 
