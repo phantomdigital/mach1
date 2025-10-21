@@ -205,7 +205,8 @@
       "use_main_faqs": false,
       "main_faq_slice": {
         "link_type": "Document"
-      }
+      },
+      "faq_limit": 5
     },
     "items": [
       {

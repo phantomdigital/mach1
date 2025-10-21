@@ -101,6 +101,31 @@
             ],
             "default_value": "large"
           }
+        },
+        "use_main_faqs": {
+          "type": "Boolean",
+          "config": {
+            "label": "Use Main FAQs",
+            "placeholder_true": "Use main FAQ slice",
+            "placeholder_false": "Use custom FAQs below",
+            "default_value": false
+          }
+        },
+        "main_faq_slice": {
+          "type": "Link",
+          "config": {
+            "label": "Main FAQ Slice",
+            "placeholder": "Select page with FAQ slice",
+            "select": "document",
+            "customtypes": ["page"]
+          }
+        },
+        "faq_limit": {
+          "type": "Number",
+          "config": {
+            "label": "FAQ Limit",
+            "placeholder": "5"
+          }
         }
       },
       "items": {

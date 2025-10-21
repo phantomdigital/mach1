@@ -12,8 +12,11 @@ export type FaqProps = SliceComponentProps<Content.FaqSlice>;
  * Component for "Faq" Slices.
  */
 const Faq = ({ slice }: FaqProps): React.ReactElement => {
-  // Filter out FAQs with empty questions
-  const faqs = slice.items.filter(item => item.question);
+  // Filter out FAQs with empty questions and apply limit
+  const faqLimit = slice.primary.faq_limit || 10; // Default to 10 if not set
+  const faqs = slice.items
+    .filter(item => item.question)
+    .slice(0, faqLimit);
 
   if (faqs.length === 0) {
     return <></>;

@@ -39,11 +39,16 @@ export default async function StepsWrapper(props: StepsProps) {
         );
 
         if (faqSlice && 'items' in faqSlice && Array.isArray(faqSlice.items)) {
-          // Map FAQ slice items to the format expected by Steps summary
-          mainFaqs = faqSlice.items.map((item: any) => ({
-            faq_question: item.question || null,
-            faq_answer: item.answer || null, // Pass full RichText field
-          }));
+          // Get the FAQ limit from the slice (default to 5 if not set)
+          const faqLimit = (props.slice.primary as any).faq_limit || 5;
+          
+          // Map FAQ slice items to the format expected by Steps summary and apply limit
+          mainFaqs = faqSlice.items
+            .slice(0, faqLimit)
+            .map((item: any) => ({
+              faq_question: item.question || null,
+              faq_answer: item.answer || null, // Pass full RichText field
+            }));
         }
       }
     } catch (error) {

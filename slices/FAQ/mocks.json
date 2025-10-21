@@ -2,7 +2,9 @@
   {
     "__TYPE__": "SharedSliceContent",
     "variation": "default",
-    "primary": {},
+    "primary": {
+      "faq_limit": 10
+    },
     "items": [
       {
         "category": "General",

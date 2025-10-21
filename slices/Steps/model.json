@@ -337,6 +337,13 @@
             "select": "document",
             "customtypes": ["page"]
           }
+        },
+        "faq_limit": {
+          "type": "Number",
+          "config": {
+            "label": "FAQ Limit",
+            "placeholder": "5"
+          }
         }
       },
       "items": {

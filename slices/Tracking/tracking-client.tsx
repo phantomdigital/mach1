@@ -9,7 +9,7 @@ import { PrismicRichText } from "@prismicio/react";
 
 interface FAQ {
   faq_question: string | null;
-  faq_answer: RichTextField;
+  faq_answer: RichTextField | null;
 }
 
 interface TrackingClientProps {

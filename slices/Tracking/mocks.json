@@ -11,7 +11,12 @@
       "variant": "large",
       "text_alignment": "center",
       "content_width": "two-thirds",
-      "margin_top": "large"
+      "margin_top": "large",
+      "use_main_faqs": false,
+      "main_faq_slice": {
+        "link_type": "Document"
+      },
+      "faq_limit": 5
     },
     "items": [
       {

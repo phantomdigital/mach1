@@ -1825,6 +1825,21 @@ type ContentBlockSliceVariation = ContentBlockSliceDefault
 export type ContentBlockSlice = prismic.SharedSlice<"content_block", ContentBlockSliceVariation>;
 
 /**
+ * Primary content in *FAQ → Default → Primary*
+ */
+export interface FaqSliceDefaultPrimary {
+	/**
+	 * FAQ Limit field in *FAQ → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 10
+	 * - **API ID Path**: faq.default.primary.faq_limit
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	faq_limit: prismic.NumberField;
+}
+
+/**
  * Primary content in *FAQ → Items*
  */
 export interface FaqSliceDefaultItem {
@@ -1866,7 +1881,7 @@ export interface FaqSliceDefaultItem {
  * - **Description**: Default FAQ variation
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type FaqSliceDefault = prismic.SharedSliceVariation<"default", Record<string, never>, Simplify<FaqSliceDefaultItem>>;
+export type FaqSliceDefault = prismic.SharedSliceVariation<"default", Simplify<FaqSliceDefaultPrimary>, Simplify<FaqSliceDefaultItem>>;
 
 /**
  * Slice variation for *FAQ*
@@ -3639,6 +3654,16 @@ export interface StepsSliceSummaryPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
 	 */
 	main_faq_slice: prismic.ContentRelationshipField<"page">;
+	
+	/**
+	 * FAQ Limit field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 5
+	 * - **API ID Path**: steps.summary.primary.faq_limit
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	faq_limit: prismic.NumberField;
 }
 
 /**
@@ -3786,6 +3811,37 @@ export interface TrackingSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Use Main FAQs field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: tracking.default.primary.use_main_faqs
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	use_main_faqs: prismic.BooleanField;
+	
+	/**
+	 * Main FAQ Slice field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Select page with FAQ slice
+	 * - **API ID Path**: tracking.default.primary.main_faq_slice
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	main_faq_slice: prismic.ContentRelationshipField<"page">;
+	
+	/**
+	 * FAQ Limit field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 5
+	 * - **API ID Path**: tracking.default.primary.faq_limit
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	faq_limit: prismic.NumberField;
 }
 
 /**
@@ -3899,6 +3955,7 @@ declare module "@prismicio/client" {
 			ContentBlockSliceVariation,
 			ContentBlockSliceDefault,
 			FaqSlice,
+			FaqSliceDefaultPrimary,
 			FaqSliceDefaultItem,
 			FaqSliceVariation,
 			FaqSliceDefault,
