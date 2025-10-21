@@ -19,7 +19,7 @@ export type PageTopperProps = SliceComponentProps<Content.PageTopperSlice>;
 const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
   // Get width class based on selection (full width on mobile, constrained on desktop)
   const getWidthClass = () => {
-    const contentWidth = (slice.primary as any).content_width;
+    const contentWidth = slice.primary.content_width;
     switch (contentWidth) {
       case 'three-quarters':
         return 'w-full lg:w-3/4';
@@ -43,7 +43,10 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
             <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden" style={{ height: 'calc(var(--page-topper-vh, 1vh) * 89)' }}>
               {/* Background Image with scale animation */}
               {slice.primary.hero_image?.url && (
-                <PageTopperBgImage heroImage={slice.primary.hero_image} />
+                <PageTopperBgImage 
+                  heroImage={slice.primary.hero_image}
+                  imagePosition={slice.primary.image_position as 'top' | 'center' | 'bottom' | undefined}
+                />
               )}
               {/* Vignette Overlay - Dark edges, lighter center */}
               <div className="absolute inset-0 z-5 bg-gradient-to-b from-black/70 via-black/10 to-black/85"></div>

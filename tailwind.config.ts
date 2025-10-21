@@ -14,12 +14,27 @@ const config: Config = {
         'mach1-black': '#262626',
         'dark-blue': '#141433',
         'mach-gray': '#747474',
+        'mach1-green': '#10b981',
         mach1: {
           black: '#262626',
         },
       },
       fontFamily: {
         'mono': ['var(--font-jetbrains-mono)', 'monospace'],
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },

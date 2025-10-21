@@ -110,6 +110,7 @@ export default function SummaryClient() {
             contactTimeframe=""
             selectedCard={summaryData.selectedCard}
             formData={summaryData.formData}
+            faqs={[]}
             onReset={handleReset}
           />
         </div>

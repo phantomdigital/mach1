@@ -2,7 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Content } from "@prismicio/client";
+import { Content, RichTextField } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStepsFlow } from "./steps-context";
@@ -14,17 +14,20 @@ import StepsSummary from "./steps-summary";
 
 import { StepIndicator } from "./step-indicator";
 import { stepContentVariants } from "./step-animations";
+import { getMarginTopClass, getSectionPaddingClass } from "@/lib/spacing";
 
 /**
  * Props for `Steps`.
  */
-export type StepsProps = SliceComponentProps<Content.StepsSlice>;
+export type StepsProps = SliceComponentProps<Content.StepsSlice> & {
+  mainFaqs?: Array<{ faq_question: string | null; faq_answer: RichTextField | null }>;
+};
 
 /**
  * Component for "Steps" Slices.
  * Each variation renders as a different step in the multi-step flow.
  */
-const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
+const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement | null => {
   const router = useRouter();
   const sliceRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,117 +99,125 @@ const Steps = ({ slice, index }: StepsProps): React.ReactElement | null => {
         data-slice-variation={slice.variation}
         className={`w-full bg-white ${
           currentStep > 0 
-            ? "pt-62 pb-16 lg:pb-24" 
+            ? `${getMarginTopClass("extra-large")} pb-16 lg:pb-24` 
             : "py-16 lg:py-24"
         }`}
       >
         <div ref={containerRef} className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
-          {/* Step Indicator - only show for steps 1+ (not start) */}
+          {/* Step Indicator - only show for steps 1+ (not start) - OUTSIDE AnimatePresence so it persists */}
           {currentStep > 0 && (
-            <div className="w-full mb-12 md:mb-16">
+            <div className="w-full mb-16 md:mb-16 relative">
               <StepIndicator
                 stepNumber={currentStep}
                 stepTitle={slice.primary.step_title || "Step"}
-                totalSteps={6}
+                totalSteps={4}
                 onBack={currentStep > 1 ? () => goToPreviousStep() : undefined}
               />
             </div>
           )}
 
-          {/* Current Step Content */}
+          {/* Current Step Content - AnimatePresence only wraps the step content */}
           <AnimatePresence mode="wait">
-          <motion.div
-            key={`step-${currentStep}`}
-            variants={stepContentVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className="w-full flex flex-col items-center"
-          >
-            {/* Step 0: Start */}
-            {slice.variation === "start" && (
-              <StepsStart
-                image={(slice.primary as any).start_image}
-                heading={(slice.primary as any).start_heading}
-                description={(slice.primary as any).start_description}
-                buttonText={(slice.primary as any).start_button_text}
-                onStart={() => goToNextStep(true)}
-              />
-            )}
+            <motion.div
+              key={`step-${currentStep}`}
+              variants={stepContentVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="w-full flex flex-col items-center"
+            >
+              {/* Step 0: Start */}
+              {slice.variation === "start" && (
+                <StepsStart
+                  image={(slice.primary as any).start_image}
+                  heading={(slice.primary as any).start_heading}
+                  description={(slice.primary as any).start_description}
+                  buttonText={(slice.primary as any).start_button_text}
+                  onStart={() => goToNextStep(true)}
+                />
+              )}
 
-            {/* Step 1: Cards */}
-            {slice.variation === "cards" && (
-              <StepsCards
-          cards={slice.items.map((item) => ({
-            label: item.card_label || "",
-            value: item.card_value || "",
-            hasLinkIcon: item.has_link_icon || false,
-            image: item.card_image,
-            isTextOption: item.is_text_option || false,
-          }))}
-              onSelect={handleCardSelect}
-            />
-          )}
+              {/* Step 1: Cards */}
+              {slice.variation === "cards" && (
+                <StepsCards
+                  cards={slice.items.map((item) => ({
+                    label: item.card_label || "",
+                    value: item.card_value || "",
+                    hasLinkIcon: item.has_link_icon || false,
+                    image: item.card_image,
+                    isTextOption: item.is_text_option || false,
+                  }))}
+                  onSelect={handleCardSelect}
+                />
+              )}
 
-          {/* Step 2: Form */}
-          {slice.variation === "form" && (
-            <StepsForm
-              formHeading={
-                selectedCard && (
-                  selectedCard.toLowerCase().includes('warehousing') ||
-                  selectedCard.toLowerCase().includes('3pl') ||
-                  selectedCard.toLowerCase().includes('storage') ||
-                  selectedCard.toLowerCase().includes('warehouse')
-                )
-                  ? "WAREHOUSING DETAILS"
-                  : (slice.primary.form_heading || "SHIPMENT DETAILS")
-              }
-              fields={slice.items.map((item) => ({
-                label: item.field_label || "",
-                name: item.field_name || "",
-                type: item.field_type || "text",
-                placeholder: item.field_placeholder || "",
-                required: item.field_required !== false,
-                options: item.field_options
-                  ? item.field_options.split(",").map((opt) => opt.trim())
-                  : undefined,
-                unit: item.field_unit || undefined,
-                column: (item.field_column || "left") as "left" | "right" | "full",
-                width: (item.field_width || "full") as
-                  | "full"
-                  | "half"
-                  | "third"
-                  | "quarter"
-                  | "fifth",
-              }))}
-              onSubmit={handleFormSubmit}
-              initialData={formData}
-            />
-          )}
+              {/* Step 2: Form */}
+              {slice.variation === "form" && (
+                <StepsForm
+                  formHeading={
+                    selectedCard && (
+                      selectedCard.toLowerCase().includes('warehousing') ||
+                      selectedCard.toLowerCase().includes('3pl') ||
+                      selectedCard.toLowerCase().includes('storage') ||
+                      selectedCard.toLowerCase().includes('warehouse')
+                    )
+                      ? "WAREHOUSING DETAILS"
+                      : (slice.primary.form_heading || "SHIPMENT DETAILS")
+                  }
+                  fields={slice.items.map((item) => ({
+                    label: item.field_label || "",
+                    name: item.field_name || "",
+                    type: item.field_type || "text",
+                    placeholder: item.field_placeholder || "",
+                    required: item.field_required !== false,
+                    options: item.field_options
+                      ? item.field_options.split(",").map((opt) => opt.trim())
+                      : undefined,
+                    unit: item.field_unit || undefined,
+                    column: (item.field_column || "left") as "left" | "right" | "full",
+                    width: (item.field_width || "full") as
+                      | "full"
+                      | "half"
+                      | "third"
+                      | "quarter"
+                      | "fifth",
+                  }))}
+                  onSubmit={handleFormSubmit}
+                  initialData={formData}
+                />
+              )}
 
-          {/* Step 2b: Packages */}
-          {slice.variation === ("packages" as any) && (
-            <StepsPackages
-              packagesHeading={(slice.primary as any).packages_heading || "PACKAGE DETAILS"}
-              selectedCard={selectedCard}
-              onSubmit={handlePackagesSubmit}
-            />
-          )}
+              {/* Step 2b: Packages */}
+              {slice.variation === ("packages" as any) && (
+                <StepsPackages
+                  packagesHeading={(slice.primary as any).packages_heading || "PACKAGE DETAILS"}
+                  selectedCard={selectedCard}
+                  onSubmit={handlePackagesSubmit}
+                />
+              )}
 
-          {/* Step 3: Summary */}
-          {slice.variation === "summary" && (
-            <StepsSummary
-              heading={slice.primary.summary_heading || "Thank you!"}
-              description={slice.primary.summary_description || []}
-              contactEmail={slice.primary.contact_email || ""}
-              contactTimeframe={slice.primary.contact_timeframe || ""}
-              selectedCard={selectedCard}
-              formData={formData}
-              onReset={resetFlow}
-            />
-          )}
-
-          </motion.div>
+              {/* Step 3: Summary */}
+              {slice.variation === "summary" && (
+                <StepsSummary
+                  heading={slice.primary.summary_heading || "Thank you!"}
+                  description={slice.primary.summary_description || []}
+                  contactEmail={slice.primary.contact_email || ""}
+                  contactTimeframe={slice.primary.contact_timeframe || ""}
+                  selectedCard={selectedCard}
+                  formData={formData}
+                  faqs={
+                    // Use main FAQs if available and use_main_faqs is true, otherwise use custom FAQs
+                    (slice.primary as any).use_main_faqs && mainFaqs.length > 0
+                      ? mainFaqs
+                      : slice.items.map((item) => ({
+                          faq_question: item.faq_question || null,
+                          faq_answer: item.faq_answer || null,
+                        }))
+                  }
+                  onReset={resetFlow}
+                />
+              )}
+            </motion.div>
           </AnimatePresence>
         </div>
       </section>

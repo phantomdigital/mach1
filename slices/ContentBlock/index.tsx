@@ -2,6 +2,7 @@ import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
 import { HeaderSeparator } from "@/components/ui/header-separator";
+import { ContentBlockButton } from "./content-block-button";
 
 /**
  * Props for `ContentBlock`.
@@ -130,6 +131,15 @@ const ContentBlock = ({ slice }: ContentBlockProps): React.ReactElement => {
                   {slice.primary.description}
                 </p>
               )}
+              
+              {/* Button */}
+              <div className={getAlignmentClass()}>
+                <ContentBlockButton
+                  buttonText={slice.primary.button_text}
+                  buttonLink={slice.primary.button_link}
+                  buttonStyle={slice.primary.button_style}
+                />
+              </div>
             </div>
           </div>
         

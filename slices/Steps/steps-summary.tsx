@@ -3,8 +3,14 @@
 import { useState } from "react";
 import { ChevronDown, Mail, MessageCircle } from "lucide-react";
 import { HeroButton } from "@/components/ui/hero-button";
+import { Badge } from "@/components/ui/badge";
 import type { RichTextField } from "@prismicio/client";
 import { PrismicRichText } from "@prismicio/react";
+
+interface FaqItem {
+  faq_question: string | null;
+  faq_answer: RichTextField | null;
+}
 
 interface StepsSummaryProps {
   heading: string;
@@ -13,41 +19,9 @@ interface StepsSummaryProps {
   contactTimeframe: string;
   selectedCard?: string;
   formData: Record<string, string> | null;
+  faqs?: FaqItem[];
   onReset: () => void;
 }
-
-const faqs = [
-  {
-    question: "If I'm not home, what will the driver do?",
-    answer:
-      "Our driver will attempt to contact you using the phone number provided. If we cannot reach you, we will leave a notification and reschedule delivery.",
-  },
-  {
-    question: "How long do I wait to enquire about a late or missing item?",
-    answer:
-      "Please wait until the end of the estimated delivery window. If your item hasn't arrived by then, contact our support team immediately.",
-  },
-  {
-    question: "How long do I wait to enquire about a late or missing item?",
-    answer:
-      "We recommend waiting 24-48 hours after the expected delivery date before submitting an inquiry about a late shipment.",
-  },
-  {
-    question: "How long do I wait to enquire about a late or missing item?",
-    answer:
-      "Most inquiries are resolved within 1-2 business days. Our team will keep you updated throughout the investigation process.",
-  },
-  {
-    question: "How long do I wait to enquire about a late or missing item?",
-    answer:
-      "You can track your shipment in real-time using the tracking number provided in your confirmation email.",
-  },
-  {
-    question: "How long do I wait to enquire about a late or missing item?",
-    answer:
-      "Yes, you can modify delivery details up to 24 hours before the scheduled delivery time by contacting our support team.",
-  },
-];
 
 export default function StepsSummary({
   heading,
@@ -56,6 +30,7 @@ export default function StepsSummary({
   contactTimeframe,
   selectedCard,
   formData,
+  faqs = [],
   onReset,
 }: StepsSummaryProps) {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -171,7 +146,10 @@ export default function StepsSummary({
         {/* Left Column - Summary */}
         <div className="space-y-8">
           <div className="space-y-6">
-            <h5 className="text-neutral-800 text-sm">THANK YOU FOR GETTING IN TOUCH</h5>
+            <div className="flex items-center gap-3">
+              <Badge variant="green">Quote Received</Badge>
+            </div>
+
             <h2 className="text-neutral-800 text-4xl lg:text-5xl">
               {heading}
             </h2>
@@ -293,39 +271,45 @@ export default function StepsSummary({
         {/* Right Column - FAQs and Help */}
         <div className="space-y-6">
           {/* FAQs */}
-          <div className="space-y-4">
-            <h5 className="text-neutral-800 text-sm">FAQs</h5>
-            <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9]">
-              <div className="space-y-4">
-                {faqs.map((faq, index) => (
-                  <div key={index} className="border-b border-neutral-200 last:border-b-0">
-                    <button
-                      onClick={() => toggleFaq(index)}
-                      className="w-full flex items-start justify-between gap-4 py-4 text-left group"
-                    >
-                      <span className="text-neutral-800 text-sm flex-1">
-                        {faq.question}
-                      </span>
-                      <ChevronDown
-                        className={`w-5 h-5 text-neutral-800 transition-transform duration-300 flex-shrink-0 ${
-                          expandedFaq === index ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    <div
-                      className={`overflow-hidden transition-all duration-300 ${
-                        expandedFaq === index
-                          ? "max-h-96 pb-4"
-                          : "max-h-0"
-                      }`}
-                    >
-                      <p className="text-neutral-600 text-sm">{faq.answer}</p>
-                    </div>
-                  </div>
-                ))}
+          {faqs.length > 0 && (
+            <div className="space-y-4">
+              <h5 className="text-neutral-800 text-sm">FAQs</h5>
+              <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9]">
+                <div className="space-y-4">
+                  {faqs
+                    .filter(faq => faq.faq_question && faq.faq_answer)
+                    .map((faq, index) => (
+                      <div key={index} className="border-b border-neutral-200 last:border-b-0">
+                        <button
+                          onClick={() => toggleFaq(index)}
+                          className="w-full flex items-start justify-between gap-4 py-4 text-left group"
+                        >
+                          <span className="text-neutral-800 text-sm flex-1">
+                            {faq.faq_question}
+                          </span>
+                          <ChevronDown
+                            className={`w-5 h-5 text-neutral-800 transition-transform duration-300 flex-shrink-0 ${
+                              expandedFaq === index ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                        <div
+                          className={`overflow-hidden transition-all duration-300 ${
+                            expandedFaq === index
+                              ? "max-h-96 pb-4"
+                              : "max-h-0"
+                          }`}
+                        >
+                          <div className="text-neutral-600 text-sm prose prose-sm max-w-none prose-p:leading-relaxed prose-strong:text-neutral-800 prose-strong:font-semibold prose-a:text-dark-blue prose-a:underline hover:prose-a:text-mach1-green">
+                            <PrismicRichText field={faq.faq_answer} />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Get Help */}
           <div className="space-y-4">

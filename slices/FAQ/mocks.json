@@ -1,0 +1,92 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {},
+    "items": [
+      {
+        "category": "General",
+        "question": "What is a Freight Forwarder?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "text": "Simply put, a freight forwarder is a company that receives and ships goods on behalf of other organisations. A freight forwarder will be involved in important strategic decisions and cargo-related activities, such as whether to use air, land or sea freight, processing paperwork, liaising with shipping companies, customs and quarantine, and a host of other critical logistics functions.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "category": "General",
+        "question": "Do you have office at the destination that can help us?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "text": "Yes, we have an extensive network of offices and agents all over the world, waiting to help you.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "category": "International Shipping",
+        "question": "Do you handle international household moves?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "text": "Yes. However, we are not a removalist company. We are an international shipping company, which means that we can pick up and drop off your cargo, but we do not pack and unpack.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "category": "International Shipping",
+        "question": "Any advice for a first-time shipper?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "text": "Prepare your goods for the unknown - Your cargo is subject to extreme conditions. There can be significant changes in temperature and humidity inside sea and air containers, as they are subjected a wide range of weather condition while in transit.",
+            "spans": []
+          },
+          {
+            "type": "paragraph",
+            "text": "Carefully declare any dangerous or perishable goods - It's crucial that all transport handlers are made fully aware of the nature of the goods being loaded on planes, ships or trucks.",
+            "spans": []
+          },
+          {
+            "type": "paragraph",
+            "text": "Properly Insure Your Cargo - Ensure you have the appropriate insurance to cover your goods for any unforeseeable loss.",
+            "spans": []
+          }
+        ]
+      },
+      {
+        "category": "Vehicle Transport",
+        "question": "Can you ship my vehicle internationally?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "text": "Yes, with conditions. It is your responsibility to ensure you have all correct import or export permits.",
+            "spans": [
+              {
+                "start": 0,
+                "end": 19,
+                "type": "strong"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "category": "Pricing & Charges",
+        "question": "How is chargeable weight calculated?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "text": "There are many different formulas and methods that airlines and shipping lines utilise to determine charges. Airfreight is commonly charged per kg, according to the actual or chargeable weight, whichever is greater. Sea freight is charged per cubic meter or per metric tonne, whichever is greater. Road freight is charged per pallet, or per kg, depending on the country/provider.",
+            "spans": []
+          }
+        ]
+      }
+    ]
+  }
+]
+

@@ -7,6 +7,7 @@ import { createClient } from "@/prismicio";
 import type { Content } from "@prismicio/client";
 import { isFilled } from "@prismicio/client";
 import { HeroButton } from "@/components/ui/hero-button";
+import { Badge } from "@/components/ui/badge";
 
 type Params = { uid: string };
 
@@ -90,22 +91,19 @@ export default async function JobPage({
             {/* Status Badges */}
             <div className="flex flex-wrap gap-3 mb-6">
               {page.data.department && (
-                <span 
-                  className="inline-block text-green-200 text-xs font-bold tracking-wider uppercase px-4 py-2 bg-mach1-green rounded-2xl"
-                  style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
-                >
+                <Badge variant="green">
                   {page.data.department}
-                </span>
+                </Badge>
               )}
               {page.data.featured && (
-                <span className="inline-block text-xs font-bold tracking-wider uppercase px-4 py-2 bg-dark-blue text-white rounded-2xl">
+                <Badge variant="featured">
                   Featured
-                </span>
+                </Badge>
               )}
               {(!isActive || isPastClosingDate) && (
-                <span className="inline-block text-xs font-bold tracking-wider uppercase px-4 py-2 bg-neutral-400 text-white rounded-2xl">
+                <Badge variant="closed">
                   Position Closed
-                </span>
+                </Badge>
               )}
             </div>
 

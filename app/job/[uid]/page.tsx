@@ -7,6 +7,8 @@ import { createClient } from "@/prismicio";
 import type { Content } from "@prismicio/client";
 import { isFilled } from "@prismicio/client";
 import { HeroButton } from "@/components/ui/hero-button";
+import { Badge } from "@/components/ui/badge";
+import { formatAuDate } from "@/lib/date-utils";
 
 type Params = { uid: string };
 
@@ -25,15 +27,8 @@ export default async function JobPage({
     notFound();
   }
 
-  const formatDate = (dateString: string | null | undefined) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-AU", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  const formattedClosingDate = formatAuDate(page.data.closing_date);
+
 
   // Check if position is still active
   const isActive = page.data.active !== false;
@@ -90,22 +85,19 @@ export default async function JobPage({
             {/* Status Badges */}
             <div className="flex flex-wrap gap-2 lg:gap-3 mb-4 lg:mb-6">
               {page.data.department && (
-                <span 
-                  className="inline-block text-green-200 text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-green rounded-2xl"
-                  style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
-                >
+                <Badge variant="green" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
                   {page.data.department}
-                </span>
+                </Badge>
               )}
               {page.data.featured && (
-                <span className="inline-block text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-dark-blue text-white rounded-2xl">
+                <Badge variant="featured" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
                   Featured
-                </span>
+                </Badge>
               )}
               {(!isActive || isPastClosingDate) && (
-                <span className="inline-block text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-neutral-400 text-white rounded-2xl">
+                <Badge variant="closed" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
                   Position Closed
-                </span>
+                </Badge>
               )}
             </div>
 
@@ -183,7 +175,7 @@ export default async function JobPage({
                       </h3>
                       {hasClosingDate && (
                         <p className="text-neutral-600 text-sm">
-                          Applications close on {formatDate(closingDate)}
+                          Applications close on {formatAuDate(closingDate)}
                         </p>
                       )}
                     </div>
@@ -278,8 +270,8 @@ export default async function JobPage({
                         Submit your application today and become part of something great.
                       </p>
                       {hasClosingDate && (
-                        <p className="text-neutral-300 text-sm mt-2">
-                          Applications close on {formatDate(closingDate)}
+                        <p className="text-neutral-200 text-sm mt-2">
+                          Applications close on {formatAuDate(closingDate)}
                         </p>
                       )}
                     </div>

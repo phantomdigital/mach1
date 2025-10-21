@@ -4,6 +4,7 @@ import { PrismicNextLink } from "@prismicio/next";
 import type { Content } from "@prismicio/client";
 import { motion } from "framer-motion";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
+import { Badge } from "@/components/ui/badge";
 
 interface JobCardProps {
   job: Content.JobDocument;
@@ -45,22 +46,16 @@ export function JobCard({ job, index, isFeatured = false }: JobCardProps) {
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                   {/* Department Badge */}
                   {job.data.department && (
-                    <span 
-                      className="inline-block text-green-200 text-xs font-bold tracking-wider uppercase px-3 py-1.5 bg-mach1-green rounded-2xl"
-                      style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
-                    >
+                    <Badge variant="green">
                       {job.data.department}
-                    </span>
+                    </Badge>
                   )}
 
                   {/* Featured Badge */}
                   {isFeatured && (
-                    <span 
-                      className="inline-block text-xs font-bold tracking-wider uppercase px-3 py-1.5 bg-dark-blue text-white rounded-full"
-                      style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
-                    >
+                    <Badge variant="featured">
                       Featured
-                    </span>
+                    </Badge>
                   )}
                 </div>
 

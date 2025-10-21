@@ -7,12 +7,26 @@ import { ImageField } from "@prismicio/client";
 
 interface PageTopperBgImageProps {
   heroImage: ImageField;
+  imagePosition?: 'top' | 'center' | 'bottom';
 }
 
-export function PageTopperBgImage({ heroImage }: PageTopperBgImageProps) {
+export function PageTopperBgImage({ heroImage, imagePosition = 'center' }: PageTopperBgImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const hasAnimatedRef = useRef(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Map position to Tailwind classes
+  const getPositionClass = () => {
+    switch (imagePosition) {
+      case 'top':
+        return 'object-top';
+      case 'bottom':
+        return 'object-bottom';
+      case 'center':
+      default:
+        return 'object-center';
+    }
+  };
 
   useEffect(() => {
     if (!containerRef.current || hasAnimatedRef.current) return;
@@ -45,7 +59,7 @@ export function PageTopperBgImage({ heroImage }: PageTopperBgImageProps) {
       <PrismicNextImage 
         field={heroImage} 
         fill
-        className="object-cover"
+        className={`object-cover ${getPositionClass()}`}
         priority
         fetchPriority="high"
         sizes="100vw"

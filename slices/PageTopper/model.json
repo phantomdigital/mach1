@@ -103,6 +103,19 @@
             ],
             "default_value": "full"
           }
+        },
+        "image_position": {
+          "type": "Select",
+          "config": {
+            "label": "Image Position",
+            "placeholder": "Choose image vertical position",
+            "options": [
+              "top",
+              "center",
+              "bottom"
+            ],
+            "default_value": "center"
+          }
         }
       },
       "items": {}

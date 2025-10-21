@@ -134,6 +134,30 @@
             "placeholder_true": "Show Bottom Separator",
             "default_value": false
           }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "Learn More"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "button_style": {
+          "type": "Select",
+          "config": {
+            "label": "Button Style",
+            "placeholder": "",
+            "options": ["default", "hero-light", "secondary"],
+            "default_value": "default"
+          }
         }
       },
       "items": {}

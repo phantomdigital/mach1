@@ -6,6 +6,7 @@ import type { Content } from "@prismicio/client";
 import { motion } from "framer-motion";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import ClippedCardShape from "../Steps/clipped-card-shape";
+import { Badge } from "@/components/ui/badge";
 
 interface NewsCardProps {
   article: Content.NewsDocument;
@@ -96,12 +97,9 @@ export function NewsCard({ article, index }: NewsCardProps) {
 
           {/* Category Badge - Top Left */}
           {article.data.category && (
-            <span 
-              className="absolute top-4 left-4 z-10 inline-block text-green-200 text-xs font-bold tracking-wider uppercase px-4 py-2 bg-mach1-green rounded-2xl"
-              style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
-            >
+            <Badge variant="green" className="absolute top-4 left-4 z-10">
               {article.data.category}
-            </span>
+            </Badge>
           )}
         </div>
 

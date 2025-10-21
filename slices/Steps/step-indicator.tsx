@@ -102,11 +102,11 @@ export function StepIndicator({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, delay: 0.2 }}
-            className="absolute inset-0 flex items-center justify-start pl-3 pointer-events-none"
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
             <span
               className="text-xs uppercase tracking-widest font-semibold text-neutral-800"
-              style={{ fontFamily: "var(--font-space-mono)" }}
+              style={{ fontFamily: "var(--font-jetbrains-mono)" }}
             >
               {stepTitle}
             </span>
@@ -114,13 +114,58 @@ export function StepIndicator({
         </AnimatePresence>
       </div>
 
-      {/* Horizontal line */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="hidden md:block flex-1 h-px bg-neutral-200"
-      />
+      {/* Progress indicator integrated with horizontal line */}
+      <div className="hidden md:flex flex-1 flex-col gap-2">
+        {/* Progress info - subtle text above line */}
+        <div className="flex items-center justify-between px-1">
+          <span className="text-xs text-neutral-400" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+            Step {stepNumber}/{totalSteps}
+          </span>
+          <motion.span 
+            className="text-xs font-medium text-neutral-600"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            {Math.round((stepNumber / totalSteps) * 100)}%
+          </motion.span>
+        </div>
+
+        {/* Horizontal line with progress */}
+        <div className="relative h-px w-full bg-neutral-200 overflow-hidden">
+          <motion.div
+            className="absolute inset-y-0 left-0 bg-dark-blue"
+            animate={{ width: `${(stepNumber / totalSteps) * 100}%` }}
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+          />
+        </div>
+      </div>
+
+      {/* Mobile progress - below on small screens */}
+      <div className="md:hidden absolute left-0 right-0 -bottom-8 px-4">
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-xs text-neutral-400" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
+            Step {stepNumber}/{totalSteps}
+          </span>
+          <motion.span 
+            className="text-xs font-medium text-neutral-600"
+            style={{ fontFamily: "var(--font-jetbrains-mono)" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            {Math.round((stepNumber / totalSteps) * 100)}%
+          </motion.span>
+        </div>
+        <div className="relative h-0.5 w-full bg-neutral-200 overflow-hidden rounded-full">
+          <motion.div
+            className="absolute inset-y-0 left-0 bg-dark-blue rounded-full"
+            animate={{ width: `${(stepNumber / totalSteps) * 100}%` }}
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+          />
+        </div>
+      </div>
     </div>
   );
 }

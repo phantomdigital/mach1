@@ -5,7 +5,7 @@ import type { KeyTextField, ImageField } from "@prismicio/client";
 export const baseMetadata = {
   siteName: "MACH 1 Logistics",
   companyName: "MACH 1 Logistics",
-  description: "Professional logistics and transportation services. Expert solutions for import/export, freight management, and supply chain optimization.",
+  description: "Professional logistics and transportation services. Expert solutions for import/export, freight management, and supply chain optimisation.",
   keywords: [
     "logistics",
     "transportation",

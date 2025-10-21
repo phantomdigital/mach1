@@ -1255,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-export type PageDocumentDataSlicesSlice = LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -1768,6 +1768,37 @@ export interface ContentBlockSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/boolean
 	 */
 	show_bottom_separator: prismic.BooleanField;
+	
+	/**
+	 * Button Text field in *ContentBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Learn More
+	 * - **API ID Path**: content_block.default.primary.button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *ContentBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: content_block.default.primary.button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Button Style field in *ContentBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: default
+	 * - **API ID Path**: content_block.default.primary.button_style
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	button_style: prismic.SelectField<"default" | "hero-light" | "secondary", "filled">;
 }
 
 /**
@@ -1792,6 +1823,64 @@ type ContentBlockSliceVariation = ContentBlockSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type ContentBlockSlice = prismic.SharedSlice<"content_block", ContentBlockSliceVariation>;
+
+/**
+ * Primary content in *FAQ → Items*
+ */
+export interface FaqSliceDefaultItem {
+	/**
+	 * Category field in *FAQ → Items*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select a category
+	 * - **API ID Path**: faq.items[].category
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	category: prismic.SelectField<"General" | "International Shipping" | "Air Freight" | "Sea Freight" | "Road Freight" | "Customs & Compliance" | "Pricing & Charges" | "Vehicle Transport" | "Warehousing">;
+	
+	/**
+	 * Question field in *FAQ → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: How long does shipping take?
+	 * - **API ID Path**: faq.items[].question
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	question: prismic.KeyTextField;
+	
+	/**
+	 * Answer field in *FAQ → Items*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Shipping typically takes 3-5 business days...
+	 * - **API ID Path**: faq.items[].answer
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	answer: prismic.RichTextField;
+}
+
+/**
+ * Default variation for FAQ Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default FAQ variation
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FaqSliceDefault = prismic.SharedSliceVariation<"default", Record<string, never>, Simplify<FaqSliceDefaultItem>>;
+
+/**
+ * Slice variation for *FAQ*
+ */
+type FaqSliceVariation = FaqSliceDefault
+
+/**
+ * FAQ Shared Slice
+ *
+ * - **API ID**: `faq`
+ * - **Description**: Frequently Asked Questions section with collapsible accordion
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FaqSlice = prismic.SharedSlice<"faq", FaqSliceVariation>;
 
 /**
  * Primary content in *Hero → Default → Primary*
@@ -2698,6 +2787,17 @@ export interface PageTopperSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	content_width: prismic.SelectField<"full" | "three-quarters" | "two-thirds" | "half" | "one-third", "filled">;
+	
+	/**
+	 * Image Position field in *PageTopper → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose image vertical position
+	 * - **Default Value**: center
+	 * - **API ID Path**: page_topper.default.primary.image_position
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_position: prismic.SelectField<"top" | "center" | "bottom", "filled">;
 }
 
 /**
@@ -3518,6 +3618,52 @@ export interface StepsSliceSummaryPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	contact_timeframe: prismic.KeyTextField;
+	
+	/**
+	 * Use Main FAQ Slice field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: steps.summary.primary.use_main_faqs
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	use_main_faqs: prismic.BooleanField;
+	
+	/**
+	 * Main FAQ Slice (if using main FAQs) field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: steps.summary.primary.main_faq_slice
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	main_faq_slice: prismic.ContentRelationshipField<"page">;
+}
+
+/**
+ * Primary content in *Steps → Items*
+ */
+export interface StepsSliceSummaryItem {
+	/**
+	 * FAQ Question field in *Steps → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: How long do I wait to enquire about a late or missing item?
+	 * - **API ID Path**: steps.items[].faq_question
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	faq_question: prismic.KeyTextField;
+	
+	/**
+	 * FAQ Answer field in *Steps → Items*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Please wait until the end of the estimated delivery window...
+	 * - **API ID Path**: steps.items[].faq_answer
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	faq_answer: prismic.RichTextField;
 }
 
 /**
@@ -3527,7 +3673,7 @@ export interface StepsSliceSummaryPrimary {
  * - **Description**: Step 3: Thank you / confirmation page
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type StepsSliceSummary = prismic.SharedSliceVariation<"summary", Simplify<StepsSliceSummaryPrimary>, never>;
+export type StepsSliceSummary = prismic.SharedSliceVariation<"summary", Simplify<StepsSliceSummaryPrimary>, Simplify<StepsSliceSummaryItem>>;
 
 /**
  * Slice variation for *Steps*
@@ -3752,6 +3898,10 @@ declare module "@prismicio/client" {
 			ContentBlockSliceDefaultPrimary,
 			ContentBlockSliceVariation,
 			ContentBlockSliceDefault,
+			FaqSlice,
+			FaqSliceDefaultItem,
+			FaqSliceVariation,
+			FaqSliceDefault,
 			HeroSlice,
 			HeroSliceDefaultPrimary,
 			HeroSliceDefaultItem,
@@ -3818,6 +3968,7 @@ declare module "@prismicio/client" {
 			StepsSliceFormItem,
 			StepsSlicePackagesPrimary,
 			StepsSliceSummaryPrimary,
+			StepsSliceSummaryItem,
 			StepsSliceVariation,
 			StepsSliceStart,
 			StepsSliceCards,

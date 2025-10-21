@@ -1,0 +1,53 @@
+{
+  "id": "faq",
+  "type": "SharedSlice",
+  "name": "FAQ",
+  "description": "Frequently Asked Questions section with collapsible accordion",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default FAQ variation",
+      "imageUrl": "",
+      "primary": {},
+      "items": {
+        "category": {
+          "type": "Select",
+          "config": {
+            "label": "Category",
+            "placeholder": "Select a category",
+            "options": [
+              "General",
+              "International Shipping",
+              "Air Freight",
+              "Sea Freight",
+              "Road Freight",
+              "Customs & Compliance",
+              "Pricing & Charges",
+              "Vehicle Transport",
+              "Warehousing"
+            ]
+          }
+        },
+        "question": {
+          "type": "Text",
+          "config": {
+            "label": "Question",
+            "placeholder": "How long does shipping take?"
+          }
+        },
+        "answer": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Answer",
+            "placeholder": "Shipping typically takes 3-5 business days...",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          }
+        }
+      }
+    }
+  ]
+}
+

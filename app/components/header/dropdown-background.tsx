@@ -16,7 +16,7 @@ import type { ImageField } from "@prismicio/client";
 
 /**
  * Generate optimized Prismic image URL with proper sizing and quality
- * This gives us the same optimization benefits as PrismicNextImage
+ * This gives us the same optimisation benefits as PrismicNextImage
  */
 const getOptimizedImageUrl = (image: ImageField | undefined, width = 1000, height = 400): string => {
   if (!image?.url) return '';
