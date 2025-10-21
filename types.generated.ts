@@ -1255,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+export type PageDocumentDataSlicesSlice = FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
