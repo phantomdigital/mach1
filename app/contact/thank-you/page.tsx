@@ -27,8 +27,17 @@ export default async function ThankYouPage() {
 
   try {
     const homePage = await client.getSingle("home");
-    // Find the ContactUs slice - using any type since it's a shared slice
-    const slices: any[] = homePage.data.slices;
+    // Find the ContactUs slice - cast to unknown first then to our expected type
+    const slices = homePage.data.slices as unknown as Array<{
+      slice_type: string;
+      primary?: {
+        thank_you_heading?: string;
+        thank_you_description?: string;
+        thank_you_info_title?: string;
+        thank_you_info_text?: string;
+      };
+    }>;
+    
     const contactSlice = slices.find(
       (slice) => slice.slice_type === "contact_us"
     );
