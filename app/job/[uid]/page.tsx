@@ -9,6 +9,7 @@ import { isFilled } from "@prismicio/client";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Badge } from "@/components/ui/badge";
 import { formatAuDate } from "@/lib/date-utils";
+import { JobApplicationDialog } from "@/app/careers/job-application-dialog";
 
 type Params = { uid: string };
 
@@ -187,11 +188,13 @@ export default async function JobPage({
                           </PrismicNextLink>
                         </HeroButton>
                       ) : applicationEmail ? (
-                        <HeroButton asChild>
-                          <a href={`mailto:${applicationEmail}?subject=Application for ${page.data.title}`}>
-                            APPLY NOW
-                          </a>
-                        </HeroButton>
+                        <JobApplicationDialog
+                          jobTitle={page.data.title || ""}
+                          applicationEmail={applicationEmail}
+                          closingDate={formattedClosingDate}
+                        >
+                          <HeroButton>APPLY NOW</HeroButton>
+                        </JobApplicationDialog>
                       ) : null}
                     </div>
                   </div>
@@ -283,11 +286,13 @@ export default async function JobPage({
                           </PrismicNextLink>
                         </HeroButton>
                       ) : applicationEmail ? (
-                        <HeroButton asChild>
-                          <a href={`mailto:${applicationEmail}?subject=Application for ${page.data.title}`}>
-                            APPLY NOW
-                          </a>
-                        </HeroButton>
+                        <JobApplicationDialog
+                          jobTitle={page.data.title || ""}
+                          applicationEmail={applicationEmail}
+                          closingDate={formattedClosingDate}
+                        >
+                          <HeroButton>APPLY NOW</HeroButton>
+                        </JobApplicationDialog>
                       ) : null}
                     </div>
                   </div>

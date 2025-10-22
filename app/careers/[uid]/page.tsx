@@ -8,6 +8,8 @@ import type { Content } from "@prismicio/client";
 import { isFilled } from "@prismicio/client";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Badge } from "@/components/ui/badge";
+import { JobApplicationDialog } from "@/app/careers/job-application-dialog";
+import { formatAuDate } from "@/lib/date-utils";
 
 type Params = { uid: string };
 
@@ -26,15 +28,7 @@ export default async function JobPage({
     notFound();
   }
 
-  const formatDate = (dateString: string | null | undefined) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-AU", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+  const formattedClosingDate = formatAuDate(page.data.closing_date);
 
   // Check if position is still active
   const isActive = page.data.active !== false;
@@ -167,28 +161,30 @@ export default async function JobPage({
                   <div>
                     <h3 className="text-neutral-800 text-xl font-bold mb-2">
                       Interested in this role?
-                    </h3>
-                    {hasClosingDate && (
-                      <p className="text-neutral-600 text-sm">
-                        Applications close on {formatDate(closingDate)}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    {hasApplicationUrl ? (
-                      <HeroButton asChild>
-                        <PrismicNextLink field={applicationUrl} target="_blank" rel="noopener noreferrer">
-                          APPLY NOW
-                        </PrismicNextLink>
-                      </HeroButton>
-                    ) : applicationEmail ? (
-                      <HeroButton asChild>
-                        <a href={`mailto:${applicationEmail}?subject=Application for ${page.data.title}`}>
-                          APPLY NOW
-                        </a>
-                      </HeroButton>
-                    ) : null}
-                  </div>
+                      </h3>
+                      {hasClosingDate && (
+                        <p className="text-neutral-600 text-sm">
+                          Applications close on {formattedClosingDate}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      {hasApplicationUrl ? (
+                        <HeroButton asChild>
+                          <PrismicNextLink field={applicationUrl} target="_blank" rel="noopener noreferrer">
+                            APPLY NOW
+                          </PrismicNextLink>
+                        </HeroButton>
+                      ) : applicationEmail ? (
+                        <JobApplicationDialog
+                          jobTitle={page.data.title || ""}
+                          applicationEmail={applicationEmail}
+                          closingDate={formattedClosingDate}
+                        >
+                          <HeroButton>APPLY NOW</HeroButton>
+                        </JobApplicationDialog>
+                      ) : null}
+                    </div>
                 </div>
               </div>
             )}
@@ -254,7 +250,7 @@ export default async function JobPage({
                     </p>
                     {hasClosingDate && (
                       <p className="text-neutral-300 text-sm mt-2">
-                        Applications close on {formatDate(closingDate)}
+                        Applications close on {formattedClosingDate}
                       </p>
                     )}
                   </div>
@@ -266,11 +262,13 @@ export default async function JobPage({
                         </PrismicNextLink>
                       </HeroButton>
                     ) : applicationEmail ? (
-                      <HeroButton asChild>
-                        <a href={`mailto:${applicationEmail}?subject=Application for ${page.data.title}`}>
-                          APPLY NOW
-                        </a>
-                      </HeroButton>
+                      <JobApplicationDialog
+                        jobTitle={page.data.title || ""}
+                        applicationEmail={applicationEmail}
+                        closingDate={formattedClosingDate}
+                      >
+                        <HeroButton>APPLY NOW</HeroButton>
+                      </JobApplicationDialog>
                     ) : null}
                   </div>
                 </div>
