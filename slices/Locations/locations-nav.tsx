@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useScrollTo } from "@/hooks/use-lenis";
+import { useCompactHeaderVisible } from "@/hooks/use-compact-header-visible";
 
 interface LocationNavProps {
   locations: Array<{
@@ -12,6 +13,8 @@ interface LocationNavProps {
 }
 
 export function LocationsNav({ locations }: LocationNavProps) {
+  // Track compact header visibility for desktop positioning
+  const isCompactHeaderVisible = useCompactHeaderVisible();
   const [activeLocation, setActiveLocation] = useState<number>(0);
   const { scrollToElement, lenis } = useScrollTo();
 
@@ -70,8 +73,18 @@ export function LocationsNav({ locations }: LocationNavProps) {
     }
   };
 
+  // Compact header height when visible (desktop only)
+  const compactHeaderHeight = 66; // py-2 + content ≈ 66px
+
   return (
-    <div className="sticky top-0 z-30 bg-white border-b border-neutral-200 shadow-sm">
+    <div 
+      className="sticky z-30 bg-white border-b border-neutral-200 shadow-sm transition-all duration-300"
+      style={{
+        // On desktop: position below compact header when visible
+        // On mobile: always at top (compact header is hidden on mobile)
+        top: isCompactHeaderVisible ? `${compactHeaderHeight}px` : '0px'
+      }}
+    >
       <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
         <div className="py-4 overflow-x-auto scrollbar-hide">
           <div className="flex gap-6 lg:gap-8 min-w-max">

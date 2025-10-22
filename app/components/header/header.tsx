@@ -6,6 +6,7 @@ import { ScrollDropdownCloser } from "./scroll-dropdown-closer";
 import { RegionLanguageSelector } from "./region-language-selector";
 import { MobileMenu } from "./mobile-menu";
 import { HeaderHeightTracker } from "./header-height-tracker";
+import { CompactHeader } from "./compact-header";
 import type { HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 // Server component for simple navigation items
@@ -45,11 +46,22 @@ export default async function Header() {
     const header = await client.getSingle("header");
     
     return (
-      <header className="absolute top-0 left-0 z-[999] w-full h-auto">
-        {/* Track header height dynamically for mobile menu positioning */}
-        <HeaderHeightTracker />
-        
-        {/* Announcement Bar */}
+      <>
+        {/* Compact Header - Desktop Only */}
+        <div className="hidden xl:block">
+          <CompactHeader
+            logo={header.data.logo}
+            siteTitle={header.data.site_title}
+            navigation={header.data.navigation}
+            buttons={header.data.buttons}
+          />
+        </div>
+
+        <header className="absolute top-0 left-0 z-50 w-full h-auto">
+          {/* Track header height dynamically for mobile menu positioning */}
+          <HeaderHeightTracker />
+          
+          {/* Announcement Bar */}
         {header.data.show_announcement && header.data.announcement_text && (
           <div className="w-full bg-dark-blue py-3 px-4">
             <div className="max-w-[112rem] mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
@@ -200,6 +212,7 @@ export default async function Header() {
             </div>
         </div>
       </header>
+    </>
     );
   } catch {
     console.warn("No header document found in Prismic");

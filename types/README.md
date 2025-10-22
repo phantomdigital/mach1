@@ -1,4 +1,4 @@
-# Custom Types
+git st# Custom Types
 
 This directory contains custom TypeScript type definitions that complement the auto-generated types from Prismic.
 

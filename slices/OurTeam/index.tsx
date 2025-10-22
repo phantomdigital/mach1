@@ -1,9 +1,6 @@
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
-import { PrismicNextImage } from "@prismicio/next";
-import { TeamClippedShape } from "./team-clipped-shape";
-import { TeamDivider } from "./team-divider";
-import { HeaderSeparator } from "@/components/ui/header-separator";
+import { TeamGrid } from "./team-grid";
 
 /**
  * Props for `OurTeam`.
@@ -14,82 +11,45 @@ export type OurTeamProps = SliceComponentProps<Content.OurTeamSlice>;
  * Component for "OurTeam" Slices.
  */
 const OurTeam = ({ slice }: OurTeamProps): React.ReactElement => {
-  const teamMembers = slice.items.map(item => ({
+  const teamMembers = slice.items.map((item, index) => ({
     name: item.name || "",
     position: item.position || "",
+    department: item.department || "Other",
     image: item.image,
+    bio: item.bio,
+    email: item.email,
+    linkedin: item.linkedin,
+    index,
   }));
 
   return (
-    <section className="w-full py-16 lg:py-26 bg-white">
-      <div className="w-full mx-auto px-4 lg:px-48">
-      {/* Header */}
-      <div className="mb-16">
-        {slice.primary.subheading && (
-          <h5 className="text-neutral-800 text-sm font-medium mb-4 uppercase tracking-wider">
-            {slice.primary.subheading}
-          </h5>
-        )}
-        {slice.primary.heading && (
-          <h2 className="text-neutral-800 text-4xl lg:text-6xl font-bold leading-tight">
-            {slice.primary.heading}
-          </h2>
-        )}
-        {slice.primary.description && (
-          <p className="text-neutral-600 text-lg lg:text-xl font-normal leading-relaxed mt-6 max-w-2xl">
-            {slice.primary.description}
-          </p>
-        )}
-        
-      </div>
-
-        {/* Team Members Grid */}
-        <div className="space-y-24">
-          {/* Create rows of 3 team members */}
-          {Array.from({ length: Math.ceil(teamMembers.length / 3) }, (_, rowIndex) => (
-            <div key={rowIndex}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-                {teamMembers.slice(rowIndex * 3, (rowIndex + 1) * 3).map((member, index) => (
-                  <div key={rowIndex * 3 + index} className="group">
-                    {/* Team Member Card */}
-                    <TeamClippedShape className="aspect-square relative bg-neutral-100">
-                      {member.image && member.image.url ? (
-                        <PrismicNextImage
-                          field={member.image}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:cursor-pointer"
-                          alt=""
-                        />
-                      ) : (
-                        // Placeholder when no image is provided
-                        <div className="w-full h-full flex items-center justify-center bg-neutral-200">
-                          <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center">
-                            <svg 
-                              className="w-8 h-8 text-neutral-400" 
-                              fill="currentColor" 
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                          </div>
-                        </div>
-                      )}
-                    </TeamClippedShape>
-
-                    {/* Team Member Info */}
-                    <div className="mt-6">
-                      <h3 className="text-neutral-800 text-xl font-semibold leading-tight">
-                        {member.name}
-                      </h3>
-                      <p className="text-neutral-600 text-base font-normal leading-relaxed mt-1">
-                        {member.position}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
+    <section className="w-full">
+      {/* White Content Section */}
+      <div className="w-full bg-white pb-24 lg:pb-32">
+        {/* Header with Container */}
+        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+          {slice.primary.subheading && (
+            <h5 className="text-neutral-800 text-sm font-medium mb-4 uppercase tracking-wider">
+              {slice.primary.subheading}
+            </h5>
+          )}
+          {slice.primary.heading && (
+            <h2 className="text-neutral-800 text-4xl lg:text-6xl font-bold leading-tight">
+              {slice.primary.heading}
+            </h2>
+          )}
+          {slice.primary.description && (
+            <p className="text-neutral-600 text-lg lg:text-xl leading-relaxed mt-6 max-w-2xl">
+              {slice.primary.description}
+            </p>
+          )}
         </div>
+
+        {/* Team Grid with Tab Navigation (Client Component) - Full Width */}
+        <TeamGrid 
+          teamMembers={teamMembers} 
+          enableDialog={slice.primary.enable_dialog ?? false}
+        />
       </div>
     </section>
   );

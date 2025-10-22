@@ -46,6 +46,8 @@ interface NavigationDropdownProps {
   dropdownImage?: ImageField;
   /** Unique identifier for this dropdown */
   dropdownId: string;
+  /** Optional top offset for dropdown positioning (default: 38px) */
+  topOffset?: number;
 }
 
 // =================================================================
@@ -57,7 +59,8 @@ export function NavigationDropdown({
   dropdownTitle,
   dropdownItems, 
   dropdownImage,
-  dropdownId
+  dropdownId,
+  topOffset = 38
 }: NavigationDropdownProps) {
   
   // =================================================================
@@ -252,7 +255,7 @@ export function NavigationDropdown({
             ? 'pointer-events-auto' 
             : 'pointer-events-none hidden'
         }`}
-        style={{ top: '38px' }}
+        style={{ top: `${topOffset}px` }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >

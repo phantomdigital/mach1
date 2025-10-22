@@ -45,35 +45,36 @@ export function JobApplicationDialog({
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  // Prevent background scroll when modal is open
-  React.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-      // Reset form when modal closes
-      if (!isOpen && isSubmitted) {
-        setTimeout(() => {
-          setIsSubmitted(false)
-          setFormData({
-            fullName: "",
-            email: "",
-            phone: "",
-          })
-          setFiles({
-            resume: null,
-            coverLetterFile: null,
-            other: []
-          })
-        }, 300)
+  // Handle dialog open/close and Lenis
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    
+    const lenis = (window as any).__lenis;
+    if (lenis) {
+      if (open) {
+        lenis.stop();
+      } else {
+        lenis.start();
       }
     }
     
-    // Cleanup on unmount
-    return () => {
-      document.body.style.overflow = 'unset'
+    // Reset form when modal closes
+    if (!open && isSubmitted) {
+      setTimeout(() => {
+        setIsSubmitted(false)
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+        })
+        setFiles({
+          resume: null,
+          coverLetterFile: null,
+          other: []
+        })
+      }, 300)
     }
-  }, [isOpen, isSubmitted])
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -159,7 +160,7 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="flex flex-col p-0 gap-0 max-h-[90vh]">
         {/* Sticky Header - Just Title */}

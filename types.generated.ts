@@ -2636,6 +2636,17 @@ export interface OurTeamSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	description: prismic.KeyTextField;
+	
+	/**
+	 * Enable Team Member Dialog field in *OurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: our_team.default.primary.enable_dialog
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	enable_dialog: prismic.BooleanField;
 }
 
 /**
@@ -2663,6 +2674,16 @@ export interface OurTeamSliceDefaultItem {
 	position: prismic.KeyTextField;
 	
 	/**
+	 * Department/Category field in *OurTeam → Items*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select department
+	 * - **API ID Path**: our_team.items[].department
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	department: prismic.SelectField<"Leadership" | "Operations" | "Sales & Business Development" | "Customer Service" | "Finance & Administration" | "Technology & IT" | "Warehouse & Distribution" | "Transportation" | "Human Resources" | "Management" | "Marketing" | "Legal" | "Customer Service">;
+	
+	/**
 	 * Profile Image field in *OurTeam → Items*
 	 *
 	 * - **Field Type**: Image
@@ -2671,6 +2692,36 @@ export interface OurTeamSliceDefaultItem {
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
 	image: prismic.ImageField<never>;
+	
+	/**
+	 * Biography field in *OurTeam → Items*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Write a brief bio about this team member...
+	 * - **API ID Path**: our_team.items[].bio
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	bio: prismic.RichTextField;
+	
+	/**
+	 * Email (Optional) field in *OurTeam → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: john@mach1logistics.com.au
+	 * - **API ID Path**: our_team.items[].email
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	email: prismic.KeyTextField;
+	
+	/**
+	 * LinkedIn Profile (Optional) field in *OurTeam → Items*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: LinkedIn URL
+	 * - **API ID Path**: our_team.items[].linkedin
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	linkedin: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
 /**

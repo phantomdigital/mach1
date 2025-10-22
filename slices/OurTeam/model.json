@@ -32,6 +32,15 @@
             "label": "Description",
             "placeholder": "Follow the steps below and we will get a quote to you as soon as possible."
           }
+        },
+        "enable_dialog": {
+          "type": "Boolean",
+          "config": {
+            "label": "Enable Team Member Dialog",
+            "placeholder_false": "Disabled",
+            "placeholder_true": "Enabled",
+            "default_value": false
+          }
         }
       },
       "items": {
@@ -49,6 +58,28 @@
             "placeholder": "Founder"
           }
         },
+        "department": {
+          "type": "Select",
+          "config": {
+            "label": "Department/Category",
+            "placeholder": "Select department",
+            "options": [
+              "Leadership",
+              "Operations",
+              "Sales & Business Development",
+              "Customer Service",
+              "Finance & Administration",
+              "Technology & IT",
+              "Warehouse & Distribution",
+              "Transportation",
+              "Human Resources",
+              "Management",
+              "Marketing",
+              "Legal",
+              "Customer Service"
+            ]
+          }
+        },
         "image": {
           "type": "Image",
           "config": {
@@ -58,6 +89,28 @@
               "height": 400
             },
             "thumbnails": []
+          }
+        },
+        "bio": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Biography",
+            "placeholder": "Write a brief bio about this team member...",
+            "single": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "email": {
+          "type": "Text",
+          "config": {
+            "label": "Email (Optional)",
+            "placeholder": "john@mach1logistics.com.au"
+          }
+        },
+        "linkedin": {
+          "type": "Link",
+          "config": {
+            "label": "LinkedIn Profile (Optional)",
+            "placeholder": "LinkedIn URL"
           }
         }
       }
