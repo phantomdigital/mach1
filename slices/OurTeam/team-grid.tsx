@@ -85,7 +85,7 @@ export function TeamGrid({ teamMembers, enableDialog }: TeamGridProps) {
                       {member.image && member.image.url ? (
                         <PrismicNextImage
                           field={member.image}
-                          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                          className="w-full h-full object-cover"
                           alt=""
                         />
                       ) : (

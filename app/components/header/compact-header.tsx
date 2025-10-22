@@ -68,7 +68,7 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
       );
     }
 
-    // Navigation item with dropdown - use client component
+    // Navigation item with dropdown - uses client component
     return (
       <NavigationDropdown
         key={index}

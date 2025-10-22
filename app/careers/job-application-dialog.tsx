@@ -49,7 +49,7 @@ export function JobApplicationDialog({
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
     
-    const lenis = (window as any).__lenis;
+    const lenis = (window as typeof window & { __lenis?: { stop: () => void; start: () => void } }).__lenis;
     if (lenis) {
       if (open) {
         lenis.stop();
@@ -143,7 +143,7 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
     }
   }
 
-  const removeFile = (type: 'resume' | 'coverLetterFile', index?: number) => {
+  const removeFile = (type: 'resume' | 'coverLetterFile') => {
     if (type === 'resume' || type === 'coverLetterFile') {
       setFiles((prev) => ({
         ...prev,

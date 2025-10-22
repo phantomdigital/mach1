@@ -41,7 +41,7 @@ export function TeamNav({ teamMembers, onDepartmentChange }: TeamNavProps) {
   }
 
   // Compact header height when visible (desktop only)
-  const compactHeaderHeight = 66; // py-2 + content ≈ 66px
+  const compactHeaderHeight = 85; // py-3 + 50px logo + border ≈ 74px
 
   return (
     <div 

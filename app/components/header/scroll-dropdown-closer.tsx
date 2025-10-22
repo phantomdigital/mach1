@@ -6,15 +6,13 @@ import { useDropdownState } from './dropdown-state-context'
 
 /**
  * Client component that closes header dropdowns when user scrolls
- * Uses Lenis smooth scroll events for optimal performance
+ * Uses both Lenis and native scroll events for comprehensive coverage
  */
 export function ScrollDropdownCloser() {
   const lenis = useLenis()
   const { closeDropdown, openDropdownId } = useDropdownState()
 
   useEffect(() => {
-    if (!lenis) return
-
     // Function to close dropdowns on scroll
     const handleScroll = () => {
       // Only close if there's actually a dropdown open
@@ -23,12 +21,31 @@ export function ScrollDropdownCloser() {
       }
     }
 
-    // Listen to Lenis scroll events for smooth performance
-    lenis.on('scroll', handleScroll)
+    // Listen to native scroll events (catches all scroll scenarios)
+    let ticking = false
+    const handleNativeScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', handleNativeScroll, { passive: true })
+
+    // Also listen to Lenis scroll events if available
+    if (lenis) {
+      lenis.on('scroll', handleScroll)
+    }
 
     // Cleanup
     return () => {
-      lenis.off('scroll', handleScroll)
+      window.removeEventListener('scroll', handleNativeScroll)
+      if (lenis) {
+        lenis.off('scroll', handleScroll)
+      }
     }
   }, [lenis, closeDropdown, openDropdownId])
 
