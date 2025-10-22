@@ -1579,6 +1579,46 @@ export interface ContactUsSliceDefaultPrimary {
 	success_message: prismic.KeyTextField;
 	
 	/**
+	 * Thank You Heading field in *ContactUs → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Message Received!
+	 * - **API ID Path**: contact_us.default.primary.thank_you_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	thank_you_heading: prismic.KeyTextField;
+	
+	/**
+	 * Thank You Description field in *ContactUs → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: We've received your enquiry and a member of our team will get back to you as soon as possible.
+	 * - **API ID Path**: contact_us.default.primary.thank_you_description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	thank_you_description: prismic.KeyTextField;
+	
+	/**
+	 * Thank You Info Title field in *ContactUs → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: What happens next?
+	 * - **API ID Path**: contact_us.default.primary.thank_you_info_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	thank_you_info_title: prismic.KeyTextField;
+	
+	/**
+	 * Thank You Info Text field in *ContactUs → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our team typically responds within 24 hours during business days. For urgent enquiries, please call us directly.
+	 * - **API ID Path**: contact_us.default.primary.thank_you_info_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	thank_you_info_text: prismic.KeyTextField;
+	
+	/**
 	 * Top Margin field in *ContactUs → Default → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -2642,7 +2682,7 @@ export interface OurTeamSliceDefaultPrimary {
 	 *
 	 * - **Field Type**: Boolean
 	 * - **Placeholder**: *None*
-	 * - **Default Value**: true
+	 * - **Default Value**: false
 	 * - **API ID Path**: our_team.default.primary.enable_dialog
 	 * - **Documentation**: https://prismic.io/docs/fields/boolean
 	 */

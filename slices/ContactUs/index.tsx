@@ -77,7 +77,13 @@ const ContactUs = ({ slice }: ContactUsProps): React.ReactElement => {
 
           {/* Right Column - Contact Form */}
           <div>
-            <ContactForm successMessage={slice.primary.success_message || "Thank you! We'll be in touch soon."} />
+            <ContactForm 
+              successMessage={slice.primary.success_message || "Thank you! We'll be in touch soon."}
+              thankYouHeading={slice.primary.thank_you_heading || "Message Received!"}
+              thankYouDescription={slice.primary.thank_you_description || "We've received your enquiry and a member of our team will get back to you as soon as possible."}
+              thankYouInfoTitle={slice.primary.thank_you_info_title || "What happens next?"}
+              thankYouInfoText={slice.primary.thank_you_info_text || "Our team typically responds within 24 hours during business days. For urgent enquiries, please call us directly."}
+            />
           </div>
         </div>
       </div>

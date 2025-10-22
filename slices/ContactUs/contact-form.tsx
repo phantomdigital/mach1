@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -11,14 +12,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { submitContactForm } from "@/app/actions/send-contact-form";
 
 interface ContactFormProps {
   successMessage: string;
+  thankYouHeading: string;
+  thankYouDescription: string;
+  thankYouInfoTitle: string;
+  thankYouInfoText: string;
 }
 
-export default function ContactForm({ successMessage }: ContactFormProps) {
+export default function ContactForm({ 
+  successMessage, 
+  thankYouHeading,
+  thankYouDescription,
+  thankYouInfoTitle,
+  thankYouInfoText 
+}: ContactFormProps) {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     fullName: "",
     role: "",
@@ -32,45 +45,38 @@ export default function ContactForm({ successMessage }: ContactFormProps) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
-    // TODO: Implement actual form submission logic
-    // For now, simulate a successful submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const result = await submitContactForm(formData);
 
-    setIsSuccess(true);
-    setIsSubmitting(false);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSuccess(false);
-      setFormData({
-        fullName: "",
-        role: "",
-        contactNumber: "",
-        companyName: "",
-        email: "",
-        enquiryType: "",
-        message: "",
-      });
-    }, 3000);
+      if (result.success) {
+        // Redirect to thank you page
+        router.push("/contact/thank-you");
+      } else {
+        setError(result.error || "Failed to submit form. Please try again.");
+      }
+    } catch (err) {
+      console.error("Form submission error:", err);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  if (isSuccess) {
-    return (
-      <div className="bg-neutral-100 p-8 rounded-md border border-[#D9D9D9] flex items-center justify-center min-h-[500px]">
-        <div className="text-center">
-          <h3 className="text-neutral-800 text-2xl mb-4">{successMessage}</h3>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md">
+          <p className="text-sm">{error}</p>
+        </div>
+      )}
+
       {/* Full Name */}
       <div>
         <label htmlFor="fullName" className="block text-sm text-neutral-900 mb-2">

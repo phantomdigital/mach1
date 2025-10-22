@@ -1,5 +1,6 @@
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { createClient } from "@/prismicio";
+import { isFilled } from "@prismicio/client";
 import { NavigationDropdown } from "./navigation-dropdown";
 import { HeaderButtons } from "./header-buttons";
 import { ScrollDropdownCloser } from "./scroll-dropdown-closer";
@@ -7,6 +8,7 @@ import { RegionLanguageSelector } from "./region-language-selector";
 import { MobileMenu } from "./mobile-menu";
 import { HeaderHeightTracker } from "./header-height-tracker";
 import { CompactHeader } from "./compact-header";
+import { ExternalLinkIcon } from "./external-link-icon";
 import type { HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 // Server component for simple navigation items
@@ -68,12 +70,18 @@ export default async function Header() {
               <p className="text-white text-xs sm:text-sm font-medium">
                 {header.data.announcement_text}
               </p>
-              {header.data.announcement_link && header.data.announcement_link_text && (
+              {isFilled.link(header.data.announcement_link) && isFilled.keyText(header.data.announcement_link_text) && (
                 <PrismicNextLink
                   field={header.data.announcement_link}
-                  className="text-white text-xs sm:text-sm font-semibold underline hover:text-gray-200 transition-colors whitespace-nowrap"
+                  className="text-white text-xs sm:text-sm font-semibold whitespace-nowrap group inline-flex items-center gap-1.5 transition-colors hover:text-gray-200"
                 >
-                  {header.data.announcement_link_text}
+                  <span className="border-b border-transparent group-hover:border-white transition-all duration-300">
+                    {header.data.announcement_link_text}
+                  </span>
+                  <ExternalLinkIcon 
+                    className="w-[11px] h-[11px] opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                    color="currentColor"
+                  />
                 </PrismicNextLink>
               )}
             </div>
