@@ -1,7 +1,7 @@
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { LocationsMap } from "./locations-map";
-import { LocationDivider } from "./location-divider";
+import { LocationsNav } from "./locations-nav";
 
 /**
  * Props for `Locations`.
@@ -12,24 +12,39 @@ export type LocationsProps = SliceComponentProps<Content.LocationsSlice>;
  * Component for "Locations" Slices.
  */
 const Locations = ({ slice }: LocationsProps): React.ReactElement => {
-  const locations = slice.items.map(item => ({
+  const locations = slice.items.map((item, index) => ({
     name: item.location_name || "",
     type: item.location_type || "",
+    state: item.state || "VIC",
     address: item.address || "",
     phone: item.phone || "",
     email: item.email || "",
+    index,
+  }));
+
+  // Prepare nav data
+  const navLocations = locations.map((location) => ({
+    name: location.name,
+    state: location.state,
+    index: location.index,
   }));
 
   return (
     <section className="w-full">
       {/* White Content Section */}
-      <div className="w-full bg-white py-16 lg:py-24">
-        <div className="w-full max-w-[112rem] mx-auto px-4 lg:px-8">
+      <div className="w-full bg-white pb-24 lg:pb-32">
+        {/* Sticky Navigation */}
+        {locations.length > 1 && <LocationsNav locations={navLocations} />}
 
+        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 mt-12 pt-12 ">
           {/* Locations Grid */}
           <div className="space-y-24">
-            {locations.map((location, index) => (
-              <div key={index}>
+            {locations.map((location) => (
+              <div 
+                key={location.index}
+                id={`location-${location.index}`}
+                className="scroll-mt-40"
+              >
                 {/* Location Content */}
                 <div className="space-y-8">
                   {/* Location Name and Type */}
@@ -57,30 +72,27 @@ const Locations = ({ slice }: LocationsProps): React.ReactElement => {
 
                   {/* Full Width Map with Clipping Mask */}
                   <div 
-                    className="w-full overflow-hidden"
+                    className="w-full bg-neutral-200 p-[1.25px]"
                     style={{
-                      aspectRatio: '2.8 / 1', // More compact ratio (originally 2.21/1)
-                      clipPath: `polygon(
-                        100% 26.9%, 
-                        83.96% 1.3%, 
-                        49.52% 0%, 
-                        0% 0%, 
-                        0% 73.1%, 
-                        16.04% 98.7%, 
-                        50.48% 100%, 
-                        100% 100%
-                      )`
+                      aspectRatio: 'auto',
+                      clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))'
                     }}
                   >
-                    <LocationsMap locations={[location]} />
+                    <div 
+                      className="w-full overflow-hidden h-[400px] lg:h-auto"
+                      style={{
+                        clipPath: 'polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19px 100%, 0 calc(100% - 19px))',
+                        aspectRatio: 'auto 2.8 / 1'
+                      }}
+                    >
+                      <LocationsMap locations={[location]} />
+                    </div>
                   </div>
                 </div>
 
                 {/* Divider between locations (except last) */}
-                {index < locations.length - 1 && (
-                  <div className="mt-24">
-                    <LocationDivider />
-                  </div>
+                {location.index < locations.length - 1 && (
+                  <div className="mt-24 border-t border-neutral-200"></div>
                 )}
               </div>
             ))}

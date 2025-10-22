@@ -27,6 +27,14 @@
             "placeholder": "Head Office"
           }
         },
+        "state": {
+          "type": "Select",
+          "config": {
+            "label": "State",
+            "placeholder": "Select a state",
+            "options": ["VIC", "NSW", "QLD", "SA", "WA", "TAS", "NT", "ACT"]
+          }
+        },
         "address": {
           "type": "Text",
           "config": {

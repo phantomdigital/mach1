@@ -161,10 +161,10 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
         <Link 
           ref={homeIconRef}
           href="/"
-          className="text-red-200 text-sm lg:text-xs font-bold tracking-wider uppercase px-4 py-2 bg-mach1-red rounded-2xl w-fit flex items-center hover:bg-red-700 transition-colors opacity-0 transform-gpu"
+          className="text-red-200 text-xs font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-red rounded-2xl w-fit flex items-center hover:bg-red-700 transition-colors opacity-0 transform-gpu"
           style={{ willChange: 'auto' }}
         >
-          <Home className="w-4 h-4" />
+          <Home className="w-3 h-3 lg:w-4 lg:h-4" />
         </Link>
         
         {/* Separator */}
@@ -173,7 +173,7 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
             {/* Current Page Breadcrumb */}
             <h5 
               ref={subheadingRef}
-              className="text-red-200 text-sm lg:text-xs font-bold tracking-wider uppercase px-4 py-2 bg-mach1-red rounded-2xl w-fit opacity-0 transform-gpu"
+              className="text-red-200 text-xs font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-red rounded-2xl w-fit opacity-0 transform-gpu"
               style={{ willChange: 'auto' }}
             >
               {subheading}

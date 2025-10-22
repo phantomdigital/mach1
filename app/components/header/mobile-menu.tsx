@@ -86,22 +86,32 @@ export function MobileMenu({ navigation, buttons, subheaderItems }: MobileMenuPr
       {/* Mobile Menu Panel - Slides up to meet header */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
-            className="fixed left-0 right-0 bg-neutral-50 z-40 xl:hidden overflow-hidden border-t-2 border-gray-200"
-            style={{ 
-              top: 'var(--header-height)',
-              bottom: 0
-            }}
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ 
-              duration: 0.4,
-              ease: [0.25, 0.1, 0.25, 1]
-            }}
-          >
-
-            {/* Menu Content - Scrollable container */}
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 bg-transparent z-10 xl:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={toggleMenu}
+            />
+            
+            {/* Menu Panel */}
+            <motion.div 
+              className="fixed left-0 right-0 bottom-0 bg-neutral-50 z-40 xl:hidden overflow-hidden border-t-2 border-gray-200"
+              style={{ 
+                top: 'var(--header-height, 80px)'
+              }}
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ 
+                duration: 0.4,
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
+            >
+              {/* Menu Content - Scrollable container */}
             <div 
               className="px-6 py-6 flex flex-col h-full overflow-y-auto overscroll-contain"
               style={{ WebkitOverflowScrolling: 'touch' }}
@@ -268,10 +278,11 @@ export function MobileMenu({ navigation, buttons, subheaderItems }: MobileMenuPr
                 </motion.div>
               )}
             </div>
-            
-            {/* Safe area padding for iOS */}
-            <div className="h-[env(safe-area-inset-bottom)]" />
-          </motion.div>
+              
+              {/* Safe area padding for iOS */}
+              <div className="h-[env(safe-area-inset-bottom)]" />
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

@@ -1255,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-export type PageDocumentDataSlicesSlice = FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -2425,6 +2425,16 @@ export interface LocationsSliceDefaultItem {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	location_type: prismic.KeyTextField;
+	
+	/**
+	 * State field in *Locations → Items*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select a state
+	 * - **API ID Path**: locations.items[].state
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	state: prismic.SelectField<"VIC" | "NSW" | "QLD" | "SA" | "WA" | "TAS" | "NT" | "ACT">;
 	
 	/**
 	 * Address field in *Locations → Items*

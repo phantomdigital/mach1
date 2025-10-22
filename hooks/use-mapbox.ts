@@ -35,7 +35,7 @@ export function useMapbox(locations: Location[], accessToken: string) {
     // Initialize map
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: "mapbox://styles/mapbox/light-v11",
       center: [144.9631, -37.8136], // Default to Melbourne
       zoom: 12, // Closer zoom level
       interactive: false, // Disable all interactions
@@ -70,12 +70,12 @@ export function useMapbox(locations: Location[], accessToken: string) {
             
             // Create popup content with MACH1 styling
             const popupContent = `
-              <div class="p-4 bg-white" style="background-color: #262626; color: white; border-radius: 8px;">
-                <h3 class="font-semibold text-lg mb-2" style="color: #ed1e24;">${location.name}</h3>
-                <p class="text-sm mb-2" style="color: #cccccc;">${location.type}</p>
-                <p class="text-sm mb-2" style="color: white;">${location.address}</p>
-                ${location.phone ? `<p class="text-sm mb-1" style="color: #cccccc;">Phone: <span style="color: #ed1e24;">${location.phone}</span></p>` : ''}
-                ${location.email ? `<p class="text-sm" style="color: #cccccc;">Email: <span style="color: #ed1e24;">${location.email}</span></p>` : ''}
+              <div class="p-4" style="background-color: white; color: #262626; border-radius: 8px; border: 1px solid #e5e5e5; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                <h3 class="font-bold text-lg mb-2" style="color: #262626;">${location.name}</h3>
+                <p class="text-sm mb-2" style="color: #737373;">${location.type}</p>
+                <p class="text-sm mb-2" style="color: #525252;">${location.address}</p>
+                ${location.phone ? `<p class="text-sm mb-1" style="color: #737373;">Phone: <span style="color: #262626;">${location.phone}</span></p>` : ''}
+                ${location.email ? `<p class="text-sm" style="color: #737373;">Email: <span style="color: #262626;">${location.email}</span></p>` : ''}
               </div>
             `;
 
@@ -88,9 +88,9 @@ export function useMapbox(locations: Location[], accessToken: string) {
               className: 'mach1-popup'
             }).setHTML(popupContent);
 
-            // Create marker with MACH1 red color
+            // Create marker with project's dark color
             new mapboxgl.Marker({
-              color: "#ed1e24", // MACH1 red color
+              color: "#262626", // Dark neutral color from your project
             })
               .setLngLat([lng, lat])
               .setPopup(popup)

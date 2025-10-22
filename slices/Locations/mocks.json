@@ -7,6 +7,7 @@
       {
         "location_name": "Lancefield",
         "location_type": "Head Office",
+        "state": "VIC",
         "address": "13 High Street Lancefield, VIC 3435",
         "phone": "+61 3 5428 3680",
         "email": "admin@mach1logistics.com.au"
@@ -14,9 +15,18 @@
       {
         "location_name": "Melbourne",
         "location_type": "Distribution Center",
+        "state": "VIC",
         "address": "45 Industrial Drive Melbourne, VIC 3000",
         "phone": "+61 3 9876 5432",
         "email": "melbourne@mach1logistics.com.au"
+      },
+      {
+        "location_name": "Sydney",
+        "location_type": "Distribution Center",
+        "state": "NSW",
+        "address": "123 Freight Road Sydney, NSW 2000",
+        "phone": "+61 2 9876 5432",
+        "email": "sydney@mach1logistics.com.au"
       }
     ]
   }

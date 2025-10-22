@@ -45,7 +45,7 @@ export default async function Header() {
     const header = await client.getSingle("header");
     
     return (
-      <header className="absolute top-0 left-0 z-20 w-full h-auto">
+      <header className="absolute top-0 left-0 z-[999] w-full h-auto">
         {/* Track header height dynamically for mobile menu positioning */}
         <HeaderHeightTracker />
         
@@ -205,7 +205,7 @@ export default async function Header() {
     console.warn("No header document found in Prismic");
     // Return minimal fallback header - no content, just structure
     return (
-      <header className="absolute top-0 left-0 z-20 w-full h-auto">
+      <header className="absolute top-0 left-0 z-50 w-full h-auto">
         {/* Track header height dynamically for mobile menu positioning */}
         <HeaderHeightTracker />
         
