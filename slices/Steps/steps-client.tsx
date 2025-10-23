@@ -12,6 +12,8 @@ import StepsForm from "./steps-form";
 import StepsPackages from "./steps-packages";
 import StepsSummary from "./steps-summary";
 import { Loader2 } from "lucide-react";
+import { sendQuoteEmail } from "@/app/actions/send-quote-email";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import { StepIndicator } from "./step-indicator";
 import { stepContentVariants } from "./step-animations";
@@ -34,6 +36,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoadingStep1, setIsLoadingStep1] = useState(false);
   const hasShownLoadingRef = useRef(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
   
   // Get step number from Prismic (0 for start, then 1, 2, 3...)
   const stepNumber = slice.variation === "start" ? 0 : (slice.primary.step_number || (index + 1));
@@ -83,7 +86,8 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
 
   const handleFormSubmit = async (data: Record<string, string>) => {
     // Merge with existing formData instead of replacing
-    setFormData({ ...(formData || {}), ...data });
+    const finalFormData = { ...(formData || {}), ...data };
+    setFormData(finalFormData);
     
     // Check if selected service requires packages step
     // Skip packages for warehousing, 3PL, or storage services
@@ -95,6 +99,33 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
     );
     
     if (skipPackages) {
+      // Send quote email for services without packages
+      try {
+        const result = await sendQuoteEmail({
+          serviceType: selectedCard || undefined,
+          formData: finalFormData,
+          packages: [],
+        });
+
+        if (!result.success) {
+          console.error("Failed to send quote email:", result.error);
+          // Show error to user
+          setEmailError(result.error || "Failed to send quote request. Please try again.");
+          // Don't proceed to summary if validation failed
+          if (result.validationErrors) {
+            return;
+          }
+          // For other errors, still proceed to summary
+        }
+      } catch (error) {
+        console.error("Error sending quote email:", error);
+        setEmailError("An unexpected error occurred. Please try again.");
+        // For unexpected errors, still proceed to summary
+      }
+      
+      // Clear any previous errors
+      setEmailError(null);
+      
       // Show loading state for better UX
       await new Promise(resolve => setTimeout(resolve, 1500));
       goToSummary();
@@ -106,7 +137,35 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
 
   const handlePackagesSubmit = async (packages: any[]) => {
     // Merge packages with existing formData
-    setFormData({ ...(formData || {}), packages: JSON.stringify(packages) });
+    const finalFormData = { ...(formData || {}), packages: JSON.stringify(packages) };
+    setFormData(finalFormData);
+    
+    // Send quote email
+    try {
+      const result = await sendQuoteEmail({
+        serviceType: selectedCard || undefined,
+        formData: formData || {},
+        packages,
+      });
+
+      if (!result.success) {
+        console.error("Failed to send quote email:", result.error);
+        // Show error to user
+        setEmailError(result.error || "Failed to send quote request. Please try again.");
+        // Don't proceed to summary if validation failed
+        if (result.validationErrors) {
+          return;
+        }
+        // For other errors, still proceed to summary
+      }
+    } catch (error) {
+      console.error("Error sending quote email:", error);
+      setEmailError("An unexpected error occurred. Please try again.");
+      // For unexpected errors, still proceed to summary
+    }
+    
+    // Clear any previous errors
+    setEmailError(null);
     
     // Show loading state for better UX
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -137,6 +196,33 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
               />
             </div>
           )}
+
+          {/* Error Message */}
+          <AnimatePresence>
+            {emailError && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="w-full mb-8"
+              >
+                <Alert variant="destructive" className="relative pr-12">
+                  <AlertDescription>
+                    {emailError}
+                  </AlertDescription>
+                  <button
+                    onClick={() => setEmailError(null)}
+                    className="absolute right-4 top-4 text-red-400 hover:text-red-600 transition-colors"
+                    aria-label="Dismiss error"
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </Alert>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Current Step Content - AnimatePresence only wraps the step content */}
           <AnimatePresence mode="wait">

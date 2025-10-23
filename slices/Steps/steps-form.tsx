@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { NumberInputWithUnit } from "@/components/ui/number-input-with-unit";
 import AddressAutocompleteInput from "./address-autocomplete-input";
 import DatePickerInput from "./date-picker-input";
-import { Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface FormField {
   label: string;
@@ -35,6 +35,7 @@ export default function StepsForm({
 }: StepsFormProps) {
   const [formData, setFormData] = useState<Record<string, string>>(initialData || {});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   // Update form data if initialData changes (e.g., when navigating back)
   useEffect(() => {
@@ -46,10 +47,19 @@ export default function StepsForm({
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+    // Clear error for this field when user starts typing
+    if (validationErrors[name]) {
+      setValidationErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const handleRadioChange = (name: string, value: string) => {
@@ -57,10 +67,72 @@ export default function StepsForm({
       ...formData,
       [name]: value,
     });
+    // Clear error for this field
+    if (validationErrors[name]) {
+      setValidationErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const errors: Record<string, string> = {};
+
+    fields.forEach(field => {
+      const value = formData[field.name];
+      
+      // Required field validation
+      if (field.required && (!value || value.trim() === '')) {
+        errors[field.name] = `${field.label} is required`;
+      }
+      
+      // Email validation
+      if (field.type === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+          errors[field.name] = 'Please enter a valid email address';
+        }
+      }
+      
+      // Phone validation
+      if (field.type === 'tel' && value) {
+        const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
+        if (!phoneRegex.test(value)) {
+          errors[field.name] = 'Please enter a valid phone number';
+        }
+      }
+      
+      // Number validation
+      if (field.type === 'number' && value && value !== '') {
+        const numValue = parseFloat(value);
+        if (isNaN(numValue) || numValue <= 0) {
+          errors[field.name] = `${field.label} must be a positive number`;
+        }
+      }
+    });
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Clear previous errors
+    setValidationErrors({});
+    
+    // Validate form
+    if (!validateForm()) {
+      // Scroll to first error
+      const firstErrorField = document.querySelector('[data-error="true"]');
+      if (firstErrorField) {
+        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+    
     setIsSubmitting(true);
     try {
       await onSubmit(formData);
@@ -108,41 +180,70 @@ export default function StepsForm({
 
   const renderField = (field: FormField) => {
     const widthClass = getWidthClass(field.width);
+    const hasError = !!validationErrors[field.name];
     const baseInputClass =
-      "w-full bg-transparent border-b border-neutral-300 pb-2 text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-800 transition-colors";
+      `w-full bg-transparent border-b pb-2 text-neutral-800 placeholder:text-neutral-400 focus:outline-none transition-colors ${
+        hasError 
+          ? 'border-red-500 focus:border-red-600' 
+          : 'border-neutral-300 focus:border-neutral-800'
+      }`;
 
     switch (field.type) {
       case "address":
         return (
-          <div key={field.name} className={widthClass}>
+          <div key={field.name} className={widthClass} data-error={hasError}>
             <AddressAutocompleteInput
               name={field.name}
               value={formData[field.name] || ""}
-              onChange={(name, value) => setFormData({ ...formData, [name]: value })}
+              onChange={(name, value) => {
+                setFormData({ ...formData, [name]: value });
+                if (validationErrors[name]) {
+                  setValidationErrors(prev => {
+                    const newErrors = { ...prev };
+                    delete newErrors[name];
+                    return newErrors;
+                  });
+                }
+              }}
               placeholder={field.placeholder}
               required={field.required}
               label={field.label}
             />
+            {hasError && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors[field.name]}</p>
+            )}
           </div>
         );
 
       case "date":
         return (
-          <div key={field.name} className={widthClass}>
+          <div key={field.name} className={widthClass} data-error={hasError}>
             <DatePickerInput
               name={field.name}
               value={formData[field.name] || ""}
-              onChange={(name, value) => setFormData({ ...formData, [name]: value })}
+              onChange={(name, value) => {
+                setFormData({ ...formData, [name]: value });
+                if (validationErrors[name]) {
+                  setValidationErrors(prev => {
+                    const newErrors = { ...prev };
+                    delete newErrors[name];
+                    return newErrors;
+                  });
+                }
+              }}
               placeholder={field.placeholder}
               required={field.required}
               label={field.label}
             />
+            {hasError && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors[field.name]}</p>
+            )}
           </div>
         );
 
       case "textarea":
         return (
-          <div key={field.name} className={widthClass}>
+          <div key={field.name} className={widthClass} data-error={hasError}>
             <label className="block text-neutral-800 text-sm mb-2">
               {field.label}
               {field.required && <span className="text-red-500"> *</span>}
@@ -152,16 +253,18 @@ export default function StepsForm({
               value={formData[field.name] || ""}
               onChange={handleChange}
               placeholder={field.placeholder}
-              required={field.required}
               rows={4}
               className={`${baseInputClass} resize-none`}
             />
+            {hasError && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors[field.name]}</p>
+            )}
           </div>
         );
 
       case "radio":
         return (
-          <div key={field.name} className={widthClass}>
+          <div key={field.name} className={widthClass} data-error={hasError}>
             <label className="block text-neutral-800 text-sm mb-4">
               {field.label}
               {field.required && <span className="text-red-500"> *</span>}
@@ -181,19 +284,21 @@ export default function StepsForm({
                       option.toLowerCase().replace(/\s+/g, "-")
                     }
                     onChange={(e) => handleRadioChange(field.name, e.target.value)}
-                    required={field.required}
                     className="w-4 h-4"
                   />
                   <span className="text-neutral-800 text-sm">{option}</span>
                 </label>
               ))}
             </div>
+            {hasError && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors[field.name]}</p>
+            )}
           </div>
         );
 
       case "select":
         return (
-          <div key={field.name} className={widthClass}>
+          <div key={field.name} className={widthClass} data-error={hasError}>
             <label className="block text-neutral-800 text-sm mb-2">
               {field.label}
               {field.required && <span className="text-red-500"> *</span>}
@@ -202,7 +307,6 @@ export default function StepsForm({
               name={field.name}
               value={formData[field.name] || ""}
               onChange={handleChange}
-              required={field.required}
               className={baseInputClass}
             >
               <option value="">{field.placeholder || "Select an option"}</option>
@@ -215,6 +319,9 @@ export default function StepsForm({
                 </option>
               ))}
             </select>
+            {hasError && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors[field.name]}</p>
+            )}
           </div>
         );
 
@@ -224,11 +331,20 @@ export default function StepsForm({
         if (field.type === "number" && (field.unit || field.options)) {
           const unitOptions = field.options ? field.options : [];
           return (
-            <div key={field.name} className={widthClass}>
+            <div key={field.name} className={widthClass} data-error={hasError}>
               <NumberInputWithUnit
                 name={field.name}
                 value={formData[field.name] || ""}
-                onChange={(name, value) => setFormData({ ...formData, [name]: value })}
+                onChange={(name, value) => {
+                  setFormData({ ...formData, [name]: value });
+                  if (validationErrors[name]) {
+                    setValidationErrors(prev => {
+                      const newErrors = { ...prev };
+                      delete newErrors[name];
+                      return newErrors;
+                    });
+                  }
+                }}
                 label={field.label}
                 required={field.required}
                 placeholder={field.placeholder}
@@ -239,12 +355,15 @@ export default function StepsForm({
                   setFormData({ ...formData, [`${field.name}_unit`]: unit });
                 }}
               />
+              {hasError && (
+                <p className="text-red-500 text-xs mt-1">{validationErrors[field.name]}</p>
+              )}
             </div>
           );
         }
         
         return (
-          <div key={field.name} className={widthClass}>
+          <div key={field.name} className={widthClass} data-error={hasError}>
             <label className="block text-neutral-800 text-sm mb-2">
               {field.label}
               {field.required && <span className="text-red-500"> *</span>}
@@ -256,7 +375,6 @@ export default function StepsForm({
                 value={formData[field.name] || ""}
                 onChange={handleChange}
                 placeholder={field.placeholder}
-                required={field.required}
                 className={baseInputClass}
               />
               {field.unit && !field.options && (
@@ -265,10 +383,15 @@ export default function StepsForm({
                 </span>
               )}
             </div>
+            {hasError && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors[field.name]}</p>
+            )}
           </div>
         );
     }
   };
+
+  const hasErrors = Object.keys(validationErrors).length > 0;
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
@@ -278,6 +401,29 @@ export default function StepsForm({
           <h5 className="text-neutral-800 text-sm mb-8">{formHeading}</h5>
         </div>
       )}
+
+      {/* Validation Errors Alert */}
+      <AnimatePresence>
+        {hasErrors && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mb-8"
+          >
+            <Alert variant="destructive">
+              <AlertDescription>
+                <div className="font-medium mb-2">Please fix the following errors:</div>
+                <ul className="list-disc list-inside space-y-1 text-sm">
+                  {Object.entries(validationErrors).map(([field, error]) => (
+                    <li key={field}>{error}</li>
+                  ))}
+                </ul>
+              </AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Full Width Fields (if any) */}
       {fullFields.length > 0 && (

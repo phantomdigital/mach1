@@ -27,10 +27,13 @@ export default function JobApplicationConfirmationEmail({
   otherFileNames = [],
 }: JobApplicationConfirmationEmailProps) {
   // Base URL for assets - must be absolute URL for emails
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mach1logistics.com.au";
+  // Use localhost in development for React Email preview
+  const baseUrl = process.env.NODE_ENV === 'development' 
+    ? "http://localhost:3000" 
+    : (process.env.NEXT_PUBLIC_BASE_URL || "https://mach1logistics.com.au");
   
-  // Logo URL - using direct absolute path
-  const logoUrl = `${baseUrl}/logo/MACH1LOGISTICS_LOGO_colour-1024x768.jpg`;
+  // Logo URL - using PNG format for better email compatibility
+  const logoUrl = `${baseUrl}/logo/email-logo.png`;
 
   return (
     <Html>
@@ -63,8 +66,8 @@ export default function JobApplicationConfirmationEmail({
                 src={logoUrl}
                 alt="MACH1 Logistics"
                 width="200"
-                height="150"
                 className="mx-auto inline-block"
+                style={{ height: 'auto' }}
               />
               {/* Decorative corner accent */}
               <div className="absolute bottom-0 right-0 h-16 w-16 border-b-[6px] border-r-[6px] border-mach1-green" />
@@ -215,8 +218,8 @@ export default function JobApplicationConfirmationEmail({
                 <div className="absolute right-0 top-0 h-8 w-8 border-r-[3px] border-t-[3px] border-mach1-green" />
               </div>
               
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
+              <div>
+                <div className="flex items-start gap-4 mb-4">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-mach1-green text-sm font-bold text-white">
                     1
                   </div>
@@ -225,7 +228,7 @@ export default function JobApplicationConfirmationEmail({
                   </Text>
                 </div>
                 
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-4 mb-4">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-mach1-green text-sm font-bold text-white">
                     2
                   </div>
@@ -262,7 +265,7 @@ export default function JobApplicationConfirmationEmail({
               </Text>
               
               <Text className="m-0 mt-4 text-base font-bold leading-6 text-white">
-                <a href={baseUrl} className="font-semibold text-mach1-green no-underline">
+                <a href={baseUrl} className="font-semibold text-white no-underline">
                   mach1logistics.com.au
                 </a>
               </Text>

@@ -111,24 +111,83 @@ export const jobApplicationSchema = z.object({
 export type JobApplicationData = z.infer<typeof jobApplicationSchema>;
 export type FileAttachment = z.infer<typeof fileAttachmentSchema>;
 
-// Steps form validation schema (for quote flow)
-export const stepsFormSchema = z.record(z.string(), z.any());
-
 // Package validation schema
 export const packageSchema = z.object({
-  description: z.string().optional(),
-  origin: z.string().optional(),
-  destination: z.string().optional(),
-  weight: z.number().positive().optional(),
-  weightUnit: z.string().optional(),
-  quantity: z.number().positive().optional(),
-  length: z.number().positive().optional(),
-  width: z.number().positive().optional(),
-  height: z.number().positive().optional(),
-  dimensionUnit: z.string().optional(),
+  id: z.string(),
+  description: z
+    .string()
+    .min(1, "Package description is required")
+    .min(3, "Description must be at least 3 characters")
+    .max(200, "Description must be no more than 200 characters"),
+  origin: z
+    .string()
+    .min(1, "Pickup address is required")
+    .min(5, "Please enter a complete address"),
+  destination: z
+    .string()
+    .min(1, "Delivery address is required")
+    .min(5, "Please enter a complete address"),
+  weight: z
+    .string()
+    .min(1, "Weight is required")
+    .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, "Weight must be a positive number"),
+  weightUnit: z.string().min(1, "Weight unit is required"),
+  length: z
+    .string()
+    .min(1, "Length is required")
+    .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, "Length must be a positive number"),
+  width: z
+    .string()
+    .min(1, "Width is required")
+    .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, "Width must be a positive number"),
+  height: z
+    .string()
+    .min(1, "Height is required")
+    .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, "Height must be a positive number"),
+  dimensionUnit: z.string().min(1, "Dimension unit is required"),
+  quantity: z
+    .string()
+    .min(1, "Quantity is required")
+    .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, "Quantity must be a positive number"),
 });
 
 export type PackageData = z.infer<typeof packageSchema>;
+
+// Quote form base validation schema
+export const quoteFormBaseSchema = z.object({
+  fullName: z
+    .string()
+    .min(1, "Full name is required")
+    .min(2, "Full name must be at least 2 characters")
+    .max(100, "Full name must be no more than 100 characters"),
+  
+  email: z
+    .string()
+    .min(1, "Email address is required")
+    .refine((val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), "Please enter a valid email address"),
+  
+  phone: z
+    .string()
+    .optional()
+    .refine((val) => !val || /^[\+]?[\d\s\-\(\)]{10,}$/.test(val), "Please enter a valid phone number"),
+  
+  companyName: z
+    .string()
+    .optional()
+    .refine((val) => !val || val.length <= 200, "Company name must be no more than 200 characters"),
+});
+
+// Full quote request validation schema (with packages)
+export const quoteRequestSchema = z.object({
+  serviceType: z.string().optional(),
+  formData: z.record(z.string(), z.any()), // Allow any form fields
+  packages: z.array(packageSchema).optional().default([]),
+});
+
+export type QuoteRequestData = z.infer<typeof quoteRequestSchema>;
+
+// Steps form validation schema (for quote flow - flexible for dynamic fields)
+export const stepsFormSchema = z.record(z.string(), z.any());
 
 // Common field validation helpers
 export const commonValidators = {

@@ -39,11 +39,13 @@ export default function ContactFormEmail({
   };
 
   // Base URL for assets - must be absolute URL for emails
-  // For development, you may need to use ngrok or upload logo to a CDN
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://mach1logistics.com.au";
+  // Use localhost in development for React Email preview
+  const baseUrl = process.env.NODE_ENV === 'development' 
+    ? "http://localhost:3000" 
+    : (process.env.NEXT_PUBLIC_BASE_URL || "https://mach1logistics.com.au");
   
-  // Logo URL - using direct absolute path
-  const logoUrl = `${baseUrl}/logo/MACH1LOGISTICS_LOGO_colour-1024x768.jpg`;
+  // Logo URL - using PNG format for better email compatibility
+  const logoUrl = `${baseUrl}/logo/email-logo.png`;
 
   return (
     <Html>
@@ -76,8 +78,8 @@ export default function ContactFormEmail({
                 src={logoUrl}
                 alt="MACH1 Logistics"
                 width="200"
-                height="150"
                 className="mx-auto inline-block"
+                style={{ height: 'auto' }}
               />
               {/* Decorative corner accent */}
               <div className="absolute bottom-0 right-0 h-16 w-16 border-b-[6px] border-r-[6px] border-mach1-green" />
@@ -141,7 +143,7 @@ export default function ContactFormEmail({
                     </td>
                     <td className="px-0 py-3 align-top text-base text-mach1-black">
                       <a 
-                        href={`tel:${contactNumber.replace(/\s/g, '')}`} 
+                        href={`tel:${contactNumber?.replace(/\s/g, '') || ''}`} 
                         className="font-semibold text-dark-blue no-underline"
                       >
                         {contactNumber}

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "slicemachine": "start-slicemachine",
-    "generate-types": "prismic-ts-codegen"
+    "generate-types": "prismic-ts-codegen",
+    "email": "email dev --dir emails --port 3001"
   },
   "dependencies": {
     "@prismicio/client": "^7.20.0",
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@prismicio/types": "^0.2.9",
+    "@react-email/preview-server": "^4.3.1",
     "@slicemachine/adapter-next": "^0.3.83",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
@@ -62,6 +64,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.4.7",
     "prismic-ts-codegen": "^0.1.27",
+    "react-email": "^4.3.1",
     "slice-machine-ui": "^2.18.1",
     "tailwindcss": "^4",
     "typescript": "^5"
