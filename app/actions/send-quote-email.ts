@@ -43,7 +43,7 @@ export async function sendQuoteEmail({
     });
 
     if (!validationResult.success) {
-      const errors = validationResult.error.issues.map((err: any) => ({
+      const errors = validationResult.error.issues.map((err) => ({
         field: err.path.join('.'),
         message: err.message,
       }));
@@ -60,7 +60,7 @@ export async function sendQuoteEmail({
       for (let i = 0; i < packages.length; i++) {
         const pkgValidation = packageSchema.safeParse(packages[i]);
         if (!pkgValidation.success) {
-          const errors = pkgValidation.error.issues.map((err: any) => ({
+          const errors = pkgValidation.error.issues.map((err) => ({
             field: `packages[${i}].${err.path.join('.')}`,
             message: err.message,
           }));
@@ -160,7 +160,7 @@ export async function sendQuoteEmail({
       return {
         success: false,
         error: "Validation error",
-        validationErrors: error.issues.map((err: any) => ({
+        validationErrors: error.issues.map((err) => ({
           field: err.path.join('.'),
           message: err.message,
         })),
