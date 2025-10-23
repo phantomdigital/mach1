@@ -21,5 +21,6 @@ export const components = {
   statistics: dynamic(() => import("./Statistics")),
   statistics_v2: dynamic(() => import("./StatisticsV2")),
   steps: dynamic(() => import("./Steps")),
+  submitted: dynamic(() => import("./Submitted")),
   tracking: dynamic(() => import("./Tracking")),
 };

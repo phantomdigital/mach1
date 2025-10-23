@@ -12,7 +12,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Loader2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { contactFormSchema, safeValidate } from "@/lib/validation-schemas";
 import { submitContactForm } from "@/app/actions/send-contact-form";
+
+interface ValidationError {
+  field: string;
+  message: string;
+}
 
 interface ContactFormProps {
   successMessage: string;
@@ -23,15 +31,11 @@ interface ContactFormProps {
 }
 
 export default function ContactForm({ 
-  successMessage, 
-  thankYouHeading,
-  thankYouDescription,
-  thankYouInfoTitle,
-  thankYouInfoText 
 }: ContactFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [formData, setFormData] = useState({
     fullName: "",
     role: "",
@@ -42,19 +46,35 @@ export default function ContactForm({
     message: "",
   });
 
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
+    setValidationErrors([]);
+
+    // Client-side validation with Zod
+    const validation = safeValidate(contactFormSchema, formData);
+    if (!validation.success) {
+      setValidationErrors(validation.errors);
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const result = await submitContactForm(formData);
 
       if (result.success) {
-        // Redirect to thank you page
-        router.push("/contact/thank-you");
+        // Redirect to thank you page with email parameter
+        const emailParam = encodeURIComponent(formData.email);
+        router.push(`/contact/thank-you?email=${emailParam}`);
       } else {
-        setError(result.error || "Failed to submit form. Please try again.");
+        // Handle server-side validation errors
+        if (result.validationErrors && result.validationErrors.length > 0) {
+          setValidationErrors(result.validationErrors);
+        } else {
+          setError(result.error || "Failed to submit form. Please try again.");
+        }
       }
     } catch (err) {
       console.error("Form submission error:", err);
@@ -66,15 +86,39 @@ export default function ContactForm({
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    
+    // Clear validation error for this field when user starts typing
+    if (validationErrors.some(err => err.field === field)) {
+      setValidationErrors(prev => prev.filter(err => err.field !== field));
+    }
+  };
+
+  // Helper to get field error
+  const getFieldError = (fieldName: string) => {
+    return validationErrors.find(err => err.field === fieldName)?.message;
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Error Message */}
+      {/* General Error Message */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md">
-          <p className="text-sm">{error}</p>
-        </div>
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      {/* Validation Errors Summary */}
+      {validationErrors.length > 0 && !error && (
+        <Alert variant="destructive">
+          <AlertDescription>
+            Please fix the following errors:
+            <ul className="mt-2 list-disc list-inside space-y-1">
+              {validationErrors.map((err, index) => (
+                <li key={index} className="text-sm">{err.message}</li>
+              ))}
+            </ul>
+          </AlertDescription>
+        </Alert>
       )}
 
       {/* Full Name */}
@@ -192,7 +236,14 @@ export default function ContactForm({
 
       {/* Submit Button */}
       <Button type="submit" variant="hero" className="w-full" disabled={isSubmitting}>
-        {isSubmitting ? "SUBMITTING..." : "SUBMIT"}
+        {isSubmitting ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            SUBMITTING...
+          </>
+        ) : (
+          "SUBMIT"
+        )}
       </Button>
     </form>
   );

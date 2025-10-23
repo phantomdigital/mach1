@@ -2,27 +2,19 @@
 
 import { Resend } from "resend";
 import ContactFormEmail from "@/emails/contact-form-email";
+import { contactFormSchema, safeValidate, type ContactFormData } from "@/lib/validation-schemas";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-export interface ContactFormData {
-  fullName: string;
-  role: string;
-  contactNumber: string;
-  companyName: string;
-  email: string;
-  enquiryType: string;
-  message: string;
-}
 
 export interface ContactFormResponse {
   success: boolean;
   error?: string;
   message?: string;
+  validationErrors?: Array<{ field: string; message: string }>;
 }
 
 export async function submitContactForm(
-  formData: ContactFormData
+  formData: unknown
 ): Promise<ContactFormResponse> {
   try {
     // Validate environment variable
@@ -34,37 +26,32 @@ export async function submitContactForm(
       };
     }
 
-    // Basic validation
-    if (!formData.fullName || !formData.email || !formData.message) {
+    // Server-side validation with Zod
+    const validation = safeValidate(contactFormSchema, formData);
+    if (!validation.success) {
       return {
         success: false,
-        error: "Please fill in all required fields.",
+        error: "Please fix the validation errors.",
+        validationErrors: validation.errors,
       };
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      return {
-        success: false,
-        error: "Please enter a valid email address.",
-      };
-    }
+    const validatedData = validation.data;
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
       from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@testing.phantomdigital.au>",
       to: [process.env.EMAIL_TO || "admin@mach1logistics.com.au"], // Main recipient
-      replyTo: formData.email, // Allow direct reply to customer
-      subject: `New Contact Form Submission - ${formData.enquiryType}`,
+      replyTo: validatedData.email, // Allow direct reply to customer
+      subject: `New Contact Form Submission - ${validatedData.enquiryType}`,
       react: ContactFormEmail({
-        fullName: formData.fullName,
-        role: formData.role,
-        contactNumber: formData.contactNumber,
-        companyName: formData.companyName,
-        email: formData.email,
-        enquiryType: formData.enquiryType,
-        message: formData.message,
+        fullName: validatedData.fullName,
+        role: validatedData.role,
+        contactNumber: validatedData.contactNumber,
+        companyName: validatedData.companyName,
+        email: validatedData.email,
+        enquiryType: validatedData.enquiryType,
+        message: validatedData.message,
       }),
     });
 

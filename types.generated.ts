@@ -1255,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = SubmittedSlice | FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -3816,6 +3816,171 @@ type StepsSliceVariation = StepsSliceStart | StepsSliceCards | StepsSliceForm | 
 export type StepsSlice = prismic.SharedSlice<"steps", StepsSliceVariation>;
 
 /**
+ * Primary content in *Submitted → Default → Primary*
+ */
+export interface SubmittedSliceDefaultPrimary {
+	/**
+	 * Badge Text field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Message Received
+	 * - **API ID Path**: submitted.default.primary.badge_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	badge_text: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Thank you for reaching out!
+	 * - **API ID Path**: submitted.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: We've received your enquiry and a member of our team will get back to you as soon as possible.
+	 * - **API ID Path**: submitted.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	description: prismic.RichTextField;
+	
+	/**
+	 * Button Text field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: GO TO HOME
+	 * - **API ID Path**: submitted.default.primary.button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: submitted.default.primary.button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Info Card Title field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: WHAT HAPPENS NEXT?
+	 * - **API ID Path**: submitted.default.primary.info_card_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	info_card_title: prismic.KeyTextField;
+	
+	/**
+	 * Info Card Content field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Our team typically responds within 24 hours during business days. For urgent enquiries, please call us directly.
+	 * - **API ID Path**: submitted.default.primary.info_card_content
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	info_card_content: prismic.RichTextField;
+	
+	/**
+	 * Show Contact Section field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: submitted.default.primary.show_contact_section
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_contact_section: prismic.BooleanField;
+	
+	/**
+	 * Contact Section Title field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: NEED HELP?
+	 * - **API ID Path**: submitted.default.primary.contact_section_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	contact_section_title: prismic.KeyTextField;
+	
+	/**
+	 * Contact Section Heading field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Get in touch
+	 * - **API ID Path**: submitted.default.primary.contact_section_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	contact_section_heading: prismic.KeyTextField;
+	
+	/**
+	 * Top Margin field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: submitted.default.primary.top_margin
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	top_margin: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+}
+
+/**
+ * Primary content in *Submitted → Items*
+ */
+export interface SubmittedSliceDefaultItem {
+	/**
+	 * Button Text field in *Submitted → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: CONTACT US
+	 * - **API ID Path**: submitted.items[].button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *Submitted → Items*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: submitted.items[].button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Default variation for Submitted Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SubmittedSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SubmittedSliceDefaultPrimary>, Simplify<SubmittedSliceDefaultItem>>;
+
+/**
+ * Slice variation for *Submitted*
+ */
+type SubmittedSliceVariation = SubmittedSliceDefault
+
+/**
+ * Submitted Shared Slice
+ *
+ * - **API ID**: `submitted`
+ * - **Description**: Simple success/confirmation message for form submissions
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SubmittedSlice = prismic.SharedSlice<"submitted", SubmittedSliceVariation>;
+
+/**
  * Primary content in *Tracking → Default → Primary*
  */
 export interface TrackingSliceDefaultPrimary {
@@ -4133,6 +4298,11 @@ declare module "@prismicio/client" {
 			StepsSliceForm,
 			StepsSlicePackages,
 			StepsSliceSummary,
+			SubmittedSlice,
+			SubmittedSliceDefaultPrimary,
+			SubmittedSliceDefaultItem,
+			SubmittedSliceVariation,
+			SubmittedSliceDefault,
 			TrackingSlice,
 			TrackingSliceDefaultPrimary,
 			TrackingSliceDefaultItem,

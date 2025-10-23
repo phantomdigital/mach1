@@ -1,0 +1,36 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "badge_text": "Message Received",
+      "heading": "Thank you for reaching out!",
+      "description": [
+        {
+          "type": "paragraph",
+          "text": "We've received your enquiry and a member of our team will get back to you as soon as possible.",
+          "spans": []
+        }
+      ],
+      "button_text": "GO TO HOME",
+      "button_link": {
+        "link_type": "Web",
+        "url": "/"
+      },
+      "info_card_title": "WHAT HAPPENS NEXT?",
+      "info_card_content": [
+        {
+          "type": "paragraph",
+          "text": "Our team typically responds within 24 hours during business days. For urgent enquiries, please call us directly.",
+          "spans": []
+        }
+      ],
+      "show_contact_section": false,
+      "contact_section_title": "NEED HELP?",
+      "contact_section_heading": "Get in touch",
+      "top_margin": "large"
+    },
+    "items": []
+  }
+]
+

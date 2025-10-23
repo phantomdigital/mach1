@@ -84,7 +84,7 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
 
   return (
     <div
-      className={`fixed top-0 left-0 right-0 z-50 bg-white border-b border-neutral-200 shadow-sm transition-transform duration-300 ease-out ${
+      className={`fixed top-0 left-0 right-0 z-50 bg-neutral-100 border-b-3 border-neutral-200 transition-transform duration-300 ease-out ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >

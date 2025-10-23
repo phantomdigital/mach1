@@ -1,122 +1,136 @@
 import { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
+import { SliceZone } from "@prismicio/react";
 import { createClient } from "@/prismicio";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { components } from "@/slices";
+import { generatePrismicMetadata } from "@/lib/metadata";
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: "Thank You | MACH1 Logistics",
-    description: "Thank you for contacting MACH1 Logistics. We'll be in touch soon.",
-    robots: {
-      index: false,
-      follow: true,
-    },
-  };
-}
+/**
+ * This page displays the contact thank you page.
+ * In Prismic, create a page with UID "contact-thank-you" and add your desired slices.
+ * The UID can be changed below if you prefer a different name in Prismic.
+ */
+const CONTACT_THANK_YOU_UID = "contact-thank-you";
 
-export default async function ThankYouPage() {
-  const client = createClient();
-  
-  // Fetch the home page to get the ContactUs slice content
-  let thankYouContent = {
-    heading: "Message Received!",
-    description: "We've received your enquiry and a member of our team will get back to you as soon as possible.",
-    infoTitle: "What happens next?",
-    infoText: "Our team typically responds within 24 hours during business days. For urgent enquiries, please call us directly.",
-  };
+type SearchParams = { email?: string };
 
-  try {
-    const homePage = await client.getSingle("home");
-    // Find the ContactUs slice - cast to unknown first then to our expected type
-    const slices = homePage.data.slices as unknown as Array<{
-      slice_type: string;
-      primary?: {
-        thank_you_heading?: string;
-        thank_you_description?: string;
-        thank_you_info_title?: string;
-        thank_you_info_text?: string;
-      };
-    }>;
-    
-    const contactSlice = slices.find(
-      (slice) => slice.slice_type === "contact_us"
-    );
+// Helper function to process rich text and replace {email} with bold email
+function processRichTextField(field: any[], emailReplacement: string) {
+  return field.map((block: any) => {
+    if (block.text && block.text.includes("{email}")) {
+      const parts = block.text.split(/(\{email\})/gi);
+      let processedText = "";
+      const newSpans: any[] = [...(block.spans || [])];
 
-    if (contactSlice?.primary) {
-      thankYouContent = {
-        heading: contactSlice.primary.thank_you_heading || thankYouContent.heading,
-        description: contactSlice.primary.thank_you_description || thankYouContent.description,
-        infoTitle: contactSlice.primary.thank_you_info_title || thankYouContent.infoTitle,
-        infoText: contactSlice.primary.thank_you_info_text || thankYouContent.infoText,
+      parts.forEach((part: string) => {
+        if (part.toLowerCase() === "{email}") {
+          const startIndex = processedText.length;
+          processedText += emailReplacement;
+          const endIndex = processedText.length;
+
+          // Add a strong span for the email
+          newSpans.push({
+            type: "strong",
+            start: startIndex,
+            end: endIndex,
+          });
+        } else {
+          processedText += part;
+        }
+      });
+
+      return {
+        ...block,
+        text: processedText,
+        spans: newSpans,
       };
     }
-  } catch (error) {
-    console.error("Error fetching content:", error);
-    // Use defaults if Prismic fetch fails
+    return block;
+  });
+}
+
+export default async function ContactThankYouPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const client = createClient();
+  const params = await searchParams;
+  
+  // Protect the page - only accessible with email parameter (from form submission)
+  if (!params.email) {
+    redirect("/");
   }
+  
+  try {
+    const page = await client.getByUID("page", CONTACT_THANK_YOU_UID);
+    
+    // Determine the replacement value for {email}
+    const emailReplacement = params.email || "your email address";
 
-  return (
-    <div className="min-h-screen bg-white">
-      {/* No header/topper - standalone page */}
-      <section className="w-full bg-white pt-60 pb-16 lg:pt-82 lg:pb-48">
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-40">
-            {/* Left Column - Main Content */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                {/* Success Icon Badge */}
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-mach1-green">
-                    <svg
-                      className="h-6 w-6 text-white"
-                      fill="none"
-                      strokeWidth="3"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                </div>
+    // Process slices to replace {email} placeholder
+    const processedSlices = page.data.slices.map((slice: any) => {
+      if (slice.slice_type === "submitted") {
+        // Clone the slice to avoid mutating the original
+        const processedSlice = JSON.parse(JSON.stringify(slice));
 
-                <h2 className="text-neutral-800 text-4xl lg:text-5xl">
-                  {thankYouContent.heading}
-                </h2>
-                
-                <div className="text-neutral-600 text-base">
-                  <p>{thankYouContent.description}</p>
-                </div>
-              </div>
+        // Replace {email} in text fields (heading)
+        if (processedSlice.primary.heading) {
+          processedSlice.primary.heading = processedSlice.primary.heading.replace(
+            /\{email\}/gi,
+            emailReplacement
+          );
+        }
 
-              {/* Back to Home Button */}
-              <div>
-                <Button asChild variant="hero">
-                  <Link href="/">
-                    GO TO HOME
-                  </Link>
-                </Button>
-              </div>
-            </div>
+        // Replace {email} in rich text fields with bold formatting
+        if (processedSlice.primary.description) {
+          processedSlice.primary.description = processRichTextField(
+            processedSlice.primary.description,
+            emailReplacement
+          );
+        }
 
-            {/* Right Column - Info Card */}
-            <div className="space-y-6">
-              <div className="space-y-4">
-                <h5 className="text-neutral-800 text-sm">{thankYouContent.infoTitle.toUpperCase()}</h5>
-                <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9]">
-                  <p className="text-neutral-600 text-sm">
-                    {thankYouContent.infoText}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+        if (processedSlice.primary.info_card_content) {
+          processedSlice.primary.info_card_content = processRichTextField(
+            processedSlice.primary.info_card_content,
+            emailReplacement
+          );
+        }
+
+        return processedSlice;
+      }
+
+      return slice;
+    });
+    
+    return <SliceZone slices={processedSlices} components={components} />;
+  } catch (error) {
+    // Page not found - guide admin to create it
+    console.error('Error fetching contact-thank-you page:', error);
+    notFound();
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const client = createClient();
+  
+  try {
+    const page = await client.getByUID("page", CONTACT_THANK_YOU_UID);
+    
+    return generatePrismicMetadata(page, {
+      url: "/contact/thank-you",
+      keywords: ["contact", "thank you", "MACH 1 Logistics"],
+    });
+  } catch {
+    // Return default metadata if page doesn't exist
+    return {
+      title: "Thank You | MACH 1 Logistics",
+      description: "Thank you for contacting MACH 1 Logistics. We'll be in touch soon.",
+      robots: {
+        index: false,
+        follow: true,
+      },
+    };
+  }
 }
 

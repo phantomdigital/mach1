@@ -1,0 +1,183 @@
+{
+  "id": "submitted",
+  "type": "SharedSlice",
+  "name": "Submitted",
+  "description": "Simple success/confirmation message for form submissions",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "badge_text": {
+          "type": "Text",
+          "config": {
+            "label": "Badge Text",
+            "placeholder": "Message Received"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Thank you for reaching out!"
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "We've received your enquiry and a member of our team will get back to you as soon as possible.",
+            "multi": "paragraph,strong,em,hyperlink"
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "GO TO HOME"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "info_card_title": {
+          "type": "Text",
+          "config": {
+            "label": "Info Card Title",
+            "placeholder": "WHAT HAPPENS NEXT?"
+          }
+        },
+        "info_card_content": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Info Card Content",
+            "placeholder": "Our team typically responds within 24 hours during business days. For urgent enquiries, please call us directly.",
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          }
+        },
+        "show_contact_section": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Contact Section",
+            "placeholder_false": "Hide",
+            "placeholder_true": "Show",
+            "default_value": false
+          }
+        },
+        "contact_section_title": {
+          "type": "Text",
+          "config": {
+            "label": "Contact Section Title",
+            "placeholder": "NEED HELP?"
+          }
+        },
+        "contact_section_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Contact Section Heading",
+            "placeholder": "Get in touch"
+          }
+        },
+        "show_faqs": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show FAQs",
+            "placeholder_false": "Hide",
+            "placeholder_true": "Show",
+            "default_value": false
+          }
+        },
+        "faq_title": {
+          "type": "Text",
+          "config": {
+            "label": "FAQ Section Title",
+            "placeholder": "FAQs"
+          }
+        },
+        "use_main_faqs": {
+          "type": "Boolean",
+          "config": {
+            "label": "Use Main FAQs",
+            "placeholder_true": "Use main FAQ slice",
+            "placeholder_false": "Use custom FAQs below",
+            "default_value": false
+          }
+        },
+        "main_faq_slice": {
+          "type": "Link",
+          "config": {
+            "label": "Main FAQ Slice",
+            "placeholder": "Select page with FAQ slice",
+            "select": "document",
+            "customtypes": ["page"]
+          }
+        },
+        "faq_limit": {
+          "type": "Number",
+          "config": {
+            "label": "FAQ Limit",
+            "placeholder": "5"
+          }
+        },
+        "top_margin": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "CONTACT US"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "faq_question": {
+          "type": "Text",
+          "config": {
+            "label": "FAQ Question",
+            "placeholder": "Enter your question"
+          }
+        },
+        "faq_answer": {
+          "type": "StructuredText",
+          "config": {
+            "label": "FAQ Answer",
+            "placeholder": "Enter the answer (supports rich text, links, bold, etc.)",
+            "allowTargetBlank": true,
+            "multi": "paragraph,strong,em,hyperlink,list-item,o-list-item"
+          }
+        }
+      }
+    }
+  ]
+}
+

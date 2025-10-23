@@ -57,6 +57,8 @@ const routes: Route[] = [
   { type: "home", path: "/:lang?" },
   // Special case for careers-vacancies page to use /careers/vacancies
   { type: "page", uid: "careers-vacancies", path: "/:lang?/careers/vacancies" },
+  // Special case for contact-thank-you page to use /contact/thank-you
+  { type: "page", uid: "contact-thank-you", path: "/:lang?/contact/thank-you" },
   { type: "page", path: "/:lang?/:uid" },
   { type: "solution", path: "/:lang?/solutions/:uid" },
   { type: "news", path: "/:lang?/news/:uid" },
