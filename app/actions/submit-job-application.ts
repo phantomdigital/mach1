@@ -3,6 +3,7 @@
 import { Resend } from "resend";
 import type { Attachment } from "resend";
 import JobApplicationEmail from "@/emails/job-application-email";
+import JobApplicationConfirmationEmail from "@/emails/job-application-confirmation-email";
 import { jobApplicationSchema, safeValidate } from "@/lib/validation-schemas";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -39,8 +40,8 @@ export async function submitJobApplication(
 
     const validatedData = validation.data;
 
-    // Determine the recipient email (use application-specific email if provided, otherwise default)
-    const recipientEmail = validatedData.applicationEmail || "careers@mach1logistics.com.au";
+    // Determine the recipient email (use application-specific email if provided, otherwise use env var)
+    const recipientEmail = validatedData.applicationEmail || process.env.EMAIL_TO || "careers@mach1logistics.com.au";
 
     // Prepare attachments for Resend
     const attachments: Attachment[] = [];
@@ -69,8 +70,8 @@ export async function submitJobApplication(
       });
     }
 
-    // Send email using Resend with attachments
-    const { data, error } = await resend.emails.send({
+    // Send email to HR/hiring team with attachments
+    const { data: hrEmailData, error: hrEmailError } = await resend.emails.send({
       from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@testing.phantomdigital.au>",
       to: [recipientEmail],
       replyTo: validatedData.email, // Allow direct reply to applicant
@@ -87,15 +88,37 @@ export async function submitJobApplication(
       attachments,
     });
 
-    if (error) {
-      console.error("Resend error:", error);
+    if (hrEmailError) {
+      console.error("Resend error (HR email):", hrEmailError);
       return {
         success: false,
         error: "Failed to send application. Please try again later.",
       };
     }
 
-    console.log("Job application email sent successfully:", data?.id);
+    console.log("Job application email sent to HR successfully:", hrEmailData?.id);
+
+    // Send confirmation email to applicant (no attachments needed)
+    const { data: confirmationEmailData, error: confirmationEmailError } = await resend.emails.send({
+      from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@testing.phantomdigital.au>",
+      to: [validatedData.email],
+      subject: `Application Received: ${validatedData.jobTitle} Position`,
+      react: JobApplicationConfirmationEmail({
+        fullName: validatedData.fullName,
+        jobTitle: validatedData.jobTitle,
+        resumeFileName: validatedData.resume.filename,
+        coverLetterFileName: validatedData.coverLetter?.filename,
+        otherFileNames: validatedData.otherFiles?.map((f) => f.filename) || [],
+      }),
+    });
+
+    if (confirmationEmailError) {
+      console.error("Resend error (confirmation email):", confirmationEmailError);
+      // Don't fail the whole process if confirmation email fails
+      console.log("HR email sent successfully, but confirmation email failed");
+    } else {
+      console.log("Confirmation email sent to applicant successfully:", confirmationEmailData?.id);
+    }
 
     return {
       success: true,

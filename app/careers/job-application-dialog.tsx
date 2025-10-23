@@ -89,17 +89,13 @@ export function JobApplicationDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted")
-    console.log("Form data:", formData)
-    console.log("Files:", files)
-    
     setIsSubmitting(true)
     setError(null)
 
     try {
       // Validate that resume is provided
       if (!files.resume) {
-        console.log("No resume file provided")
+        console.error("No resume file provided")
         setError("Please upload your resume")
         setIsSubmitting(false)
         return
@@ -506,10 +502,6 @@ export function JobApplicationDialog({
               type="submit"
               disabled={isSubmitting}
               className="w-full"
-              onClick={(e) => {
-                console.log("Button clicked")
-                // Don't prevent default - let form submission handle it
-              }}
             >
               {isSubmitting ? "SUBMITTING..." : "SUBMIT APPLICATION"}
             </HeroButton>
