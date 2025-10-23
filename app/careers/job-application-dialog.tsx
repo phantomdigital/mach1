@@ -89,12 +89,17 @@ export function JobApplicationDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("Form submitted")
+    console.log("Form data:", formData)
+    console.log("Files:", files)
+    
     setIsSubmitting(true)
     setError(null)
 
     try {
       // Validate that resume is provided
       if (!files.resume) {
+        console.log("No resume file provided")
         setError("Please upload your resume")
         setIsSubmitting(false)
         return
@@ -117,7 +122,7 @@ export function JobApplicationDialog({
         email: formData.email,
         phone: formData.phone,
         jobTitle,
-        applicationEmail: applicationEmail || "careers@mach1logistics.com.au",
+        applicationEmail: applicationEmail || "test@testing.phantomdigital.au",
         resume: resumeData,
         coverLetter: coverLetterData,
         otherFiles: otherFilesData,
@@ -252,7 +257,7 @@ export function JobApplicationDialog({
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
+          <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0" noValidate>
           {/* Scrollable Content */}
           <div 
             className="flex-1 overflow-y-auto px-8 lg:px-12 py-6"
@@ -374,11 +379,11 @@ export function JobApplicationDialog({
                   </div>
                   <input
                     id="resume"
+                    name="resume"
                     type="file"
                     accept=".pdf,.doc,.docx"
                     onChange={(e) => handleFileChange(e, 'resume')}
                     className="hidden"
-                    required
                   />
                 </label>
                 <p className="text-xs text-neutral-500">
@@ -420,6 +425,7 @@ export function JobApplicationDialog({
                   </div>
                   <input
                     id="coverLetterFile"
+                    name="coverLetterFile"
                     type="file"
                     accept=".pdf,.doc,.docx"
                     onChange={(e) => handleFileChange(e, 'coverLetterFile')}
@@ -462,6 +468,7 @@ export function JobApplicationDialog({
                   </div>
                   <input
                     id="otherDocs"
+                    name="otherDocs"
                     type="file"
                     accept=".pdf,.doc,.docx"
                     multiple
@@ -499,6 +506,10 @@ export function JobApplicationDialog({
               type="submit"
               disabled={isSubmitting}
               className="w-full"
+              onClick={(e) => {
+                console.log("Button clicked")
+                // Don't prevent default - let form submission handle it
+              }}
             >
               {isSubmitting ? "SUBMITTING..." : "SUBMIT APPLICATION"}
             </HeroButton>

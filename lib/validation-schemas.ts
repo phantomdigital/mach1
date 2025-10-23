@@ -81,30 +81,30 @@ export const jobApplicationSchema = z.object({
     .min(1, "Application email is required"),
   
   resume: fileAttachmentSchema.refine(
-    (file) => file.size <= 10 * 1024 * 1024, // 10MB max
-    "Resume must be less than 10MB"
+    (file) => file.size <= 5 * 1024 * 1024, // 5MB max
+    "Resume must be less than 5MB"
   ).refine(
     (file) => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.contentType),
     "Resume must be PDF, DOC, or DOCX"
   ),
   
   coverLetter: fileAttachmentSchema.optional().refine(
-    (file) => !file || file.size <= 10 * 1024 * 1024, // 10MB max
-    "Cover letter must be less than 10MB"
+    (file) => !file || file.size <= 5 * 1024 * 1024, // 5MB max
+    "Cover letter must be less than 5MB"
   ).refine(
     (file) => !file || ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.contentType),
     "Cover letter must be PDF, DOC, or DOCX"
   ),
   
   otherFiles: z.array(fileAttachmentSchema).optional().default([]).refine(
-    (files) => files.every(file => file.size <= 10 * 1024 * 1024), // 10MB max per file
-    "Each file must be less than 10MB"
+    (files) => files.every(file => file.size <= 5 * 1024 * 1024), // 5MB max per file
+    "Each file must be less than 5MB"
   ).refine(
     (files) => {
       const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-      return totalSize <= 25 * 1024 * 1024; // 25MB total
+      return totalSize <= 15 * 1024 * 1024; // 15MB total
     },
-    "Total file size must be less than 25MB"
+    "Total file size must be less than 15MB"
   ),
 });
 
