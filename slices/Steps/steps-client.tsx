@@ -280,7 +280,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
                       selectedCard.toLowerCase().includes('warehouse')
                     )
                       ? "WAREHOUSING DETAILS"
-                      : (slice.primary.form_heading || "SHIPMENT DETAILS")
+                      : (slice.primary.form_heading || "DETAILS")
                   }
                   fields={slice.items.map((item) => ({
                     label: item.field_label || "",

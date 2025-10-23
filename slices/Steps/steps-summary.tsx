@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import type { RichTextField } from "@prismicio/client";
 import { PrismicRichText } from "@prismicio/react";
 import FaqAccordionCompact from "@/components/faq-accordion-compact";
+import { getMarginTopClass } from "@/lib/spacing";
 
 interface FaqItem {
   faq_question: string | null;
@@ -136,7 +137,7 @@ export default function StepsSummary({
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-40">
+      <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8 lg:gap-40">
         {/* Left Column - Summary */}
         <div className="space-y-8">
           <div className="space-y-6">
@@ -163,8 +164,8 @@ export default function StepsSummary({
 
           {/* Shipment Details */}
           {formData && Object.keys(formData).length > 0 && (
-            <div className="mt-12 space-y-4">
-              <h5 className="text-neutral-800 text-sm mb-4">SHIPMENT DETAILS</h5>
+            <div className={`${getMarginTopClass("medium")} space-y-4`}>
+              <h5 className="text-neutral-800 text-sm mb-4">DETAILS</h5>
               
               <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9]">
                 <div className="grid grid-cols-2 gap-x-8 gap-y-4">
@@ -190,68 +191,68 @@ export default function StepsSummary({
 
           {/* Package Details */}
           {packages.length > 0 && (
-            <div className="mt-8 space-y-4">
+            <div className={`${getMarginTopClass("small")} space-y-4`}>
               <h5 className="text-neutral-800 text-sm mb-4">PACKAGE DETAILS</h5>
               
-              <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9] space-y-4">
+              <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9] space-y-6">
                 {packages.map((pkg: any, index: number) => (
-                  <div key={index} className=" py-3">
+                  <div key={index} className={`${index > 0 ? 'pt-6 border-t border-neutral-300' : ''}`}>
                     {/* Package Header */}
-                    <div className="flex items-center gap-3 mb-3">
-                      <h6 className="font-medium text-neutral-800 text-sm">Package {index + 1}</h6>
+                    <div className="mb-4">
+                      <h6 className="font-semibold text-neutral-800 text-base mb-1">Package {index + 1}</h6>
                       {pkg.description && (
-                        <span className="text-xs text-neutral-500">• {pkg.description}</span>
+                        <p className="text-sm text-neutral-600">{pkg.description}</p>
                       )}
                     </div>
                     
                     {/* Addresses */}
                     {(pkg.origin || pkg.destination) && (
-                      <div className="flex items-center gap-6 mb-3 text-xs">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 pb-4 border-b border-neutral-300">
                         {pkg.origin && (
-                          <div className="flex items-center gap-2">
-                            <span className="text-neutral-500">From:</span>
-                            <span className="text-neutral-800 font-medium">{pkg.origin}</span>
+                          <div>
+                            <p className="text-xs text-neutral-500 mb-1">Origin</p>
+                            <p className="text-sm text-neutral-800 font-medium">{pkg.origin}</p>
                           </div>
                         )}
                         {pkg.destination && (
-                          <div className="flex items-center gap-2">
-                            <span className="text-neutral-500">To:</span>
-                            <span className="text-neutral-800 font-medium">{pkg.destination}</span>
+                          <div>
+                            <p className="text-xs text-neutral-500 mb-1">Destination</p>
+                            <p className="text-sm text-neutral-800 font-medium">{pkg.destination}</p>
                           </div>
                         )}
                       </div>
                     )}
                     
-                    {/* Package Specs */}
-                    <div className="flex items-center gap-6 text-xs">
+                    {/* Package Specs in Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                       {pkg.weight && (
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-neutral-500">Weight:</span>
-                          <span className="text-neutral-800 font-medium">{pkg.weight} {pkg.weightUnit}</span>
+                        <div>
+                          <p className="text-xs text-neutral-500 mb-1">Weight</p>
+                          <p className="text-sm text-neutral-800 font-medium">{pkg.weight} {pkg.weightUnit}</p>
                         </div>
                       )}
                       {pkg.quantity && (
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-neutral-500">Qty:</span>
-                          <span className="text-neutral-800 font-medium">{pkg.quantity}</span>
+                        <div>
+                          <p className="text-xs text-neutral-500 mb-1">Quantity</p>
+                          <p className="text-sm text-neutral-800 font-medium">{pkg.quantity}</p>
                         </div>
                       )}
                       {pkg.length && (
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-neutral-500">L:</span>
-                          <span className="text-neutral-800 font-medium">{pkg.length}{pkg.dimensionUnit}</span>
+                        <div>
+                          <p className="text-xs text-neutral-500 mb-1">Length</p>
+                          <p className="text-sm text-neutral-800 font-medium">{pkg.length} {pkg.dimensionUnit}</p>
                         </div>
                       )}
                       {pkg.width && (
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-neutral-500">W:</span>
-                          <span className="text-neutral-800 font-medium">{pkg.width}{pkg.dimensionUnit}</span>
+                        <div>
+                          <p className="text-xs text-neutral-500 mb-1">Width</p>
+                          <p className="text-sm text-neutral-800 font-medium">{pkg.width} {pkg.dimensionUnit}</p>
                         </div>
                       )}
                       {pkg.height && (
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-neutral-500">H:</span>
-                          <span className="text-neutral-800 font-medium">{pkg.height}{pkg.dimensionUnit}</span>
+                        <div>
+                          <p className="text-xs text-neutral-500 mb-1">Height</p>
+                          <p className="text-sm text-neutral-800 font-medium">{pkg.height} {pkg.dimensionUnit}</p>
                         </div>
                       )}
                     </div>

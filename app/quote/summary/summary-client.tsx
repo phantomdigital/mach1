@@ -3,17 +3,42 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { RichTextField } from "@prismicio/client";
 import StepsSummary from "@/slices/Steps/steps-summary";
+import { getContainerClass, getPaddingBottomClass } from "@/lib/spacing";
 
 interface SummaryData {
-  selectedCard: string;
+  selectedCard?: string;
   formData: Record<string, string>;
 }
 
-export default function SummaryClient() {
+interface SummaryClientProps {
+  heading?: string;
+  description?: RichTextField;
+  contactEmail?: string;
+  contactTimeframe?: string;
+  faqs?: Array<{ faq_question: string | null; faq_answer: RichTextField | null }>;
+}
+
+export default function SummaryClient({
+  heading = "We have received your request.",
+  description,
+  contactEmail = "",
+  contactTimeframe = "",
+  faqs = [],
+}: SummaryClientProps = {}) {
   const router = useRouter();
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Default description if not provided
+  const defaultDescription = [
+    {
+      type: "paragraph",
+      text: "One of our logistics specialists will contact you at {email} within 24 hours to discuss your requirements. We're looking forward to learning how we can help optimise your supply chain.",
+      spans: []
+    }
+  ] as RichTextField;
 
   useEffect(() => {
     // Scroll to top immediately
@@ -72,7 +97,7 @@ export default function SummaryClient() {
     const hasNoData = typeof window !== 'undefined' && !sessionStorage.getItem("steps_flow_data");
     
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center ">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center max-w-md px-4 pt-52">
           <Loader2 className="w-12 h-12 text-dark-blue animate-spin mx-auto mb-4" />
           {hasNoData ? (
@@ -81,7 +106,7 @@ export default function SummaryClient() {
               <p className="text-neutral-600 text-sm">Redirecting you to the home page...</p>
             </>
           ) : (
-            <p className="text-neutral-600 ">Loading your quote summary...</p>
+            <p className="text-neutral-600">Loading your quote summary...</p>
           )}
         </div>
       </div>
@@ -95,22 +120,16 @@ export default function SummaryClient() {
   return (
     <div className="min-h-screen bg-white">
       {/* No header/topper - standalone page */}
-      <section className="w-full bg-white pt-60 pb-16 lg:pt-82 lg:pb-48">
-        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+      <section className={`w-full bg-white pt-60 lg:pt-82 ${getPaddingBottomClass("large")}`}>
+        <div className={getContainerClass()}>
           <StepsSummary
-            heading="We have received your request."
-            description={[
-              {
-                type: "paragraph",
-                text: "One of our logistics specialists will contact you at {email} within 24 hours to discuss your requirements. We're looking forward to learning how we can help optimise your supply chain.",
-                spans: []
-              }
-            ]}
-            contactEmail=""
-            contactTimeframe=""
+            heading={heading}
+            description={description || defaultDescription}
+            contactEmail={contactEmail}
+            contactTimeframe={contactTimeframe}
             selectedCard={summaryData.selectedCard}
             formData={summaryData.formData}
-            faqs={[]}
+            faqs={faqs}
             onReset={handleReset}
           />
         </div>
@@ -118,4 +137,3 @@ export default function SummaryClient() {
     </div>
   );
 }
-
