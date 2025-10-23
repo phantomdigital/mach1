@@ -13,6 +13,15 @@ import {
 import { Input } from "@/components/ui/input"
 import { HeroButton } from "@/components/ui/hero-button"
 import { cn } from "@/lib/utils"
+import { submitJobApplication } from "@/app/actions/submit-job-application"
+import { 
+  fileToFileData, 
+  validateFiles,
+  JOB_APPLICATION_ALLOWED_TYPES,
+  JOB_APPLICATION_ALLOWED_TYPES_DISPLAY,
+  JOB_APPLICATION_MAX_FILE_SIZE_MB,
+  JOB_APPLICATION_MAX_TOTAL_SIZE_MB,
+} from "@/lib/file-utils"
 
 interface JobApplicationDialogProps {
   jobTitle: string
@@ -44,6 +53,7 @@ export function JobApplicationDialog({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   // Handle dialog open/close and Lenis
   const handleOpenChange = (open: boolean) => {
@@ -62,6 +72,7 @@ export function JobApplicationDialog({
     if (!open && isSubmitted) {
       setTimeout(() => {
         setIsSubmitted(false)
+        setError(null)
         setFormData({
           fullName: "",
           email: "",
@@ -76,39 +87,54 @@ export function JobApplicationDialog({
     }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError(null)
 
-    // Create list of attached files
-    const attachments: string[] = []
-    if (files.resume) attachments.push(`Resume: ${files.resume.name}`)
-    if (files.coverLetterFile) attachments.push(`Cover Letter: ${files.coverLetterFile.name}`)
-    if (files.other.length > 0) {
-      files.other.forEach((file, index) => {
-        attachments.push(`Supporting Document ${index + 1}: ${file.name}`)
+    try {
+      // Validate that resume is provided
+      if (!files.resume) {
+        setError("Please upload your resume")
+        setIsSubmitting(false)
+        return
+      }
+
+      // Convert files to base64
+      const resumeData = await fileToFileData(files.resume)
+      
+      const coverLetterData = files.coverLetterFile 
+        ? await fileToFileData(files.coverLetterFile)
+        : undefined
+
+      const otherFilesData = await Promise.all(
+        files.other.map((file) => fileToFileData(file))
+      )
+
+      // Submit the application using the server action
+      const result = await submitJobApplication({
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        jobTitle,
+        applicationEmail: applicationEmail || "careers@mach1logistics.com.au",
+        resume: resumeData,
+        coverLetter: coverLetterData,
+        otherFiles: otherFilesData,
       })
-    }
 
-    // Create mailto link with form data
-    const subject = `Application for ${jobTitle}`
-    const body = `
-Full Name: ${formData.fullName}
-Email: ${formData.email}
-Phone: ${formData.phone}
-
-${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : ''}
-    `.trim()
-
-    const mailtoLink = `mailto:${applicationEmail || "careers@mach1logistics.com.au"}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    
-    window.location.href = mailtoLink
-
-    // Show thank you message
-    setTimeout(() => {
       setIsSubmitting(false)
-      setIsSubmitted(true)
-    }, 500)
+
+      if (result.success) {
+        setIsSubmitted(true)
+      } else {
+        setError(result.error || "Failed to submit application. Please try again.")
+      }
+    } catch (error) {
+      console.error("Error preparing application:", error)
+      setIsSubmitting(false)
+      setError("Failed to prepare your application. Please try again.")
+    }
   }
 
   const handleChange = (
@@ -128,11 +154,43 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
     const selectedFiles = e.target.files
     if (!selectedFiles) return
 
+    const filesArray = Array.from(selectedFiles)
+
+    // Client-side validation
+    const validation = validateFiles(filesArray, {
+      maxSizeMB: JOB_APPLICATION_MAX_FILE_SIZE_MB,
+      allowedTypes: JOB_APPLICATION_ALLOWED_TYPES,
+      maxTotalSizeMB: type === 'other' ? JOB_APPLICATION_MAX_TOTAL_SIZE_MB : undefined,
+    })
+
+    if (!validation.valid) {
+      setError(validation.errors.join(' '))
+      // Clear the input
+      e.target.value = ''
+      return
+    }
+
+    // Clear any previous errors
+    setError(null)
+
     if (type === 'other') {
-      // For "other" documents, allow multiple files
+      // For "other" documents, validate total size including existing files
+      const allFiles = [...files.other, ...filesArray]
+      const totalValidation = validateFiles(allFiles, {
+        maxSizeMB: JOB_APPLICATION_MAX_FILE_SIZE_MB,
+        allowedTypes: JOB_APPLICATION_ALLOWED_TYPES,
+        maxTotalSizeMB: JOB_APPLICATION_MAX_TOTAL_SIZE_MB,
+      })
+
+      if (!totalValidation.valid) {
+        setError(totalValidation.errors.join(' '))
+        e.target.value = ''
+        return
+      }
+
       setFiles((prev) => ({
         ...prev,
-        other: [...prev.other, ...Array.from(selectedFiles)]
+        other: allFiles
       }))
     } else {
       // For resume and cover letter, single file only
@@ -141,6 +199,9 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
         [type]: selectedFiles[0]
       }))
     }
+
+    // Clear the input value so the same file can be selected again if removed
+    e.target.value = ''
   }
 
   const removeFile = (type: 'resume' | 'coverLetterFile') => {
@@ -183,11 +244,10 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
                 Application Submitted Successfully!
               </h3>
               <p className="text-neutral-600 mb-6 leading-relaxed">
-                Your email client should have opened with your application details. 
-                Please attach your documents and send the email to complete your application.
+                Thank you for applying! We&apos;ve received your application and will review it shortly.
               </p>
               <p className="text-sm text-neutral-500">
-                We&apos;ll review your application and get back to you soon.
+                A member of our team will contact you soon. Please check your email for any updates.
               </p>
             </div>
           </div>
@@ -216,6 +276,22 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
                   </span>
                 )}
               </DialogDescription>
+
+              {/* Error Message */}
+              {error && (
+                <div className="rounded-lg bg-red-50 border border-red-200 p-4">
+                  <div className="flex items-start gap-3">
+                    <svg className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <p className="m-0 text-sm font-medium text-red-900">
+                        {error}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             <div>
               <label
                 htmlFor="fullName"
@@ -294,7 +370,7 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
-                    <span>{files.resume ? files.resume.name : "Click to upload resume (PDF)"}</span>
+                    <span>{files.resume ? files.resume.name : "Click to upload resume"}</span>
                   </div>
                   <input
                     id="resume"
@@ -305,6 +381,9 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
                     required
                   />
                 </label>
+                <p className="text-xs text-neutral-500">
+                  {JOB_APPLICATION_ALLOWED_TYPES_DISPLAY} • Max {JOB_APPLICATION_MAX_FILE_SIZE_MB}MB
+                </p>
                 {files.resume && (
                   <button
                     type="button"
@@ -337,7 +416,7 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
-                    <span>{files.coverLetterFile ? files.coverLetterFile.name : "Click to upload cover letter (PDF)"}</span>
+                    <span>{files.coverLetterFile ? files.coverLetterFile.name : "Click to upload cover letter"}</span>
                   </div>
                   <input
                     id="coverLetterFile"
@@ -347,6 +426,9 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
                     className="hidden"
                   />
                 </label>
+                <p className="text-xs text-neutral-500">
+                  {JOB_APPLICATION_ALLOWED_TYPES_DISPLAY} • Max {JOB_APPLICATION_MAX_FILE_SIZE_MB}MB
+                </p>
                 {files.coverLetterFile && (
                   <button
                     type="button"
@@ -381,12 +463,15 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
                   <input
                     id="otherDocs"
                     type="file"
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                    accept=".pdf,.doc,.docx"
                     multiple
                     onChange={(e) => handleFileChange(e, 'other')}
                     className="hidden"
                   />
                 </label>
+                <p className="text-xs text-neutral-500">
+                  {JOB_APPLICATION_ALLOWED_TYPES_DISPLAY} • Max {JOB_APPLICATION_MAX_FILE_SIZE_MB}MB per file • Max {JOB_APPLICATION_MAX_TOTAL_SIZE_MB}MB total
+                </p>
                 {files.other.length > 0 && (
                   <div className="space-y-1">
                     {files.other.map((file, index) => (
@@ -415,7 +500,7 @@ ${attachments.length > 0 ? `DOCUMENTS TO ATTACH:\n${attachments.join('\n')}` : '
               disabled={isSubmitting}
               className="w-full"
             >
-              {isSubmitting ? "OPENING EMAIL..." : "SUBMIT APPLICATION"}
+              {isSubmitting ? "SUBMITTING..." : "SUBMIT APPLICATION"}
             </HeroButton>
           </div>
         </form>

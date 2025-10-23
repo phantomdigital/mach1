@@ -46,6 +46,71 @@ export const contactFormSchema = z.object({
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
+// File attachment schema for job applications
+export const fileAttachmentSchema = z.object({
+  filename: z.string().min(1, "Filename is required"),
+  content: z.string().min(1, "File content is required"), // base64 encoded
+  contentType: z.string().min(1, "Content type is required"),
+  size: z.number().positive("File size must be positive"),
+});
+
+// Job application form validation schema
+export const jobApplicationSchema = z.object({
+  fullName: z
+    .string()
+    .min(1, "Full name is required")
+    .min(2, "Full name must be at least 2 characters")
+    .max(100, "Full name must be no more than 100 characters"),
+  
+  email: z
+    .string()
+    .min(1, "Email address is required")
+    .refine((val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), "Please enter a valid email address"),
+  
+  phone: z
+    .string()
+    .min(1, "Phone number is required")
+    .refine((val) => /^[\+]?[\d\s\-\(\)]{10,}$/.test(val), "Please enter a valid phone number"),
+  
+  jobTitle: z
+    .string()
+    .min(1, "Job title is required"),
+  
+  applicationEmail: z
+    .string()
+    .min(1, "Application email is required"),
+  
+  resume: fileAttachmentSchema.refine(
+    (file) => file.size <= 10 * 1024 * 1024, // 10MB max
+    "Resume must be less than 10MB"
+  ).refine(
+    (file) => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.contentType),
+    "Resume must be PDF, DOC, or DOCX"
+  ),
+  
+  coverLetter: fileAttachmentSchema.optional().refine(
+    (file) => !file || file.size <= 10 * 1024 * 1024, // 10MB max
+    "Cover letter must be less than 10MB"
+  ).refine(
+    (file) => !file || ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.contentType),
+    "Cover letter must be PDF, DOC, or DOCX"
+  ),
+  
+  otherFiles: z.array(fileAttachmentSchema).optional().default([]).refine(
+    (files) => files.every(file => file.size <= 10 * 1024 * 1024), // 10MB max per file
+    "Each file must be less than 10MB"
+  ).refine(
+    (files) => {
+      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+      return totalSize <= 25 * 1024 * 1024; // 25MB total
+    },
+    "Total file size must be less than 25MB"
+  ),
+});
+
+export type JobApplicationData = z.infer<typeof jobApplicationSchema>;
+export type FileAttachment = z.infer<typeof fileAttachmentSchema>;
+
 // Steps form validation schema (for quote flow)
 export const stepsFormSchema = z.record(z.string(), z.any());
 
