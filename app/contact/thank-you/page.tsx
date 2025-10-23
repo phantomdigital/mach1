@@ -15,12 +15,21 @@ const CONTACT_THANK_YOU_UID = "contact-thank-you";
 type SearchParams = { email?: string };
 
 // Helper function to process rich text and replace {email} with bold email
-function processRichTextField(field: any[], emailReplacement: string) {
-  return field.map((block: any) => {
+interface RichTextBlock {
+  text?: string;
+  spans?: Array<{
+    type: string;
+    start: number;
+    end: number;
+  }>;
+}
+
+function processRichTextField(field: RichTextBlock[], emailReplacement: string) {
+  return field.map((block: RichTextBlock) => {
     if (block.text && block.text.includes("{email}")) {
       const parts = block.text.split(/(\{email\})/gi);
       let processedText = "";
-      const newSpans: any[] = [...(block.spans || [])];
+      const newSpans = [...(block.spans || [])];
 
       parts.forEach((part: string) => {
         if (part.toLowerCase() === "{email}") {
@@ -69,7 +78,7 @@ export default async function ContactThankYouPage({
     const emailReplacement = params.email || "your email address";
 
     // Process slices to replace {email} placeholder
-    const processedSlices = page.data.slices.map((slice: any) => {
+        const processedSlices = page.data.slices.map((slice) => {
       if (slice.slice_type === "submitted") {
         // Clone the slice to avoid mutating the original
         const processedSlice = JSON.parse(JSON.stringify(slice));

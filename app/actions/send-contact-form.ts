@@ -2,7 +2,7 @@
 
 import { Resend } from "resend";
 import ContactFormEmail from "@/emails/contact-form-email";
-import { contactFormSchema, safeValidate, type ContactFormData } from "@/lib/validation-schemas";
+import { contactFormSchema, safeValidate } from "@/lib/validation-schemas";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
