@@ -96,7 +96,7 @@ export default function SummaryClient() {
     <div className="min-h-screen bg-white">
       {/* No header/topper - standalone page */}
       <section className="w-full bg-white pt-60 pb-16 lg:pt-82 lg:pb-48">
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
           <StepsSummary
             heading="We have received your request."
             description={[

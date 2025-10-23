@@ -52,7 +52,7 @@ export function TeamNav({ teamMembers, onDepartmentChange }: TeamNavProps) {
         top: isCompactHeaderVisible ? `${compactHeaderHeight}px` : '0px'
       }}
     >
-      <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 py-4">
+      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8 py-4">
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="inline-flex h-auto items-center justify-start gap-2 bg-transparent p-0 overflow-x-auto scrollbar-hide w-full">
             {departments.map((department) => (

@@ -66,7 +66,7 @@ export default async function Header() {
           {/* Announcement Bar */}
         {header.data.show_announcement && header.data.announcement_text && (
           <div className="w-full bg-dark-blue py-3 px-4">
-            <div className="max-w-[112rem] mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
+            <div className="max-w-[100rem] mx-auto flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-center">
               <p className="text-white text-xs sm:text-sm font-medium">
                 {header.data.announcement_text}
               </p>
@@ -95,7 +95,7 @@ export default async function Header() {
           <div className="w-full bg-neutral-100 border-b-3 border-neutral-200">
               
               {/* Content container with max-width and padding */}
-              <div className="max-w-[112rem] mx-auto px-4 lg:px-8 py-3">
+              <div className="max-w-[100rem] mx-auto px-4 lg:px-8 py-3">
                 {/* Desktop Layout: Grid with Logo and Navigation */}
                 <div className="hidden xl:grid xl:grid-cols-[auto_1fr] gap-8">
                   
@@ -239,7 +239,7 @@ export default async function Header() {
             <div className="w-full bg-neutral-200">
               
               {/* Content container with max-width and padding */}
-              <div className="max-w-[112rem] mx-auto px-4 lg:px-8 py-3">
+              <div className="max-w-[100rem] mx-auto px-4 lg:px-8 py-3">
                 {/* Desktop Layout: Grid with Logo and Navigation */}
                 <div className="hidden xl:grid xl:grid-cols-[auto_1fr] gap-8">
                   

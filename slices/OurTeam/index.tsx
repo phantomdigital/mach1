@@ -27,7 +27,7 @@ const OurTeam = ({ slice }: OurTeamProps): React.ReactElement => {
       {/* White Content Section */}
       <div className="w-full bg-white pb-24 lg:pb-32">
         {/* Header with Container */}
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
           {slice.primary.subheading && (
             <h5 className="text-neutral-800 text-sm font-medium mb-4 uppercase tracking-wider">
               {slice.primary.subheading}

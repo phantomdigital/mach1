@@ -142,6 +142,34 @@
             ],
             "default_value": "large"
           }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default_value": "none"
+          }
         }
       },
       "items": {

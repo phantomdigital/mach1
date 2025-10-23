@@ -6,6 +6,7 @@ import { PrismicNextLink } from "@prismicio/next";
 import { Badge } from "@/components/ui/badge";
 import { HeroButton } from "@/components/ui/hero-button";
 import FaqAccordionCompact from "@/components/faq-accordion-compact";
+import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
 
 interface SubmittedClientProps {
   slice: Content.SubmittedSlice;
@@ -13,24 +14,6 @@ interface SubmittedClientProps {
 }
 
 export default function SubmittedClient({ slice, faqs }: SubmittedClientProps) {
-
-  // Get margin top class based on selection (responsive: smaller on mobile)
-  const getMarginTopClass = () => {
-    switch (slice.primary.top_margin) {
-      case 'none':
-        return 'mt-0';
-      case 'small':
-        return 'mt-6 lg:mt-12';
-      case 'medium':
-        return 'mt-12 lg:mt-24';
-      case 'large':
-        return 'mt-30 lg:mt-48';
-      case 'extra-large':
-        return 'mt-40 lg:mt-64';
-      default:
-        return 'mt-30 lg:mt-48';
-    }
-  };
 
   // Filter contact buttons from items
   const contactButtons = slice.items.filter(
@@ -41,9 +24,9 @@ export default function SubmittedClient({ slice, faqs }: SubmittedClientProps) {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className={`w-full py-16 lg:py-24 bg-white ${getMarginTopClass()}`}
+      className={`w-full bg-white ${getMarginTopClass(slice.primary.top_margin)} ${getPaddingTopClass(slice.primary.padding_top)} ${getPaddingBottomClass(slice.primary.padding_bottom)}`}
     >
-      <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-40">
           {/* Left Column - Main Content */}
           <div className="space-y-8">

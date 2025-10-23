@@ -48,7 +48,7 @@ export default function StepsStart({
   }, [isInView]);
 
   const handleStart = () => {
-    // Trigger step change with scroll to top
+    // Trigger step change immediately
     onStart();
   };
 

@@ -108,7 +108,7 @@ const News = async ({ slice }: NewsProps): Promise<React.ReactElement> => {
       {/* Featured Hero - Full Width Section */}
       {showFeaturedHero && featuredArticle && (
         <section className={`w-full py-16 lg:py-24 bg-neutral-100 ${getMarginTopClass()}`}>
-          <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+          <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
             <FeaturedHero article={featuredArticle} />
           </div>
         </section>
@@ -116,7 +116,7 @@ const News = async ({ slice }: NewsProps): Promise<React.ReactElement> => {
 
       {/* Articles Grid Section */}
       <section className={`w-full py-16 lg:py-24 bg-white ${!showFeaturedHero || !featuredArticle ? getMarginTopClass() : ''}`}>
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
           {/* Heading */}
           {slice.primary.heading && (
             <h2 className="text-neutral-800 text-2xl lg:text-4xl font-bold mb-8 lg:mb-12">

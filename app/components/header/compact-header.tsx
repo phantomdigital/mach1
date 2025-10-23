@@ -91,7 +91,7 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
       {/* Close dropdowns on scroll */}
       <ScrollDropdownCloser />
       
-      <div className="max-w-[110rem] mx-auto px-4 lg:px-8 py-3">
+      <div className="max-w-[100rem] mx-auto px-4 lg:px-8 py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Compact Logo */}
           <div className="flex items-center">

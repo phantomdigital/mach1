@@ -13,7 +13,7 @@ export default async function Footer() {
       <>
         {/* CTA Section - Lighter Dark Blue */}
         <div className="bg-dark-blue ">
-          <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 py-16 lg:py-24">
+          <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8 py-16 lg:py-24">
             {/* Main title */}
             {footer.data.cta_section[0]?.title && (
               <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 lg:mb-10 max-w-4xl leading-tight">
@@ -45,7 +45,7 @@ export default async function Footer() {
         
         {/* Main Footer Content */}
         <footer className="bg-dark-blue text-neutral-200relative overflow-hidden">
-          <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 py-16 lg:py-24">
+          <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8 py-16 lg:py-24">
             <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap gap-8 lg:gap-8 xl:gap-12 justify-between">
               
               {/* Generic Link Sections */}
@@ -277,7 +277,7 @@ export default async function Footer() {
     console.error("Error fetching footer:", error);
     return (
       <footer className="bg-dark-blue text-white py-16">
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8 text-center">
+        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8 text-center">
           <p>Footer content unavailable</p>
         </div>
       </footer>

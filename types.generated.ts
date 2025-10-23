@@ -3921,6 +3921,58 @@ export interface SubmittedSliceDefaultPrimary {
 	contact_section_heading: prismic.KeyTextField;
 	
 	/**
+	 * Show FAQs field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: submitted.default.primary.show_faqs
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_faqs: prismic.BooleanField;
+	
+	/**
+	 * FAQ Section Title field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: FAQs
+	 * - **API ID Path**: submitted.default.primary.faq_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	faq_title: prismic.KeyTextField;
+	
+	/**
+	 * Use Main FAQs field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: submitted.default.primary.use_main_faqs
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	use_main_faqs: prismic.BooleanField;
+	
+	/**
+	 * Main FAQ Slice field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Select page with FAQ slice
+	 * - **API ID Path**: submitted.default.primary.main_faq_slice
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	main_faq_slice: prismic.ContentRelationshipField<"page">;
+	
+	/**
+	 * FAQ Limit field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 5
+	 * - **API ID Path**: submitted.default.primary.faq_limit
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	faq_limit: prismic.NumberField;
+	
+	/**
 	 * Top Margin field in *Submitted → Default → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -3930,6 +3982,28 @@ export interface SubmittedSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	top_margin: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: submitted.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom field in *Submitted → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: none
+	 * - **API ID Path**: submitted.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
 }
 
 /**
@@ -3955,6 +4029,26 @@ export interface SubmittedSliceDefaultItem {
 	 * - **Documentation**: https://prismic.io/docs/fields/link
 	 */
 	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * FAQ Question field in *Submitted → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Enter your question
+	 * - **API ID Path**: submitted.items[].faq_question
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	faq_question: prismic.KeyTextField;
+	
+	/**
+	 * FAQ Answer field in *Submitted → Items*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Enter the answer (supports rich text, links, bold, etc.)
+	 * - **API ID Path**: submitted.items[].faq_answer
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	faq_answer: prismic.RichTextField;
 }
 
 /**

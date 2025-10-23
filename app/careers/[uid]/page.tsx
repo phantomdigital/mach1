@@ -67,7 +67,7 @@ export default async function JobPage({
     <main>
       {/* Job Header */}
       <section className="w-full pt-40 pb-16 lg:pt-64 lg:pb-24 bg-white">
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Back Link */}
             <div className="mb-8">

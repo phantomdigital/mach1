@@ -90,7 +90,7 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
 
   return (
     <section className={`w-full bg-white ${getPaddingTopClass()} ${getPaddingBottomClass()}`}>
-      <div className={`w-full max-w-[110rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
+      <div className={`w-full max-w-[100rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
         {/* Content Layout */}
         <div className={`flex flex-col ${getFlexDirection()} items-center lg:items-stretch`}>
           

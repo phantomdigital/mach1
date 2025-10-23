@@ -31,10 +31,10 @@ export function getSectionPaddingClass(): string {
 
 /**
  * Get standard container class for consistent alignment
- * Maximum width of 110rem (1760px) with responsive horizontal padding
+ * Maximum width of 100rem (1600px) with responsive horizontal padding
  */
 export function getContainerClass(): string {
-  return "w-full max-w-[110rem] mx-auto px-4 lg:px-8";
+  return "w-full max-w-[100rem] mx-auto px-4 lg:px-8";
 }
 
 /**

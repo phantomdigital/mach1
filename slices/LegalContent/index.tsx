@@ -72,7 +72,7 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
     <section className={`w-full bg-white ${getMarginTopClass(marginTop)}`}>
       {/* Page Header - Centered */}
       <div className={`w-full ${getPaddingTopClass(paddingTop)} py-24 lg:py-64`}>
-        <div className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
           <LegalHeader pageTitle={slice.primary.page_title} />
         </div>
       </div>

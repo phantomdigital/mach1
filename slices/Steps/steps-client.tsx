@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Content, RichTextField } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
@@ -11,10 +11,11 @@ import StepsCards from "./steps-cards";
 import StepsForm from "./steps-form";
 import StepsPackages from "./steps-packages";
 import StepsSummary from "./steps-summary";
+import { Loader2 } from "lucide-react";
 
 import { StepIndicator } from "./step-indicator";
 import { stepContentVariants } from "./step-animations";
-import { getMarginTopClass, getSectionPaddingClass } from "@/lib/spacing";
+import { getMarginTopClass } from "@/lib/spacing";
 
 /**
  * Props for `Steps`.
@@ -31,6 +32,8 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
   const router = useRouter();
   const sliceRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoadingStep1, setIsLoadingStep1] = useState(false);
+  const hasShownLoadingRef = useRef(false);
   
   // Get step number from Prismic (0 for start, then 1, 2, 3...)
   const stepNumber = slice.variation === "start" ? 0 : (slice.primary.step_number || (index + 1));
@@ -48,6 +51,19 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
     formData,
     resetFlow,
   } = useStepsFlow(stepNumber);
+
+  // Loading state for Step 1 - show spinner for 2.5 seconds when entering step 1 (only first time)
+  useEffect(() => {
+    if (currentStep === 1 && stepNumber === 1 && slice.variation === "cards" && !hasShownLoadingRef.current) {
+      setIsLoadingStep1(true);
+      hasShownLoadingRef.current = true; // Mark as shown
+      const timer = setTimeout(() => {
+        setIsLoadingStep1(false);
+      }, 2500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentStep, stepNumber, slice.variation]);
 
   // Only render if this is the current step
   if (!isCurrentStep) {
@@ -103,7 +119,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
             : "py-16 lg:py-24"
         }`}
       >
-        <div ref={containerRef} className="w-full max-w-[110rem] mx-auto px-4 lg:px-8">
+        <div ref={containerRef} className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
           {/* Step Indicator - only show for steps 1+ (not start) - OUTSIDE AnimatePresence so it persists */}
           {currentStep > 0 && (
             <div className="w-full mb-16 md:mb-16 relative">
@@ -139,16 +155,26 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
 
               {/* Step 1: Cards */}
               {slice.variation === "cards" && (
-                <StepsCards
-                  cards={slice.items.map((item) => ({
-                    label: item.card_label || "",
-                    value: item.card_value || "",
-                    hasLinkIcon: item.has_link_icon || false,
-                    image: item.card_image,
-                    isTextOption: item.is_text_option || false,
-                  }))}
-                  onSelect={handleCardSelect}
-                />
+                isLoadingStep1 ? (
+                  <div className="flex items-center justify-center py-32 w-full">
+                    <div className="text-center">
+                      <Loader2 className="w-12 h-12 text-dark-blue animate-spin mx-auto mb-4" />
+                      <p className="text-neutral-800 font-medium">Loading your quote form...</p>
+                      <p className="text-neutral-500 text-sm mt-2">Please wait a moment</p>
+                    </div>
+                  </div>
+                ) : (
+                  <StepsCards
+                    cards={slice.items.map((item) => ({
+                      label: item.card_label || "",
+                      value: item.card_value || "",
+                      hasLinkIcon: item.has_link_icon || false,
+                      image: item.card_image,
+                      isTextOption: item.is_text_option || false,
+                    }))}
+                    onSelect={handleCardSelect}
+                  />
+                )
               )}
 
               {/* Step 2: Form */}
