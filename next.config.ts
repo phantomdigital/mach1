@@ -13,8 +13,14 @@ const nextConfig: NextConfig = {
         hostname: 'images.prismic.io',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
+    qualities: [50, 75, 85, 90, 95, 100],
   },
 };
 

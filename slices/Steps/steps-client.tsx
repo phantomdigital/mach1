@@ -41,7 +41,6 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
   const {
     currentStep,
     isCurrentStep,
-    isTransitioning,
     goToNextStep,
     goToPreviousStep,
     goToSummary,
@@ -52,14 +51,21 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
     resetFlow,
   } = useStepsFlow(stepNumber);
 
-  // Loading state for Step 1 - show spinner for 2.5 seconds when entering step 1 (only first time)
+  // Reset loading state when flow is reset (back to step 0)
+  useEffect(() => {
+    if (currentStep === 0) {
+      hasShownLoadingRef.current = false;
+    }
+  }, [currentStep]);
+
+  // Loading state for Step 1 - show spinner for 2.5 seconds when entering step 1 (only first time per flow)
   useEffect(() => {
     if (currentStep === 1 && stepNumber === 1 && slice.variation === "cards" && !hasShownLoadingRef.current) {
       setIsLoadingStep1(true);
       hasShownLoadingRef.current = true; // Mark as shown
       const timer = setTimeout(() => {
         setIsLoadingStep1(false);
-      }, 2500);
+      }, 1900);
       
       return () => clearTimeout(timer);
     }

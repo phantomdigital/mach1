@@ -71,6 +71,8 @@ function CardButton({ card, onSelect }: CardButtonProps) {
             >
               <PrismicNextImage
                 field={card.image}
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 80vw, 400px"
+                quality={85}
                 fill
                 className="object-cover"
               />
