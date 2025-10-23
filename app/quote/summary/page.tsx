@@ -3,6 +3,7 @@ import { isFilled, RichTextField } from "@prismicio/client";
 import { createClient } from "@/prismicio";
 import { generatePrismicMetadata } from "@/lib/metadata";
 import SummaryClient from "./summary-client";
+import type { StepsSliceSummary, FaqSlice } from "@/types.generated";
 
 /**
  * This page displays the quote summary after form submission.
@@ -19,17 +20,17 @@ export default async function QuoteSummaryPage() {
     
     // Find the summary slice (Steps slice with variation "summary")
     const summarySlice = page.data.slices.find(
-      (slice: any) => slice.slice_type === "steps" && slice.variation === "summary"
-    );
+      (slice) => slice.slice_type === "steps" && slice.variation === "summary"
+    ) as StepsSliceSummary | undefined;
     
     if (!summarySlice) {
       console.warn("No Steps summary slice found on quote-summary page");
       return <SummaryClient />;
     }
     
-    // Type-cast to access summary variation fields
-    const primary = summarySlice.primary as any;
-    const items = summarySlice.items as any[];
+    // Access summary variation fields with proper typing
+    const primary = summarySlice.primary;
+    const items = summarySlice.items;
     
     // Fetch FAQs if use_main_faqs is enabled
     let faqs: Array<{ faq_question: string | null; faq_answer: RichTextField | null }> = [];
@@ -42,17 +43,17 @@ export default async function QuoteSummaryPage() {
         if ('slices' in linkedPage.data && Array.isArray(linkedPage.data.slices)) {
           // Find FAQ slice in the linked page
           const faqSlice = linkedPage.data.slices.find(
-            (slice: any) => slice.slice_type === "faq"
-          );
+            (slice) => slice.slice_type === "faq"
+          ) as FaqSlice | undefined;
           
-          if (faqSlice && 'items' in faqSlice && Array.isArray(faqSlice.items)) {
+          if (faqSlice && faqSlice.variation === "default") {
             // Get the FAQ limit from the slice (default to 5 if not set)
             const faqLimit = primary.faq_limit || 5;
             
             // Map FAQ slice items to the format expected by Steps summary and apply limit
             faqs = faqSlice.items
               .slice(0, faqLimit)
-              .map((item: any) => ({
+              .map((item) => ({
                 faq_question: item.question || null,
                 faq_answer: item.answer || null,
               }));
@@ -63,7 +64,7 @@ export default async function QuoteSummaryPage() {
       }
     } else {
       // Use custom FAQs from the slice items
-      faqs = items.map((item: any) => ({
+      faqs = items.map((item) => ({
         faq_question: item.faq_question || null,
         faq_answer: item.faq_answer || null,
       }));
@@ -72,10 +73,10 @@ export default async function QuoteSummaryPage() {
     // Pass Prismic content to client component
     return (
       <SummaryClient 
-        heading={primary.summary_heading}
+        heading={primary.summary_heading || "We have received your request."}
         description={primary.summary_description}
-        contactEmail={primary.contact_email}
-        contactTimeframe={primary.contact_timeframe}
+        contactEmail={primary.contact_email || ""}
+        contactTimeframe={primary.contact_timeframe || ""}
         faqs={faqs}
       />
     );
