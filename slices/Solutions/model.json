@@ -2,38 +2,119 @@
   "id": "solutions",
   "type": "SharedSlice",
   "name": "Solutions",
-  "description": "Display freight solutions in card format",
+  "description": "Grid of solution cards with image backgrounds and overlay text",
   "variations": [
     {
       "id": "default",
       "name": "Default",
       "docURL": "...",
       "version": "initial",
-      "description": "Default solutions grid layout",
+      "description": "Default",
+      "imageUrl": "",
       "primary": {
         "subheading": {
           "type": "Text",
           "config": {
             "label": "Subheading",
-            "placeholder": "SOLUTIONS"
+            "placeholder": "Our solutions"
           }
         },
         "heading": {
           "type": "Text",
           "config": {
             "label": "Heading",
-            "placeholder": "Our Freight Solutions"
+            "placeholder": "Efficient logistics, global reach."
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "All services"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link",
+            "placeholder": "Link to services page",
+            "select": null
+          }
+        },
+        "cards_limit": {
+          "type": "Number",
+          "config": {
+            "label": "Number of Cards to Display",
+            "placeholder": "4"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top (pt)",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom (pb)",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Solution Title",
+            "placeholder": "Inventory Management"
           }
         },
         "description": {
           "type": "Text",
           "config": {
-            "label": "Description",
-            "placeholder": "Discover our comprehensive range of logistics and freight solutions"
+            "label": "Description (shows on hover)",
+            "placeholder": "Comprehensive warehouse management and real-time inventory tracking."
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Background Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "link": {
+          "type": "Link",
+          "config": {
+            "label": "Link",
+            "placeholder": "Link to solution page",
+            "select": null
           }
         }
-      },
-      "items": {}
+      }
     }
   ]
 }

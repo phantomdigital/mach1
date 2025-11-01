@@ -193,5 +193,58 @@
       "padding_top": "large",
       "padding_bottom": "large"
     }
+  },
+  {
+    "variation": "networkOverview",
+    "name": "Network Overview",
+    "slice_type": "network",
+    "items": [
+      {
+        "location_name": "Melbourne"
+      },
+      {
+        "location_name": "Sydney"
+      },
+      {
+        "location_name": "Brisbane"
+      },
+      {
+        "location_name": "Perth"
+      }
+    ],
+    "primary": {
+      "subheading": "",
+      "heading": "",
+      "description": "As a global freight forwarder and full-service domestic logistics provider, MACH1 connects Australia to the world through our strategic partnerships and network.",
+      "map_image": {
+        "dimensions": {
+          "width": 800,
+          "height": 800
+        },
+        "alt": "Global network map showing MACH1 reach",
+        "copyright": null,
+        "url": "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=800&h=800&fit=crop"
+      },
+      "statistic_number": "100+",
+      "statistic_label": "Countries Served",
+      "warehouse_image": {
+        "dimensions": {
+          "width": 800,
+          "height": 1200
+        },
+        "alt": "Modern MACH1 warehouse facility",
+        "copyright": null,
+        "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&h=1200&fit=crop"
+      },
+      "warehouse_list_title": "Australian Locations",
+      "button_text": "Explore Our Network",
+      "button_link": {
+        "link_type": "Web",
+        "url": "/solutions"
+      },
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large"
+    }
   }
 ]

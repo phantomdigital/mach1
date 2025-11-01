@@ -1,13 +1,12 @@
 import { Suspense } from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
-import { PrismicNextLink, PrismicNextImage } from "@prismicio/next";
+import { PrismicNextLink } from "@prismicio/next";
 import { HomepageHeroAnimation } from "./homepage-hero-animation";
 import { HomepageHeroImage } from "./homepage-hero-image";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Button } from "@/components/ui/button";
-import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { HomepageHeroTabs } from "./homepage-hero-tabs";
 
 /**
  * Props for `HomepageHero`.
@@ -128,118 +127,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                 {/* Bottom: Features/Info List */}
                 <div className="flex-1 bg-neutral-100 px-16 py-14">
                   {slice.items && slice.items.length > 0 ? (
-                    <Tabs defaultValue="freight_solutions" className="w-full">
-                      <TabsList className="mb-6 bg-transparent p-0 h-auto border-b border-neutral-200 rounded-none gap-6">
-                        <TabsTrigger 
-                          value="freight_solutions" 
-                          className="pt-0 px-0 pb-2 text-sm font-medium text-neutral-600 data-[state=active]:text-neutral-800 data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-neutral-800 data-[state=active]:shadow-none rounded-none border-0 border-b-2 border-transparent"
-                        >
-                          {slice.primary.tab_1_label || "Freight Solutions"}
-                        </TabsTrigger>
-                        <TabsTrigger 
-                          value="specialties" 
-                          className="pt-0 px-0 pb-2 text-sm font-medium text-neutral-600 data-[state=active]:text-neutral-800 data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-neutral-800 data-[state=active]:shadow-none rounded-none border-0 border-b-2 border-transparent"
-                        >
-                          {slice.primary.tab_2_label || "Specialties"}
-                        </TabsTrigger>
-                      </TabsList>
-
-                      {/* Freight Solutions Tab */}
-                      <TabsContent value="freight_solutions" className="mt-0">
-                        <div className="space-y-4">
-                          {slice.items
-                            .filter((item) => (item as any).service_category === "freight_solutions")
-                            .map((item, index) => (
-                              <div key={index} className="group flex items-start gap-3 cursor-pointer">
-                                {/* Service Icon */}
-                                {item.service_icon && item.service_icon.url ? (
-                                  <PrismicNextImage
-                                    field={item.service_icon}
-                                    className="w-6 h-6 object-contain flex-shrink-0 mt-0.5"
-                                    alt={item.service_title || "icon"}
-                                    loading="lazy"
-                                  />
-                                ) : (
-                                  <svg className="w-6 h-6 text-neutral-800 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="square" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                  </svg>
-                                )}
-                                
-                                {/* Service Content */}
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2">
-                                    {item.service_title && (
-                                      <h6 className="text-lg font-semibold text-neutral-800 m-0 group-hover:underline">
-                                        {item.service_title}
-                                      </h6>
-                                    )}
-                                    {/* External Link Icon - appears on hover, no transition */}
-                                    <div className="hidden group-hover:block">
-                                      <ExternalLinkIcon className="w-[11px] h-[11px]" color="#262626" />
-                                    </div>
-                                  </div>
-                                  {item.service_description && (
-                                    <p className="text-base text-neutral-600 leading-relaxed mt-1 mb-0">
-                                      {item.service_description}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          {slice.items.filter((item) => (item as any).service_category === "freight_solutions").length === 0 && (
-                            <p className="text-sm text-neutral-500">No freight solutions configured</p>
-                          )}
-                        </div>
-                      </TabsContent>
-
-                      {/* Specialties Tab */}
-                      <TabsContent value="specialties" className="mt-0">
-                        <div className="space-y-4">
-                          {slice.items
-                            .filter((item) => (item as any).service_category === "specialties")
-                            .map((item, index) => (
-                              <div key={index} className="group flex items-start gap-3 cursor-pointer">
-                                {/* Service Icon */}
-                                {item.service_icon && item.service_icon.url ? (
-                                  <PrismicNextImage
-                                    field={item.service_icon}
-                                    className="w-6 h-6 object-contain flex-shrink-0 mt-0.5"
-                                    alt={item.service_title || "icon"}
-                                    loading="lazy"
-                                  />
-                                ) : (
-                                  <svg className="w-6 h-6 text-neutral-800 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="square" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                  </svg>
-                                )}
-                                
-                                {/* Service Content */}
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2">
-                                    {item.service_title && (
-                                      <h6 className="text-lg font-semibold text-neutral-800 m-0 group-hover:underline">
-                                        {item.service_title}
-                                      </h6>
-                                    )}
-                                    {/* External Link Icon - appears on hover, no transition */}
-                                    <div className="hidden group-hover:block">
-                                      <ExternalLinkIcon className="w-[11px] h-[11px]" color="#262626" />
-                                    </div>
-                                  </div>
-                                  {item.service_description && (
-                                    <p className="text-base text-neutral-600 leading-relaxed mt-1 mb-0">
-                                      {item.service_description}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          {slice.items.filter((item) => (item as any).service_category === "specialties").length === 0 && (
-                            <p className="text-sm text-neutral-500">No specialties configured</p>
-                          )}
-                        </div>
-                      </TabsContent>
-                    </Tabs>
+                    <HomepageHeroTabs slice={slice} />
                   ) : (
                     <p className="text-sm text-neutral-500">No services configured</p>
                   )}

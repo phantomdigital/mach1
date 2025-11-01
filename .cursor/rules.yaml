@@ -56,6 +56,7 @@ rules:
     description: "Maintain clean separation between server and client components"
     patterns:
       - "MAIN components (like header.tsx, footer.tsx) MUST BE SERVER components"
+      - "ALL slice index.tsx files MUST BE SERVER components - never add 'use client' to index.tsx"
       - "When client functionality is needed, create separate kebab-case files in same folder"
       - "Import client components into server components, never the reverse"
       - "Use descriptive kebab-case names for client components (e.g., navigation-dropdown.tsx)"

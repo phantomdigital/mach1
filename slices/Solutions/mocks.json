@@ -3,11 +3,89 @@
     "variation": "default",
     "name": "Default",
     "slice_type": "solutions",
-    "items": [],
+    "items": [
+      {
+        "title": "Inventory Management",
+        "description": "Comprehensive warehouse management and real-time inventory tracking across all Australian locations.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Forklift in warehouse managing inventory",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/inventory-management"
+        }
+      },
+      {
+        "title": "Delivery Solutions",
+        "description": "Fast, reliable delivery services with real-time tracking and proof of delivery.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Delivery tracking on mobile phone",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/delivery"
+        }
+      },
+      {
+        "title": "Logistics Solutions",
+        "description": "End-to-end logistics coordination from port to final destination, including customs clearance.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Package tracking interface",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/logistics"
+        }
+      },
+      {
+        "title": "Supply Optimization",
+        "description": "Strategic supply chain planning and optimization to reduce costs and improve efficiency.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Supply chain planning meeting",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/supply-optimization"
+        }
+      }
+    ],
     "primary": {
-      "subheading": "SOLUTIONS",
-      "heading": "Our Freight Solutions",
-      "description": "Discover our comprehensive range of logistics and freight solutions designed to meet your business needs."
+      "subheading": "Our solutions",
+      "heading": "Efficient logistics, global reach.",
+      "button_text": "All services",
+      "button_link": {
+        "link_type": "Web",
+        "url": "/solutions"
+      },
+      "cards_limit": 4,
+      "background_color": "#ffffff",
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large"
     }
   }
 ]

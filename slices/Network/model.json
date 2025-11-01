@@ -127,6 +127,125 @@
           }
         }
       }
+    },
+    {
+      "id": "networkOverview",
+      "name": "Network Overview",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Static network overview with map and warehouse images",
+      "imageUrl": "",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "OUR NETWORK"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Global Logistics Network"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "As a global freight forwarder and full-service domestic logistics provider, MACH1 connects Australia to the world through our strategic partnerships and network."
+          }
+        },
+        "map_image": {
+          "type": "Image",
+          "config": {
+            "label": "Map/Globe Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "statistic_number": {
+          "type": "Text",
+          "config": {
+            "label": "Statistic Number",
+            "placeholder": "100+"
+          }
+        },
+        "statistic_label": {
+          "type": "Text",
+          "config": {
+            "label": "Statistic Label",
+            "placeholder": "Countries Served"
+          }
+        },
+        "warehouse_image": {
+          "type": "Image",
+          "config": {
+            "label": "Warehouse Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "warehouse_list_title": {
+          "type": "Text",
+          "config": {
+            "label": "Warehouse List Title",
+            "placeholder": "Australian Locations"
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "Explore Our Network"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link",
+            "placeholder": "Link to networks page",
+            "select": null
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top (pt)",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom (pb)",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "location_name": {
+          "type": "Text",
+          "config": {
+            "label": "Location Name",
+            "placeholder": "Melbourne"
+          }
+        }
+      }
     }
   ]
 }

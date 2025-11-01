@@ -11,6 +11,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "network": {
+              "type": "SharedSlice"
+            },
             "homepage_hero": {
               "type": "SharedSlice"
             },

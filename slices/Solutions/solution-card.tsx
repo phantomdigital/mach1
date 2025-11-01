@@ -1,100 +1,77 @@
 "use client";
 
-import type { SolutionDocument } from "@/types.generated";
-import { PrismicLink } from "@prismicio/react";
-import { PrismicNextImage } from "@prismicio/next";
-import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
+import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
+import type { Content } from "@prismicio/client";
 
 interface SolutionCardProps {
-  solution: SolutionDocument;
+  item: Content.SolutionsSliceDefaultItem;
+  index: number;
 }
 
-export default function SolutionCard({ solution }: SolutionCardProps) {
+export default function SolutionCard({ item, index }: SolutionCardProps) {
   return (
-    <div 
-      className="relative group cursor-pointer" 
-      style={{ width: '294px', height: '400px' }}
-      onMouseEnter={(e) => {
-        const line = e.currentTarget.querySelector('[data-line="true"]') as HTMLElement;
-        if (line) line.style.height = '23px';
-      }}
-      onMouseLeave={(e) => {
-        const line = e.currentTarget.querySelector('[data-line="true"]') as HTMLElement;
-        if (line) line.style.height = '0px';
-      }}
-    >
-      {/* Background SVG Shape */}
-      <div className="absolute inset-0" data-svg-wrapper data-layer="Vector">
-        <svg width="294" height="400" viewBox="0 0 294 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M266.404 3.16968e-05L289.57 20.9404C291.841 24.1716 293.159 27.9689 293.382 31.8999L293.382 231.195L293.364 231.195L293.381 399.802L27.176 399.802L4.01047 378.861C1.73923 375.63 0.421019 371.833 0.198363 367.902L0.199364 225.499L0.217186 225.499L0.199356 4.3333e-05L266.404 3.16968e-05Z" fill="#2b2e7f"/>
-        </svg>
-      </div>
+    <article className="group relative overflow-hidden aspect-[4/3] lg:aspect-[16/7] rounded-sm">
 
-      {/* Bottom Section SVG - Increased height for text content */}
-      <div className="absolute bottom-0 left-0" data-svg-wrapper data-layer="Vector">
-        <svg width="294" height="180" viewBox="0 0 294 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M293.382 0.945786L293.382 22.0094L293.382 32.8872L293.382 63.4486L293.364 63.4486L293.381 179.802L27.176 179.802L4.0105 158.861C1.73926 155.63 0.42105 151.833 0.198393 147.902L0.199399 57.7527L0.217222 57.7527L8.64885e-05 0.945783L293.382 0.945786Z" fill="#ececec"/>
-        </svg>
-      </div>
-
-      {/* Image Container - Blue Section */}
-      {solution.data.featured_image.url && (
-        <div className="absolute top-0 left-0 right-0 overflow-hidden" style={{ bottom: '177px', clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)' }}>
-          <PrismicNextImage
-            field={solution.data.featured_image}
-            className="w-full h-full object-cover"
-            sizes="294px"
-          />
-        </div>
-      )}
-
-      {/* Animated Line - grows down from image on hover */}
-      <div 
-        className="absolute bg-mach1-black transition-all duration-300 ease-out"
-        style={{ 
-          left: '14px', // Align with text padding (p-6 = 24px)
-          top: '285px', // Moved down into the gray section
-          width: '1.9px',
-          height: '0px',
-          transformOrigin: 'top'
-        }}
-        data-line="true"
-      />
-
-      {/* Text Content - Gray Section */}
-      <PrismicLink document={solution} className="absolute bottom-0 left-0 w-full p-6 block" style={{ height: '180px' }}>
-        {/* Category */}
-        {solution.data.category && (
-          <span 
-            className="inline-block px-3 py-1 text-xs font-medium text-mach1-black bg-white rounded-full mb-3 uppercase tracking-wide"
-            style={{ 
-              fontFamily: '"space-mono", monospace',
-              fontWeight: 400,
-              fontStyle: 'normal',
-            }}
-          >
-            {solution.data.category}
-          </span>
-        )}
-
-        {/* Title with hover icon */}
-        {solution.data.title && (
-          <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-            <span>{solution.data.title}</span>
-            <ExternalLinkIcon 
-              className="w-[13px] h-[13px] opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
-              color="#374151"
+      <PrismicNextLink field={item.link} className="block w-full h-full">
+        {/* Background Image */}
+        {item.image?.url && (
+          <div className="absolute inset-0">
+            <PrismicNextImage
+              field={item.image}
+              fill
+              className="object-cover rounded-sm"
+              priority={index < 2}
             />
-          </h3>
+            {/* Base overlay to dull the image */}
+            <div className="absolute inset-0 bg-black/20" />
+            {/* Gradient overlay - shorter by default, expands on hover */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 from-0% via-transparent via-40% to-transparent group-hover:from-black/60 group-hover:from-0% group-hover:via-black/30 group-hover:via-60% transition-all duration-500 ease-out" />
+          </div>
         )}
 
-        {/* Description */}
-        {solution.data.description && (
-          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-            {solution.data.description}
-          </p>
-        )}
-      </PrismicLink>
-    </div>
+        {/* Content Overlay */}
+        <div className="relative h-full flex flex-col justify-between p-6 lg:p-8">
+          {/* Title and Description at bottom-left */}
+          <div className="mt-auto flex flex-col gap-0 group-hover:gap-3 transition-all duration-300">
+            <h3 className="text-neutral-100 text-xl lg:text-2xl font-bold leading-tight">
+              <span className="inline border-b-2 border-transparent group-hover:border-white transition-all duration-200">
+                {item.title}
+              </span>
+            </h3>
+            
+            {/* Description - shows on hover */}
+            {item.description && (
+              <div className="max-h-0 group-hover:max-h-40 overflow-hidden transition-all duration-300">
+                <p className="text-neutral-100 font-medium text-[12px] lg:text-xs leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 max-w-md">
+                  {item.description}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Arrow Circle - Top Right */}
+          <div className="absolute top-6 right-6 lg:top-8 lg:right-8">
+            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-neutral-100 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-neutral-800"
+              >
+                <path
+                  d="M3 13L13 3M13 3H3M13 3V13"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </PrismicNextLink>
+    </article>
   );
 }

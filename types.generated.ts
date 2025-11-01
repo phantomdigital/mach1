@@ -808,7 +808,7 @@ interface HeaderDocumentData {
  */
 export type HeaderDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HeaderDocumentData>, "header", Lang>;
 
-type HomeDocumentDataSlicesSlice = HomepageHeroSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
+type HomeDocumentDataSlicesSlice = NetworkSlice | HomepageHeroSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Home documents
@@ -2941,9 +2941,171 @@ export interface NetworkSliceDefaultItem {
 export type NetworkSliceDefault = prismic.SharedSliceVariation<"default", Simplify<NetworkSliceDefaultPrimary>, Simplify<NetworkSliceDefaultItem>>;
 
 /**
+ * Primary content in *Network → Network Overview → Primary*
+ */
+export interface NetworkSliceNetworkOverviewPrimary {
+	/**
+	 * Subheading field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: OUR NETWORK
+	 * - **API ID Path**: network.networkOverview.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Global Logistics Network
+	 * - **API ID Path**: network.networkOverview.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: As a global freight forwarder and full-service domestic logistics provider, MACH1 connects Australia to the world through our strategic partnerships and network.
+	 * - **API ID Path**: network.networkOverview.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Map/Globe Image field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: network.networkOverview.primary.map_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	map_image: prismic.ImageField<never>;
+	
+	/**
+	 * Statistic Number field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: 100+
+	 * - **API ID Path**: network.networkOverview.primary.statistic_number
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	statistic_number: prismic.KeyTextField;
+	
+	/**
+	 * Statistic Label field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Countries Served
+	 * - **API ID Path**: network.networkOverview.primary.statistic_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	statistic_label: prismic.KeyTextField;
+	
+	/**
+	 * Warehouse Image field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: network.networkOverview.primary.warehouse_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	warehouse_image: prismic.ImageField<never>;
+	
+	/**
+	 * Warehouse List Title field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Australian Locations
+	 * - **API ID Path**: network.networkOverview.primary.warehouse_list_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	warehouse_list_title: prismic.KeyTextField;
+	
+	/**
+	 * Button Text field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Explore Our Network
+	 * - **API ID Path**: network.networkOverview.primary.button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Link to networks page
+	 * - **API ID Path**: network.networkOverview.primary.button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Top Margin field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: network.networkOverview.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top (pt) field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: network.networkOverview.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom (pb) field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: network.networkOverview.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+}
+
+/**
+ * Primary content in *Network → Items*
+ */
+export interface NetworkSliceNetworkOverviewItem {
+	/**
+	 * Location Name field in *Network → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Melbourne
+	 * - **API ID Path**: network.items[].location_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	location_name: prismic.KeyTextField;
+}
+
+/**
+ * Network Overview variation for Network Slice
+ *
+ * - **API ID**: `networkOverview`
+ * - **Description**: Static network overview with map and warehouse images
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type NetworkSliceNetworkOverview = prismic.SharedSliceVariation<"networkOverview", Simplify<NetworkSliceNetworkOverviewPrimary>, Simplify<NetworkSliceNetworkOverviewItem>>;
+
+/**
  * Slice variation for *Network*
  */
-type NetworkSliceVariation = NetworkSliceDefault
+type NetworkSliceVariation = NetworkSliceDefault | NetworkSliceNetworkOverview
 
 /**
  * Network Shared Slice
@@ -3474,7 +3636,7 @@ export interface SolutionsSliceDefaultPrimary {
 	 * Subheading field in *Solutions → Default → Primary*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: SOLUTIONS
+	 * - **Placeholder**: Our solutions
 	 * - **API ID Path**: solutions.default.primary.subheading
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
@@ -3484,31 +3646,139 @@ export interface SolutionsSliceDefaultPrimary {
 	 * Heading field in *Solutions → Default → Primary*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: Our Freight Solutions
+	 * - **Placeholder**: Efficient logistics, global reach.
 	 * - **API ID Path**: solutions.default.primary.heading
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	heading: prismic.KeyTextField;
 	
 	/**
-	 * Description field in *Solutions → Default → Primary*
+	 * Button Text field in *Solutions → Default → Primary*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: Discover our comprehensive range of logistics and freight solutions
-	 * - **API ID Path**: solutions.default.primary.description
+	 * - **Placeholder**: All services
+	 * - **API ID Path**: solutions.default.primary.button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *Solutions → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Link to services page
+	 * - **API ID Path**: solutions.default.primary.button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Number of Cards to Display field in *Solutions → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 4
+	 * - **API ID Path**: solutions.default.primary.cards_limit
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	cards_limit: prismic.NumberField;
+	
+	/**
+	 * Background Color field in *Solutions → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: solutions.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Top Margin field in *Solutions → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: solutions.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top (pt) field in *Solutions → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: solutions.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom (pb) field in *Solutions → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: solutions.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+}
+
+/**
+ * Primary content in *Solutions → Items*
+ */
+export interface SolutionsSliceDefaultItem {
+	/**
+	 * Solution Title field in *Solutions → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Inventory Management
+	 * - **API ID Path**: solutions.items[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Description (shows on hover) field in *Solutions → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Comprehensive warehouse management and real-time inventory tracking.
+	 * - **API ID Path**: solutions.items[].description
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	description: prismic.KeyTextField;
+	
+	/**
+	 * Background Image field in *Solutions → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: solutions.items[].image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Link field in *Solutions → Items*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Link to solution page
+	 * - **API ID Path**: solutions.items[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
 /**
  * Default variation for Solutions Slice
  *
  * - **API ID**: `default`
- * - **Description**: Default solutions grid layout
+ * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type SolutionsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SolutionsSliceDefaultPrimary>, never>;
+export type SolutionsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SolutionsSliceDefaultPrimary>, Simplify<SolutionsSliceDefaultItem>>;
 
 /**
  * Slice variation for *Solutions*
@@ -3519,7 +3789,7 @@ type SolutionsSliceVariation = SolutionsSliceDefault
  * Solutions Shared Slice
  *
  * - **API ID**: `solutions`
- * - **Description**: Display freight solutions in card format
+ * - **Description**: Grid of solution cards with image backgrounds and overlay text
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type SolutionsSlice = prismic.SharedSlice<"solutions", SolutionsSliceVariation>;
@@ -4953,8 +5223,11 @@ declare module "@prismicio/client" {
 			NetworkSlice,
 			NetworkSliceDefaultPrimary,
 			NetworkSliceDefaultItem,
+			NetworkSliceNetworkOverviewPrimary,
+			NetworkSliceNetworkOverviewItem,
 			NetworkSliceVariation,
 			NetworkSliceDefault,
+			NetworkSliceNetworkOverview,
 			NewsSlice,
 			NewsSliceDefaultPrimary,
 			NewsSliceVariation,
@@ -4975,6 +5248,7 @@ declare module "@prismicio/client" {
 			ServicesSliceDefault,
 			SolutionsSlice,
 			SolutionsSliceDefaultPrimary,
+			SolutionsSliceDefaultItem,
 			SolutionsSliceVariation,
 			SolutionsSliceDefault,
 			StatisticsSlice,
