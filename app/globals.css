@@ -493,12 +493,12 @@ html.lenis body {
 }
 
 ::selection {
-  background-color: #941717;
+  background-color: hsl(230, 53%, 39%);
   color: #ffffff;
 }
 
 ::-moz-selection {
-  background-color: #941717;
+  background-color: hsl(230, 53%, 39%);
   color: #ffffff;
 }
 

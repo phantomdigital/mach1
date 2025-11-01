@@ -1,0 +1,197 @@
+[
+  {
+    "variation": "default",
+    "name": "Default",
+    "slice_type": "network",
+    "items": [
+      {
+        "region_name": "Asia-Pacific",
+        "region_id": "asia-pacific",
+        "region_description": "Our Asia-Pacific network connects Australia to the region's major manufacturing and distribution hubs through established partnerships with licensed freight forwarders and customs specialists.",
+        "location_name": "SINGAPORE",
+        "location_coordinates": {
+          "latitude": 1.3521,
+          "longitude": 103.8198
+        },
+        "location_value": "5-7 DAY TRANSIT",
+        "location_description": "Simplified customs, fast turnaround services",
+        "see_more_link": {
+          "link_type": "Web",
+          "url": "#"
+        },
+        "see_more_text": "See More"
+      },
+      {
+        "region_name": "Asia-Pacific",
+        "region_id": "asia-pacific",
+        "region_description": "",
+        "location_name": "HONG KONG",
+        "location_coordinates": {
+          "latitude": 22.3193,
+          "longitude": 114.1694
+        },
+        "location_value": "9-10 DAY TRANSIT",
+        "location_description": "Perfect logistics solution, fast turnaround & simplified services",
+        "see_more_link": null,
+        "see_more_text": null
+      },
+      {
+        "region_name": "Asia-Pacific",
+        "region_id": "asia-pacific",
+        "region_description": "",
+        "location_name": "MALAYSIA",
+        "location_coordinates": {
+          "latitude": 3.139,
+          "longitude": 101.6869
+        },
+        "location_value": "14+ LOCAL ACCESS PORT CONNECTIONS",
+        "location_description": "Multiple regional hubs, with access & distributor services",
+        "see_more_link": null,
+        "see_more_text": null
+      },
+      {
+        "region_name": "South America",
+        "region_id": "south-america",
+        "region_description": "Connecting to major South American markets with reliable transit times and extensive port access throughout the continent.",
+        "location_name": "BRAZIL",
+        "location_coordinates": {
+          "latitude": -23.5505,
+          "longitude": -46.6333
+        },
+        "location_value": "18-21 DAY TRANSIT",
+        "location_description": "Access to major manufacturing centers and distribution networks",
+        "see_more_link": {
+          "link_type": "Web",
+          "url": "#"
+        },
+        "see_more_text": "See More"
+      },
+      {
+        "region_name": "South America",
+        "region_id": "south-america",
+        "region_description": "",
+        "location_name": "ARGENTINA",
+        "location_coordinates": {
+          "latitude": -34.6037,
+          "longitude": -58.3816
+        },
+        "location_value": "20-23 DAY TRANSIT",
+        "location_description": "Strategic partnerships with regional distributors",
+        "see_more_link": null,
+        "see_more_text": null
+      },
+      {
+        "region_name": "South America",
+        "region_id": "south-america",
+        "region_description": "",
+        "location_name": "CHILE",
+        "location_coordinates": {
+          "latitude": -33.4489,
+          "longitude": -70.6693
+        },
+        "location_value": "8+ PORT CONNECTIONS",
+        "location_description": "West coast access points for efficient logistics",
+        "see_more_link": null,
+        "see_more_text": null
+      },
+      {
+        "region_name": "Australia",
+        "region_id": "australia",
+        "region_description": "Our domestic Australian network provides comprehensive coverage across all major cities and regional centers with optimized distribution routes.",
+        "location_name": "SYDNEY",
+        "location_coordinates": {
+          "latitude": -33.8688,
+          "longitude": 151.2093
+        },
+        "location_value": "24-48 HOUR DELIVERY",
+        "location_description": "Major distribution hub with daily services",
+        "see_more_link": {
+          "link_type": "Web",
+          "url": "#"
+        },
+        "see_more_text": "See More"
+      },
+      {
+        "region_name": "Australia",
+        "region_id": "australia",
+        "region_description": "",
+        "location_name": "MELBOURNE",
+        "location_coordinates": {
+          "latitude": -37.8136,
+          "longitude": 144.9631
+        },
+        "location_value": "24-48 HOUR DELIVERY",
+        "location_description": "Complete warehousing and logistics solutions",
+        "see_more_link": null,
+        "see_more_text": null
+      },
+      {
+        "region_name": "Australia",
+        "region_id": "australia",
+        "region_description": "",
+        "location_name": "BRISBANE",
+        "location_coordinates": {
+          "latitude": -27.4698,
+          "longitude": 153.0251
+        },
+        "location_value": "20+ DISTRIBUTION CENTERS",
+        "location_description": "Full coverage across Australia's major markets",
+        "see_more_link": null,
+        "see_more_text": null
+      },
+      {
+        "region_name": "North America",
+        "region_id": "north-america",
+        "region_description": "Direct connections to North America's major ports and distribution hubs, providing efficient trans-Pacific shipping solutions.",
+        "location_name": "LOS ANGELES",
+        "location_coordinates": {
+          "latitude": 34.0522,
+          "longitude": -118.2437
+        },
+        "location_value": "14-16 DAY TRANSIT",
+        "location_description": "Primary west coast gateway with rapid customs processing",
+        "see_more_link": {
+          "link_type": "Web",
+          "url": "#"
+        },
+        "see_more_text": "See More"
+      },
+      {
+        "region_name": "North America",
+        "region_id": "north-america",
+        "region_description": "",
+        "location_name": "VANCOUVER",
+        "location_coordinates": {
+          "latitude": 49.2827,
+          "longitude": -123.1207
+        },
+        "location_value": "16-18 DAY TRANSIT",
+        "location_description": "Canadian hub with access to North American markets",
+        "see_more_link": null,
+        "see_more_text": null
+      },
+      {
+        "region_name": "North America",
+        "region_id": "north-america",
+        "region_description": "",
+        "location_name": "NEW YORK",
+        "location_coordinates": {
+          "latitude": 40.7128,
+          "longitude": -74.006
+        },
+        "location_value": "12+ PORT CONNECTIONS",
+        "location_description": "Comprehensive coverage across both coasts",
+        "see_more_link": null,
+        "see_more_text": null
+      }
+    ],
+    "primary": {
+      "subheading": "OUR NETWORK",
+      "heading": "From around Australia to around the world.",
+      "description": "",
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large"
+    }
+  }
+]

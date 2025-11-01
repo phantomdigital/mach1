@@ -17,6 +17,15 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "homepage_hero": {
+              "type": "SharedSlice"
+            },
+            "network": {
+              "type": "SharedSlice"
+            },
+            "testimonials": {
+              "type": "SharedSlice"
+            },
             "submitted": {
               "type": "SharedSlice"
             },

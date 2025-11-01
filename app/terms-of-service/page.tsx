@@ -45,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   // Get title from the first LegalContent slice
   const legalContentSlice = page.data.slices?.find(
-    (slice: PageDocumentDataSlicesSlice) => slice.slice_type === "legal_content"
+    (slice) => slice.slice_type === "legal_content"
   ) as Content.LegalContentSlice | undefined;
 
   const title = legalContentSlice?.primary?.page_title || "Terms of Service";

@@ -1,0 +1,129 @@
+{
+  "id": "testimonials",
+  "type": "SharedSlice",
+  "name": "Testimonials",
+  "description": "Customer testimonials with infinite scrolling rows - alternating directions",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "What our clients say"
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "TESTIMONIALS"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Trusted by businesses across Australia"
+          }
+        },
+        "number_of_rows": {
+          "type": "Number",
+          "config": {
+            "label": "Number of Rows",
+            "placeholder": "2",
+            "default": 2
+          }
+        },
+        "scroll_speed": {
+          "type": "Number",
+          "config": {
+            "label": "Scroll Speed",
+            "placeholder": "1 = normal, 2 = faster, 0.5 = slower",
+            "default": 1
+          }
+        },
+        "gap": {
+          "type": "Number",
+          "config": {
+            "label": "Gap Between Cards (px)",
+            "placeholder": "32",
+            "default": 32
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top (pt)",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom (pb)",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "testimonial_text": {
+          "type": "Text",
+          "config": {
+            "label": "Testimonial Text",
+            "placeholder": "MACH1 Logistics has transformed our supply chain operations..."
+          }
+        },
+        "client_name": {
+          "type": "Text",
+          "config": {
+            "label": "Client Name",
+            "placeholder": "John Smith"
+          }
+        },
+        "client_title": {
+          "type": "Text",
+          "config": {
+            "label": "Client Title",
+            "placeholder": "Supply Chain Director"
+          }
+        },
+        "company_name": {
+          "type": "Text",
+          "config": {
+            "label": "Company Name",
+            "placeholder": "ABC Manufacturing"
+          }
+        },
+        "client_photo": {
+          "type": "Image",
+          "config": {
+            "label": "Client Photo (Optional)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      }
+    }
+  ]
+}
+

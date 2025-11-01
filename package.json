@@ -29,6 +29,8 @@
     "@react-email/section": "^0.0.16",
     "@react-email/tailwind": "^1.2.2",
     "@react-email/text": "^0.1.5",
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.4.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/mapbox-gl": "^3.4.1",
     "class-variance-authority": "^0.7.1",
@@ -49,6 +51,7 @@
     "resend": "^6.2.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.180.0",
     "yet-another-react-lightbox": "^3.25.0",
     "zod": "^4.1.12"
   },

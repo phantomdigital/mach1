@@ -55,6 +55,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "testimonials": {
+              "type": "SharedSlice"
+            },
             "statistics_v2": {
               "type": "SharedSlice"
             },

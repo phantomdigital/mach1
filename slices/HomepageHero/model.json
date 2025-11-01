@@ -1,0 +1,184 @@
+{
+  "id": "homepage_hero",
+  "type": "SharedSlice",
+  "name": "HomepageHero",
+  "description": "Modern, minimal hero section for homepage",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default homepage hero layout",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "GLOBAL LOGISTICS PARTNER"
+          }
+        },
+        "badge_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Badge Button Text (Optional)",
+            "placeholder": "Learn More"
+          }
+        },
+        "badge_button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Badge Button Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Precision Logistics, Delivered"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Streamlining global supply chains with innovative solutions and expert service."
+          }
+        },
+        "button_1_text": {
+          "type": "Text",
+          "config": {
+            "label": "Primary Button Text",
+            "placeholder": "Get Started"
+          }
+        },
+        "button_1_link": {
+          "type": "Link",
+          "config": {
+            "label": "Primary Button Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "button_2_text": {
+          "type": "Text",
+          "config": {
+            "label": "Secondary Button Text (Optional)",
+            "placeholder": "Learn More"
+          }
+        },
+        "button_2_link": {
+          "type": "Link",
+          "config": {
+            "label": "Secondary Button Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "background_image": {
+          "type": "Image",
+          "config": {
+            "label": "Hero Image (for split layout)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "secondary_image": {
+          "type": "Image",
+          "config": {
+            "label": "Secondary Image (right column)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "layout": {
+          "type": "Select",
+          "config": {
+            "label": "Layout",
+            "placeholder": "Choose layout",
+            "options": [
+              "split",
+              "centered"
+            ],
+            "default_value": "split"
+          }
+        },
+        "background_style": {
+          "type": "Select",
+          "config": {
+            "label": "Background Style",
+            "placeholder": "Choose background style",
+            "options": [
+              "light",
+              "dark",
+              "gradient"
+            ],
+            "default_value": "light"
+          }
+        },
+        "services_blurb": {
+          "type": "Text",
+          "config": {
+            "label": "Services Blurb (below list)",
+            "placeholder": "Logistics delivers reliable, efficient, and cost-effective logistics solutions for businesses of all sizes."
+          }
+        },
+        "tab_1_label": {
+          "type": "Text",
+          "config": {
+            "label": "Tab 1 Label",
+            "placeholder": "Freight Solutions",
+            "default_value": "Freight Solutions"
+          }
+        },
+        "tab_2_label": {
+          "type": "Text",
+          "config": {
+            "label": "Tab 2 Label",
+            "placeholder": "Specialties",
+            "default_value": "Specialties"
+          }
+        }
+      },
+      "items": {
+        "service_icon": {
+          "type": "Image",
+          "config": {
+            "label": "Service Icon",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "service_title": {
+          "type": "Text",
+          "config": {
+            "label": "Service Title",
+            "placeholder": "Delivery Solutions"
+          }
+        },
+        "service_description": {
+          "type": "Text",
+          "config": {
+            "label": "Service Description",
+            "placeholder": "Comprehensive delivery solutions for your business needs."
+          }
+        },
+        "service_category": {
+          "type": "Select",
+          "config": {
+            "label": "Service Category",
+            "placeholder": "Choose category",
+            "options": [
+              "freight_solutions",
+              "specialties"
+            ],
+            "default_value": "freight_solutions"
+          }
+        }
+      }
+    }
+  ]
+}
+

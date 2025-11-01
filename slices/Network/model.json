@@ -1,0 +1,133 @@
+{
+  "id": "network",
+  "type": "SharedSlice",
+  "name": "Network",
+  "description": "Interactive 3D globe with regional network information",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "OUR NETWORK"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "From around Australia to around the world."
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Optional description text"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top (pt)",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom (pb)",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "region_name": {
+          "type": "Text",
+          "config": {
+            "label": "Region Name (Tab Label)",
+            "placeholder": "Asia-Pacific"
+          }
+        },
+        "region_id": {
+          "type": "Text",
+          "config": {
+            "label": "Region ID",
+            "placeholder": "asia-pacific (lowercase, hyphenated)"
+          }
+        },
+        "region_description": {
+          "type": "Text",
+          "config": {
+            "label": "Region Description",
+            "placeholder": "Our Asia-Pacific network connects Australia to the region's major manufacturing..."
+          }
+        },
+        "location_name": {
+          "type": "Text",
+          "config": {
+            "label": "Location Name",
+            "placeholder": "SINGAPORE"
+          }
+        },
+        "location_coordinates": {
+          "type": "GeoPoint",
+          "config": {
+            "label": "Location Coordinates",
+            "placeholder": "Click to select location on map"
+          }
+        },
+        "location_value": {
+          "type": "Text",
+          "config": {
+            "label": "Location Value",
+            "placeholder": "5-7 DAY TRANSIT"
+          }
+        },
+        "location_description": {
+          "type": "Text",
+          "config": {
+            "label": "Location Description",
+            "placeholder": "Simplified customs, fast turnaround services"
+          }
+        },
+        "see_more_link": {
+          "type": "Link",
+          "config": {
+            "label": "See More Link (Optional)",
+            "placeholder": "Link to detailed page",
+            "select": null
+          }
+        },
+        "see_more_text": {
+          "type": "Text",
+          "config": {
+            "label": "See More Link Text",
+            "placeholder": "See More"
+          }
+        }
+      }
+    }
+  ]
+}
+

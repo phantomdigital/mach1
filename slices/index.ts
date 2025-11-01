@@ -8,11 +8,13 @@ export const components = {
   content_block: dynamic(() => import("./ContentBlock")),
   faq: dynamic(() => import("./FAQ")),
   hero: dynamic(() => import("./Hero")),
+  homepage_hero: dynamic(() => import("./HomepageHero")),
   image_carousel: dynamic(() => import("./ImageCarousel")),
   image_clipped: dynamic(() => import("./ImageClipped")),
   image_with_text: dynamic(() => import("./ImageWithText")),
   legal_content: dynamic(() => import("./LegalContent")),
   locations: dynamic(() => import("./Locations")),
+  network: dynamic(() => import("./Network")),
   news: dynamic(() => import("./News")),
   our_team: dynamic(() => import("./OurTeam")),
   page_topper: dynamic(() => import("./PageTopper")),
@@ -22,5 +24,7 @@ export const components = {
   statistics_v2: dynamic(() => import("./StatisticsV2")),
   steps: dynamic(() => import("./Steps")),
   submitted: dynamic(() => import("./Submitted")),
-  tracking: dynamic(() => import("./Tracking")),
+  testimonials: dynamic(() => import("./Testimonials")),
+  tracking: dynamic(() => import("./Tracking")),  
+  
 };

@@ -1,0 +1,26 @@
+{
+  "default": {
+    "variation": "default",
+    "name": "Default",
+    "slice_type": "homepage_hero",
+    "items": [],
+    "primary": {
+      "subheading": "GLOBAL LOGISTICS PARTNER",
+      "heading": "Precision Logistics, Delivered",
+      "description": "Streamlining global supply chains with innovative solutions and expert service. Your trusted partner for seamless international freight and logistics.",
+      "button_1_text": "Get Started",
+      "button_1_link": {
+        "link_type": "Web",
+        "url": "/quote/start"
+      },
+      "button_2_text": "Our Solutions",
+      "button_2_link": {
+        "link_type": "Web",
+        "url": "/solutions"
+      },
+      "layout": "split",
+      "background_style": "light"
+    }
+  }
+}
+

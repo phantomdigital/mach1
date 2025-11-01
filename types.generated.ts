@@ -808,7 +808,7 @@ interface HeaderDocumentData {
  */
 export type HeaderDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HeaderDocumentData>, "header", Lang>;
 
-type HomeDocumentDataSlicesSlice = HeroSlice | SolutionsSlice
+type HomeDocumentDataSlicesSlice = HomepageHeroSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Home documents
@@ -1255,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = SubmittedSlice | FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = HomepageHeroSlice | NetworkSlice | TestimonialsSlice | SubmittedSlice | FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -1315,7 +1315,7 @@ interface PageDocumentData {
  */
 export type PageDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-type SolutionDocumentDataSlicesSlice = StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
+type SolutionDocumentDataSlicesSlice = TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Solution documents
@@ -2011,6 +2011,244 @@ type HeroSliceVariation = HeroSliceDefault
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
 
 /**
+ * Primary content in *HomepageHero → Default → Primary*
+ */
+export interface HomepageHeroSliceDefaultPrimary {
+	/**
+	 * Subheading field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: GLOBAL LOGISTICS PARTNER
+	 * - **API ID Path**: homepage_hero.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Badge Button Text (Optional) field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Learn More
+	 * - **API ID Path**: homepage_hero.default.primary.badge_button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	badge_button_text: prismic.KeyTextField;
+	
+	/**
+	 * Badge Button Link field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.default.primary.badge_button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	badge_button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Heading field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Precision Logistics, Delivered
+	 * - **API ID Path**: homepage_hero.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Streamlining global supply chains with innovative solutions and expert service.
+	 * - **API ID Path**: homepage_hero.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Primary Button Text field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Get Started
+	 * - **API ID Path**: homepage_hero.default.primary.button_1_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_1_text: prismic.KeyTextField;
+	
+	/**
+	 * Primary Button Link field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.default.primary.button_1_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_1_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Secondary Button Text (Optional) field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Learn More
+	 * - **API ID Path**: homepage_hero.default.primary.button_2_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_2_text: prismic.KeyTextField;
+	
+	/**
+	 * Secondary Button Link field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.default.primary.button_2_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_2_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Hero Image (for split layout) field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.default.primary.background_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	background_image: prismic.ImageField<never>;
+	
+	/**
+	 * Secondary Image (right column) field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.default.primary.secondary_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	secondary_image: prismic.ImageField<never>;
+	
+	/**
+	 * Layout field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose layout
+	 * - **Default Value**: split
+	 * - **API ID Path**: homepage_hero.default.primary.layout
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	layout: prismic.SelectField<"split" | "centered", "filled">;
+	
+	/**
+	 * Background Style field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose background style
+	 * - **Default Value**: light
+	 * - **API ID Path**: homepage_hero.default.primary.background_style
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	background_style: prismic.SelectField<"light" | "dark" | "gradient", "filled">;
+	
+	/**
+	 * Services Blurb (below list) field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Logistics delivers reliable, efficient, and cost-effective logistics solutions for businesses of all sizes.
+	 * - **API ID Path**: homepage_hero.default.primary.services_blurb
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	services_blurb: prismic.KeyTextField;
+	
+	/**
+	 * Tab 1 Label field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Freight Solutions
+	 * - **Default Value**: Freight Solutions
+	 * - **API ID Path**: homepage_hero.default.primary.tab_1_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	tab_1_label: prismic.KeyTextField;
+	
+	/**
+	 * Tab 2 Label field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Specialties
+	 * - **Default Value**: Specialties
+	 * - **API ID Path**: homepage_hero.default.primary.tab_2_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	tab_2_label: prismic.KeyTextField;
+}
+
+/**
+ * Primary content in *HomepageHero → Items*
+ */
+export interface HomepageHeroSliceDefaultItem {
+	/**
+	 * Service Icon field in *HomepageHero → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.items[].service_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	service_icon: prismic.ImageField<never>;
+	
+	/**
+	 * Service Title field in *HomepageHero → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Delivery Solutions
+	 * - **API ID Path**: homepage_hero.items[].service_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	service_title: prismic.KeyTextField;
+	
+	/**
+	 * Service Description field in *HomepageHero → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Comprehensive delivery solutions for your business needs.
+	 * - **API ID Path**: homepage_hero.items[].service_description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	service_description: prismic.KeyTextField;
+	
+	/**
+	 * Service Category field in *HomepageHero → Items*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose category
+	 * - **Default Value**: freight_solutions
+	 * - **API ID Path**: homepage_hero.items[].service_category
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	service_category: prismic.SelectField<"freight_solutions" | "specialties", "filled">;
+}
+
+/**
+ * Default variation for HomepageHero Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default homepage hero layout
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HomepageHeroSliceDefault = prismic.SharedSliceVariation<"default", Simplify<HomepageHeroSliceDefaultPrimary>, Simplify<HomepageHeroSliceDefaultItem>>;
+
+/**
+ * Slice variation for *HomepageHero*
+ */
+type HomepageHeroSliceVariation = HomepageHeroSliceDefault
+
+/**
+ * HomepageHero Shared Slice
+ *
+ * - **API ID**: `homepage_hero`
+ * - **Description**: Modern, minimal hero section for homepage
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HomepageHeroSlice = prismic.SharedSlice<"homepage_hero", HomepageHeroSliceVariation>;
+
+/**
  * Primary content in *ImageCarousel → Default → Primary*
  */
 export interface ImageCarouselSliceDefaultPrimary {
@@ -2529,6 +2767,192 @@ type LocationsSliceVariation = LocationsSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type LocationsSlice = prismic.SharedSlice<"locations", LocationsSliceVariation>;
+
+/**
+ * Primary content in *Network → Default → Primary*
+ */
+export interface NetworkSliceDefaultPrimary {
+	/**
+	 * Subheading field in *Network → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: OUR NETWORK
+	 * - **API ID Path**: network.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *Network → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: From around Australia to around the world.
+	 * - **API ID Path**: network.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Network → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Optional description text
+	 * - **API ID Path**: network.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Top Margin field in *Network → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: network.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top (pt) field in *Network → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: network.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom (pb) field in *Network → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: network.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+}
+
+/**
+ * Primary content in *Network → Items*
+ */
+export interface NetworkSliceDefaultItem {
+	/**
+	 * Region Name (Tab Label) field in *Network → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Asia-Pacific
+	 * - **API ID Path**: network.items[].region_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	region_name: prismic.KeyTextField;
+	
+	/**
+	 * Region ID field in *Network → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: asia-pacific (lowercase, hyphenated)
+	 * - **API ID Path**: network.items[].region_id
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	region_id: prismic.KeyTextField;
+	
+	/**
+	 * Region Description field in *Network → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our Asia-Pacific network connects Australia to the region's major manufacturing...
+	 * - **API ID Path**: network.items[].region_description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	region_description: prismic.KeyTextField;
+	
+	/**
+	 * Location Name field in *Network → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: SINGAPORE
+	 * - **API ID Path**: network.items[].location_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	location_name: prismic.KeyTextField;
+	
+	/**
+	 * Location Coordinates field in *Network → Items*
+	 *
+	 * - **Field Type**: GeoPoint
+	 * - **Placeholder**: Click to select location on map
+	 * - **API ID Path**: network.items[].location_coordinates
+	 * - **Documentation**: https://prismic.io/docs/fields/geopoint
+	 */
+	location_coordinates: prismic.GeoPointField;
+	
+	/**
+	 * Location Value field in *Network → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: 5-7 DAY TRANSIT
+	 * - **API ID Path**: network.items[].location_value
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	location_value: prismic.KeyTextField;
+	
+	/**
+	 * Location Description field in *Network → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Simplified customs, fast turnaround services
+	 * - **API ID Path**: network.items[].location_description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	location_description: prismic.KeyTextField;
+	
+	/**
+	 * See More Link (Optional) field in *Network → Items*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Link to detailed page
+	 * - **API ID Path**: network.items[].see_more_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	see_more_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * See More Link Text field in *Network → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: See More
+	 * - **API ID Path**: network.items[].see_more_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	see_more_text: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for Network Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type NetworkSliceDefault = prismic.SharedSliceVariation<"default", Simplify<NetworkSliceDefaultPrimary>, Simplify<NetworkSliceDefaultItem>>;
+
+/**
+ * Slice variation for *Network*
+ */
+type NetworkSliceVariation = NetworkSliceDefault
+
+/**
+ * Network Shared Slice
+ *
+ * - **API ID**: `network`
+ * - **Description**: Interactive 3D globe with regional network information
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type NetworkSlice = prismic.SharedSlice<"network", NetworkSliceVariation>;
 
 /**
  * Primary content in *News → Default → Primary*
@@ -4075,6 +4499,182 @@ type SubmittedSliceVariation = SubmittedSliceDefault
 export type SubmittedSlice = prismic.SharedSlice<"submitted", SubmittedSliceVariation>;
 
 /**
+ * Primary content in *Testimonials → Default → Primary*
+ */
+export interface TestimonialsSliceDefaultPrimary {
+	/**
+	 * Heading field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: What our clients say
+	 * - **API ID Path**: testimonials.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Subheading field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: TESTIMONIALS
+	 * - **API ID Path**: testimonials.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Trusted by businesses across Australia
+	 * - **API ID Path**: testimonials.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Number of Rows field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 2
+	 * - **API ID Path**: testimonials.default.primary.number_of_rows
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	number_of_rows: prismic.NumberField;
+	
+	/**
+	 * Scroll Speed field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 1 = normal, 2 = faster, 0.5 = slower
+	 * - **API ID Path**: testimonials.default.primary.scroll_speed
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	scroll_speed: prismic.NumberField;
+	
+	/**
+	 * Gap Between Cards (px) field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 32
+	 * - **API ID Path**: testimonials.default.primary.gap
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	gap: prismic.NumberField;
+	
+	/**
+	 * Top Margin field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: testimonials.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top (pt) field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: testimonials.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom (pb) field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: testimonials.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+}
+
+/**
+ * Primary content in *Testimonials → Items*
+ */
+export interface TestimonialsSliceDefaultItem {
+	/**
+	 * Testimonial Text field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: MACH1 Logistics has transformed our supply chain operations...
+	 * - **API ID Path**: testimonials.items[].testimonial_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	testimonial_text: prismic.KeyTextField;
+	
+	/**
+	 * Client Name field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: John Smith
+	 * - **API ID Path**: testimonials.items[].client_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	client_name: prismic.KeyTextField;
+	
+	/**
+	 * Client Title field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Supply Chain Director
+	 * - **API ID Path**: testimonials.items[].client_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	client_title: prismic.KeyTextField;
+	
+	/**
+	 * Company Name field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: ABC Manufacturing
+	 * - **API ID Path**: testimonials.items[].company_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	company_name: prismic.KeyTextField;
+	
+	/**
+	 * Client Photo (Optional) field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.items[].client_photo
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	client_photo: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for Testimonials Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TestimonialsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TestimonialsSliceDefaultPrimary>, Simplify<TestimonialsSliceDefaultItem>>;
+
+/**
+ * Slice variation for *Testimonials*
+ */
+type TestimonialsSliceVariation = TestimonialsSliceDefault
+
+/**
+ * Testimonials Shared Slice
+ *
+ * - **API ID**: `testimonials`
+ * - **Description**: Customer testimonials with infinite scrolling rows - alternating directions
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TestimonialsSlice = prismic.SharedSlice<"testimonials", TestimonialsSliceVariation>;
+
+/**
  * Primary content in *Tracking → Default → Primary*
  */
 export interface TrackingSliceDefaultPrimary {
@@ -4324,6 +4924,11 @@ declare module "@prismicio/client" {
 			HeroSliceDefaultItem,
 			HeroSliceVariation,
 			HeroSliceDefault,
+			HomepageHeroSlice,
+			HomepageHeroSliceDefaultPrimary,
+			HomepageHeroSliceDefaultItem,
+			HomepageHeroSliceVariation,
+			HomepageHeroSliceDefault,
 			ImageCarouselSlice,
 			ImageCarouselSliceDefaultPrimary,
 			ImageCarouselSliceDefaultItem,
@@ -4345,6 +4950,11 @@ declare module "@prismicio/client" {
 			LocationsSliceDefaultItem,
 			LocationsSliceVariation,
 			LocationsSliceDefault,
+			NetworkSlice,
+			NetworkSliceDefaultPrimary,
+			NetworkSliceDefaultItem,
+			NetworkSliceVariation,
+			NetworkSliceDefault,
 			NewsSlice,
 			NewsSliceDefaultPrimary,
 			NewsSliceVariation,
@@ -4397,6 +5007,11 @@ declare module "@prismicio/client" {
 			SubmittedSliceDefaultItem,
 			SubmittedSliceVariation,
 			SubmittedSliceDefault,
+			TestimonialsSlice,
+			TestimonialsSliceDefaultPrimary,
+			TestimonialsSliceDefaultItem,
+			TestimonialsSliceVariation,
+			TestimonialsSliceDefault,
 			TrackingSlice,
 			TrackingSliceDefaultPrimary,
 			TrackingSliceDefaultItem,
