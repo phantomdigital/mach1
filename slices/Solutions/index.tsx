@@ -6,6 +6,7 @@ import { PrismicNextLink } from "@prismicio/next";
 import SolutionCard from "./solution-card";
 import SolutionsAnimation from "./solutions-animation";
 import { SliceHeader } from "@/components/slice-header";
+import React from "react";
 
 /**
  * Props for `Solutions`.
@@ -15,7 +16,7 @@ export type SolutionsProps = SliceComponentProps<Content.SolutionsSlice>;
 /**
  * Component for "Solutions" Slices.
  */
-const Solutions = ({ slice }: SolutionsProps): JSX.Element => {
+const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
   const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
