@@ -36,7 +36,7 @@ const Locations = ({ slice }: LocationsProps): React.ReactElement => {
         {/* Sticky Navigation */}
         {locations.length > 1 && <LocationsNav locations={navLocations} />}
 
-        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8 mt-12 pt-12 ">
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 mt-12 pt-12 ">
           {/* Locations Grid */}
           <div className="space-y-24">
             {locations.map((location) => (

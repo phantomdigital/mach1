@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { NavigationDropdown } from "./navigation-dropdown";
 import { HeaderButtons } from "./header-buttons";
@@ -16,6 +17,8 @@ interface CompactHeaderProps {
 
 export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactHeaderProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<gsap.core.Tween | null>(null);
 
   useEffect(() => {
     let ticking = false;
@@ -51,6 +54,62 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
     };
   }, []);
 
+  // Set initial state on mount
+  useEffect(() => {
+    const headerElement = headerRef.current;
+    if (!headerElement) return;
+
+    // Set initial position based on visibility state (hidden by default)
+    gsap.set(headerElement, {
+      yPercent: -100, // Start hidden
+      force3D: true,
+    });
+  }, []);
+
+  // Handle GSAP animation with proper cleanup
+  useEffect(() => {
+    const headerElement = headerRef.current;
+    if (!headerElement) return;
+
+    // Kill any existing animation before starting a new one
+    if (animationRef.current) {
+      animationRef.current.kill();
+      animationRef.current = null;
+    }
+
+    // Set target position
+    const targetY = isVisible ? 0 : -100; // -100% = completely hidden
+    
+    // Enable will-change for better performance during animation
+    gsap.set(headerElement, {
+      willChange: 'transform',
+      force3D: true, // Force GPU acceleration
+    });
+
+    // Animate to target position
+    animationRef.current = gsap.to(headerElement, {
+      yPercent: targetY,
+      duration: 0.3,
+      ease: 'power2.out',
+      force3D: true,
+      onComplete: () => {
+        // Remove will-change after animation completes to free up browser resources
+        gsap.set(headerElement, { willChange: 'auto' });
+        animationRef.current = null;
+      },
+    });
+
+    // Cleanup function
+    return () => {
+      if (animationRef.current) {
+        animationRef.current.kill();
+        animationRef.current = null;
+      }
+      // Ensure will-change is removed on cleanup
+      gsap.set(headerElement, { willChange: 'auto' });
+    };
+  }, [isVisible]);
+
   // Server component for simple navigation items
   const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationItem; index: number }) => {
     if (!item.has_dropdown || !item.dropdown_items || item.dropdown_items.length === 0) {
@@ -84,14 +143,13 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
 
   return (
     <div
-      className={`fixed top-0 left-0 right-0 z-50 bg-neutral-100 border-b-3 border-neutral-200 transition-transform duration-300 ease-out ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      }`}
+      ref={headerRef}
+      className="fixed top-0 left-0 right-0 z-50 bg-neutral-100 border-b-3 border-neutral-200 transform-gpu"
     >
       {/* Close dropdowns on scroll */}
       <ScrollDropdownCloser />
       
-      <div className="max-w-[90rem] mx-auto px-4 lg:px-8 py-3">
+      <div className="max-w-[88rem] mx-auto px-4 lg:px-8 py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Compact Logo */}
           <div className="flex items-center">

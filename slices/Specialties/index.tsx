@@ -27,7 +27,7 @@ const Specialties = ({ slice }: SpecialtiesProps): React.ReactElement => {
       data-slice-variation={slice.variation}
       className={`w-full bg-white ${marginTop} ${paddingTop} ${paddingBottom}`}
     >
-      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         {/* Header */}
         <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
 
@@ -105,7 +105,7 @@ const Specialties = ({ slice }: SpecialtiesProps): React.ReactElement => {
 
             {/* Description */}
             {slice.primary.description && (
-              <p className="text-lg text-neutral-600 leading-relaxed">
+              <p className="text-base text-neutral-600 leading-relaxed">
                 {slice.primary.description}
               </p>
             )}

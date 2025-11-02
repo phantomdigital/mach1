@@ -72,14 +72,14 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
     <section className={`w-full bg-white ${getMarginTopClass(marginTop)}`}>
       {/* Page Header - Centered */}
       <div className={`w-full ${getPaddingTopClass(paddingTop)} py-24 lg:py-64`}>
-        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
           <LegalHeader pageTitle={slice.primary.page_title} />
         </div>
       </div>
 
       {/* Content Grid */}
       <div className={`w-full ${getPaddingBottomClass(paddingBottom)}`}>
-        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-12">
             {/* Main Content */}
             <div className="order-2 lg:order-1 max-w-4xl">

@@ -492,6 +492,23 @@ html.lenis body {
   overscroll-behavior: contain;
 }
 
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Performance optimization: reduce repaints during scroll */
+.lenis.lenis-smooth {
+  will-change: scroll-position;
+}
+
+html.lenis-smooth {
+  scroll-padding-top: 0;
+}
+
 ::selection {
   background-color: hsl(230, 53%, 39%);
   color: #ffffff;

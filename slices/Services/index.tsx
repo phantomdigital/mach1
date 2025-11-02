@@ -1,16 +1,14 @@
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
-import { ImageOff, CheckCircle, Globe, Package } from "lucide-react";
+import { ImageOff, Globe, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ServicesButton from "./services-button";
-import {
-    ServicesGridAnimation,
-    ServiceCardAnimation,
-    ServicesRightSideAnimation,
-} from "./services-animation-wrapper";
+import ServicesAnimation from "./services-animation";
 import { SliceHeader } from "@/components/slice-header";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
+import { createClient } from "@/prismicio";
+
 
 /**
  * Props for `Services`.
@@ -20,7 +18,10 @@ export type ServicesProps = SliceComponentProps<Content.ServicesSlice>;
 /**
  * Component for "Services" Slices.
  */
-const Services = ({ slice }: ServicesProps): React.ReactElement => {
+const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> => {
+    // Fetch all specialties from Prismic
+    const client = createClient();
+    const specialties = await client.getAllByType("specialty");
     const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
     const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
     const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
@@ -35,24 +36,30 @@ const Services = ({ slice }: ServicesProps): React.ReactElement => {
                 className={`w-full ${marginTop} ${paddingTop} ${paddingBottom}`}
                 style={{ backgroundColor }}
             >
-                <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
-                    {/* Header */}
-                    <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
+                <ServicesAnimation>
+                    <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+                        {/* Header */}
+                        <div data-animate="header">
+                            <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
+                        </div>
 
-                    {/* Two Column Layout */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-                        {/* Left Column - Mosaic Image Collage */}
-                        <div className="relative h-[500px] lg:h-[600px]">
+                        {/* Two Column Layout */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+                            {/* Left Column - Mosaic Image Collage */}
+                            <div className="relative h-[500px] lg:h-[600px]">
                             {/* Two-column split grid with asymmetric heights */}
                             <div className="grid grid-cols-2 gap-4 h-full">
                                 {/* Left Column - Two stacked images */}
                                 <div className="flex flex-col gap-4">
                                     {/* Top Left - Image 1 (Taller: 60%) */}
-                                    <div className="relative overflow-hidden rounded-sm bg-neutral-200 border border-neutral-300 h-[60%]">
+                                    <div className="relative overflow-hidden rounded-xs bg-neutral-200 border border-neutral-300 h-[60%]" data-animate="image">
                                         {"image_1" in slice.primary && slice.primary.image_1?.url ? (
                                             <PrismicNextImage
                                                 field={slice.primary.image_1}
-                                                className="w-full h-full object-cover"
+                                                fill
+                                                className="object-cover"
+                                                sizes="(max-width: 1024px) 50vw, 25vw"
+                                                quality={90}
                                                 priority
                                             />
                                         ) : (
@@ -63,11 +70,14 @@ const Services = ({ slice }: ServicesProps): React.ReactElement => {
                                     </div>
 
                                     {/* Bottom Left - Image 2 (Shorter: 40%) */}
-                                    <div className="relative overflow-hidden rounded-sm bg-neutral-200 border border-neutral-300 flex-1">
+                                    <div className="relative overflow-hidden rounded-xs bg-neutral-200 border border-neutral-300 flex-1" data-animate="image">
                                         {"image_2" in slice.primary && slice.primary.image_2?.url ? (
                                             <PrismicNextImage
                                                 field={slice.primary.image_2}
-                                                className="w-full h-full object-cover"
+                                                fill
+                                                className="object-cover"
+                                                sizes="(max-width: 1024px) 50vw, 25vw"
+                                                quality={90}
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center">
@@ -81,12 +91,15 @@ const Services = ({ slice }: ServicesProps): React.ReactElement => {
                                 <div className="flex flex-col gap-4">
                                     {/* Statistics Card - Compact */}
                                     {"statistic_number" in slice.primary && (slice.primary.statistic_number || slice.primary.statistic_label) && (
-                                        <div className="relative bg-mach1-green text-white p-4 rounded-sm flex items-center gap-3">
+                                        <div className="relative bg-mach1-green text-white p-4 rounded-xs flex items-center gap-3" data-animate="statistic">
                                             {"statistic_icon" in slice.primary && slice.primary.statistic_icon?.url ? (
                                                 <div className="w-6 h-6 flex-shrink-0">
                                                     <PrismicNextImage
                                                         field={slice.primary.statistic_icon}
+                                                        width={24}
+                                                        height={24}
                                                         className="w-full h-full object-contain filter brightness-0 invert"
+                                                        quality={85}
                                                     />
                                                 </div>
                                             ) : (
@@ -104,11 +117,14 @@ const Services = ({ slice }: ServicesProps): React.ReactElement => {
                                     )}
 
                                     {/* Top Right - Image 3 (Takes remaining space) */}
-                                    <div className="relative overflow-hidden rounded-sm bg-neutral-200 border border-neutral-300 flex-1">
+                                    <div className="relative overflow-hidden rounded-xs bg-neutral-200 border border-neutral-300 flex-1" data-animate="image">
                                         {"image_3" in slice.primary && slice.primary.image_3?.url ? (
                                             <PrismicNextImage
                                                 field={slice.primary.image_3}
-                                                className="w-full h-full object-cover"
+                                                fill
+                                                className="object-cover"
+                                                sizes="(max-width: 1024px) 50vw, 25vw"
+                                                quality={90}
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center">
@@ -120,86 +136,70 @@ const Services = ({ slice }: ServicesProps): React.ReactElement => {
                             </div>
                         </div>
 
-                        {/* Right Column - Content */}
-                        <div className="flex flex-col justify-center space-y-8">
-                            {/* Main Heading */}
-                            <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight">
-                                {slice.primary.heading || "Innovative Logistics Solutions"}
-                            </h2>
+                            {/* Right Column - Content */}
+                            <div className="flex flex-col justify-center space-y-8" data-animate="left-column">
+                                {/* Main Heading */}
+                                <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight">
+                                    {slice.primary.heading || "Innovative Logistics Solutions"}
+                                </h2>
 
-                            {/* Description */}
-                            <p className="text-lg text-neutral-600 leading-relaxed">
-                                {slice.primary.description || "Our journey began with a vision to revolutionize the logistics industry. Meet the dedicated professionals behind Seon."}
-                            </p>
+                                {/* Description */}
+                                <p className="text-base text-neutral-600 leading-relaxed">
+                                    {slice.primary.description || "Our journey began with a vision to revolutionize the logistics industry. Meet the dedicated professionals behind Seon."}
+                                </p>
 
-                            {/* Specialties List */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {slice.items && slice.items.length > 0 ? (
-                                    slice.items.map((item, index) => {
-                                        const specialtyTitle = "specialty_title" in item ? item.specialty_title : null;
-                                        const specialtyIcon = "specialty_icon" in item ? item.specialty_icon : null;
-                                        
-                                        return specialtyTitle ? (
-                                            <div key={index} className="flex items-center gap-3">
-                                                {specialtyIcon?.url ? (
-                                                    <div className="w-5 h-5 flex-shrink-0">
-                                                        <PrismicNextImage
-                                                            field={specialtyIcon}
-                                                            className="w-full h-full object-contain"
-                                                        />
-                                                    </div>
-                                                ) : (
-                                                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                                                )}
-                                                <span className="text-neutral-700 font-medium">
-                                                    {specialtyTitle}
-                                                </span>
-                                            </div>
-                                        ) : null;
-                                    })
-                                ) : (
-                                    // Default placeholder specialties
-                                    <>
-                                        <div className="flex items-center gap-3">
-                                            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                                            <span className="text-neutral-700 font-medium">Safety and Compliance</span>
+                                {/* Specialties List - Fetched from Prismic */}
+                                {specialties && specialties.length > 0 && (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {specialties.map((specialty) => (
+                                            <div key={specialty.uid} className="flex items-start gap-3" data-animate="specialty">
+                                            {specialty.data.featured_image?.url ? (
+                                                <PrismicNextImage
+                                                    field={specialty.data.featured_image}
+                                                    width={24}
+                                                    height={24}
+                                                    className="w-6 h-6 object-contain flex-shrink-0 mt-0.5"
+                                                    quality={85}
+                                                />
+                                            ) : (
+                                                <svg 
+                                                    className="w-6 h-6 text-neutral-800 flex-shrink-0 mt-0.5" 
+                                                    fill="none" 
+                                                    viewBox="0 0 24 24" 
+                                                    stroke="currentColor"
+                                                    strokeWidth={2.5}
+                                                    strokeLinecap="square"
+                                                    strokeLinejoin="miter"
+                                                >
+                                                    <path d="M9 6l6 6-6 6" />
+                                                </svg>
+                                            )}
+                                            <span className="text-lg font-semibold text-neutral-800">
+                                                {specialty.data.title}
+                                            </span>
                                         </div>
-                                        <div className="flex items-center gap-3">
-                                            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                                            <span className="text-neutral-700 font-medium">Innovative Technology</span>
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                                            <span className="text-neutral-700 font-medium">Continuous Improvement</span>
-                                        </div>
-                                        <div className="flex items-center gap-3">
-                                            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                                            <span className="text-neutral-700 font-medium">Prioritize Timely Deliveries</span>
-                                        </div>
-                                        <div className="flex items-center gap-3 col-span-full">
-                                            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-                                            <span className="text-neutral-700 font-medium">Quality Control System</span>
-                                        </div>
-                                    </>
-                                )}
+                                    ))}
+                                </div>
+                            )}
+
+                                {/* CTA Button */}
+                                <div className="pt-4" data-animate="button">
+                                    {slice.primary.button_text && slice.primary.button_link ? (
+                                        <Button asChild variant="hero" size="lg">
+                                            <PrismicNextLink field={slice.primary.button_link}>
+                                                {slice.primary.button_text}
+                                            </PrismicNextLink>
+                                        </Button>
+                                    ) : (
+                                        <Button variant="hero" size="lg" disabled>
+                                            About us
+                                        </Button>
+                                    )}
+                                </div>
                             </div>
-
-                            {/* CTA Button */}
-                            <div className="pt-4">
-                                {slice.primary.button_text && slice.primary.button_link ? (
-                                    <Button asChild variant="hero" size="lg">
-                                        <PrismicNextLink field={slice.primary.button_link}>
-                                            {slice.primary.button_text}
-                                        </PrismicNextLink>
-                                    </Button>
-                                ) : (
-                                    <Button variant="hero" size="lg" disabled>
-                                        About us
-                                    </Button>
-                                )}</div>
                         </div>
                     </div>
-                </div>
+                </ServicesAnimation>
             </section>
         );
     }
@@ -212,53 +212,59 @@ const Services = ({ slice }: ServicesProps): React.ReactElement => {
             className={`w-full ${marginTop} ${paddingTop} ${paddingBottom}`}
             style={{ backgroundColor }}
         >
-            <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
-                {/* Add SliceHeader for consistent subheading treatment */}
-                <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
-                
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-                    {/* Left Side - Content (appears first on mobile and desktop) */}
-                    <ServicesRightSideAnimation className="lg:col-span-4 lg:order-1">
-                        <div className="lg:pr-8 space-y-6">
-                            {/* Section Heading */}
-                            {slice.primary.heading && (
-                                <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight">
-                                    {slice.primary.heading}
-                                </h2>
-                            )}
+            <ServicesAnimation>
+                <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+                    {/* Add SliceHeader for consistent subheading treatment */}
+                    <div data-animate="header">
+                        <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
+                    </div>
+                    
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+                        {/* Left Side - Content (appears first on mobile and desktop) */}
+                        <div className="lg:col-span-4 lg:order-1 flex flex-col justify-start lg:sticky lg:top-24 lg:self-start" data-animate="left-column">
+                            <div className="lg:pr-8 space-y-6">
+                                {/* Section Heading */}
+                                {slice.primary.heading && (
+                                    <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight">
+                                        {slice.primary.heading}
+                                    </h2>
+                                )}
 
-                            {/* Section Description */}
-                            {slice.primary.description && (
-                                <p className="text-lg text-neutral-600 leading-relaxed">
-                                    {slice.primary.description}
-                                </p>
-                            )}
+                                {/* Section Description */}
+                                {slice.primary.description && (
+                                    <p className="text-base text-neutral-600 leading-relaxed">
+                                        {slice.primary.description}
+                                    </p>
+                                )}
 
-                            {/* CTA Button */}
-                            {slice.primary.button_text && slice.primary.button_link && (
-                                <div className="pt-2 inline-flex">
-                                    <ServicesButton
-                                        buttonText={slice.primary.button_text}
-                                        buttonLink={slice.primary.button_link}
-                                    />
-                                </div>
-                            )}
+                                {/* CTA Button */}
+                                {slice.primary.button_text && slice.primary.button_link && (
+                                    <div className="pt-2 inline-flex">
+                                        <ServicesButton
+                                            buttonText={slice.primary.button_text}
+                                            buttonLink={slice.primary.button_link}
+                                        />
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </ServicesRightSideAnimation>
 
-                    {/* Right Side - Services Grid (appears second on mobile and desktop) */}
-                    <div className="lg:col-span-8 lg:order-2">
-                        {slice.items && slice.items.length > 0 && (
-                            <ServicesGridAnimation>
-                                {slice.items.map((item, index) => (
-                                    <ServiceCardAnimation key={index} index={index}>
+                        {/* Right Side - Services Grid (appears second on mobile and desktop) */}
+                        <div className="lg:col-span-8 lg:order-2">
+                            {slice.items && slice.items.length > 0 && (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
+                                    {slice.items.map((item, index) => (
+                                        <div key={index} data-animate="card" className="space-y-5 border-b-4 border-neutral-200 px-6 py-8 lg:px-8 lg:py-10 rounded-t-sm bg-neutral-50">
                                         {/* Service Icon */}
                                         {item.service_icon && item.service_icon.url ? (
                                             <div className="h-9 lg:h-11 w-auto flex items-center justify-start my-8">
                                                 <PrismicNextImage
                                                     field={item.service_icon}
+                                                    width={120}
+                                                    height={44}
                                                     className="h-full w-auto object-contain"
                                                     alt=""
+                                                    quality={85}
                                                 />
                                             </div>
                                         ) : (
@@ -280,13 +286,14 @@ const Services = ({ slice }: ServicesProps): React.ReactElement => {
                                                 {item.service_description}
                                             </p>
                                         )}
-                                    </ServiceCardAnimation>
-                                ))}
-                            </ServicesGridAnimation>
-                        )}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ServicesAnimation>
         </section>
     );
 };

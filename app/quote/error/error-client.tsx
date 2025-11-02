@@ -49,7 +49,7 @@ export default function ErrorClient() {
   return (
     <div className="min-h-screen bg-white">
       <section className="w-full bg-white pt-60 pb-16 lg:pt-82 lg:pb-48">
-        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Main Content Card */}
             <div className="bg-neutral-100 p-8 lg:p-12 rounded-md border border-[#D9D9D9]">

@@ -12,6 +12,7 @@ interface NetworkOverviewAnimationProps {
 
 export default function NetworkOverviewAnimation({ children }: NetworkOverviewAnimationProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const scrollTriggersRef = useRef<ScrollTrigger[]>([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -21,7 +22,7 @@ export default function NetworkOverviewAnimation({ children }: NetworkOverviewAn
       if (!leftColumn || !rightColumn) return;
 
       // Animate left column elements
-      gsap.from(leftColumn.children, {
+      const leftTween = gsap.from(leftColumn.children, {
         y: 40,
         opacity: 0,
         duration: 0.8,
@@ -32,11 +33,23 @@ export default function NetworkOverviewAnimation({ children }: NetworkOverviewAn
           start: "top 80%",
           end: "top 50%",
           toggleActions: "play none none none",
+          once: true, // Only trigger once
+          markers: false, // Disable markers for performance
+          invalidateOnRefresh: false, // Prevent recalculation on resize
         },
       });
+      if (leftTween.scrollTrigger) {
+        scrollTriggersRef.current.push(leftTween.scrollTrigger);
+        // Kill ScrollTrigger after animation completes
+        leftTween.eventCallback("onComplete", () => {
+          if (leftTween.scrollTrigger) {
+            leftTween.scrollTrigger.kill();
+          }
+        });
+      }
 
       // Animate right column (warehouse image)
-      gsap.from(rightColumn, {
+      const rightTween = gsap.from(rightColumn, {
         x: 40,
         opacity: 0,
         duration: 1,
@@ -46,11 +59,33 @@ export default function NetworkOverviewAnimation({ children }: NetworkOverviewAn
           start: "top 80%",
           end: "top 50%",
           toggleActions: "play none none none",
+          once: true, // Only trigger once
+          markers: false, // Disable markers for performance
+          invalidateOnRefresh: false, // Prevent recalculation on resize
         },
       });
+      if (rightTween.scrollTrigger) {
+        scrollTriggersRef.current.push(rightTween.scrollTrigger);
+        // Kill ScrollTrigger after animation completes
+        rightTween.eventCallback("onComplete", () => {
+          if (rightTween.scrollTrigger) {
+            rightTween.scrollTrigger.kill();
+          }
+        });
+      }
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      // Kill all ScrollTrigger instances
+      scrollTriggersRef.current.forEach((st) => {
+        if (st) {
+          st.kill();
+        }
+      });
+      scrollTriggersRef.current = [];
+      // Revert GSAP context (this also cleans up any remaining ScrollTriggers)
+      ctx.revert();
+    };
   }, []);
 
   return <div ref={sectionRef}>{children}</div>;

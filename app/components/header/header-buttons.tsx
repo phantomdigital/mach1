@@ -12,7 +12,7 @@ export function HeaderButtons({ buttons }: HeaderButtonsProps) {
   return (
     <div className="flex items-center gap-3">
       {buttons.map((button: HeaderDocumentDataButtonsItem, index: number) => (
-        <HeroButton key={index} asChild>
+        <HeroButton key={index} asChild size="small">
           <PrismicNextLink field={button.link}>
             {button.label}
           </PrismicNextLink>

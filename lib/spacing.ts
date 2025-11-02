@@ -34,7 +34,7 @@ export function getSectionPaddingClass(): string {
  * Maximum width of 100rem (1600px) with responsive horizontal padding
  */
 export function getContainerClass(): string {
-  return "w-full max-w-[90rem] mx-auto px-4 lg:px-8";
+  return "w-full max-w-[88rem] mx-auto px-4 lg:px-8";
 }
 
 /**

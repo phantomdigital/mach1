@@ -26,7 +26,7 @@ export default function SubmittedClient({ slice, faqs }: SubmittedClientProps) {
       data-slice-variation={slice.variation}
       className={`w-full bg-white ${getMarginTopClass(slice.primary.top_margin)} ${getPaddingTopClass(slice.primary.padding_top)} ${getPaddingBottomClass(slice.primary.padding_bottom)}`}
     >
-      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-40">
           {/* Left Column - Main Content */}
           <div className="space-y-8">

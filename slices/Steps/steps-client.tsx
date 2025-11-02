@@ -184,7 +184,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
             : "py-16 lg:py-24"
         }`}
       >
-        <div ref={containerRef} className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+        <div ref={containerRef} className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
           {/* Step Indicator - only show for steps 1+ (not start) - OUTSIDE AnimatePresence so it persists */}
           {currentStep > 0 && (
             <div className="w-full mb-16 md:mb-16 relative">

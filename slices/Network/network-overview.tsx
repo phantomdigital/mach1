@@ -27,7 +27,7 @@ const NetworkOverview = ({ slice }: NetworkOverviewProps): React.ReactElement =>
       data-slice-variation="networkOverview"
       className={`w-full bg-white ${marginTop} ${paddingTop} ${paddingBottom}`}
     >
-      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         {/* Header Section */}
         <SliceHeader subheading={slice.primary.subheading} />
         
@@ -71,7 +71,7 @@ const NetworkOverview = ({ slice }: NetworkOverviewProps): React.ReactElement =>
 
             {/* Description Text */}
             {slice.primary.description && (
-              <p className="text-neutral-600 text-base0. leading-relaxed m-0 max-w-full lg:max-w-sm">
+              <p className="text-neutral-600 text-base leading-relaxed m-0 max-w-full lg:max-w-sm">
                 {slice.primary.description}
               </p>
             )}
@@ -79,7 +79,7 @@ const NetworkOverview = ({ slice }: NetworkOverviewProps): React.ReactElement =>
             {/* Button */}
             {slice.primary.button_text && slice.primary.button_link && (
               <div className="mt-auto">
-                <HeroButton asChild className="w-fit">
+                <HeroButton asChild size="small" className="w-fit">
                   <PrismicNextLink field={slice.primary.button_link}>
                     {slice.primary.button_text}
                   </PrismicNextLink>

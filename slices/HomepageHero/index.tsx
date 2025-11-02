@@ -59,7 +59,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
       <section
         data-slice-type={slice.slice_type}
         data-slice-variation={slice.variation}
-        className={`w-full relative ${getBackgroundClasses()} pt-42 overflow-hidden`}
+        className={`w-full relative ${getBackgroundClasses()} pt-40 overflow-hidden`}
       >
         {/* Full-width grid with no gaps */}
         <div className="relative z-10 w-full">

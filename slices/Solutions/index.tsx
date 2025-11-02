@@ -36,7 +36,7 @@ const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
       style={{ backgroundColor }}
     >
       <SolutionsAnimation>
-        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
           {/* Header with SliceHeader */}
           <div data-animate="header">
             <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />

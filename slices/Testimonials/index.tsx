@@ -25,7 +25,7 @@ const Testimonials = ({ slice }: TestimonialsProps): React.ReactElement => {
     >
       {/* Header Section */}
       {(slice.primary.subheading || slice.primary.heading || slice.primary.description) && (
-        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8 mb-16">
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 mb-16">
           <div className="max-w-3xl">
             {slice.primary.subheading && (
               <h5 className="text-neutral-800 text-sm mb-4">

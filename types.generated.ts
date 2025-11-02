@@ -1419,7 +1419,171 @@ interface SolutionDocumentData {
  */
 export type SolutionDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<SolutionDocumentData>, "solution", Lang>;
 
-export type AllDocumentTypes = AuthorDocument | FooterDocument | HeaderDocument | HomeDocument | JobDocument | NewsDocument | PageDocument | SolutionDocument;
+type SolutionsDocumentDataSlicesSlice = PageTopperSlice
+
+/**
+ * Content for Solutions documents
+ */
+interface SolutionsDocumentData {
+	/**
+	 * Slice Zone field in *Solutions*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: solutions.slices[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/slices
+	 */
+	slices: prismic.SliceZone<SolutionsDocumentDataSlicesSlice>;/**
+	 * Meta Title field in *Solutions*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A title of the page used for social media and search engines
+	 * - **API ID Path**: solutions.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_title: prismic.KeyTextField;
+	
+	/**
+	 * Meta Description field in *Solutions*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A brief summary of the page
+	 * - **API ID Path**: solutions.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_description: prismic.KeyTextField;
+	
+	/**
+	 * Meta Image field in *Solutions*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: solutions.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * Solutions document from Prismic
+ *
+ * - **API ID**: `solutions`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SolutionsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<SolutionsDocumentData>, "solutions", Lang>;
+
+type SpecialtyDocumentDataSlicesSlice = TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice | SpecialtiesSlice
+
+/**
+ * Content for Specialty documents
+ */
+interface SpecialtyDocumentData {
+	/**
+	 * Title field in *Specialty*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Specialty title
+	 * - **API ID Path**: specialty.title
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Specialty*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Brief description of the specialty
+	 * - **API ID Path**: specialty.description
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Featured Image field in *Specialty*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialty.featured_image
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	featured_image: prismic.ImageField<"card">;
+	
+	/**
+	 * Category field in *Specialty*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: e.g., Freight Type, Cargo Handling, Industry Focus
+	 * - **API ID Path**: specialty.category
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	category: prismic.KeyTextField;
+	
+	/**
+	 * Slice Zone field in *Specialty*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialty.slices[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/slices
+	 */
+	slices: prismic.SliceZone<SpecialtyDocumentDataSlicesSlice>;/**
+	 * Meta Title field in *Specialty*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A title of the page used for social media and search engines
+	 * - **API ID Path**: specialty.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_title: prismic.KeyTextField;
+	
+	/**
+	 * Meta Description field in *Specialty*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A brief summary of the page
+	 * - **API ID Path**: specialty.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_description: prismic.KeyTextField;
+	
+	/**
+	 * Meta Image field in *Specialty*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialty.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * Specialty document from Prismic
+ *
+ * - **API ID**: `specialty`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SpecialtyDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<SpecialtyDocumentData>, "specialty", Lang>;
+
+export type AllDocumentTypes = AuthorDocument | FooterDocument | HeaderDocument | HomeDocument | JobDocument | NewsDocument | PageDocument | SolutionDocument | SolutionsDocument | SpecialtyDocument;
 
 /**
  * Primary content in *Careers → Default → Primary*
@@ -5631,6 +5795,12 @@ declare module "@prismicio/client" {
 			SolutionDocument,
 			SolutionDocumentData,
 			SolutionDocumentDataSlicesSlice,
+			SolutionsDocument,
+			SolutionsDocumentData,
+			SolutionsDocumentDataSlicesSlice,
+			SpecialtyDocument,
+			SpecialtyDocumentData,
+			SpecialtyDocumentDataSlicesSlice,
 			AllDocumentTypes,
 			CareersSlice,
 			CareersSliceDefaultPrimary,

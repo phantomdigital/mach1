@@ -31,7 +31,7 @@ const ContactUs = ({ slice }: ContactUsProps): React.ReactElement => {
 
   return (
     <section className={`w-full py-16 lg:py-24 bg-white mb-30 ${getMarginTopClass()}`}>
-      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 lg:gap-40">
           {/* Left Column - Contact Information */}
           <div className="space-y-8">

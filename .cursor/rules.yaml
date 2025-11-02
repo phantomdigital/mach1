@@ -12,6 +12,8 @@ rules:
       - "Run 'npm run generate-types' after making Prismic schema changes"
       - "Always import types with 'import type' for type-only imports"
       - "Slice union types in /types/index.ts are derived from document types and stay in sync automatically"
+      - "NEVER use JSX.Element - always use React.ReactElement and import React"
+      - "Always add 'import React from \"react\";' when using React.ReactElement return types"
       
   - name: "Prismic Integration"
     description: "Properly integrate with Prismic CMS"
@@ -25,6 +27,8 @@ rules:
       - "Only show content when Prismic fields have data"
       - "Provide minimal fallbacks when Prismic document is missing"
       - "Use proper TypeScript types from generated types.ts"
+      - "Reusable content types (solution, specialty) have dedicated routes at /solutions/:uid and /specialties/:uid"
+      - "Each reusable type needs: route in prismicio.ts, custom type in Prismic, and dynamic page at app/[type]/[uid]/page.tsx"
       
   - name: "Tailwind CSS Usage"
     description: "Follow Tailwind CSS conventions"
@@ -94,15 +98,15 @@ rules:
   - name: "Container Standards"
     description: "Consistent container and layout patterns across all components"
     patterns:
-      - "ALWAYS use standard container pattern: 'w-full max-w-[90rem] mx-auto px-4 lg:px-8'"
+      - "ALWAYS use standard container pattern: 'w-full max-w-[88rem] mx-auto px-4 lg:px-8'"
       - "ALL components must align exactly with header container width"
-      - "Container breakdown: w-full (full width up to max), max-w-[90rem], mx-auto (centered), px-4 lg:px-8 (responsive padding)"
+      - "Container breakdown: w-full (full width up to max), max-w-[88rem], mx-auto (centered), px-4 lg:px-8 (responsive padding)"
       - "Use this pattern for Hero, content sections, footer, and all page components"
       - "Padding: px-4 (16px) on mobile/tablet, lg:px-8 (32px) on large screens"
       - "For full-width backgrounds: apply container inside the background element"
       - "Avoid nested containers - use the pattern once per section"
       - "Test alignment by comparing with header logo and navigation positioning"
-      - "Easy width adjustments: change max-w-[90rem] to max-w-[80rem] or max-w-[120rem] as needed"
+      - "Easy width adjustments: change max-w-[88rem] to max-w-[80rem] or max-w-[120rem] as needed"
       
   - name: "SEO and Metadata Best Practices"
     description: "Comprehensive SEO metadata implementation for MACH1 Logistics"
