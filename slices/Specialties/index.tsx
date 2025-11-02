@@ -1,3 +1,4 @@
+import React from "react";
 import type { Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
@@ -15,7 +16,7 @@ export type SpecialtiesProps = SliceComponentProps<Content.SpecialtiesSlice>;
  * Component for "Specialties" Slices.
  * Two-column layout showcasing operational specialties with image collage
  */
-const Specialties = ({ slice }: SpecialtiesProps): JSX.Element => {
+const Specialties = ({ slice }: SpecialtiesProps): React.ReactElement => {
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
   const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
