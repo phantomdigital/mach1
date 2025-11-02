@@ -4,6 +4,7 @@ import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/
 import { HeroButton } from "@/components/ui/hero-button";
 import NetworkOverviewAnimation from "./network-overview-animation";
 import { SliceHeader } from "@/components/slice-header";
+import React from "react";
 
 /**
  * Props for `NetworkOverview`.
@@ -15,7 +16,7 @@ export type NetworkOverviewProps = {
 /**
  * Component for "Network" Network Overview variation.
  */
-const NetworkOverview = ({ slice }: NetworkOverviewProps): JSX.Element => {
+const NetworkOverview = ({ slice }: NetworkOverviewProps): React.ReactElement => {
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
   const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
