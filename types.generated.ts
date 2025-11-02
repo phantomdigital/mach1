@@ -808,7 +808,7 @@ interface HeaderDocumentData {
  */
 export type HeaderDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HeaderDocumentData>, "header", Lang>;
 
-type HomeDocumentDataSlicesSlice = NetworkSlice | HomepageHeroSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
+type HomeDocumentDataSlicesSlice = ServicesSlice | NetworkSlice | HomepageHeroSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Home documents
@@ -2113,6 +2113,26 @@ export interface HomepageHeroSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
 	background_image: prismic.ImageField<never>;
+	
+	/**
+	 * Image Position X (%) field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 50
+	 * - **API ID Path**: homepage_hero.default.primary.image_position_x
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	image_position_x: prismic.NumberField;
+	
+	/**
+	 * Image Position Y (%) field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 50
+	 * - **API ID Path**: homepage_hero.default.primary.image_position_y
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	image_position_y: prismic.NumberField;
 	
 	/**
 	 * Secondary Image (right column) field in *HomepageHero → Default → Primary*
@@ -3526,11 +3546,21 @@ type PageTopperSliceVariation = PageTopperSliceDefault
 export type PageTopperSlice = prismic.SharedSlice<"page_topper", PageTopperSliceVariation>;
 
 /**
- * Primary content in *Services → Default → Primary*
+ * Primary content in *Services → Default Grid → Primary*
  */
 export interface ServicesSliceDefaultPrimary {
 	/**
-	 * Section Heading field in *Services → Default → Primary*
+	 * Subheading field in *Services → Default Grid → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: OUR SPECIALTIES
+	 * - **API ID Path**: services.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Section Heading field in *Services → Default Grid → Primary*
 	 *
 	 * - **Field Type**: Text
 	 * - **Placeholder**: How We Work
@@ -3540,7 +3570,7 @@ export interface ServicesSliceDefaultPrimary {
 	heading: prismic.KeyTextField;
 	
 	/**
-	 * Section Description field in *Services → Default → Primary*
+	 * Section Description field in *Services → Default Grid → Primary*
 	 *
 	 * - **Field Type**: Text
 	 * - **Placeholder**: Join our team to receive an above award remuneration and flexible work conditions.
@@ -3550,7 +3580,7 @@ export interface ServicesSliceDefaultPrimary {
 	description: prismic.KeyTextField;
 	
 	/**
-	 * Button Text field in *Services → Default → Primary*
+	 * Button Text field in *Services → Default Grid → Primary*
 	 *
 	 * - **Field Type**: Text
 	 * - **Placeholder**: SEE OUR NETWORK
@@ -3560,7 +3590,7 @@ export interface ServicesSliceDefaultPrimary {
 	button_text: prismic.KeyTextField;
 	
 	/**
-	 * Button Link field in *Services → Default → Primary*
+	 * Button Link field in *Services → Default Grid → Primary*
 	 *
 	 * - **Field Type**: Link
 	 * - **Placeholder**: *None*
@@ -3568,6 +3598,49 @@ export interface ServicesSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/link
 	 */
 	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Top Margin field in *Services → Default Grid → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: services.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *Services → Default Grid → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: services.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *Services → Default Grid → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: services.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Background Color field in *Services → Default Grid → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: services.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
 }
 
 /**
@@ -3606,24 +3679,216 @@ export interface ServicesSliceDefaultItem {
 }
 
 /**
- * Default variation for Services Slice
+ * Default Grid variation for Services Slice
  *
  * - **API ID**: `default`
- * - **Description**: Default services grid layout
+ * - **Description**: Grid layout with left content and right service cards
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type ServicesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ServicesSliceDefaultPrimary>, Simplify<ServicesSliceDefaultItem>>;
 
 /**
+ * Primary content in *Services → Two Column → Primary*
+ */
+export interface ServicesSliceTwoColumnPrimary {
+	/**
+	 * Subheading field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: OUR SPECIALTIES
+	 * - **API ID Path**: services.twoColumn.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Main Heading field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Innovative Logistics Solutions
+	 * - **API ID Path**: services.twoColumn.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our journey began with a vision to revolutionize the logistics industry.
+	 * - **API ID Path**: services.twoColumn.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Statistic Number field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: 16+
+	 * - **API ID Path**: services.twoColumn.primary.statistic_number
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	statistic_number: prismic.KeyTextField;
+	
+	/**
+	 * Statistic Label field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Years of Experience
+	 * - **API ID Path**: services.twoColumn.primary.statistic_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	statistic_label: prismic.KeyTextField;
+	
+	/**
+	 * Statistic Icon field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: services.twoColumn.primary.statistic_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	statistic_icon: prismic.ImageField<never>;
+	
+	/**
+	 * Button Text field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: About us
+	 * - **API ID Path**: services.twoColumn.primary.button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: services.twoColumn.primary.button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Image 1 (Top Left) field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: services.twoColumn.primary.image_1
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_1: prismic.ImageField<never>;
+	
+	/**
+	 * Image 2 (Bottom Left) field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: services.twoColumn.primary.image_2
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_2: prismic.ImageField<never>;
+	
+	/**
+	 * Image 3 (Right) field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: services.twoColumn.primary.image_3
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_3: prismic.ImageField<never>;
+	
+	/**
+	 * Top Margin field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: services.twoColumn.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: services.twoColumn.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: services.twoColumn.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Background Color field in *Services → Two Column → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: services.twoColumn.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+}
+
+/**
+ * Primary content in *Services → Items*
+ */
+export interface ServicesSliceTwoColumnItem {
+	/**
+	 * Specialty Title field in *Services → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Safety and Compliance
+	 * - **API ID Path**: services.items[].specialty_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	specialty_title: prismic.KeyTextField;
+	
+	/**
+	 * Specialty Icon (Optional) field in *Services → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: services.items[].specialty_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	specialty_icon: prismic.ImageField<never>;
+}
+
+/**
+ * Two Column variation for Services Slice
+ *
+ * - **API ID**: `twoColumn`
+ * - **Description**: Two-column layout with image collage and specialty list
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ServicesSliceTwoColumn = prismic.SharedSliceVariation<"twoColumn", Simplify<ServicesSliceTwoColumnPrimary>, Simplify<ServicesSliceTwoColumnItem>>;
+
+/**
  * Slice variation for *Services*
  */
-type ServicesSliceVariation = ServicesSliceDefault
+type ServicesSliceVariation = ServicesSliceDefault | ServicesSliceTwoColumn
 
 /**
  * Services Shared Slice
  *
  * - **API ID**: `services`
- * - **Description**: Services grid section with repeatable service items
+ * - **Description**: Services section with grid or two-column layout variations
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type ServicesSlice = prismic.SharedSlice<"services", ServicesSliceVariation>;
@@ -3793,6 +4058,202 @@ type SolutionsSliceVariation = SolutionsSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type SolutionsSlice = prismic.SharedSlice<"solutions", SolutionsSliceVariation>;
+
+/**
+ * Primary content in *Specialties → Default → Primary*
+ */
+export interface SpecialtiesSliceDefaultPrimary {
+	/**
+	 * Subheading field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: OUR SPECIALTIES
+	 * - **API ID Path**: specialties.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Main Heading field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Innovative Logistics Solutions
+	 * - **API ID Path**: specialties.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our journey began with a vision to revolutionize the logistics industry. Meet the dedicated professionals behind Seon.
+	 * - **API ID Path**: specialties.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Statistic Number field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: 16+
+	 * - **API ID Path**: specialties.default.primary.statistic_number
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	statistic_number: prismic.KeyTextField;
+	
+	/**
+	 * Statistic Label field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Years of Experience
+	 * - **API ID Path**: specialties.default.primary.statistic_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	statistic_label: prismic.KeyTextField;
+	
+	/**
+	 * Statistic Icon field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialties.default.primary.statistic_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	statistic_icon: prismic.ImageField<never>;
+	
+	/**
+	 * Button Text field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: About us
+	 * - **API ID Path**: specialties.default.primary.button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialties.default.primary.button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Image 1 (Top Left) field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialties.default.primary.image_1
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_1: prismic.ImageField<never>;
+	
+	/**
+	 * Image 2 (Bottom Left) field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialties.default.primary.image_2
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_2: prismic.ImageField<never>;
+	
+	/**
+	 * Image 3 (Right) field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialties.default.primary.image_3
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image_3: prismic.ImageField<never>;
+	
+	/**
+	 * Top Margin field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: specialties.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: specialties.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *Specialties → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: specialties.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+}
+
+/**
+ * Primary content in *Specialties → Items*
+ */
+export interface SpecialtiesSliceDefaultItem {
+	/**
+	 * Specialty Title field in *Specialties → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Safety and Compliance
+	 * - **API ID Path**: specialties.items[].specialty_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	specialty_title: prismic.KeyTextField;
+	
+	/**
+	 * Specialty Icon (Optional) field in *Specialties → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialties.items[].specialty_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	specialty_icon: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for Specialties Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Two-column layout with images and specialty list
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SpecialtiesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SpecialtiesSliceDefaultPrimary>, Simplify<SpecialtiesSliceDefaultItem>>;
+
+/**
+ * Slice variation for *Specialties*
+ */
+type SpecialtiesSliceVariation = SpecialtiesSliceDefault
+
+/**
+ * Specialties Shared Slice
+ *
+ * - **API ID**: `specialties`
+ * - **Description**: Showcase operational specialties with image collage and statistics
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SpecialtiesSlice = prismic.SharedSlice<"specialties", SpecialtiesSliceVariation>;
 
 /**
  * Primary content in *Statistics → Default → Primary*
@@ -5244,13 +5705,21 @@ declare module "@prismicio/client" {
 			ServicesSlice,
 			ServicesSliceDefaultPrimary,
 			ServicesSliceDefaultItem,
+			ServicesSliceTwoColumnPrimary,
+			ServicesSliceTwoColumnItem,
 			ServicesSliceVariation,
 			ServicesSliceDefault,
+			ServicesSliceTwoColumn,
 			SolutionsSlice,
 			SolutionsSliceDefaultPrimary,
 			SolutionsSliceDefaultItem,
 			SolutionsSliceVariation,
 			SolutionsSliceDefault,
+			SpecialtiesSlice,
+			SpecialtiesSliceDefaultPrimary,
+			SpecialtiesSliceDefaultItem,
+			SpecialtiesSliceVariation,
+			SpecialtiesSliceDefault,
 			StatisticsSlice,
 			StatisticsSliceDefaultPrimary,
 			StatisticsSliceDefaultItem,

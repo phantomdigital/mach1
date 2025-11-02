@@ -1,0 +1,157 @@
+{
+  "id": "specialties",
+  "type": "SharedSlice",
+  "name": "Specialties",
+  "description": "Showcase operational specialties with image collage and statistics",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Two-column layout with images and specialty list",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "OUR SPECIALTIES"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Main Heading",
+            "placeholder": "Innovative Logistics Solutions"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Our journey began with a vision to revolutionize the logistics industry. Meet the dedicated professionals behind Seon."
+          }
+        },
+        "statistic_number": {
+          "type": "Text",
+          "config": {
+            "label": "Statistic Number",
+            "placeholder": "16+"
+          }
+        },
+        "statistic_label": {
+          "type": "Text",
+          "config": {
+            "label": "Statistic Label",
+            "placeholder": "Years of Experience"
+          }
+        },
+        "statistic_icon": {
+          "type": "Image",
+          "config": {
+            "label": "Statistic Icon",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "About us"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link"
+          }
+        },
+        "image_1": {
+          "type": "Image",
+          "config": {
+            "label": "Image 1 (Top Left)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image_2": {
+          "type": "Image",
+          "config": {
+            "label": "Image 2 (Bottom Left)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image_3": {
+          "type": "Image",
+          "config": {
+            "label": "Image 3 (Right)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small", 
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Padding",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium", 
+              "large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Bottom Padding",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "specialty_title": {
+          "type": "Text",
+          "config": {
+            "label": "Specialty Title",
+            "placeholder": "Safety and Compliance"
+          }
+        },
+        "specialty_icon": {
+          "type": "Image",
+          "config": {
+            "label": "Specialty Icon (Optional)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      }
+    }
+  ]
+}

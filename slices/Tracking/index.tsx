@@ -12,7 +12,7 @@ export type TrackingProps = SliceComponentProps<Content.TrackingSlice>;
 function TrackingLoader() {
   return (
     <section className="w-full py-16 lg:py-24 bg-white">
-      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
         <div className="animate-pulse">
           <div className="h-8 bg-neutral-200 rounded w-1/3 mx-auto mb-4"></div>
           <div className="h-4 bg-neutral-200 rounded w-1/2 mx-auto mb-8"></div>
@@ -93,7 +93,7 @@ const Tracking = async ({ slice }: TrackingProps): Promise<React.ReactElement> =
   return (
     <Suspense fallback={<TrackingLoader />}>
       <section className={`w-full py-16 lg:py-24 bg-white ${getMarginTopClass()}`}>
-        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
           {slice.primary.url_prefix ? (
             <TrackingClient
               urlPrefix={slice.primary.url_prefix}

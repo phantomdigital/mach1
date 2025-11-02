@@ -2,15 +2,22 @@
   "id": "services",
   "type": "SharedSlice",
   "name": "Services",
-  "description": "Services grid section with repeatable service items",
+  "description": "Services section with grid or two-column layout variations",
   "variations": [
     {
       "id": "default",
-      "name": "Default",
+      "name": "Default Grid",
       "docURL": "...",
       "version": "initial",
-      "description": "Default services grid layout",
+      "description": "Grid layout with left content and right service cards",
       "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "OUR SPECIALTIES"
+          }
+        },
         "heading": {
           "type": "Text",
           "config": {
@@ -37,6 +44,56 @@
           "config": {
             "label": "Button Link"
           }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Padding",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Bottom Padding",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
         }
       },
       "items": {
@@ -60,6 +117,162 @@
           "config": {
             "label": "Service Description",
             "placeholder": "Parcels, boxes, pallets. Importing and exporting solutions. Full Container Load (FCL) or Full Trailer Load (FTL) shipping. We've got you covered."
+          }
+        }
+      }
+    },
+    {
+      "id": "twoColumn",
+      "name": "Two Column",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Two-column layout with image collage and specialty list",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "OUR SPECIALTIES"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Main Heading",
+            "placeholder": "Innovative Logistics Solutions"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Our journey began with a vision to revolutionize the logistics industry."
+          }
+        },
+        "statistic_number": {
+          "type": "Text",
+          "config": {
+            "label": "Statistic Number",
+            "placeholder": "16+"
+          }
+        },
+        "statistic_label": {
+          "type": "Text",
+          "config": {
+            "label": "Statistic Label",
+            "placeholder": "Years of Experience"
+          }
+        },
+        "statistic_icon": {
+          "type": "Image",
+          "config": {
+            "label": "Statistic Icon",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "About us"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link"
+          }
+        },
+        "image_1": {
+          "type": "Image",
+          "config": {
+            "label": "Image 1 (Top Left)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image_2": {
+          "type": "Image",
+          "config": {
+            "label": "Image 2 (Bottom Left)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image_3": {
+          "type": "Image",
+          "config": {
+            "label": "Image 3 (Right)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Padding",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Bottom Padding",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        }
+      },
+      "items": {
+        "specialty_title": {
+          "type": "Text",
+          "config": {
+            "label": "Specialty Title",
+            "placeholder": "Safety and Compliance"
+          }
+        },
+        "specialty_icon": {
+          "type": "Image",
+          "config": {
+            "label": "Specialty Icon (Optional)",
+            "constraint": {},
+            "thumbnails": []
           }
         }
       }

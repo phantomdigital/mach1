@@ -111,7 +111,7 @@ const ContentBlock = ({ slice }: ContentBlockProps): React.ReactElement => {
 
   return (
     <section className={`w-full bg-white ${getPaddingTopClass()} ${getPaddingBottomClass()}`}>
-      <div className={`w-full max-w-[100rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
+      <div className={`w-full max-w-[90rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
         {/* Header */}
         <div className="mb-16">
           <div className={`flex flex-col ${getContentAlignment()}`}>

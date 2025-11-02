@@ -3,6 +3,7 @@ import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
 import { HeroButton } from "@/components/ui/hero-button";
 import NetworkOverviewAnimation from "./network-overview-animation";
+import { SliceHeader } from "@/components/slice-header";
 
 /**
  * Props for `NetworkOverview`.
@@ -25,26 +26,19 @@ const NetworkOverview = ({ slice }: NetworkOverviewProps): JSX.Element => {
       data-slice-variation="networkOverview"
       className={`w-full bg-white ${marginTop} ${paddingTop} ${paddingBottom}`}
     >
-      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
         {/* Header Section */}
-        {(slice.primary.subheading || slice.primary.heading) && (
-          <div className="mb-16">
-            {slice.primary.subheading && (
-              <h5 className="text-neutral-800 text-sm uppercase tracking-wider mb-4">
-                {slice.primary.subheading}
-              </h5>
-            )}
-            {slice.primary.heading && (
-              <h2 className="text-neutral-800 text-4xl lg:text-6xl mb-6">
-                {slice.primary.heading}
-              </h2>
-            )}
-          </div>
+        <SliceHeader subheading={slice.primary.subheading} />
+        
+        {slice.primary.heading && (
+          <h2 className="text-neutral-800 text-4xl lg:text-6xl mb-16">
+            {slice.primary.heading}
+          </h2>
         )}
 
         {/* Main Content Flex Row */}
         <NetworkOverviewAnimation>
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-28">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-28 pt-12">
             {/* Left Column - Globe with Overlay, Text, and Button */}
             <div className="flex flex-col flex-shrink-0 w-full lg:w-[40%] gap-12" data-animate="left-column">
             {/* Map/Globe Image with Statistic Overlay */}

@@ -18,7 +18,7 @@ export type HomepageHeroProps = SliceComponentProps<Content.HomepageHeroSlice>;
  * Modern, minimal hero section with split layout and natural image presentation.
  */
 const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
-  const layout = (slice.primary as any).layout || "split";
+  const layout = slice.primary.layout || "split";
   const backgroundStyle = slice.primary.background_style || "light";
 
   // Background classes based on style
@@ -68,22 +68,31 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
             <div className="relative grid grid-cols-1 lg:grid-cols-[2.5fr_1fr]">
               {/* Left Column - Hero Image with Text Overlay */}
               <div className="relative min-h-[600px] lg:min-h-[700px] overflow-hidden">
-                <HomepageHeroImage image={slice.primary.background_image} />
+                <HomepageHeroImage 
+                  image={slice.primary.background_image}
+                  positionX={slice.primary.image_position_x ?? undefined}
+                  positionY={slice.primary.image_position_y ?? undefined}
+                />
                 
                 {/* Text Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end px-8 py-12 lg:px-12 lg:py-20 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
-                  <div className="max-w-2xl ml-0 lg:ml-36">
+                <div className="absolute inset-0 flex flex-col justify-end px-8 py-12 lg:px-12 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
+                  <div className="max-w-2xl ml-0 lg:ml-52">
                     <HomepageHeroAnimation
-                      subheading={slice.primary.subheading || undefined}
-                      heading={slice.primary.heading || undefined}
-                      description={slice.primary.description || undefined}
+                      subheading={slice.primary.subheading}
+                      heading={slice.primary.heading}
+                      description={slice.primary.description}
                       textColors={{
                         subheading: "text-white",
                         heading: "text-white",
                         description: "text-white/90"
                       }}
-                      badgeButtonText={(slice.primary as any).badge_button_text}
-                      badgeButtonLink={(slice.primary as any).badge_button_link?.url}
+                      badgeButtonText={slice.primary.badge_button_text}
+                      badgeButtonLink={
+                        slice.primary.badge_button_link && 
+                        "url" in slice.primary.badge_button_link 
+                          ? slice.primary.badge_button_link.url 
+                          : undefined
+                      }
                     />
                   </div>
 
@@ -120,7 +129,11 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                 {/* Top: Secondary Image */}
                 <div className="relative h-[250px] lg:flex-1 overflow-hidden bg-neutral-100">
                   {slice.primary.secondary_image && (
-                    <HomepageHeroImage image={slice.primary.secondary_image} />
+                    <HomepageHeroImage 
+                      image={slice.primary.secondary_image}
+                      positionX={slice.primary.image_position_x ?? undefined}
+                      positionY={slice.primary.image_position_y ?? undefined}
+                    />
                   )}
                 </div>
 
@@ -145,9 +158,9 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
             // Centered Layout (no image or centered layout)
             <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
               <HomepageHeroAnimation
-                subheading={slice.primary.subheading || undefined}
-                heading={slice.primary.heading || undefined}
-                description={slice.primary.description || undefined}
+                subheading={slice.primary.subheading}
+                heading={slice.primary.heading}
+                description={slice.primary.description}
                 textColors={textColors}
               />
 

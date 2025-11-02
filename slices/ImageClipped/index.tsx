@@ -12,7 +12,7 @@ export type ImageClippedProps = SliceComponentProps<Content.ImageClippedSlice> &
 /**
  * Component for "ImageClipped" Slices.
  */
-const ImageClipped = ({ slice, maxWidth = "max-w-[100rem]" }: ImageClippedProps): React.ReactElement => {
+const ImageClipped = ({ slice, maxWidth = "max-w-[90rem]" }: ImageClippedProps): React.ReactElement => {
   return (
     <section
       data-slice-type={slice.slice_type}
@@ -85,7 +85,7 @@ const ImageClipped = ({ slice, maxWidth = "max-w-[100rem]" }: ImageClippedProps)
 
       {/* Optional caption below the image */}
       {slice.primary.caption && (
-        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8 mt-8">
+        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8 mt-8">
           <div className="text-center">
             <p 
               className="text-lg text-gray-600 max-w-3xl mx-auto"

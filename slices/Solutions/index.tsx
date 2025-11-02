@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { PrismicNextLink } from "@prismicio/next";
 import SolutionCard from "./solution-card";
 import SolutionsAnimation from "./solutions-animation";
+import { SliceHeader } from "@/components/slice-header";
 
 /**
  * Props for `Solutions`.
@@ -34,22 +35,18 @@ const Solutions = ({ slice }: SolutionsProps): JSX.Element => {
       style={{ backgroundColor }}
     >
       <SolutionsAnimation>
-        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
-          {/* Centered Header */}
-          {(slice.primary.subheading || slice.primary.heading) && (
-            <div className="text-center mb-12 lg:mb-16" data-animate="header">
-              {slice.primary.subheading && (
-                <h5 className="text-neutral-800 text-sm uppercase tracking-wider mb-6">
-                  {slice.primary.subheading}
-                </h5>
-              )}
-              {slice.primary.heading && (
-                <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl mx-auto ">
+        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
+          {/* Header with SliceHeader */}
+          <div data-animate="header">
+            <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
+            {slice.primary.heading && (
+              <div className="text-center mb-12 lg:mb-16">
+                <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl text-left">
                   {slice.primary.heading}
                 </h2>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
 
           {/* Solutions Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12">

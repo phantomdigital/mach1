@@ -83,7 +83,7 @@ const NetworkDefault = ({ slice }: NetworkDefaultProps): JSX.Element => {
       data-slice-variation="default"
       className={`w-full bg-white ${marginTop} ${paddingTop} ${paddingBottom}`}
     >
-      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
         {/* Header Section */}
         {(slice.primary.subheading || slice.primary.heading || slice.primary.description) && (
           <div className="text-center mb-16">

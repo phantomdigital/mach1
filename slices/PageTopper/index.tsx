@@ -52,7 +52,7 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
               <div className="absolute inset-0 z-5 bg-gradient-to-b from-black/70 via-black/10 to-black/85"></div>
 
               {/* Content */}
-              <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8 pb-8 lg:pb-12 relative z-10">
+              <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8 pb-8 lg:pb-12 relative z-10">
                 <div className={getWidthClass()}>
                   {/* Header with Animation */}
                   <PageTopperAnimation 

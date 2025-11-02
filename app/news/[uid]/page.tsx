@@ -110,7 +110,7 @@ export default async function NewsArticlePage({
     <main>
       {/* Article Header */}
       <section className="w-full pt-32 pb-12 lg:pt-56 lg:pb-20 bg-white">
-        <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+        <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Back Link */}
             <div className="mb-6 lg:mb-8">

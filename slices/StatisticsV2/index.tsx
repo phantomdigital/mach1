@@ -67,7 +67,7 @@ const StatisticsV2 = ({ slice }: StatisticsV2Props): React.ReactElement => {
 
   return (
     <section className={`w-full bg-dark-blue ${getPaddingTopClass()} ${getPaddingBottomClass()}`}>
-      <div className={`w-full max-w-[100rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
+      <div className={`w-full max-w-[90rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
         {/* Header */}
         {(slice.primary.subheading || slice.primary.heading) && (
           <div className="mb-16 text-center">

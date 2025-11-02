@@ -85,6 +85,24 @@
             "thumbnails": []
           }
         },
+        "image_position_x": {
+          "type": "Number",
+          "config": {
+            "label": "Image Position X (%)",
+            "placeholder": "50",
+            "min": 0,
+            "max": 100
+          }
+        },
+        "image_position_y": {
+          "type": "Number",
+          "config": {
+            "label": "Image Position Y (%)",
+            "placeholder": "50",
+            "min": 0,
+            "max": 100
+          }
+        },
         "secondary_image": {
           "type": "Image",
           "config": {

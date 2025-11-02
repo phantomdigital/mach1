@@ -85,7 +85,7 @@ export function LocationsNav({ locations }: LocationNavProps) {
         top: isCompactHeaderVisible ? `${compactHeaderHeight}px` : '0px'
       }}
     >
-      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
         <div className="py-4 overflow-x-auto scrollbar-hide">
           <div className="flex gap-6 lg:gap-8 min-w-max">
             {Object.entries(locationsByState).map(([state, stateLocations]) => (

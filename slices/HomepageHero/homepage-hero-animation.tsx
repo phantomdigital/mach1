@@ -3,19 +3,19 @@
 import { useEffect, useRef, useCallback } from "react";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
-import { Badge } from "@/components/ui/badge";
+import type { KeyTextField } from "@prismicio/client";
 
 interface HomepageHeroAnimationProps {
-  subheading?: string;
-  heading?: string;
-  description?: string;
+  subheading?: KeyTextField;
+  heading?: KeyTextField;
+  description?: KeyTextField;
   textColors: {
     subheading: string;
     heading: string;
     description: string;
   };
-  badgeButtonText?: string;
-  badgeButtonLink?: any;
+  badgeButtonText?: KeyTextField;
+  badgeButtonLink?: string;
 }
 
 export function HomepageHeroAnimation({
@@ -23,8 +23,7 @@ export function HomepageHeroAnimation({
   heading,
   description,
   textColors,
-  badgeButtonText,
-  badgeButtonLink,
+
 }: HomepageHeroAnimationProps) {
   const subheadingRef = useRef<HTMLHeadingElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);

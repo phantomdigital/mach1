@@ -19,7 +19,7 @@ export function RelatedArticles({ articles }: RelatedArticlesProps) {
 
   return (
     <section className="w-full py-12 lg:py-20 bg-neutral-50">
-      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
         <h2 className="text-neutral-800 text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 lg:mb-10">
           Related Articles
         </h2>

@@ -9,7 +9,7 @@ export type StepsProps = SliceComponentProps<Content.StepsSlice>;
 function StepsLoader() {
   return (
     <section className="w-full bg-white py-16 lg:py-24">
-      <div className="w-full max-w-[100rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[90rem] mx-auto px-4 lg:px-8">
         <div className="w-full flex items-center justify-center py-20">
           <div className="animate-pulse text-neutral-400">Loading...</div>
         </div>

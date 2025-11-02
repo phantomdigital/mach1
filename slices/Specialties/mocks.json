@@ -1,0 +1,35 @@
+[
+  {
+    "variation": "default",
+    "name": "Default",
+    "slice_type": "specialties",
+    "items": [
+      {
+        "specialty_title": "Safety and Compliance"
+      },
+      {
+        "specialty_title": "Innovative Technology"
+      },
+      {
+        "specialty_title": "Continuous Improvement"
+      },
+      {
+        "specialty_title": "Prioritize Timely Deliveries"
+      },
+      {
+        "specialty_title": "Quality Control System"
+      }
+    ],
+    "primary": {
+      "subheading": "OUR SPECIALTIES",
+      "heading": "Innovative Logistics Solutions",
+      "description": "Our journey began with a vision to revolutionize the logistics industry. Meet the dedicated professionals behind our success.",
+      "statistic_number": "16+",
+      "statistic_label": "Years of Experience",
+      "button_text": "About us",
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large"
+    }
+  }
+]

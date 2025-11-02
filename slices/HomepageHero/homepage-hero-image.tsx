@@ -3,15 +3,24 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { PrismicNextImage } from "@prismicio/next";
-import { ImageField } from "@prismicio/client";
+import type { ImageField, NumberField } from "@prismicio/client";
 
 interface HomepageHeroImageProps {
   image: ImageField;
+  positionX?: NumberField;
+  positionY?: NumberField;
 }
 
-export function HomepageHeroImage({ image }: HomepageHeroImageProps) {
+export function HomepageHeroImage({ image, positionX, positionY }: HomepageHeroImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const hasAnimatedRef = useRef(false);
+
+  // Calculate object-position value from X and Y percentages
+  // Default to center (50%, 50%) if not provided
+  // Handle Prismic's NumberField which can be null
+  const xPos = positionX ?? 50;
+  const yPos = positionY ?? 50;
+  const objectPosition = `${xPos}% ${yPos}%`;
 
   useEffect(() => {
     if (!containerRef.current || hasAnimatedRef.current) return;
@@ -47,6 +56,7 @@ export function HomepageHeroImage({ image }: HomepageHeroImageProps) {
         field={image}
         fill
         className="object-cover"
+        style={{ objectPosition }}
         priority
         sizes="(max-width: 1024px) 100vw, 75vw"
         quality={90}

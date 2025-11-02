@@ -94,15 +94,15 @@ rules:
   - name: "Container Standards"
     description: "Consistent container and layout patterns across all components"
     patterns:
-      - "ALWAYS use standard container pattern: 'w-full max-w-[100rem] mx-auto px-4 lg:px-8'"
+      - "ALWAYS use standard container pattern: 'w-full max-w-[90rem] mx-auto px-4 lg:px-8'"
       - "ALL components must align exactly with header container width"
-      - "Container breakdown: w-full (full width up to max), max-w-[100rem], mx-auto (centered), px-4 lg:px-8 (responsive padding)"
+      - "Container breakdown: w-full (full width up to max), max-w-[90rem], mx-auto (centered), px-4 lg:px-8 (responsive padding)"
       - "Use this pattern for Hero, content sections, footer, and all page components"
       - "Padding: px-4 (16px) on mobile/tablet, lg:px-8 (32px) on large screens"
       - "For full-width backgrounds: apply container inside the background element"
       - "Avoid nested containers - use the pattern once per section"
       - "Test alignment by comparing with header logo and navigation positioning"
-      - "Easy width adjustments: change max-w-[100rem] to max-w-[80rem] or max-w-[120rem] as needed"
+      - "Easy width adjustments: change max-w-[90rem] to max-w-[80rem] or max-w-[120rem] as needed"
       
   - name: "SEO and Metadata Best Practices"
     description: "Comprehensive SEO metadata implementation for MACH1 Logistics"
