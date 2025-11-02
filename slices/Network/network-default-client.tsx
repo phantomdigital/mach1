@@ -1,12 +1,12 @@
 "use client";
 
 import type { Content } from "@prismicio/client";
-import type { SliceComponentProps } from "@prismicio/react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
 import NetworkTabs from "./network-tabs";
 import { Loader2 } from "lucide-react";
+import React from "react";
 
 // Dynamically import Globe3D to avoid SSR issues with Three.js
 const Globe3D = dynamic(() => import("./globe-3d"), {
@@ -29,7 +29,7 @@ export type NetworkDefaultProps = {
 /**
  * Client component for "Network" Default variation (3D Globe).
  */
-const NetworkDefault = ({ slice }: NetworkDefaultProps): JSX.Element => {
+const NetworkDefault = ({ slice }: NetworkDefaultProps): React.ReactElement => {
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
   const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
