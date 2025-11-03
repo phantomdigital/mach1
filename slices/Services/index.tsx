@@ -8,6 +8,7 @@ import ServicesAnimation from "./services-animation";
 import { SliceHeader } from "@/components/slice-header";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
 import { createClient } from "@/prismicio";
+import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 
 
 /**
@@ -139,7 +140,7 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                             {/* Right Column - Content */}
                             <div className="flex flex-col justify-center space-y-8" data-animate="left-column">
                                 {/* Main Heading */}
-                                <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight">
+                                <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight tracking-tight">
                                     {slice.primary.heading || "Innovative Logistics Solutions"}
                                 </h2>
 
@@ -183,16 +184,23 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                             )}
 
                                 {/* CTA Button */}
-                                <div className="pt-4" data-animate="button">
+                                <div className="pt-4 inline-flex" data-animate="button">
                                     {slice.primary.button_text && slice.primary.button_link ? (
-                                        <Button asChild variant="hero" size="lg">
-                                            <PrismicNextLink field={slice.primary.button_link}>
-                                                {slice.primary.button_text}
+                                        <Button asChild variant="subtle" className="!px-0">
+                                            <PrismicNextLink 
+                                                field={slice.primary.button_link}
+                                                className="inline-flex items-center gap-1.5 text-neutral-800"
+                                            >
+                                                <span>{slice.primary.button_text}</span>
+                                                <ExternalLinkIcon className="w-2.5 h-2.5" color="currentColor" />
                                             </PrismicNextLink>
                                         </Button>
                                     ) : (
-                                        <Button variant="hero" size="lg" disabled>
-                                            About us
+                                        <Button variant="subtle" size="lg" disabled>
+                                            <span className="inline-flex items-center gap-1.5">
+                                                <span>About us</span>
+                                                <ExternalLinkIcon className="w-2.5 h-2.5" color="currentColor" />
+                                            </span>
                                         </Button>
                                     )}
                                 </div>
@@ -225,7 +233,7 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                             <div className="lg:pr-8 space-y-6">
                                 {/* Section Heading */}
                                 {slice.primary.heading && (
-                                    <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight">
+                                    <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight tracking-tight">
                                         {slice.primary.heading}
                                     </h2>
                                 )}

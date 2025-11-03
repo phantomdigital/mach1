@@ -6,6 +6,7 @@ import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/
 import { Button } from "@/components/ui/button";
 import { SliceHeader } from "@/components/slice-header";
 import { CheckCircle } from "lucide-react";
+import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 
 /**
  * Props for `Specialties`.
@@ -98,7 +99,7 @@ const Specialties = ({ slice }: SpecialtiesProps): React.ReactElement => {
           <div className="flex flex-col justify-center space-y-8">
             {/* Main Heading */}
             {slice.primary.heading && (
-              <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight">
+              <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight tracking-tight">
                 {slice.primary.heading}
               </h2>
             )}
@@ -138,9 +139,13 @@ const Specialties = ({ slice }: SpecialtiesProps): React.ReactElement => {
             {/* CTA Button */}
             {slice.primary.button_text && slice.primary.button_link && (
               <div className="pt-4">
-                <Button asChild variant="outline" size="lg">
-                  <PrismicNextLink field={slice.primary.button_link}>
-                    {slice.primary.button_text}
+                <Button asChild variant="subtle" size="lg">
+                  <PrismicNextLink 
+                    field={slice.primary.button_link}
+                    className="inline-flex items-center gap-1.5 text-neutral-800"
+                  >
+                    <span>{slice.primary.button_text}</span>
+                    <ExternalLinkIcon className="w-2.5 h-2.5" color="currentColor" />
                   </PrismicNextLink>
                 </Button>
               </div>

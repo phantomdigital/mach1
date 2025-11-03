@@ -6,23 +6,23 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface SolutionsAnimationProps {
+interface NewsOverviewAnimationProps {
   children: React.ReactNode;
 }
 
-export default function SolutionsAnimation({ children }: SolutionsAnimationProps) {
+export default function NewsOverviewAnimation({ children }: NewsOverviewAnimationProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const scrollTriggersRef = useRef<ScrollTrigger[]>([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const header = sectionRef.current?.querySelector("[data-animate='header']");
-      const cards = sectionRef.current?.querySelectorAll("[data-animate='card']");
+      const sidebar = sectionRef.current?.querySelector("[data-animate='sidebar']");
+      const featuredArticle = sectionRef.current?.querySelector("[data-animate='featured-article']");
+      const previewCards = sectionRef.current?.querySelectorAll("[data-animate='preview-card']");
       const button = sectionRef.current?.querySelector("[data-animate='button']");
 
-      if (!header && !cards && !button) return;
-
-      // Animate header (subheading and heading)
+      // Animate header (subheading)
       if (header && header.children.length > 0) {
         const headerTween = gsap.from(header.children, {
           y: 30,
@@ -35,14 +35,13 @@ export default function SolutionsAnimation({ children }: SolutionsAnimationProps
             start: "top 80%",
             end: "top 50%",
             toggleActions: "play none none none",
-            once: true, // Only trigger once
-            markers: false, // Disable markers for performance
-            invalidateOnRefresh: false, // Prevent recalculation on resize
+            once: true,
+            markers: false,
+            invalidateOnRefresh: false,
           },
         });
         if (headerTween.scrollTrigger) {
           scrollTriggersRef.current.push(headerTween.scrollTrigger);
-          // Kill ScrollTrigger after animation completes
           headerTween.eventCallback("onComplete", () => {
             if (headerTween.scrollTrigger) {
               headerTween.scrollTrigger.kill();
@@ -51,32 +50,81 @@ export default function SolutionsAnimation({ children }: SolutionsAnimationProps
         }
       }
 
-      // Animate cards with stagger
-      if (cards && cards.length > 0) {
-        // Set will-change for performance optimization
-        gsap.set(cards, { willChange: "transform, opacity" });
-        
-        const cardsTween = gsap.from(cards, {
-          y: 50,
+      // Animate sidebar (header info)
+      if (sidebar) {
+        const sidebarTween = gsap.from(sidebar, {
+          x: -30,
           opacity: 0,
-          duration: 0.9,
-          stagger: 0.15,
+          duration: 0.8,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: cards[0],
+            trigger: sidebar,
             start: "top 85%",
             end: "top 50%",
             toggleActions: "play none none none",
-            once: true, // Only trigger once
-            markers: false, // Disable markers for performance
-            invalidateOnRefresh: false, // Prevent recalculation on resize
+            once: true,
+            markers: false,
+            invalidateOnRefresh: false,
+          },
+        });
+        if (sidebarTween.scrollTrigger) {
+          scrollTriggersRef.current.push(sidebarTween.scrollTrigger);
+          sidebarTween.eventCallback("onComplete", () => {
+            if (sidebarTween.scrollTrigger) {
+              sidebarTween.scrollTrigger.kill();
+            }
+          });
+        }
+      }
+
+      // Animate featured article
+      if (featuredArticle) {
+        const featuredTween = gsap.from(featuredArticle, {
+          y: 50,
+          opacity: 0,
+          duration: 0.9,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: featuredArticle,
+            start: "top 85%",
+            end: "top 50%",
+            toggleActions: "play none none none",
+            once: true,
+            markers: false,
+            invalidateOnRefresh: false,
+          },
+        });
+        if (featuredTween.scrollTrigger) {
+          scrollTriggersRef.current.push(featuredTween.scrollTrigger);
+          featuredTween.eventCallback("onComplete", () => {
+            if (featuredTween.scrollTrigger) {
+              featuredTween.scrollTrigger.kill();
+            }
+          });
+        }
+      }
+
+      // Animate preview cards with stagger
+      if (previewCards && previewCards.length > 0) {
+        const cardsTween = gsap.from(previewCards, {
+          y: 40,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: previewCards[0],
+            start: "top 85%",
+            end: "top 50%",
+            toggleActions: "play none none none",
+            once: true,
+            markers: false,
+            invalidateOnRefresh: false,
           },
         });
         if (cardsTween.scrollTrigger) {
           scrollTriggersRef.current.push(cardsTween.scrollTrigger);
-          // Kill ScrollTrigger after animation completes and remove will-change
           cardsTween.eventCallback("onComplete", () => {
-            gsap.set(cards, { willChange: "auto" });
             if (cardsTween.scrollTrigger) {
               cardsTween.scrollTrigger.kill();
             }
@@ -96,14 +144,13 @@ export default function SolutionsAnimation({ children }: SolutionsAnimationProps
             start: "top 90%",
             end: "top 60%",
             toggleActions: "play none none none",
-            once: true, // Only trigger once
-            markers: false, // Disable markers for performance
-            invalidateOnRefresh: false, // Prevent recalculation on resize
+            once: true,
+            markers: false,
+            invalidateOnRefresh: false,
           },
         });
         if (buttonTween.scrollTrigger) {
           scrollTriggersRef.current.push(buttonTween.scrollTrigger);
-          // Kill ScrollTrigger after animation completes
           buttonTween.eventCallback("onComplete", () => {
             if (buttonTween.scrollTrigger) {
               buttonTween.scrollTrigger.kill();

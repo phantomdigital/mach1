@@ -137,4 +137,3 @@ export function FeaturedHero({ article }: FeaturedHeroProps) {
     </div>
   );
 }
-

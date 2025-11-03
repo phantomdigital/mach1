@@ -808,7 +808,7 @@ interface HeaderDocumentData {
  */
 export type HeaderDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HeaderDocumentData>, "header", Lang>;
 
-type HomeDocumentDataSlicesSlice = ServicesSlice | NetworkSlice | HomepageHeroSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
+type HomeDocumentDataSlicesSlice = HeroBlockSlice | NewsOverviewSlice | ServicesSlice | NetworkSlice | HomepageHeroSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Home documents
@@ -1419,66 +1419,6 @@ interface SolutionDocumentData {
  */
 export type SolutionDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<SolutionDocumentData>, "solution", Lang>;
 
-type SolutionsDocumentDataSlicesSlice = PageTopperSlice
-
-/**
- * Content for Solutions documents
- */
-interface SolutionsDocumentData {
-	/**
-	 * Slice Zone field in *Solutions*
-	 *
-	 * - **Field Type**: Slice Zone
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: solutions.slices[]
-	 * - **Tab**: Main
-	 * - **Documentation**: https://prismic.io/docs/slices
-	 */
-	slices: prismic.SliceZone<SolutionsDocumentDataSlicesSlice>;/**
-	 * Meta Title field in *Solutions*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: A title of the page used for social media and search engines
-	 * - **API ID Path**: solutions.meta_title
-	 * - **Tab**: SEO & Metadata
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	meta_title: prismic.KeyTextField;
-	
-	/**
-	 * Meta Description field in *Solutions*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: A brief summary of the page
-	 * - **API ID Path**: solutions.meta_description
-	 * - **Tab**: SEO & Metadata
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	meta_description: prismic.KeyTextField;
-	
-	/**
-	 * Meta Image field in *Solutions*
-	 *
-	 * - **Field Type**: Image
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: solutions.meta_image
-	 * - **Tab**: SEO & Metadata
-	 * - **Documentation**: https://prismic.io/docs/fields/image
-	 */
-	meta_image: prismic.ImageField<never>;
-}
-
-/**
- * Solutions document from Prismic
- *
- * - **API ID**: `solutions`
- * - **Repeatable**: `true`
- * - **Documentation**: https://prismic.io/docs/content-modeling
- *
- * @typeParam Lang - Language API ID of the document.
- */
-export type SolutionsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<SolutionsDocumentData>, "solutions", Lang>;
-
 type SpecialtyDocumentDataSlicesSlice = TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice | SpecialtiesSlice
 
 /**
@@ -1583,7 +1523,7 @@ interface SpecialtyDocumentData {
  */
 export type SpecialtyDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<SpecialtyDocumentData>, "specialty", Lang>;
 
-export type AllDocumentTypes = AuthorDocument | FooterDocument | HeaderDocument | HomeDocument | JobDocument | NewsDocument | PageDocument | SolutionDocument | SolutionsDocument | SpecialtyDocument;
+export type AllDocumentTypes = AuthorDocument | FooterDocument | HeaderDocument | HomeDocument | JobDocument | NewsDocument | PageDocument | SolutionDocument | SpecialtyDocument;
 
 /**
  * Primary content in *Careers → Default → Primary*
@@ -2173,6 +2113,162 @@ type HeroSliceVariation = HeroSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type HeroSlice = prismic.SharedSlice<"hero", HeroSliceVariation>;
+
+/**
+ * Primary content in *HeroBlock → Default → Primary*
+ */
+export interface HeroBlockSliceDefaultPrimary {
+	/**
+	 * Hero Image field in *HeroBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero_block.default.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Subheading field in *HeroBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: ABOUT COMPANY
+	 * - **API ID Path**: hero_block.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *HeroBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: We offer tailored solutions in global freight management, real-time tracking, and last-mile delivery.
+	 * - **API ID Path**: hero_block.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Button Text field in *HeroBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: About company
+	 * - **API ID Path**: hero_block.default.primary.button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *HeroBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero_block.default.primary.button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Background Color field in *HeroBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: hero_block.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Top Margin field in *HeroBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: hero_block.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *HeroBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: hero_block.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *HeroBlock → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: hero_block.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+}
+
+/**
+ * Primary content in *HeroBlock → Items*
+ */
+export interface HeroBlockSliceDefaultItem {
+	/**
+	 * Stat Number field in *HeroBlock → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: 98
+	 * - **API ID Path**: hero_block.items[].stat_number
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	stat_number: prismic.KeyTextField;
+	
+	/**
+	 * Stat Suffix (optional) field in *HeroBlock → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: % or + or M or K
+	 * - **API ID Path**: hero_block.items[].stat_suffix
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	stat_suffix: prismic.KeyTextField;
+	
+	/**
+	 * Stat Label field in *HeroBlock → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: On-Time Delivery Rate
+	 * - **API ID Path**: hero_block.items[].stat_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	stat_label: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for HeroBlock Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeroBlockSliceDefault = prismic.SharedSliceVariation<"default", Simplify<HeroBlockSliceDefaultPrimary>, Simplify<HeroBlockSliceDefaultItem>>;
+
+/**
+ * Slice variation for *HeroBlock*
+ */
+type HeroBlockSliceVariation = HeroBlockSliceDefault
+
+/**
+ * HeroBlock Shared Slice
+ *
+ * - **API ID**: `hero_block`
+ * - **Description**: Hero section with edge-to-edge image on left and content with statistics on right
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type HeroBlockSlice = prismic.SharedSlice<"hero_block", HeroBlockSliceVariation>;
 
 /**
  * Primary content in *HomepageHero → Default → Primary*
@@ -3412,6 +3508,149 @@ type NewsSliceVariation = NewsSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type NewsSlice = prismic.SharedSlice<"news", NewsSliceVariation>;
+
+/**
+ * Primary content in *NewsOverview → Default → Primary*
+ */
+export interface NewsOverviewSliceDefaultPrimary {
+	/**
+	 * Subheading field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Latest News
+	 * - **API ID Path**: news_overview.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Stay Updated with MACH1 Logistics
+	 * - **API ID Path**: news_overview.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Featured Article (Optional) field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Select article to feature (or leave empty to use most recent)
+	 * - **API ID Path**: news_overview.default.primary.featured_article
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	featured_article: prismic.ContentRelationshipField<"news">;
+	
+	/**
+	 * Preview Articles Count field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 2
+	 * - **Default Value**: 2
+	 * - **API ID Path**: news_overview.default.primary.preview_count
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	preview_count: prismic.NumberField;
+	
+	/**
+	 * Show View All Button field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: true
+	 * - **API ID Path**: news_overview.default.primary.show_view_all_button
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_view_all_button: prismic.BooleanField;
+	
+	/**
+	 * View All Button Text field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: VIEW ALL NEWS
+	 * - **API ID Path**: news_overview.default.primary.view_all_button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	view_all_button_text: prismic.KeyTextField;
+	
+	/**
+	 * View All Link field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Link to news page
+	 * - **API ID Path**: news_overview.default.primary.view_all_link
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	view_all_link: prismic.ContentRelationshipField<"page">;
+	
+	/**
+	 * Top Margin field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: news_overview.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top (pt) field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: news_overview.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom (pb) field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: news_overview.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Background Color field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: news_overview.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+}
+
+/**
+ * Default variation for NewsOverview Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type NewsOverviewSliceDefault = prismic.SharedSliceVariation<"default", Simplify<NewsOverviewSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *NewsOverview*
+ */
+type NewsOverviewSliceVariation = NewsOverviewSliceDefault
+
+/**
+ * NewsOverview Shared Slice
+ *
+ * - **API ID**: `news_overview`
+ * - **Description**: Display featured news article with preview cards
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type NewsOverviewSlice = prismic.SharedSlice<"news_overview", NewsOverviewSliceVariation>;
 
 /**
  * Primary content in *OurTeam → Default → Primary*
@@ -5428,6 +5667,16 @@ export interface TestimonialsSliceDefaultPrimary {
 	description: prismic.KeyTextField;
 	
 	/**
+	 * Background Color field in *Testimonials → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: testimonials.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
 	 * Number of Rows field in *Testimonials → Default → Primary*
 	 *
 	 * - **Field Type**: Number
@@ -5795,9 +6044,6 @@ declare module "@prismicio/client" {
 			SolutionDocument,
 			SolutionDocumentData,
 			SolutionDocumentDataSlicesSlice,
-			SolutionsDocument,
-			SolutionsDocumentData,
-			SolutionsDocumentDataSlicesSlice,
 			SpecialtyDocument,
 			SpecialtyDocumentData,
 			SpecialtyDocumentDataSlicesSlice,
@@ -5825,6 +6071,11 @@ declare module "@prismicio/client" {
 			HeroSliceDefaultItem,
 			HeroSliceVariation,
 			HeroSliceDefault,
+			HeroBlockSlice,
+			HeroBlockSliceDefaultPrimary,
+			HeroBlockSliceDefaultItem,
+			HeroBlockSliceVariation,
+			HeroBlockSliceDefault,
 			HomepageHeroSlice,
 			HomepageHeroSliceDefaultPrimary,
 			HomepageHeroSliceDefaultItem,
@@ -5863,6 +6114,10 @@ declare module "@prismicio/client" {
 			NewsSliceDefaultPrimary,
 			NewsSliceVariation,
 			NewsSliceDefault,
+			NewsOverviewSlice,
+			NewsOverviewSliceDefaultPrimary,
+			NewsOverviewSliceVariation,
+			NewsOverviewSliceDefault,
 			OurTeamSlice,
 			OurTeamSliceDefaultPrimary,
 			OurTeamSliceDefaultItem,

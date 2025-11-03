@@ -1,0 +1,128 @@
+{
+  "id": "hero_block",
+  "type": "SharedSlice",
+  "name": "HeroBlock",
+  "description": "Hero section with edge-to-edge image on left and content with statistics on right",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Hero Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "ABOUT COMPANY"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "We offer tailored solutions in global freight management, real-time tracking, and last-mile delivery."
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "About company"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link",
+            "select": null
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Padding",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Bottom Padding",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large"
+            ],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "stat_number": {
+          "type": "Text",
+          "config": {
+            "label": "Stat Number",
+            "placeholder": "98"
+          }
+        },
+        "stat_suffix": {
+          "type": "Text",
+          "config": {
+            "label": "Stat Suffix (optional)",
+            "placeholder": "% or + or M or K"
+          }
+        },
+        "stat_label": {
+          "type": "Text",
+          "config": {
+            "label": "Stat Label",
+            "placeholder": "On-Time Delivery Rate"
+          }
+        }
+      }
+    }
+  ]
+}
+

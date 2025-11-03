@@ -11,6 +11,12 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "hero_block": {
+              "type": "SharedSlice"
+            },
+            "news_overview": {
+              "type": "SharedSlice"
+            },
             "services": {
               "type": "SharedSlice"
             },

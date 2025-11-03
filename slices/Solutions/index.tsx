@@ -6,6 +6,7 @@ import { PrismicNextLink } from "@prismicio/next";
 import SolutionCard from "./solution-card";
 import SolutionsAnimation from "./solutions-animation";
 import { SliceHeader } from "@/components/slice-header";
+import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import React from "react";
 
 /**
@@ -42,7 +43,7 @@ const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
             <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
             {slice.primary.heading && (
               <div className="text-center mb-12 lg:mb-16">
-                <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl text-left">
+                <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl text-left tracking-tight">
                   {slice.primary.heading}
                 </h2>
               </div>
@@ -52,7 +53,7 @@ const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
           {/* Solutions Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12">
             {displayedItems.map((item, index) => (
-              <div key={index} data-animate="card">
+              <div key={index} data-animate="card" className="will-change-transform">
                 <SolutionCard item={item} index={index} />
               </div>
             ))}
@@ -61,9 +62,13 @@ const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
           {/* Bottom Button */}
           {slice.primary.button_text && slice.primary.button_link && (
             <div className="flex justify-center" data-animate="button">
-              <Button asChild variant="hero" size="lg">
-                <PrismicNextLink field={slice.primary.button_link}>
-                  {slice.primary.button_text}
+              <Button asChild variant="subtle" size="lg">
+                <PrismicNextLink 
+                  field={slice.primary.button_link}
+                  className="inline-flex items-center gap-1.5 text-neutral-800"
+                >
+                  <span>{slice.primary.button_text}</span>
+                  <ExternalLinkIcon className="w-2.5 h-2.5" color="currentColor" />
                 </PrismicNextLink>
               </Button>
             </div>

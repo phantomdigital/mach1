@@ -1,0 +1,19 @@
+{
+  "default": {
+    "subheading": "Latest News",
+    "heading": "Stay Updated with MACH1 Logistics",
+    "featured_article": null,
+    "preview_count": 2,
+    "show_view_all_button": true,
+    "view_all_button_text": "VIEW ALL NEWS",
+    "view_all_link": {
+      "link_type": "Document",
+      "type": "page"
+    },
+    "margin_top": "large",
+    "padding_top": "large",
+    "padding_bottom": "large",
+    "background_color": "#ffffff"
+  }
+}
+

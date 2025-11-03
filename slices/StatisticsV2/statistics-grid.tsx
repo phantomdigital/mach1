@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useInView } from "framer-motion";
 
 interface StatItem {
   number?: string | null;
@@ -77,54 +77,12 @@ function CountUpNumber({
 }
 
 export default function StatisticsGrid({ statistics }: StatisticsGridProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
-  const [hasAnimated, setHasAnimated] = useState(false);
-
-  useEffect(() => {
-    if (isInView && !hasAnimated) {
-      setHasAnimated(true);
-    }
-  }, [isInView, hasAnimated]);
-
-  // Stagger animation variants - more sleek and smooth
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.2, // Increased from 0.1 for more noticeable stagger
-        delayChildren: 0.1,
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { 
-      opacity: 0,
-      scale: 0.95
-    },
-    visible: { 
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1] as any
-      }
-    }
-  };
-
   return (
-    <motion.div 
-      ref={containerRef}
-      variants={containerVariants}
-      initial="hidden"
-      animate={hasAnimated ? "visible" : "hidden"}
-      className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8"
-    >
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
       {statistics.map((stat, index) => (
-        <motion.div 
+        <div 
           key={index}
-          variants={cardVariants}
+          data-animate="stat-card"
           className="group relative bg-neutral-100 transition-all duration-300 overflow-hidden"
           style={{
             clipPath: 'polygon(0% 0%, 98% 0%, 100% 4%, 100% 100%, 2% 100%, 0% 98%)'
@@ -151,9 +109,9 @@ export default function StatisticsGrid({ statistics }: StatisticsGridProps) {
               </h5>
             )}
           </div>
-        </motion.div>
+        </div>
       ))}
-    </motion.div>
+    </div>
   );
 }
 

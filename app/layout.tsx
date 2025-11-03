@@ -3,7 +3,7 @@ import { JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header/header";
 import Footer from "./components/footer/footer";
-import LenisProvider from "@/components/lenis-provider";
+import GSAPSmoothScrollProvider from "@/components/gsap-smooth-scroll-provider";
 import { DropdownStateProvider } from "./components/header/dropdown-state-context";
 
 import { generateMetadata as generateBaseMetadata, generateOrganizationSchema } from "@/lib/metadata";
@@ -40,13 +40,13 @@ export default function RootLayout({
         />
       </head>
       <body className={`${jetbrainsMono.variable} ${manrope.variable} font-sans antialiased`}>
-          <LenisProvider>
+          <GSAPSmoothScrollProvider>
             <DropdownStateProvider>
               <Header />
               <main>{children}</main>
               <Footer />
             </DropdownStateProvider>
-          </LenisProvider>
+          </GSAPSmoothScrollProvider>
       </body>
     </html>
   );

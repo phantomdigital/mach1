@@ -21,8 +21,9 @@ export default function SolutionCard({ item, index }: SolutionCardProps) {
               fill
               className="object-cover rounded-xs"
               priority={index < 2}
+              loading={index < 2 ? undefined : "lazy"}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              quality={95}
+              quality={index < 2 ? 90 : 80}
             />
             {/* Base overlay to dull the image */}
             <div className="absolute inset-0 bg-black/20" />

@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { PrismicNextImage } from "@prismicio/next";
 import type { Content } from "@prismicio/client";
+import TestimonialCard from "./testimonial-card";
 
 interface TestimonialsAnimationProps {
   testimonials: Content.TestimonialsSliceDefaultItem[];
@@ -47,7 +47,7 @@ export default function TestimonialsAnimation({
     <div className="w-full overflow-hidden">
       <div className="space-y-8">
         {rowsData.map((rowTestimonials, rowIndex) => {
-          const cardWidth = 500;
+          const cardWidth = 400;
           const gapPx = gap || 32;
           const itemsInRow = rowTestimonials.length || 1;
           const baseSetWidth = itemsInRow * cardWidth + Math.max(0, itemsInRow - 1) * gapPx;
@@ -72,61 +72,10 @@ export default function TestimonialsAnimation({
               <div className="track-set">
                 {Array.from({ length: cycles }).map((_, cycleIdx) =>
                   rowTestimonials.map((testimonial, cardIndex) => (
-                    <div
+                    <TestimonialCard 
                       key={`a-${cycleIdx}-${cardIndex}`}
-                      className="testimonial-card flex-shrink-0 w-[500px]"
-                      style={{ height: "280px" }}
-                    >
-                      {/* Outer clipped shape with border */}
-                      <div
-                        className="relative bg-neutral-200 p-[1.25px] w-full h-full"
-                        style={{
-                          clipPath:
-                            "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))",
-                        }}
-                      >
-                        {/* Inner clipped shape with content */}
-                        <div
-                          className="relative bg-neutral-50 w-full h-full p-8 flex flex-col"
-                          style={{
-                            clipPath:
-                              "polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19px 100%, 0 calc(100% - 19px))",
-                          }}
-                        >
-                          <div className="space-y-6 flex-1 flex flex-col">
-                            {testimonial.testimonial_text && (
-                              <p className="text-neutral-800 text-lg leading-relaxed flex-1">
-                                "{testimonial.testimonial_text}"
-                              </p>
-                            )}
-                            <div className="flex items-center gap-4 pt-4 border-t border-neutral-200">
-                              {testimonial.client_photo && testimonial.client_photo.url && (
-                                <div className="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden bg-neutral-200">
-                                  <PrismicNextImage
-                                    field={testimonial.client_photo}
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                              )}
-                              <div className="flex-1 min-w-0">
-                                {testimonial.client_name && (
-                                  <p className="text-neutral-800 font-semibold text-sm">
-                                    {testimonial.client_name}
-                                  </p>
-                                )}
-                                {(testimonial.client_title || testimonial.company_name) && (
-                                  <p className="text-neutral-600 text-sm">
-                                    {testimonial.client_title}
-                                    {testimonial.client_title && testimonial.company_name && ", "}
-                                    {testimonial.company_name}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                      testimonial={testimonial}
+                    />
                   ))
                 )}
               </div>
@@ -134,61 +83,10 @@ export default function TestimonialsAnimation({
               <div className="track-set">
                 {Array.from({ length: cycles }).map((_, cycleIdx) =>
                   rowTestimonials.map((testimonial, cardIndex) => (
-                  <div
-                    key={`b-${cycleIdx}-${cardIndex}`}
-                    className="testimonial-card flex-shrink-0 w-[500px]"
-                    style={{ height: "280px" }}
-                  >
-                    {/* Outer clipped shape with border */}
-                    <div
-                      className="relative bg-neutral-200 p-[1.25px] w-full h-full"
-                      style={{
-                        clipPath:
-                          "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))",
-                      }}
-                    >
-                      {/* Inner clipped shape with content */}
-                      <div
-                        className="relative bg-neutral-50 w-full h-full p-8 flex flex-col"
-                        style={{
-                          clipPath:
-                            "polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19px 100%, 0 calc(100% - 19px))",
-                        }}
-                      >
-                        <div className="space-y-6 flex-1 flex flex-col">
-                          {testimonial.testimonial_text && (
-                            <p className="text-neutral-800 text-lg leading-relaxed flex-1">
-                              "{testimonial.testimonial_text}"
-                            </p>
-                          )}
-                          <div className="flex items-center gap-4 pt-4 border-t border-neutral-200">
-                            {testimonial.client_photo && testimonial.client_photo.url && (
-                              <div className="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden bg-neutral-200">
-                                <PrismicNextImage
-                                  field={testimonial.client_photo}
-                                  className="w-full h-full object-cover"
-                                />
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0">
-                              {testimonial.client_name && (
-                                <p className="text-neutral-800 font-semibold text-sm">
-                                  {testimonial.client_name}
-                                </p>
-                              )}
-                              {(testimonial.client_title || testimonial.company_name) && (
-                                <p className="text-neutral-600 text-sm">
-                                  {testimonial.client_title}
-                                  {testimonial.client_title && testimonial.company_name && ", "}
-                                  {testimonial.company_name}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    <TestimonialCard 
+                      key={`b-${cycleIdx}-${cardIndex}`}
+                      testimonial={testimonial}
+                    />
                   ))
                 )}
               </div>
@@ -203,8 +101,6 @@ export default function TestimonialsAnimation({
           --duration: 40s;
           --epsilon: 2px; /* wrap slightly earlier to hide rounding issues */
           user-select: none;
-          mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-          -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
         .track {
           display: flex;

@@ -26,5 +26,7 @@ export const components = {
   submitted: dynamic(() => import("./Submitted")),
   testimonials: dynamic(() => import("./Testimonials")),
   tracking: dynamic(() => import("./Tracking")),  
+  news_overview: dynamic(() => import("./NewsOverview")),
+  hero_block: dynamic(() => import("./HeroBlock")),
   
 };

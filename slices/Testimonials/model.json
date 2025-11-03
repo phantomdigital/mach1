@@ -33,6 +33,13 @@
             "placeholder": "Trusted by businesses across Australia"
           }
         },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        },
         "number_of_rows": {
           "type": "Number",
           "config": {

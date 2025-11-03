@@ -1,0 +1,108 @@
+{
+  "id": "news_overview",
+  "type": "SharedSlice",
+  "name": "NewsOverview",
+  "description": "Display featured news article with preview cards",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "Latest News"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Stay Updated with MACH1 Logistics"
+          }
+        },
+        "featured_article": {
+          "type": "Link",
+          "config": {
+            "label": "Featured Article (Optional)",
+            "select": "document",
+            "customtypes": ["news"],
+            "placeholder": "Select article to feature (or leave empty to use most recent)"
+          }
+        },
+        "preview_count": {
+          "type": "Number",
+          "config": {
+            "label": "Preview Articles Count",
+            "placeholder": "2",
+            "default_value": 2
+          }
+        },
+        "show_view_all_button": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show View All Button",
+            "default_value": true
+          }
+        },
+        "view_all_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "View All Button Text",
+            "placeholder": "VIEW ALL NEWS"
+          }
+        },
+        "view_all_link": {
+          "type": "Link",
+          "config": {
+            "label": "View All Link",
+            "select": "document",
+            "customtypes": ["page"],
+            "placeholder": "Link to news page"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top (pt)",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom (pb)",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
+
