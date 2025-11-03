@@ -71,6 +71,13 @@
             "default_value": "medium"
           }
         },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#141433"
+          }
+        },
         "statistics": {
           "type": "Group",
           "config": {
