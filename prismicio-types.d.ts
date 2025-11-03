@@ -5444,6 +5444,16 @@ export interface StatisticsV2SliceDefaultPrimary {
   >;
 
   /**
+   * Background Color field in *StatisticsV2 → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: #141433
+   * - **API ID Path**: statistics_v2.default.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  background_color: prismic.ColorField;
+
+  /**
    * Statistics field in *StatisticsV2 → Default → Primary*
    *
    * - **Field Type**: Group
