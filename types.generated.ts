@@ -2457,6 +2457,46 @@ export interface HomepageHeroSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	tab_2_label: prismic.KeyTextField;
+	
+	/**
+	 * Tracking Heading field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Track your shipment:
+	 * - **API ID Path**: homepage_hero.default.primary.tracking_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	tracking_heading: prismic.KeyTextField;
+	
+	/**
+	 * Logixboard URL Prefix field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: mach1logistics
+	 * - **API ID Path**: homepage_hero.default.primary.tracking_url_prefix
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	tracking_url_prefix: prismic.KeyTextField;
+	
+	/**
+	 * Tracking Input Placeholder field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Enter tracking number...
+	 * - **API ID Path**: homepage_hero.default.primary.tracking_placeholder_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	tracking_placeholder_text: prismic.KeyTextField;
+	
+	/**
+	 * Tracking Warning Text field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: This will open a new window to Logixboard tracking
+	 * - **API ID Path**: homepage_hero.default.primary.tracking_warning_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	tracking_warning_text: prismic.KeyTextField;
 }
 
 /**

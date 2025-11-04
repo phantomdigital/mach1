@@ -53,7 +53,7 @@ const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
           {/* Solutions Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12">
             {displayedItems.map((item, index) => (
-              <div key={index} data-animate="card" className="will-change-transform">
+              <div key={index} data-animate="card">
                 <SolutionCard item={item} index={index} />
               </div>
             ))}

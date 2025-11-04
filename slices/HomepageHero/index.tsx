@@ -7,6 +7,7 @@ import { HomepageHeroImage } from "./homepage-hero-image";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Button } from "@/components/ui/button";
 import { HomepageHeroTabs } from "./homepage-hero-tabs";
+import { TrackingSearch } from "./tracking-search";
 
 /**
  * Props for `HomepageHero`.
@@ -145,11 +146,19 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                     <p className="text-sm text-neutral-500">No services configured</p>
                   )}
                   
-                  {/* Services Blurb */}
-                  {slice.primary.services_blurb && (
-                    <p className="text-base text-neutral-600 leading-relaxed mt-20">
-                      {slice.primary.services_blurb}
-                    </p>
+                  {/* Tracking Search */}
+                  {slice.primary.tracking_heading && (
+                    <div className="mt-20 space-y-4">
+                      <h3 className="text-neutral-800 text-left text-base font-medium">
+                        {slice.primary.tracking_heading}
+                      </h3>
+                      <TrackingSearch 
+                        urlPrefix={slice.primary.tracking_url_prefix || "mach1logistics"}
+                        placeholder={slice.primary.tracking_placeholder_text || undefined}
+                        warningText={slice.primary.tracking_warning_text || undefined}
+                        variant="light"
+                      />
+                    </div>
                   )}
                 </div>
               </div>

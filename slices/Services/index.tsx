@@ -135,7 +135,7 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            </div>
 
                             {/* Right Column - Content */}
                             <div className="flex flex-col justify-center space-y-8" data-animate="left-column">
@@ -183,8 +183,8 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                 </div>
                             )}
 
-                                {/* CTA Button */}
-                                <div className="pt-4 inline-flex" data-animate="button">
+                                {/* CTA Button - animates with left-column parent, no separate animation needed */}
+                                <div className="pt-4 inline-flex">
                                     {slice.primary.button_text && slice.primary.button_link ? (
                                         <Button asChild variant="subtle" className="!px-0">
                                             <PrismicNextLink 
@@ -231,38 +231,38 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                         {/* Left Side - Content (appears first on mobile and desktop) */}
                         <div className="lg:col-span-4 lg:order-1 flex flex-col justify-start lg:sticky lg:top-24 lg:self-start" data-animate="left-column">
                             <div className="lg:pr-8 space-y-6">
-                                {/* Section Heading */}
-                                {slice.primary.heading && (
-                                    <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight tracking-tight">
-                                        {slice.primary.heading}
-                                    </h2>
-                                )}
+                            {/* Section Heading */}
+                            {slice.primary.heading && (
+                                <h2 className="text-3xl lg:text-5xl font-bold text-neutral-800 leading-tight tracking-tight">
+                                    {slice.primary.heading}
+                                </h2>
+                            )}
 
-                                {/* Section Description */}
-                                {slice.primary.description && (
-                                    <p className="text-base text-neutral-600 leading-relaxed">
-                                        {slice.primary.description}
-                                    </p>
-                                )}
+                            {/* Section Description */}
+                            {slice.primary.description && (
+                                <p className="text-base text-neutral-600 leading-relaxed">
+                                    {slice.primary.description}
+                                </p>
+                            )}
 
-                                {/* CTA Button */}
-                                {slice.primary.button_text && slice.primary.button_link && (
-                                    <div className="pt-2 inline-flex">
-                                        <ServicesButton
-                                            buttonText={slice.primary.button_text}
-                                            buttonLink={slice.primary.button_link}
-                                        />
-                                    </div>
+                            {/* CTA Button */}
+                            {slice.primary.button_text && slice.primary.button_link && (
+                                <div className="pt-2 inline-flex">
+                                    <ServicesButton
+                                        buttonText={slice.primary.button_text}
+                                        buttonLink={slice.primary.button_link}
+                                    />
+                                </div>
                                 )}
                             </div>
                         </div>
 
                         {/* Right Side - Services Grid (appears second on mobile and desktop) */}
                         <div className="lg:col-span-8 lg:order-2">
-                            {slice.items && slice.items.length > 0 && (
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
-                                    {slice.items.map((item, index) => (
-                                        <div key={index} data-animate="card" className="space-y-5 border-b-4 border-neutral-200 px-6 py-8 lg:px-8 lg:py-10 rounded-t-sm bg-neutral-50">
+                        {slice.items && slice.items.length > 0 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
+                                {slice.items.map((item, index) => (
+                                    <div key={index} data-animate="card" className="space-y-5 border-b-4 border-neutral-200 px-6 py-8 lg:px-8 lg:py-10 rounded-t-sm bg-neutral-50">
                                         {/* Service Icon */}
                                         {item.service_icon && item.service_icon.url ? (
                                             <div className="h-9 lg:h-11 w-auto flex items-center justify-start my-8">
@@ -296,8 +296,8 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                         )}
                                         </div>
                                     ))}
-                                </div>
-                            )}
+                            </div>
+                        )}
                         </div>
                     </div>
                 </div>

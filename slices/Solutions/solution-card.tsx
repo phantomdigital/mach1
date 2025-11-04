@@ -1,7 +1,9 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import type { Content } from "@prismicio/client";
+import gsap from "gsap";
 
 interface SolutionCardProps {
   item: Content.SolutionsSliceDefaultItem;
@@ -9,9 +11,90 @@ interface SolutionCardProps {
 }
 
 export default function SolutionCard({ item, index }: SolutionCardProps) {
-  return (
-    <article className="group relative overflow-hidden aspect-[4/3] lg:aspect-[16/7] rounded-xs">
+  const cardRef = useRef<HTMLElement>(null);
+  const arrowRef = useRef<HTMLDivElement>(null);
+  const titleBorderRef = useRef<HTMLSpanElement>(null);
+  const hoverTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    // Set initial state - arrow is hidden
+    if (arrowRef.current) {
+      gsap.set(arrowRef.current, { opacity: 0, scale: 1 });
+    }
+
+    const handleMouseEnter = () => {
+      // Kill any existing timeline
+      if (hoverTimelineRef.current) {
+        hoverTimelineRef.current.kill();
+      }
+
+      hoverTimelineRef.current = gsap.timeline();
+
+      // Show underline instantly (no transition)
+      if (titleBorderRef.current) {
+        gsap.set(titleBorderRef.current, { borderColor: "white" });
+      }
+
+      // Animate arrow icon
+      if (arrowRef.current) {
+        hoverTimelineRef.current.to(
+          arrowRef.current,
+          {
+            opacity: 1,
+            scale: 1.1,
+            duration: 0.3,
+            ease: "power2.out",
+          },
+          0
+        );
+      }
+    };
+
+    const handleMouseLeave = () => {
+      // Kill any existing timeline
+      if (hoverTimelineRef.current) {
+        hoverTimelineRef.current.kill();
+      }
+
+      hoverTimelineRef.current = gsap.timeline();
+
+      // Hide underline instantly (no transition)
+      if (titleBorderRef.current) {
+        gsap.set(titleBorderRef.current, { borderColor: "transparent" });
+      }
+
+      // Hide arrow icon
+      if (arrowRef.current) {
+        hoverTimelineRef.current.to(
+          arrowRef.current,
+          {
+            opacity: 0,
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out",
+          },
+          0
+        );
+      }
+    };
+
+    card.addEventListener("mouseenter", handleMouseEnter);
+    card.addEventListener("mouseleave", handleMouseLeave);
+
+    return () => {
+      card.removeEventListener("mouseenter", handleMouseEnter);
+      card.removeEventListener("mouseleave", handleMouseLeave);
+      if (hoverTimelineRef.current) {
+        hoverTimelineRef.current.kill();
+      }
+    };
+  }, []);
+
+  return (
+    <article ref={cardRef} className="relative overflow-hidden aspect-[4/3] lg:aspect-[16/7] rounded-xs">
       <PrismicNextLink field={item.link} className="block w-full h-full">
         {/* Background Image */}
         {item.image?.url && (
@@ -27,34 +110,32 @@ export default function SolutionCard({ item, index }: SolutionCardProps) {
             />
             {/* Base overlay to dull the image */}
             <div className="absolute inset-0 bg-black/20" />
-            {/* Gradient overlay - shorter by default, expands on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 from-0% via-transparent via-40% to-transparent group-hover:from-black/60 group-hover:from-0% group-hover:via-black/30 group-hover:via-60% transition-all duration-300 ease-out" />
+            {/* Gradient overlay - visible by default */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 from-0% via-black/30 via-60% to-transparent" />
           </div>
         )}
 
         {/* Content Overlay */}
         <div className="relative h-full flex flex-col justify-between p-6 lg:p-8">
-          {/* Title and Description at bottom-left */}
-          <div className="mt-auto flex flex-col gap-0 group-hover:gap-3 transition-all duration-300 ease-out">
+          {/* Title and Description at bottom-left - visible by default */}
+          <div className="mt-auto flex flex-col gap-3">
             <h3 className="text-neutral-100 text-xl lg:text-2xl font-bold leading-tight">
-              <span className="inline border-b-2 border-transparent group-hover:border-white transition-all duration-200">
+              <span ref={titleBorderRef} className="inline border-b-2 border-transparent">
                 {item.title}
               </span>
             </h3>
             
-            {/* Description - shows on hover */}
+            {/* Description - visible by default */}
             {item.description && (
-              <div className="max-h-0 group-hover:max-h-40 overflow-hidden transition-all duration-300 ease-out">
-                <p className="text-neutral-100 font-medium text-[12px] lg:text-xs leading-relaxed opacity-0 group-hover:opacity-100 group-hover:delay-75 transition-opacity duration-300 max-w-md">
-                  {item.description}
-                </p>
-              </div>
+              <p className="text-neutral-100 font-medium text-[12px] lg:text-xs leading-relaxed max-w-md">
+                {item.description}
+              </p>
             )}
           </div>
 
           {/* Arrow Circle - Top Right */}
           <div className="absolute top-6 right-6 lg:top-8 lg:right-8">
-            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-neutral-100 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 scale-100 group-hover:scale-110 transition-all duration-300 ease-out">
+            <div ref={arrowRef} className="w-10 h-10 lg:w-12 lg:h-12 bg-neutral-100 rounded-lg flex items-center justify-center">
               <svg
                 width="16"
                 height="16"

@@ -80,7 +80,7 @@ export function DropdownBackground({
     
     // Calculate actual clipped image area dimensions
     const clipTopOffset = 63.9994;  // Top of clipped area
-    const clipBottomOffset = 3.556; // Bottom margin in clipped area
+    const clipBottomOffset = -2; // Bottom margin in clipped area (negative extends below)
     const actualImageHeight = (height + 40) - clipTopOffset - clipBottomOffset; // True clipped height
     
     // Create unique clipPath ID for this dropdown instance
@@ -169,52 +169,78 @@ export function DropdownBackground({
         >
           <defs>
             <clipPath id={clipPathId}>
-              <path d={`M519 63.9994L435.783 3.91169C433.193 2.09117 430.149 1.03456 426.998 0.856079H257.217V0.870358L0 0.856079L0 ${(height - 35) - 63.644}L83.2169 ${(height - 35) - 3.556}C85.8069 ${(height - 35) - 1.735} 88.8507 ${(height - 35) - 0.679} 92.0016 ${(height - 35) - 0.5}H261.783V${(height - 35) - 0.514}L519 ${(height - 35) - 0.5}V63.9994Z`} />
+              <path d={`M519 63.9994L435.783 3.91169C433.193 2.09117 430.149 1.03456 426.998 0.856079H257.217V0.870358L0 0.856079L0 ${(height - 35) - 63.644 + 2}L83.2169 ${(height - 35) - 3.556 + 2}C85.8069 ${(height - 35) - 1.735 + 2} 88.8507 ${(height - 35) - 0.679 + 2} 92.0016 ${(height - 35) - 0.5 + 2}H261.783V${(height - 35) - 0.514 + 2}L${519 - 4} ${(height - 35) - 0.5 + 2}A4 4 0 0 1 519 ${(height - 35) - 0.5 - 2}V63.9994Z`} />
             </clipPath>
+            {/* Darken filter for first image */}
+            <filter id={`darkenFilter-${dropdownId}`}>
+              <feComponentTransfer>
+                <feFuncR type="linear" slope="0.8" intercept="0"/>
+                <feFuncG type="linear" slope="0.8" intercept="0"/>
+                <feFuncB type="linear" slope="0.8" intercept="0"/>
+              </feComponentTransfer>
+            </filter>
           </defs>
           
           {/* Gray background */}
           <path 
-            d={`M519 63.9994L435.783 3.91169C433.193 2.09117 430.149 1.03456 426.998 0.856079H257.217V0.870358L0 0.856079L0 ${(height - 35) - 63.644}L83.2169 ${(height - 35) - 3.556}C85.8069 ${(height - 35) - 1.735} 88.8507 ${(height - 35) - 0.679} 92.0016 ${(height - 35) - 0.5}H261.783V${(height - 35) - 0.514}L519 ${(height - 35) - 0.5}V63.9994Z`} 
+            d={`M519 63.9994L435.783 3.91169C433.193 2.09117 430.149 1.03456 426.998 0.856079H257.217V0.870358L0 0.856079L0 ${(height - 35) - 63.644 + 2}L83.2169 ${(height - 35) - 3.556 + 2}C85.8069 ${(height - 35) - 1.735 + 2} 88.8507 ${(height - 35) - 0.679 + 2} 92.0016 ${(height - 35) - 0.5 + 2}H261.783V${(height - 35) - 0.514 + 2}L${519 - 4} ${(height - 35) - 0.5 + 2}A4 4 0 0 1 519 ${(height - 35) - 0.5 - 2}V63.9994Z`} 
             fill="#D9D9D9"
           />
           
           {/* True crossfade - previous stays visible while new fades in */}
           <g clipPath={`url(#${clipPathId})`}>
-            {/* Previous image - stays visible during transition */}
-            {(previousImage?.url || image?.url) && (
-              <image
-                href={getOptimizedImageUrl(previousImage || image, 1000, actualImageHeight)}
-                x="-240"
-                y="0"
-                width="1000"
-                height={actualImageHeight}
-                preserveAspectRatio="xMidYMid slice"
-                opacity="1"
-                style={{
-                  imageRendering: 'crisp-edges'
-                }}
-              />
-            )}
-            
-            {/* New image - fades in on top only when different from previous */}
-            {image?.url && image.url !== previousImage?.url && (
-              <image
-                key={imageKey}
-                href={getOptimizedImageUrl(image, 1000, actualImageHeight)}
-                x="-240"
-                y="0"
-                width="1000"
-                height={actualImageHeight}
-                preserveAspectRatio="xMidYMid slice"
-                style={{
-                  opacity: 0,
-                  animation: `dropdownImageFade 250ms cubic-bezier(0.4, 0, 0.2, 1) forwards`,
-                  willChange: 'opacity',
-                  backfaceVisibility: 'hidden',
-                  imageRendering: 'crisp-edges'
-                }}
-              />
+            {/* Only render crossfade if we have a previous image to transition from */}
+            {previousImage?.url && previousImage.url !== image?.url ? (
+              <>
+                {/* Previous image - stays visible during transition */}
+                <image
+                  href={getOptimizedImageUrl(previousImage, 1000, actualImageHeight)}
+                  x="-240"
+                  y="0"
+                  width="1000"
+                  height={actualImageHeight}
+                  preserveAspectRatio="xMidYMid slice"
+                  opacity="1"
+                  style={{
+                    imageRendering: 'crisp-edges'
+                  }}
+                />
+                {/* New image - fades in on top */}
+                <image
+                  key={imageKey}
+                  href={getOptimizedImageUrl(image, 1000, actualImageHeight)}
+                  x="-240"
+                  y="0"
+                  width="1000"
+                  height={actualImageHeight}
+                  preserveAspectRatio="xMidYMid slice"
+                  filter={`url(#darkenFilter-${dropdownId})`}
+                  style={{
+                    opacity: 0,
+                    animation: `dropdownImageFade 250ms cubic-bezier(0.4, 0, 0.2, 1) forwards`,
+                    willChange: 'opacity',
+                    backfaceVisibility: 'hidden',
+                    imageRendering: 'crisp-edges'
+                  }}
+                />
+              </>
+            ) : (
+              /* First image or same image - render single image with no animation */
+              image?.url && (
+                <image
+                  href={getOptimizedImageUrl(image, 1000, actualImageHeight)}
+                  x="-240"
+                  y="0"
+                  width="1000"
+                  height={actualImageHeight}
+                  preserveAspectRatio="xMidYMid slice"
+                  opacity="1"
+                  filter={!previousImage?.url || previousImage.url === image.url ? `url(#darkenFilter-${dropdownId})` : undefined}
+                  style={{
+                    imageRendering: 'crisp-edges'
+                  }}
+                />
+              )
             )}
           </g>
           

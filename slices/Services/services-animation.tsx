@@ -12,222 +12,119 @@ interface ServicesAnimationProps {
 
 export default function ServicesAnimation({ children }: ServicesAnimationProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollTriggersRef = useRef<ScrollTrigger[]>([]);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const header = sectionRef.current?.querySelector("[data-animate='header']");
-      const leftColumn = sectionRef.current?.querySelector("[data-animate='left-column']");
-      const cards = sectionRef.current?.querySelectorAll("[data-animate='card']");
-      const specialties = sectionRef.current?.querySelectorAll("[data-animate='specialty']");
-      const button = sectionRef.current?.querySelector("[data-animate='button']");
-      const images = sectionRef.current?.querySelectorAll("[data-animate='image']");
-      const statisticCard = sectionRef.current?.querySelector("[data-animate='statistic']");
+    const section = sectionRef.current;
+    if (!section) return;
 
-      // Animate header (subheading)
+    const ctx = gsap.context(() => {
+      // Collect all elements to animate
+      const header = section.querySelector("[data-animate='header']");
+      const leftColumn = section.querySelector("[data-animate='left-column']");
+      const cards = section.querySelectorAll("[data-animate='card']");
+      const specialties = section.querySelectorAll("[data-animate='specialty']");
+      const images = section.querySelectorAll("[data-animate='image']");
+      const statisticCard = section.querySelector("[data-animate='statistic']");
+
+      // Create a single master timeline with all animations
+      const masterTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+          end: "top 50%",
+          toggleActions: "play none none none",
+          once: true,
+          markers: false,
+          invalidateOnRefresh: false,
+        },
+      });
+
+      // Animate header
       if (header && header.children.length > 0) {
-        const headerTween = gsap.from(header.children, {
+        masterTimeline.from(header.children, {
           y: 30,
           opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
+          duration: 0.6,
+          stagger: 0.1,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            end: "top 50%",
-            toggleActions: "play none none none",
-            once: true,
-            markers: false,
-            invalidateOnRefresh: false,
-          },
-        });
-        if (headerTween.scrollTrigger) {
-          scrollTriggersRef.current.push(headerTween.scrollTrigger);
-          headerTween.eventCallback("onComplete", () => {
-            if (headerTween.scrollTrigger) {
-              headerTween.scrollTrigger.kill();
-            }
-          });
-        }
+        }, 0);
       }
 
-      // Animate left column (content) - for grid variation
+      // Animate left column
       if (leftColumn && leftColumn.children.length > 0) {
-        const leftTween = gsap.from(leftColumn.children, {
-          y: 40,
+        masterTimeline.from(leftColumn.children, {
+          y: 30,
           opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
+          duration: 0.6,
+          stagger: 0.1,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: leftColumn,
-            start: "top 85%",
-            end: "top 50%",
-            toggleActions: "play none none none",
-            once: true,
-            markers: false,
-            invalidateOnRefresh: false,
-          },
-        });
-        if (leftTween.scrollTrigger) {
-          scrollTriggersRef.current.push(leftTween.scrollTrigger);
-          leftTween.eventCallback("onComplete", () => {
-            if (leftTween.scrollTrigger) {
-              leftTween.scrollTrigger.kill();
-            }
-          });
-        }
+        }, 0.1);
       }
 
-      // Animate individual images - for twoColumn variation
+      // Animate images (grouped together)
       if (images && images.length > 0) {
-        const imagesTween = gsap.from(images, {
-          y: 40,
+        masterTimeline.from(images, {
+          y: 30,
           opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
+          duration: 0.6,
+          stagger: 0.1,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: images[0],
-            start: "top 85%",
-            end: "top 50%",
-            toggleActions: "play none none none",
-            once: true,
-            markers: false,
-            invalidateOnRefresh: false,
-          },
-        });
-        if (imagesTween.scrollTrigger) {
-          scrollTriggersRef.current.push(imagesTween.scrollTrigger);
-          imagesTween.eventCallback("onComplete", () => {
-            if (imagesTween.scrollTrigger) {
-              imagesTween.scrollTrigger.kill();
-            }
-          });
-        }
+        }, 0.1);
       }
 
       // Animate statistic card
       if (statisticCard) {
-        const statisticTween = gsap.from(statisticCard, {
-          scale: 0.9,
+        masterTimeline.from(statisticCard, {
+          scale: 0.95,
           opacity: 0,
-          duration: 0.7,
+          duration: 0.5,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: statisticCard,
-            start: "top 90%",
-            end: "top 60%",
-            toggleActions: "play none none none",
-            once: true,
-            markers: false,
-            invalidateOnRefresh: false,
-          },
-        });
-        if (statisticTween.scrollTrigger) {
-          scrollTriggersRef.current.push(statisticTween.scrollTrigger);
-          statisticTween.eventCallback("onComplete", () => {
-            if (statisticTween.scrollTrigger) {
-              statisticTween.scrollTrigger.kill();
-            }
-          });
-        }
+        }, 0.2);
       }
 
-      // Animate cards with stagger
+      // Animate cards
       if (cards && cards.length > 0) {
-        const cardsTween = gsap.from(cards, {
-          y: 50,
-          opacity: 0,
-          duration: 0.9,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: cards[0],
-            start: "top 85%",
-            end: "top 50%",
-            toggleActions: "play none none none",
-            once: true,
-            markers: false,
-            invalidateOnRefresh: false,
-          },
-        });
-        if (cardsTween.scrollTrigger) {
-          scrollTriggersRef.current.push(cardsTween.scrollTrigger);
-          cardsTween.eventCallback("onComplete", () => {
-            if (cardsTween.scrollTrigger) {
-              cardsTween.scrollTrigger.kill();
-            }
-          });
-        }
-      }
-
-      // Animate specialties list
-      if (specialties && specialties.length > 0) {
-        const specialtiesTween = gsap.from(specialties, {
+        masterTimeline.from(cards, {
           y: 30,
           opacity: 0,
-          duration: 0.7,
+          duration: 0.6,
           stagger: 0.1,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: specialties[0],
-            start: "top 90%",
-            end: "top 60%",
-            toggleActions: "play none none none",
-            once: true,
-            markers: false,
-            invalidateOnRefresh: false,
-          },
-        });
-        if (specialtiesTween.scrollTrigger) {
-          scrollTriggersRef.current.push(specialtiesTween.scrollTrigger);
-          specialtiesTween.eventCallback("onComplete", () => {
-            if (specialtiesTween.scrollTrigger) {
-              specialtiesTween.scrollTrigger.kill();
-            }
-          });
-        }
+        }, 0.2);
       }
 
-      // Animate button
-      if (button) {
-        const buttonTween = gsap.from(button, {
+      // Animate specialties
+      if (specialties && specialties.length > 0) {
+        masterTimeline.from(specialties, {
           y: 20,
           opacity: 0,
-          duration: 0.7,
+          duration: 0.5,
+          stagger: 0.05,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: button,
-            start: "top 90%",
-            end: "top 60%",
-            toggleActions: "play none none none",
-            once: true,
-            markers: false,
-            invalidateOnRefresh: false,
-          },
-        });
-        if (buttonTween.scrollTrigger) {
-          scrollTriggersRef.current.push(buttonTween.scrollTrigger);
-          buttonTween.eventCallback("onComplete", () => {
-            if (buttonTween.scrollTrigger) {
-              buttonTween.scrollTrigger.kill();
-            }
-          });
-        }
+        }, 0.3);
       }
-    }, sectionRef);
+
+      // Store ScrollTrigger reference and kill it after animation completes
+      if (masterTimeline.scrollTrigger) {
+        scrollTriggerRef.current = masterTimeline.scrollTrigger;
+        masterTimeline.eventCallback("onComplete", () => {
+          if (scrollTriggerRef.current) {
+            scrollTriggerRef.current.kill();
+            scrollTriggerRef.current = null;
+          }
+        });
+      }
+    }, section);
 
     return () => {
-      // Kill all ScrollTrigger instances
-      scrollTriggersRef.current.forEach((st) => {
-        if (st) {
-          st.kill();
-        }
-      });
-      scrollTriggersRef.current = [];
-      // Revert GSAP context (this also cleans up any remaining ScrollTriggers)
+      // Kill ScrollTrigger if it exists
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
+      
+      // Revert GSAP context
       ctx.revert();
     };
   }, []);

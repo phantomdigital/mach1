@@ -158,6 +158,34 @@
             "placeholder": "Specialties",
             "default_value": "Specialties"
           }
+        },
+        "tracking_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Tracking Heading",
+            "placeholder": "Track your shipment:"
+          }
+        },
+        "tracking_url_prefix": {
+          "type": "Text",
+          "config": {
+            "label": "Logixboard URL Prefix",
+            "placeholder": "mach1logistics"
+          }
+        },
+        "tracking_placeholder_text": {
+          "type": "Text",
+          "config": {
+            "label": "Tracking Input Placeholder",
+            "placeholder": "Enter tracking number..."
+          }
+        },
+        "tracking_warning_text": {
+          "type": "Text",
+          "config": {
+            "label": "Tracking Warning Text",
+            "placeholder": "This will open a new window to Logixboard tracking"
+          }
         }
       },
       "items": {

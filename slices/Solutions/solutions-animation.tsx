@@ -12,18 +12,36 @@ interface SolutionsAnimationProps {
 
 export default function SolutionsAnimation({ children }: SolutionsAnimationProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollTriggersRef = useRef<ScrollTrigger[]>([]);
+  const tweensRef = useRef<gsap.core.Tween[]>([]);
+  const startTimeRef = useRef<number>(0);
+  const checkIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    startTimeRef.current = performance.now();
+    console.log("[Solutions] Animation component mounted");
+
     const ctx = gsap.context(() => {
       const header = sectionRef.current?.querySelector("[data-animate='header']");
       const cards = sectionRef.current?.querySelectorAll("[data-animate='card']");
       const button = sectionRef.current?.querySelector("[data-animate='button']");
 
-      if (!header && !cards && !button) return;
+      console.log("[Solutions] Elements found:", {
+        header: !!header,
+        cardsCount: cards?.length || 0,
+        button: !!button,
+      });
+
+      if (!header && !cards && !button) {
+        console.warn("[Solutions] No elements to animate");
+        return;
+      }
+
+      // Track active ScrollTriggers
+      const activeScrollTriggers = new Set<ScrollTrigger>();
 
       // Animate header (subheading and heading)
       if (header && header.children.length > 0) {
+        console.log("[Solutions] Creating header animation");
         const headerTween = gsap.from(header.children, {
           y: 30,
           opacity: 0,
@@ -35,27 +53,33 @@ export default function SolutionsAnimation({ children }: SolutionsAnimationProps
             start: "top 80%",
             end: "top 50%",
             toggleActions: "play none none none",
-            once: true, // Only trigger once
-            markers: false, // Disable markers for performance
-            invalidateOnRefresh: false, // Prevent recalculation on resize
+            once: true,
+            markers: false,
+            invalidateOnRefresh: false,
+            onEnter: () => {
+              console.log("[Solutions] Header animation started");
+            },
           },
         });
+        tweensRef.current.push(headerTween);
         if (headerTween.scrollTrigger) {
-          scrollTriggersRef.current.push(headerTween.scrollTrigger);
-          // Kill ScrollTrigger after animation completes
-          headerTween.eventCallback("onComplete", () => {
-            if (headerTween.scrollTrigger) {
-              headerTween.scrollTrigger.kill();
-            }
-          });
+          activeScrollTriggers.add(headerTween.scrollTrigger);
+          console.log("[Solutions] Header ScrollTrigger created. Total active:", activeScrollTriggers.size);
         }
+        // Kill ScrollTrigger after animation completes to prevent ongoing checks
+        headerTween.eventCallback("onComplete", () => {
+          console.log("[Solutions] Header animation completed");
+          if (headerTween.scrollTrigger) {
+            activeScrollTriggers.delete(headerTween.scrollTrigger);
+            headerTween.scrollTrigger.kill();
+            console.log("[Solutions] Header ScrollTrigger killed. Remaining active:", activeScrollTriggers.size);
+          }
+        });
       }
 
       // Animate cards with stagger
       if (cards && cards.length > 0) {
-        // Set will-change for performance optimization
-        gsap.set(cards, { willChange: "transform, opacity" });
-        
+        console.log("[Solutions] Creating cards animation for", cards.length, "cards");
         const cardsTween = gsap.from(cards, {
           y: 50,
           opacity: 0,
@@ -67,25 +91,39 @@ export default function SolutionsAnimation({ children }: SolutionsAnimationProps
             start: "top 85%",
             end: "top 50%",
             toggleActions: "play none none none",
-            once: true, // Only trigger once
-            markers: false, // Disable markers for performance
-            invalidateOnRefresh: false, // Prevent recalculation on resize
+            once: true,
+            markers: false,
+            invalidateOnRefresh: false,
+            onEnter: () => {
+              console.log("[Solutions] Cards animation started at", performance.now() - startTimeRef.current, "ms");
+            },
           },
         });
+        tweensRef.current.push(cardsTween);
         if (cardsTween.scrollTrigger) {
-          scrollTriggersRef.current.push(cardsTween.scrollTrigger);
-          // Kill ScrollTrigger after animation completes and remove will-change
-          cardsTween.eventCallback("onComplete", () => {
-            gsap.set(cards, { willChange: "auto" });
-            if (cardsTween.scrollTrigger) {
-              cardsTween.scrollTrigger.kill();
-            }
-          });
+          activeScrollTriggers.add(cardsTween.scrollTrigger);
+          console.log("[Solutions] Cards ScrollTrigger created. Total active:", activeScrollTriggers.size);
         }
+        // Kill ScrollTrigger after animation completes to prevent ongoing checks
+        cardsTween.eventCallback("onComplete", () => {
+          const completionTime = performance.now() - startTimeRef.current;
+          console.log("[Solutions] Cards animation completed at", completionTime, "ms");
+          if (cardsTween.scrollTrigger) {
+            activeScrollTriggers.delete(cardsTween.scrollTrigger);
+            cardsTween.scrollTrigger.kill();
+            console.log("[Solutions] Cards ScrollTrigger killed. Remaining active:", activeScrollTriggers.size);
+            
+            // Log all remaining ScrollTriggers
+            const allTriggers = ScrollTrigger.getAll();
+            console.log("[Solutions] Total ScrollTriggers in GSAP:", allTriggers.length);
+            console.log("[Solutions] Active ScrollTriggers in this component:", activeScrollTriggers.size);
+          }
+        });
       }
 
       // Animate button
       if (button) {
+        console.log("[Solutions] Creating button animation");
         const buttonTween = gsap.from(button, {
           y: 20,
           opacity: 0,
@@ -96,33 +134,76 @@ export default function SolutionsAnimation({ children }: SolutionsAnimationProps
             start: "top 90%",
             end: "top 60%",
             toggleActions: "play none none none",
-            once: true, // Only trigger once
-            markers: false, // Disable markers for performance
-            invalidateOnRefresh: false, // Prevent recalculation on resize
+            once: true,
+            markers: false,
+            invalidateOnRefresh: false,
+            onEnter: () => {
+              console.log("[Solutions] Button animation started");
+            },
           },
         });
+        tweensRef.current.push(buttonTween);
         if (buttonTween.scrollTrigger) {
-          scrollTriggersRef.current.push(buttonTween.scrollTrigger);
-          // Kill ScrollTrigger after animation completes
-          buttonTween.eventCallback("onComplete", () => {
-            if (buttonTween.scrollTrigger) {
-              buttonTween.scrollTrigger.kill();
-            }
-          });
+          activeScrollTriggers.add(buttonTween.scrollTrigger);
+          console.log("[Solutions] Button ScrollTrigger created. Total active:", activeScrollTriggers.size);
         }
+        // Kill ScrollTrigger after animation completes to prevent ongoing checks
+        buttonTween.eventCallback("onComplete", () => {
+          console.log("[Solutions] Button animation completed");
+          if (buttonTween.scrollTrigger) {
+            activeScrollTriggers.delete(buttonTween.scrollTrigger);
+            buttonTween.scrollTrigger.kill();
+            console.log("[Solutions] Button ScrollTrigger killed. Remaining active:", activeScrollTriggers.size);
+          }
+        });
       }
+
+      // Periodic check for remaining ScrollTriggers
+      checkIntervalRef.current = setInterval(() => {
+        const allTriggers = ScrollTrigger.getAll();
+        // Filter out killed ScrollTriggers from our Set (killed ones won't be in getAll())
+        const actuallyActive = Array.from(activeScrollTriggers).filter(st => 
+          allTriggers.includes(st)
+        );
+        
+        if (allTriggers.length > 0 || activeScrollTriggers.size > 0) {
+          console.log("[Solutions] ⚠️ Still", allTriggers.length, "ScrollTriggers active globally");
+          console.log("[Solutions] ⚠️ Active in this component (Set):", activeScrollTriggers.size);
+          console.log("[Solutions] ⚠️ Actually active (not killed):", actuallyActive.length);
+          
+          // Clean up killed ScrollTriggers from Set
+          if (activeScrollTriggers.size !== actuallyActive.length) {
+            activeScrollTriggers.clear();
+            actuallyActive.forEach(st => activeScrollTriggers.add(st));
+            console.log("[Solutions] Cleaned up killed ScrollTriggers from Set");
+          }
+        }
+      }, 2000);
     }, sectionRef);
 
     return () => {
-      // Kill all ScrollTrigger instances
-      scrollTriggersRef.current.forEach((st) => {
-        if (st) {
-          st.kill();
+      console.log("[Solutions] Component unmounting, cleaning up...");
+      const allTriggersBefore = ScrollTrigger.getAll().length;
+      
+      // Clear interval if it exists
+      if (checkIntervalRef.current) {
+        clearInterval(checkIntervalRef.current);
+        checkIntervalRef.current = null;
+      }
+      
+      // Kill all ScrollTriggers first
+      tweensRef.current.forEach((tween) => {
+        if (tween && tween.scrollTrigger) {
+          tween.scrollTrigger.kill();
         }
       });
-      scrollTriggersRef.current = [];
-      // Revert GSAP context (this also cleans up any remaining ScrollTriggers)
+      tweensRef.current = [];
+      
+      // Revert GSAP context (this cleans up all tweens and remaining ScrollTriggers)
       ctx.revert();
+      
+      const allTriggersAfter = ScrollTrigger.getAll().length;
+      console.log("[Solutions] Cleanup complete. ScrollTriggers before:", allTriggersBefore, "after:", allTriggersAfter);
     };
   }, []);
 

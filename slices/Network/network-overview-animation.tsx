@@ -12,78 +12,70 @@ interface NetworkOverviewAnimationProps {
 
 export default function NetworkOverviewAnimation({ children }: NetworkOverviewAnimationProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollTriggersRef = useRef<ScrollTrigger[]>([]);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
     const ctx = gsap.context(() => {
-      const leftColumn = sectionRef.current?.querySelector("[data-animate='left-column']");
-      const rightColumn = sectionRef.current?.querySelector("[data-animate='right-column']");
+      const leftColumn = section.querySelector("[data-animate='left-column']");
+      const rightColumn = section.querySelector("[data-animate='right-column']");
 
       if (!leftColumn || !rightColumn) return;
 
-      // Animate left column elements
-      const leftTween = gsap.from(leftColumn.children, {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power2.out",
+      // Create a single master timeline with all animations
+      const masterTimeline = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
+          trigger: section,
+          start: "top 85%",
           end: "top 50%",
           toggleActions: "play none none none",
-          once: true, // Only trigger once
-          markers: false, // Disable markers for performance
-          invalidateOnRefresh: false, // Prevent recalculation on resize
+          once: true,
+          markers: false,
+          invalidateOnRefresh: false,
         },
       });
-      if (leftTween.scrollTrigger) {
-        scrollTriggersRef.current.push(leftTween.scrollTrigger);
-        // Kill ScrollTrigger after animation completes
-        leftTween.eventCallback("onComplete", () => {
-          if (leftTween.scrollTrigger) {
-            leftTween.scrollTrigger.kill();
-          }
-        });
+
+      // Animate left column elements
+      if (leftColumn.children.length > 0) {
+        masterTimeline.from(leftColumn.children, {
+          y: 30,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "power2.out",
+        }, 0);
       }
 
       // Animate right column (warehouse image)
-      const rightTween = gsap.from(rightColumn, {
-        x: 40,
+      masterTimeline.from(rightColumn, {
+        x: 30,
         opacity: 0,
-        duration: 1,
+        duration: 0.7,
         ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          end: "top 50%",
-          toggleActions: "play none none none",
-          once: true, // Only trigger once
-          markers: false, // Disable markers for performance
-          invalidateOnRefresh: false, // Prevent recalculation on resize
-        },
-      });
-      if (rightTween.scrollTrigger) {
-        scrollTriggersRef.current.push(rightTween.scrollTrigger);
-        // Kill ScrollTrigger after animation completes
-        rightTween.eventCallback("onComplete", () => {
-          if (rightTween.scrollTrigger) {
-            rightTween.scrollTrigger.kill();
+      }, 0.1);
+
+      // Store ScrollTrigger reference and kill it after animation completes
+      if (masterTimeline.scrollTrigger) {
+        scrollTriggerRef.current = masterTimeline.scrollTrigger;
+        masterTimeline.eventCallback("onComplete", () => {
+          if (scrollTriggerRef.current) {
+            scrollTriggerRef.current.kill();
+            scrollTriggerRef.current = null;
           }
         });
       }
-    }, sectionRef);
+    }, section);
 
     return () => {
-      // Kill all ScrollTrigger instances
-      scrollTriggersRef.current.forEach((st) => {
-        if (st) {
-          st.kill();
-        }
-      });
-      scrollTriggersRef.current = [];
-      // Revert GSAP context (this also cleans up any remaining ScrollTriggers)
+      // Kill ScrollTrigger if it exists
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+        scrollTriggerRef.current = null;
+      }
+      
+      // Revert GSAP context
       ctx.revert();
     };
   }, []);
