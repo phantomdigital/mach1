@@ -113,6 +113,175 @@ function drawLine(
   }
 }
 
+// Create texture from GeoJSON data (green land, blue water)
+function createGlobeTexture(geoJson: any): THREE.Texture {
+  const width = 2048;
+  const height = 1024;
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  
+  if (!ctx) {
+    // Fallback: create a simple blue texture
+    const fallbackCanvas = document.createElement('canvas');
+    fallbackCanvas.width = width;
+    fallbackCanvas.height = height;
+    const fallbackCtx = fallbackCanvas.getContext('2d');
+    if (fallbackCtx) {
+      fallbackCtx.fillStyle = '#141433'; // Blue water
+      fallbackCtx.fillRect(0, 0, width, height);
+    }
+    const texture = new THREE.CanvasTexture(fallbackCanvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    return texture;
+  }
+
+  // Fill with blue water using #141433 (subtle gradient variation)
+  const waterGradient = ctx.createLinearGradient(0, 0, 0, height);
+  waterGradient.addColorStop(0, '#0f1126'); // Slightly darker at poles
+  waterGradient.addColorStop(0.3, '#12152f');
+  waterGradient.addColorStop(0.5, '#141433'); // Base blue at equator
+  waterGradient.addColorStop(0.7, '#12152f');
+  waterGradient.addColorStop(1, '#0f1126'); // Slightly darker at poles
+  ctx.fillStyle = waterGradient;
+  ctx.fillRect(0, 0, width, height);
+
+  // Helper function to convert lon/lat to canvas coordinates
+  function lonLatToXY(lon: number, lat: number): [number, number] {
+    const x = ((lon + 180) / 360) * width;
+    const y = ((90 - lat) / 180) * height;
+    return [x, y];
+  }
+
+  // Fill land polygons (only interior, not borders)
+  function fillPolygon(coordinates: number[][][]) {
+    if (!ctx) return;
+    
+    ctx.beginPath();
+    
+    // First ring is outer boundary
+    const outerRing = coordinates[0];
+    if (outerRing.length > 0) {
+      const [startX, startY] = lonLatToXY(outerRing[0][0], outerRing[0][1]);
+      ctx.moveTo(startX, startY);
+      
+      for (let i = 1; i < outerRing.length; i++) {
+        const [x, y] = lonLatToXY(outerRing[i][0], outerRing[i][1]);
+        ctx.lineTo(x, y);
+      }
+      
+      ctx.closePath();
+      
+      // Inner rings are holes - use evenodd fill rule
+      for (let ringIdx = 1; ringIdx < coordinates.length; ringIdx++) {
+        const hole = coordinates[ringIdx];
+        if (hole.length > 0) {
+          const [startX, startY] = lonLatToXY(hole[0][0], hole[0][1]);
+          ctx.moveTo(startX, startY);
+          
+          for (let i = 1; i < hole.length; i++) {
+            const [x, y] = lonLatToXY(hole[i][0], hole[i][1]);
+            ctx.lineTo(x, y);
+          }
+          
+          ctx.closePath();
+        }
+      }
+    }
+  }
+
+  // Process and fill GeoJSON features
+  function processFeature(geometry: any) {
+    if (!geometry || !ctx) return;
+
+    switch (geometry.type) {
+      case "Polygon":
+        fillPolygon(geometry.coordinates);
+        // Use evenodd fill rule to handle holes correctly
+        ctx.fill('evenodd');
+        break;
+      case "MultiPolygon":
+        geometry.coordinates.forEach((polygon: number[][][]) => {
+          fillPolygon(polygon);
+          // Use evenodd fill rule to handle holes correctly
+          ctx.fill('evenodd');
+        });
+        break;
+    }
+  }
+
+  // Create land color variation based on latitude for visual interest
+  function getLandColor(lat: number): string {
+    // Vary green intensity based on latitude (slight variation)
+    const normalizedLat = Math.abs(lat) / 90; // 0 at equator, 1 at poles
+    
+    // Base green color #0AAE88 with slight variation
+    const baseGreen = '#0AAE88';
+    const lighterGreen = '#0cc5a0'; // Slightly lighter
+    const darkerGreen = '#089570'; // Slightly darker
+    
+    // Interpolate between colors
+    const r1 = parseInt(lighterGreen.substring(1, 3), 16);
+    const g1 = parseInt(lighterGreen.substring(3, 5), 16);
+    const b1 = parseInt(lighterGreen.substring(5, 7), 16);
+    
+    const r2 = parseInt(darkerGreen.substring(1, 3), 16);
+    const g2 = parseInt(darkerGreen.substring(3, 5), 16);
+    const b2 = parseInt(darkerGreen.substring(5, 7), 16);
+    
+    const r = Math.round(r1 + (r2 - r1) * normalizedLat);
+    const g = Math.round(g1 + (g2 - g1) * normalizedLat);
+    const b = Math.round(b1 + (b2 - b1) * normalizedLat);
+    
+    return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+  }
+
+  // Fill land areas with varying green based on latitude
+  // Process features and fill with latitude-based colors
+  if (geoJson.type === "Feature") {
+    // For single feature, use approximate center latitude
+    if (geoJson.geometry && geoJson.geometry.coordinates) {
+      const coords = geoJson.geometry.coordinates[0]?.[0];
+      if (coords && coords.length >= 2) {
+        const avgLat = coords[1]; // approximate
+        ctx.fillStyle = getLandColor(avgLat);
+      } else {
+        ctx.fillStyle = '#0AAE88'; // fallback - base green
+      }
+    }
+    processFeature(geoJson.geometry);
+  } else if (geoJson.type === "FeatureCollection") {
+    geoJson.features.forEach((feature: any) => {
+      // Calculate average latitude for this feature for color variation
+      if (feature.geometry && feature.geometry.coordinates) {
+        let totalLat = 0;
+        let count = 0;
+        
+        function collectCoords(coords: any) {
+          if (Array.isArray(coords[0])) {
+            coords.forEach(collectCoords);
+          } else if (coords.length >= 2) {
+            totalLat += coords[1]; // latitude
+            count++;
+          }
+        }
+        
+        collectCoords(feature.geometry.coordinates);
+        const avgLat = count > 0 ? totalLat / count : 0;
+        ctx.fillStyle = getLandColor(avgLat);
+      } else {
+        ctx.fillStyle = '#0AAE88'; // fallback - base green
+      }
+      processFeature(feature.geometry);
+    });
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
 // Parse GeoJSON and draw lines
 function drawGeoJSON(geoJson: any, scene: THREE.Scene, group: THREE.Group, radius: number) {
   function processFeature(geometry: any) {
@@ -242,7 +411,7 @@ function createMarkers(
     // Main marker sphere (scaled up)
     const markerGeometry = new THREE.SphereGeometry(0.1, 16, 16);
     const markerMaterial = new THREE.MeshBasicMaterial({
-      color: 0xed1e24,
+      color: 0xed1e24, // mach1-red
       transparent: true,
       opacity: 1,
     });
@@ -253,7 +422,7 @@ function createMarkers(
     // Outer glow (pulsing)
     const glowGeometry = new THREE.SphereGeometry(0.18, 16, 16);
     const glowMaterial = new THREE.MeshBasicMaterial({
-      color: 0xed1e24,
+      color: 0xed1e24, // mach1-red
       transparent: true,
       opacity: 0.5,
     });
@@ -276,43 +445,43 @@ function createMarkers(
     northTangent.normalize();
 
     // Reduce radial push, increase upward (along tangent) lift
-    const outward = 0.5; // smaller push away from sphere
-    const upLift = 1.0;  // stronger lift toward north
+    const outward = 0.4; // smaller push away from sphere
+    const upLift = 0.5;  // reduced lift - bring labels closer to line
     const end = position.clone().add(direction.multiplyScalar(outward)).add(northTangent.clone().multiplyScalar(upLift));
     const lineGeom = new THREE.BufferGeometry().setFromPoints([position, end]);
-    const lineMat = new THREE.LineBasicMaterial({ color: 0xed1e24, transparent: true, opacity: 0.7 });
+      const lineMat = new THREE.LineBasicMaterial({ color: 0xed1e24, transparent: true, opacity: 0.7 }); // mach1-red
     const line = new THREE.Line(lineGeom, lineMat);
     markerGroup.add(line);
     leaderLinesRef.current.push(line);
 
-    // Label sprite with location name (if present)
+    // Label sprite with location name (if present) - smaller size
     if (location.location_name) {
       const canvas = document.createElement('canvas');
-      canvas.width = 512;
-      canvas.height = 128;
+      canvas.width = 256;
+      canvas.height = 64;
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.font = 'bold 64px Inter, Arial, sans-serif';
+        ctx.font = 'bold 32px Inter, Arial, sans-serif';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'middle';
         const text = location.location_name;
         const metrics = ctx.measureText(text);
-        const pad = 50;
-        const h = 80;
+        const pad = 20;
+        const h = 40;
         const y = canvas.height / 2;
         ctx.fillStyle = 'rgba(255,255,255,0.9)';
         ctx.fillRect(0, y - h/2, metrics.width + pad, h);
         ctx.fillStyle = '#111111';
-        ctx.fillText(text, 25, y);
+        ctx.fillText(text, 12, y);
       }
       const texture = new THREE.CanvasTexture(canvas);
       texture.colorSpace = THREE.SRGBColorSpace;
       const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false });
       const sprite = new THREE.Sprite(spriteMat);
-      // Place label slightly further along the north tangent to clear the dot
-      sprite.position.copy(end.clone().add(northTangent.clone().multiplyScalar(0.35)));
-      sprite.scale.set(2.0, 0.5, 1);
+      // Place label right at the end of the line (reduced from 0.15 to 0.05)
+      sprite.position.copy(end.clone().add(northTangent.clone().multiplyScalar(0.05)));
+      sprite.scale.set(1.0, 0.25, 1); // Reduced from 2.0, 0.5 to make labels smaller
       markerGroup.add(sprite);
       labelSpritesRef.current.push(sprite);
     }
@@ -324,11 +493,18 @@ export default function Globe3D({
   activeRegion,
   allLocations = [],
   activeLocations = [],
+  canvasHeight = 700,
 }: { 
   activeRegion: string;
   allLocations?: Location[];
   activeLocations?: Location[];
+  canvasHeight?: number;
 }) {
+  // Configurable scale - adjust this value to make globe smaller/larger
+  // Base scale for desktop, will be smaller on mobile
+  const GLOBE_SCALE_DESKTOP = 0.77; // Adjust this value (0.5 = 50% size, 1.0 = 100% size)
+  const GLOBE_SCALE_MOBILE = 0.5; // Smaller scale for mobile devices
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   const isInitialMount = useRef(true);
@@ -342,6 +518,7 @@ export default function Globe3D({
   const pulsesRef = useRef<THREE.Mesh[]>([]);
   const labelSpritesRef = useRef<THREE.Sprite[]>([]);
   const leaderLinesRef = useRef<THREE.Line[]>([]);
+  const rotationAnimationFrameRef = useRef<number | null>(null);
 
   // Initialize Three.js scene
   useEffect(() => {
@@ -350,25 +527,33 @@ export default function Globe3D({
     setMounted(true);
 
     const container = containerRef.current;
-    const width = container.clientWidth;
+    const fullWidth = container.clientWidth;
     const height = container.clientHeight;
+    
+    // Determine if mobile based on width
+    const isMobile = fullWidth < 768; // Tailwind's lg breakpoint
+    const globeScale = isMobile ? GLOBE_SCALE_MOBILE : GLOBE_SCALE_DESKTOP;
+    
+    // Calculate aspect ratio based on full width to prevent stretching
+    const aspectRatio = fullWidth / height;
 
     // Scene
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
     // Camera - fixed position looking at the globe center
-    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 12.5);
+    // Use full width aspect ratio to match renderer and prevent stretching
+    const camera = new THREE.PerspectiveCamera(50, aspectRatio, 0.1, 1000);
+    camera.position.set(0, 0, 9);
     camera.lookAt(0, 0, 0);
     cameraRef.current = camera;
 
-    // Renderer
+    // Renderer - render to full container width for overflow space
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
     });
-    renderer.setSize(width, height);
+    renderer.setSize(fullWidth, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     // Physically-based rendering setup for softer lighting (v150+ defaults)
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -414,17 +599,33 @@ export default function Globe3D({
 
     // Create globe
     const globeGroup = new THREE.Group();
+    globeGroup.position.x = -0.75; // Move globe to the left in 3D space
+    globeGroup.scale.set(globeScale, globeScale, globeScale); // Apply responsive scale
     globeGroupRef.current = globeGroup;
     scene.add(globeGroup);
 
-    const sphereGeometry = new THREE.SphereGeometry(5, 64, 64);
-    // Use Standard material for physically-based shading and softer highlights
-    const sphereMaterial = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(0x1a1a2e).convertSRGBToLinear(),
-      roughness: 0.9, // very matte to avoid cheap shine
-      metalness: 0.0,
+    // Reduced globe radius from 5 to 3.5 for smaller size
+    const globeRadius = 3.5;
+    const sphereGeometry = new THREE.SphereGeometry(globeRadius, 64, 64);
+    
+    // Create globe material with texture (will be updated when GeoJSON loads)
+    // Start with blue water as default
+    const defaultCanvas = document.createElement('canvas');
+    defaultCanvas.width = 2048;
+    defaultCanvas.height = 1024;
+    const defaultCtx = defaultCanvas.getContext('2d');
+    if (defaultCtx) {
+      defaultCtx.fillStyle = '#141433'; // Blue water
+      defaultCtx.fillRect(0, 0, 2048, 1024);
+    }
+    const defaultTexture = new THREE.CanvasTexture(defaultCanvas);
+    defaultTexture.colorSpace = THREE.SRGBColorSpace;
+    
+    const globeMaterial = new THREE.MeshBasicMaterial({
+      map: defaultTexture,
     });
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    
+    const sphere = new THREE.Mesh(sphereGeometry, globeMaterial);
     globeGroup.add(sphere);
 
     // Subtle atmospheric rim glow (adds interest without changing lighting)
@@ -447,8 +648,8 @@ export default function Globe3D({
     `;
     const atmosphereMaterial = new THREE.ShaderMaterial({
       uniforms: {
-        glowColor: { value: new THREE.Color(0x141433) },
-        intensity: { value: 0.45 },
+        glowColor: { value: new THREE.Color(0x8bb4d8) }, // Lighter blue color
+        intensity: { value: 0.2 }, // More subtle intensity
       },
       vertexShader: atmosphereVertex,
       fragmentShader: atmosphereFragment,
@@ -457,7 +658,7 @@ export default function Globe3D({
       depthWrite: false,
       side: THREE.BackSide,
     });
-    const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(5.3, 64, 64), atmosphereMaterial);
+    const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(globeRadius * 1.06, 64, 64), atmosphereMaterial);
     globeGroup.add(atmosphere);
 
     // Create lines group for country borders
@@ -474,7 +675,16 @@ export default function Globe3D({
     fetch("/geojson/countries.geo.json")
       .then(response => response.json())
       .then(geoJson => {
-        drawGeoJSON(geoJson, scene, linesGroup, 5.05);
+        // Create texture from GeoJSON (green land, blue water)
+        const texture = createGlobeTexture(geoJson);
+        if (globeMaterial.map) {
+          globeMaterial.map.dispose();
+        }
+        globeMaterial.map = texture;
+        globeMaterial.needsUpdate = true;
+        
+        // Draw country border lines
+        drawGeoJSON(geoJson, scene, linesGroup, globeRadius * 1.01);
         // Add a subtle animated dash to country lines
         linesGroup.traverse((obj) => {
           if ((obj as any).isLine) {
@@ -534,14 +744,22 @@ export default function Globe3D({
 
     // Handle resize
     function handleResize() {
-      if (!containerRef.current || !cameraRef.current || !rendererRef.current) return;
+      if (!containerRef.current || !cameraRef.current || !rendererRef.current || !globeGroupRef.current) return;
       
-      const width = containerRef.current.clientWidth;
+      const fullWidth = containerRef.current.clientWidth;
       const height = containerRef.current.clientHeight;
       
-      cameraRef.current.aspect = width / height;
+      // Update scale on resize for responsiveness
+      const isMobile = fullWidth < 768;
+      const newScale = isMobile ? GLOBE_SCALE_MOBILE : GLOBE_SCALE_DESKTOP;
+      globeGroupRef.current.scale.set(newScale, newScale, newScale);
+      
+      // Match camera aspect ratio to renderer to prevent stretching
+      cameraRef.current.aspect = fullWidth / height;
       cameraRef.current.updateProjectionMatrix();
-      rendererRef.current.setSize(width, height);
+      
+      // Renderer uses full width for overflow space
+      rendererRef.current.setSize(fullWidth, height);
     }
 
     window.addEventListener("resize", handleResize);
@@ -549,6 +767,11 @@ export default function Globe3D({
     // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
+      // Cancel any ongoing rotation animation
+      if (rotationAnimationFrameRef.current !== null) {
+        cancelAnimationFrame(rotationAnimationFrameRef.current);
+        rotationAnimationFrameRef.current = null;
+      }
       
       if (rendererRef.current && containerRef.current) {
         containerRef.current.removeChild(rendererRef.current.domElement);
@@ -569,7 +792,7 @@ export default function Globe3D({
       sceneRef.current,
       markerGroupRef.current,
       allLocations,
-      5.25,
+      3.675, // globeRadius * 1.05 (proportional to original 5.25)
       pulsesRef,
       labelSpritesRef,
       leaderLinesRef
@@ -607,6 +830,12 @@ export default function Globe3D({
       return;
     }
 
+    // Cancel any ongoing rotation animation
+    if (rotationAnimationFrameRef.current !== null) {
+      cancelAnimationFrame(rotationAnimationFrameRef.current);
+      rotationAnimationFrameRef.current = null;
+    }
+
     // Slerp between current and target for smooth motion
     let progress = 0;
     const duration = 1.2;
@@ -619,25 +848,51 @@ export default function Globe3D({
         globeGroupRef.current.quaternion.copy(currentQuat).slerp(targetQuat, eased);
       }
       if (t < 1) {
-        requestAnimationFrame(animateRotation);
+        rotationAnimationFrameRef.current = requestAnimationFrame(animateRotation);
+      } else {
+        // Animation complete - ensure we're exactly at target
+        if (globeGroupRef.current) {
+          globeGroupRef.current.quaternion.copy(targetQuat);
+        }
+        rotationAnimationFrameRef.current = null;
       }
     }
 
-    animateRotation();
+    rotationAnimationFrameRef.current = requestAnimationFrame(animateRotation);
   }, [activeRegion, activeLocations, mounted]);
 
+  // Update renderer when canvasHeight changes (maintains aspect ratio, no stretching)
+  useEffect(() => {
+    if (!mounted || !containerRef.current || !cameraRef.current || !rendererRef.current) return;
+    
+    // Wait a tick for CSS to update
+    const timeoutId = setTimeout(() => {
+      if (!containerRef.current || !cameraRef.current || !rendererRef.current) return;
+      
+      const fullWidth = containerRef.current.clientWidth;
+      const height = containerRef.current.clientHeight;
+      
+      // Update camera aspect ratio to match new dimensions (prevents stretching)
+      cameraRef.current.aspect = fullWidth / height;
+      cameraRef.current.updateProjectionMatrix();
+      
+      // Update renderer size
+      rendererRef.current.setSize(fullWidth, height);
+    }, 0);
+    
+    return () => clearTimeout(timeoutId);
+  }, [canvasHeight, mounted]);
+
+  const minHeight = Math.max(canvasHeight, 1000);
+  
   return (
     <div 
       ref={containerRef} 
-      className="relative"
-        style={{ 
-        width: "150%",
-        height: "700px",
-        minHeight: "1000px",
-        background: "transparent",
-        position: "relative",
-        marginLeft: "-50%"
-      }}
+      className="relative bg-transparent w-[200%] -ml-[50%] h-[var(--canvas-height)] min-h-[var(--canvas-min-height)]"
+      style={{ 
+        '--canvas-height': `${canvasHeight}px`,
+        '--canvas-min-height': `${minHeight}px`
+      } as React.CSSProperties & { '--canvas-height': string; '--canvas-min-height': string }}
     />
   );
 }

@@ -56,6 +56,93 @@
           }
         }
       }
+    },
+    {
+      "id": "darkCards",
+      "name": "Dark Cards",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Dark card variant with light text - 2x2 grid layout",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "SUBHEADING"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Main Heading",
+            "placeholder": "The key contributors."
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "We are the leading provider in the market, with decades of experience and several satisfied customers. Our dedicated team of specialists is the largest in the world, responsible for completing thousands of successful trips."
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top",
+            "placeholder": "Choose top padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom",
+            "placeholder": "Choose bottom padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#f5f5f5"
+          }
+        }
+      },
+      "items": {
+        "percentage": {
+          "type": "Text",
+          "config": {
+            "label": "Percentage",
+            "placeholder": "35%+"
+          }
+        },
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": "IMPROVED EFFICIENCY"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Drive efficiency at scale with hands-free, distraction-free focus."
+          }
+        }
+      }
     }
   ]
 }

@@ -5,6 +5,8 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
 import NetworkTabs from "./network-tabs";
+import NetworkDefaultAnimation from "./network-default-animation";
+import { SliceHeader } from "@/components/slice-header";
 import { Loader2 } from "lucide-react";
 import React from "react";
 
@@ -33,6 +35,7 @@ const NetworkDefault = ({ slice }: NetworkDefaultProps): React.ReactElement => {
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
   const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
+  const backgroundColor = slice.primary.background_color || "#ffffff";
 
   // Group items by region
   const regions = slice.items.reduce((acc, item) => {
@@ -81,52 +84,52 @@ const NetworkDefault = ({ slice }: NetworkDefaultProps): React.ReactElement => {
     <section
       data-slice-type="network"
       data-slice-variation="default"
-      className={`w-full bg-white ${marginTop} ${paddingTop} ${paddingBottom}`}
+      className={`w-full bg-[var(--bg-color)] ${marginTop} ${paddingTop} ${paddingBottom}`}
+      style={{ '--bg-color': backgroundColor } as React.CSSProperties & { '--bg-color': string }}
     >
-      <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
-        {/* Header Section */}
-        {(slice.primary.subheading || slice.primary.heading || slice.primary.description) && (
-          <div className="text-center mb-16">
-            {slice.primary.subheading && (
-              <h5 className="text-neutral-800 text-sm uppercase tracking-wider mb-4">
-                {slice.primary.subheading}
-              </h5>
-            )}
+      <NetworkDefaultAnimation>
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 overflow-visible">
+          {/* Header with SliceHeader */}
+          <div data-animate="header">
+            <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
             {slice.primary.heading && (
-              <h2 className="text-neutral-800 text-4xl lg:text-6xl mb-6 max-w-4xl mx-auto">
+              <h2 className="text-neutral-800 text-3xl lg:text-5xl font-bold leading-tight tracking-tight mb-6 lg:mb-8">
                 {slice.primary.heading}
               </h2>
             )}
             {slice.primary.description && (
-              <p className="text-neutral-600 text-lg max-w-3xl mx-auto">
+              <p className="text-neutral-600 text-base leading-relaxed max-w-3xl mb-12 lg:mb-16">
                 {slice.primary.description}
               </p>
             )}
           </div>
-        )}
 
-        {/* Main Content Grid: Globe + Tabs */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start pt-32">
-          {/* 3D Globe - independent positioning with overflow */}
-          <div className="order-2 lg:order-1 relative overflow-visible" style={{ minHeight: "1000px" }}>
-            <Globe3D 
-            activeRegion={activeRegion} 
-            allLocations={allLocations}
-            activeLocations={activeLocations}
-          />
-          </div>
-
-          {/* Region Tabs and Information */}
-          <div className="order-1 lg:order-2">
-            {regionsArray && regionsArray.length > 0 && (
-              <NetworkTabs
-                regions={regionsArray}
-                onRegionChange={setActiveRegion}
+          {/* Main Content Grid: Globe + Tabs */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center overflow-visible">
+            {/* 3D Globe - reduced size, overflow left for design */}
+            <div className="order-2 lg:order-1 relative overflow-visible" data-animate="globe">
+              {/* Half-dark container behind globe */}
+              <div className="absolute inset-y-0 left-1/2 w-1/2 bg-neutral-200/90 -z-10" />
+              <Globe3D 
+                activeRegion={activeRegion} 
+                allLocations={allLocations}
+                activeLocations={activeLocations}
+                canvasHeight={slice.primary.canvas_height || 700}
               />
-            )}
+            </div>
+
+            {/* Region Tabs and Information */}
+            <div className="order-1 lg:order-2 flex items-center" data-animate="tabs">
+              {regionsArray && regionsArray.length > 0 && (
+                <NetworkTabs
+                  regions={regionsArray}
+                  onRegionChange={setActiveRegion}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </NetworkDefaultAnimation>
     </section>
   );
 };

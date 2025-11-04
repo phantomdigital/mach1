@@ -59,6 +59,20 @@
             "options": ["none", "small", "medium", "large"],
             "default_value": "large"
           }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "canvas_height": {
+          "type": "Number",
+          "config": {
+            "label": "Canvas Height (px)",
+            "placeholder": "700"
+          }
         }
       },
       "items": {
@@ -234,6 +248,13 @@
             "placeholder": "Select bottom padding",
             "options": ["none", "small", "medium", "large"],
             "default_value": "large"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
           }
         }
       },

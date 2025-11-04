@@ -130,6 +130,123 @@
           }
         }
       }
+    },
+    {
+      "id": "stackedCards",
+      "name": "Stacked Cards",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Testimonials displayed as a stacked card carousel with navigation",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "What our clients say"
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "TESTIMONIALS"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Trusted by businesses across Australia"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top (pt)",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom (pb)",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "VIEW ALL TESTIMONIALS"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link",
+            "placeholder": "Link to testimonials page or contact"
+          }
+        }
+      },
+      "items": {
+        "testimonial_text": {
+          "type": "Text",
+          "config": {
+            "label": "Testimonial Text",
+            "placeholder": "MACH1 Logistics has transformed our supply chain operations..."
+          }
+        },
+        "client_name": {
+          "type": "Text",
+          "config": {
+            "label": "Client Name",
+            "placeholder": "John Smith"
+          }
+        },
+        "client_title": {
+          "type": "Text",
+          "config": {
+            "label": "Client Title",
+            "placeholder": "Supply Chain Director"
+          }
+        },
+        "company_name": {
+          "type": "Text",
+          "config": {
+            "label": "Company Name",
+            "placeholder": "ABC Manufacturing"
+          }
+        },
+        "client_photo": {
+          "type": "Image",
+          "config": {
+            "label": "Client Photo (Optional)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      }
     }
   ]
 }

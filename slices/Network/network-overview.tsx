@@ -20,12 +20,14 @@ const NetworkOverview = ({ slice }: NetworkOverviewProps): React.ReactElement =>
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
   const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
+  const backgroundColor = slice.primary.background_color || "#ffffff";
 
   return (
     <section
       data-slice-type="network"
       data-slice-variation="networkOverview"
-      className={`w-full bg-white ${marginTop} ${paddingTop} ${paddingBottom}`}
+      className={`w-full bg-[var(--bg-color)] ${marginTop} ${paddingTop} ${paddingBottom}`}
+      style={{ '--bg-color': backgroundColor } as React.CSSProperties & { '--bg-color': string }}
     >
       <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         {/* Header Section */}

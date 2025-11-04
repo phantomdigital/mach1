@@ -5,6 +5,10 @@ import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass, type Marg
 import { SliceHeader } from "@/components/slice-header";
 import TestimonialsAnimation from "./testimonials-animation";
 import HeadingWithUnderline from "./heading-with-underline";
+import TestimonialsStackedCarousel from "./testimonials-stacked-carousel";
+import TestimonialsStackedAnimation from "./testimonials-stacked-animation";
+import { HeroButton } from "@/components/ui/hero-button";
+import { PrismicNextLink } from "@prismicio/next";
 
 /**
  * Props for `Testimonials`.
@@ -47,6 +51,9 @@ const Testimonials = ({ slice }: TestimonialsProps): React.ReactElement => {
     lineColor: "light" as const,
   };
 
+  // Check if this is the stacked cards variant
+  const isStackedCards = slice.variation === "stackedCards";
+
   return (
     <section
       data-slice-type={slice.slice_type}
@@ -54,43 +61,103 @@ const Testimonials = ({ slice }: TestimonialsProps): React.ReactElement => {
       className={`w-full ${marginTop} ${paddingTop} ${paddingBottom}`}
       style={{ backgroundColor }}
     >
-      <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
-        {/* Header Section - Centered */}
-        {(slice.primary.subheading || slice.primary.heading || slice.primary.description) && (
-          <div className="mb-16 lg:mb-24 max-w-3xl mx-auto text-center">
-            {slice.primary.subheading && (
-              <SliceHeader 
-                subheading={slice.primary.subheading} 
-                textColor={textColors.subheading}
-                lineColor={textColors.lineColor}
-                textAlign="center"
-              />
-            )}
-            {slice.primary.heading && (
-              <HeadingWithUnderline 
-                heading={slice.primary.heading}
-                textColor={textColors.heading}
-              />
-            )}
-            {slice.primary.description && (
-              <p className={`${textColors.description} text-base text-neutral-600 leading-relaxed max-w-sm mx-auto`}>
-                {slice.primary.description}
-              </p>
+      {isStackedCards ? (
+        // Stacked Cards Variant - Side by side layout (mobile optimized)
+        <TestimonialsStackedAnimation>
+          <div className="w-full max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 lg:gap-16 items-center">
+              {/* Left Side - Header Content */}
+              <div className="w-full lg:w-2/5 flex-shrink-0 text-center lg:text-left">
+                {(slice.primary.subheading || slice.primary.heading || slice.primary.description) && (
+                  <div className="max-w-lg mx-auto lg:mx-0" data-animate="header">
+                    {slice.primary.subheading && (
+                      <SliceHeader 
+                        subheading={slice.primary.subheading} 
+                        textColor={textColors.subheading}
+                        lineColor={textColors.lineColor}
+                        textAlign="left"
+                        className="lg:text-left"
+                      />
+                    )}
+                    {slice.primary.heading && (
+                      <h2 className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 ${textColors.heading}`}>
+                        {slice.primary.heading}
+                      </h2>
+                    )}
+                    {slice.primary.description && (
+                      <p className={`${textColors.description} text-sm sm:text-base lg:text-lg leading-relaxed mb-6 lg:mb-8`}>
+                        {slice.primary.description}
+                      </p>
+                    )}
+                    
+                    {/* Button */}
+                    {slice.primary.button_text && slice.primary.button_link && (
+                      <div className="flex justify-center lg:justify-start">
+                        <HeroButton asChild>
+                          <PrismicNextLink field={slice.primary.button_link}>
+                            {slice.primary.button_text}
+                          </PrismicNextLink>
+                        </HeroButton>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Right Side - Stacked Carousel */}
+              <div className="w-full lg:flex-1" data-animate="carousel">
+                {slice.items && slice.items.length > 0 && (
+                  <TestimonialsStackedCarousel
+                    testimonials={slice.items}
+                    isDarkBackground={isDarkBlue}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </TestimonialsStackedAnimation>
+      ) : (
+        // Default Variant - Original layout
+        <>
+          <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+            {/* Header Section - Centered */}
+            {(slice.primary.subheading || slice.primary.heading || slice.primary.description) && (
+              <div className="mb-16 lg:mb-24 max-w-3xl mx-auto text-center">
+                {slice.primary.subheading && (
+                  <SliceHeader 
+                    subheading={slice.primary.subheading} 
+                    textColor={textColors.subheading}
+                    lineColor={textColors.lineColor}
+                    textAlign="center"
+                  />
+                )}
+                {slice.primary.heading && (
+                  <HeadingWithUnderline 
+                    heading={slice.primary.heading}
+                    textColor={textColors.heading}
+                  />
+                )}
+                {slice.primary.description && (
+                  <p className={`${textColors.description} text-base text-neutral-600 leading-relaxed max-w-sm mx-auto`}>
+                    {slice.primary.description}
+                  </p>
+                )}
+              </div>
             )}
           </div>
-        )}
-      </div>
 
-      {/* Testimonials Carousel - Edge to edge */}
-      {slice.items && slice.items.length > 0 && (
-        <div className="w-full -mx-4 lg:-mx-8">
-          <TestimonialsAnimation
-            testimonials={slice.items}
-            numberOfRows={slice.primary.number_of_rows || 2}
-            scrollSpeed={slice.primary.scroll_speed || 1}
-            gap={slice.primary.gap || 32}
-          />
-        </div>
+          {/* Testimonials Content */}
+          {slice.items && slice.items.length > 0 && (
+            <div className="w-full -mx-4 lg:-mx-8">
+              <TestimonialsAnimation
+                testimonials={slice.primary.number_of_rows ? slice.items : slice.items}
+                numberOfRows={slice.primary.number_of_rows || 2}
+                scrollSpeed={slice.primary.scroll_speed || 1}
+                gap={slice.primary.gap || 32}
+              />
+            </div>
+          )}
+        </>
       )}
     </section>
   );

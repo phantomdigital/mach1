@@ -1255,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = HomepageHeroSlice | NetworkSlice | TestimonialsSlice | SubmittedSlice | FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = HeroBlockSlice | HomepageHeroSlice | NetworkSlice | TestimonialsSlice | SubmittedSlice | FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -3154,6 +3154,26 @@ export interface NetworkSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Background Color field in *Network → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: network.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Canvas Height (px) field in *Network → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 700
+	 * - **API ID Path**: network.default.primary.canvas_height
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	canvas_height: prismic.NumberField;
 }
 
 /**
@@ -3396,6 +3416,16 @@ export interface NetworkSliceNetworkOverviewPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Background Color field in *Network → Network Overview → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: network.networkOverview.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
 }
 
 /**
@@ -4778,9 +4808,131 @@ export interface StatisticsSliceDefaultItem {
 export type StatisticsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<StatisticsSliceDefaultPrimary>, Simplify<StatisticsSliceDefaultItem>>;
 
 /**
+ * Primary content in *Statistics → Dark Cards → Primary*
+ */
+export interface StatisticsSliceDarkCardsPrimary {
+	/**
+	 * Subheading field in *Statistics → Dark Cards → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: SUBHEADING
+	 * - **API ID Path**: statistics.darkCards.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Main Heading field in *Statistics → Dark Cards → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: The key contributors.
+	 * - **API ID Path**: statistics.darkCards.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Statistics → Dark Cards → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: We are the leading provider in the market, with decades of experience and several satisfied customers. Our dedicated team of specialists is the largest in the world, responsible for completing thousands of successful trips.
+	 * - **API ID Path**: statistics.darkCards.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Top Margin field in *Statistics → Dark Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: statistics.darkCards.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top field in *Statistics → Dark Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: statistics.darkCards.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom field in *Statistics → Dark Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: statistics.darkCards.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Background Color field in *Statistics → Dark Cards → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #f5f5f5
+	 * - **API ID Path**: statistics.darkCards.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+}
+
+/**
+ * Primary content in *Statistics → Items*
+ */
+export interface StatisticsSliceDarkCardsItem {
+	/**
+	 * Percentage field in *Statistics → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: 35%+
+	 * - **API ID Path**: statistics.items[].percentage
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	percentage: prismic.KeyTextField;
+	
+	/**
+	 * Title field in *Statistics → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: IMPROVED EFFICIENCY
+	 * - **API ID Path**: statistics.items[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Statistics → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Drive efficiency at scale with hands-free, distraction-free focus.
+	 * - **API ID Path**: statistics.items[].description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+}
+
+/**
+ * Dark Cards variation for Statistics Slice
+ *
+ * - **API ID**: `darkCards`
+ * - **Description**: Dark card variant with light text - 2x2 grid layout
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type StatisticsSliceDarkCards = prismic.SharedSliceVariation<"darkCards", Simplify<StatisticsSliceDarkCardsPrimary>, Simplify<StatisticsSliceDarkCardsItem>>;
+
+/**
  * Slice variation for *Statistics*
  */
-type StatisticsSliceVariation = StatisticsSliceDefault
+type StatisticsSliceVariation = StatisticsSliceDefault | StatisticsSliceDarkCards
 
 /**
  * Statistics Shared Slice
@@ -5855,9 +6007,171 @@ export interface TestimonialsSliceDefaultItem {
 export type TestimonialsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<TestimonialsSliceDefaultPrimary>, Simplify<TestimonialsSliceDefaultItem>>;
 
 /**
+ * Primary content in *Testimonials → Stacked Cards → Primary*
+ */
+export interface TestimonialsSliceStackedCardsPrimary {
+	/**
+	 * Heading field in *Testimonials → Stacked Cards → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: What our clients say
+	 * - **API ID Path**: testimonials.stackedCards.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Subheading field in *Testimonials → Stacked Cards → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: TESTIMONIALS
+	 * - **API ID Path**: testimonials.stackedCards.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Testimonials → Stacked Cards → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Trusted by businesses across Australia
+	 * - **API ID Path**: testimonials.stackedCards.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Background Color field in *Testimonials → Stacked Cards → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: testimonials.stackedCards.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Top Margin field in *Testimonials → Stacked Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: testimonials.stackedCards.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top (pt) field in *Testimonials → Stacked Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: testimonials.stackedCards.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom (pb) field in *Testimonials → Stacked Cards → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: testimonials.stackedCards.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Button Text field in *Testimonials → Stacked Cards → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: VIEW ALL TESTIMONIALS
+	 * - **API ID Path**: testimonials.stackedCards.primary.button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *Testimonials → Stacked Cards → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Link to testimonials page or contact
+	 * - **API ID Path**: testimonials.stackedCards.primary.button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * Primary content in *Testimonials → Items*
+ */
+export interface TestimonialsSliceStackedCardsItem {
+	/**
+	 * Testimonial Text field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: MACH1 Logistics has transformed our supply chain operations...
+	 * - **API ID Path**: testimonials.items[].testimonial_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	testimonial_text: prismic.KeyTextField;
+	
+	/**
+	 * Client Name field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: John Smith
+	 * - **API ID Path**: testimonials.items[].client_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	client_name: prismic.KeyTextField;
+	
+	/**
+	 * Client Title field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Supply Chain Director
+	 * - **API ID Path**: testimonials.items[].client_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	client_title: prismic.KeyTextField;
+	
+	/**
+	 * Company Name field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: ABC Manufacturing
+	 * - **API ID Path**: testimonials.items[].company_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	company_name: prismic.KeyTextField;
+	
+	/**
+	 * Client Photo (Optional) field in *Testimonials → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: testimonials.items[].client_photo
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	client_photo: prismic.ImageField<never>;
+}
+
+/**
+ * Stacked Cards variation for Testimonials Slice
+ *
+ * - **API ID**: `stackedCards`
+ * - **Description**: Testimonials displayed as a stacked card carousel with navigation
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type TestimonialsSliceStackedCards = prismic.SharedSliceVariation<"stackedCards", Simplify<TestimonialsSliceStackedCardsPrimary>, Simplify<TestimonialsSliceStackedCardsItem>>;
+
+/**
  * Slice variation for *Testimonials*
  */
-type TestimonialsSliceVariation = TestimonialsSliceDefault
+type TestimonialsSliceVariation = TestimonialsSliceDefault | TestimonialsSliceStackedCards
 
 /**
  * Testimonials Shared Slice
@@ -6198,8 +6512,11 @@ declare module "@prismicio/client" {
 			StatisticsSlice,
 			StatisticsSliceDefaultPrimary,
 			StatisticsSliceDefaultItem,
+			StatisticsSliceDarkCardsPrimary,
+			StatisticsSliceDarkCardsItem,
 			StatisticsSliceVariation,
 			StatisticsSliceDefault,
+			StatisticsSliceDarkCards,
 			StatisticsV2Slice,
 			StatisticsV2SliceDefaultPrimaryStatisticsItem,
 			StatisticsV2SliceDefaultPrimary,
@@ -6228,8 +6545,11 @@ declare module "@prismicio/client" {
 			TestimonialsSlice,
 			TestimonialsSliceDefaultPrimary,
 			TestimonialsSliceDefaultItem,
+			TestimonialsSliceStackedCardsPrimary,
+			TestimonialsSliceStackedCardsItem,
 			TestimonialsSliceVariation,
 			TestimonialsSliceDefault,
+			TestimonialsSliceStackedCards,
 			TrackingSlice,
 			TrackingSliceDefaultPrimary,
 			TrackingSliceDefaultItem,
