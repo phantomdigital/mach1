@@ -12,7 +12,38 @@ interface NavigationItemWithPrefetchProps {
 }
 
 /**
- * Navigation item that prefetches on hover for instant navigation
+ * Smart prefetching utility that respects browser resources
+ * - Uses requestIdleCallback for non-blocking prefetch
+ * - Checks network conditions (avoids on slow connections)
+ * - Only prefetches when browser is idle
+ */
+const smartPrefetch = (url: string, router: ReturnType<typeof useRouter>) => {
+  // Check if user is on a slow connection
+  if ('connection' in navigator) {
+    const conn = (navigator as any).connection;
+    // Skip prefetch on 2G, slow-2g, or save-data mode
+    if (conn && (conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g' || conn.saveData)) {
+      return;
+    }
+  }
+
+  // Use requestIdleCallback if available, otherwise use setTimeout as fallback
+  const prefetchWhenIdle = () => {
+    router.prefetch(url);
+  };
+
+  if ('requestIdleCallback' in window) {
+    // Wait for browser idle time - won't block critical resources
+    (window as any).requestIdleCallback(prefetchWhenIdle, { timeout: 2000 });
+  } else {
+    // Fallback: small delay to not block initial render
+    setTimeout(prefetchWhenIdle, 100);
+  }
+};
+
+/**
+ * Navigation item that intelligently prefetches on hover
+ * Uses idle callbacks and respects network conditions
  */
 export function NavigationItemWithPrefetch({ 
   link, 
@@ -30,7 +61,7 @@ export function NavigationItemWithPrefetch({
       
       // Only prefetch internal routes (starting with /)
       if (url.startsWith('/')) {
-        router.prefetch(url);
+        smartPrefetch(url, router);
       }
     } else if (link && 'uid' in link && link.uid) {
       // Handle document links - construct URL based on link type
@@ -61,7 +92,7 @@ export function NavigationItemWithPrefetch({
             url = `/${link.uid}`;
             break;
         }
-        router.prefetch(url);
+        smartPrefetch(url, router);
       }
     }
   };
