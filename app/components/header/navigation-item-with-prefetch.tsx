@@ -11,6 +11,29 @@ interface NavigationItemWithPrefetchProps {
   children?: React.ReactNode;
 }
 
+// Type definitions for Network Information API
+interface NetworkInformation {
+  effectiveType: '2g' | 'slow-2g' | '3g' | '4g';
+  saveData: boolean;
+}
+
+interface NavigatorWithConnection extends Navigator {
+  connection?: NetworkInformation;
+}
+
+// Type definition for requestIdleCallback
+interface IdleDeadline {
+  didTimeout: boolean;
+  timeRemaining(): number;
+}
+
+interface WindowWithIdleCallback extends Window {
+  requestIdleCallback(
+    callback: (deadline: IdleDeadline) => void,
+    options?: { timeout: number }
+  ): number;
+}
+
 /**
  * Smart prefetching utility that respects browser resources
  * - Uses requestIdleCallback for non-blocking prefetch
@@ -20,7 +43,7 @@ interface NavigationItemWithPrefetchProps {
 const smartPrefetch = (url: string, router: ReturnType<typeof useRouter>) => {
   // Check if user is on a slow connection
   if ('connection' in navigator) {
-    const conn = (navigator as any).connection;
+    const conn = (navigator as NavigatorWithConnection).connection;
     // Skip prefetch on 2G, slow-2g, or save-data mode
     if (conn && (conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g' || conn.saveData)) {
       return;
@@ -34,7 +57,7 @@ const smartPrefetch = (url: string, router: ReturnType<typeof useRouter>) => {
 
   if ('requestIdleCallback' in window) {
     // Wait for browser idle time - won't block critical resources
-    (window as any).requestIdleCallback(prefetchWhenIdle, { timeout: 2000 });
+    (window as WindowWithIdleCallback).requestIdleCallback(prefetchWhenIdle, { timeout: 2000 });
   } else {
     // Fallback: small delay to not block initial render
     setTimeout(prefetchWhenIdle, 100);
