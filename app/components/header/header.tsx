@@ -1,5 +1,5 @@
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
-import { createClient, defaultLocale, locales, type LocaleCode } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { isFilled } from "@prismicio/client";
 import { headers } from "next/headers";
 import { NavigationDropdown } from "./navigation-dropdown";
@@ -91,9 +91,10 @@ export default async function Header({ forcedLocale }: HeaderProps = {}) {
         next: { revalidate: 0 }
       }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // If header doesn't exist in requested locale, fallback to default locale
-    console.warn(`Header not found in locale ${locale}, falling back to default locale. Error:`, error?.message || error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.warn(`Header not found in locale ${locale}, falling back to default locale. Error:`, errorMessage);
     try {
       header = await client.getSingle("header", { 
         lang: defaultLocale,
