@@ -5386,6 +5386,26 @@ export interface StepsSliceStartPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	start_button_text: prismic.KeyTextField;
+	
+	/**
+	 * Loading Message field in *Steps → Start (Step 0) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Loading your quote form...
+	 * - **API ID Path**: steps.start.primary.loading_message
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	loading_message: prismic.KeyTextField;
+	
+	/**
+	 * Loading Submessage field in *Steps → Start (Step 0) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Please wait a moment
+	 * - **API ID Path**: steps.start.primary.loading_submessage
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	loading_submessage: prismic.KeyTextField;
 }
 
 /**
@@ -5769,6 +5789,216 @@ export interface StepsSliceSummaryPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/number
 	 */
 	faq_limit: prismic.NumberField;
+	
+	/**
+	 * Badge Text field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Quote Received
+	 * - **API ID Path**: steps.summary.primary.badge_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	badge_text: prismic.KeyTextField;
+	
+	/**
+	 * Go to Home Button Text field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: GO TO HOME
+	 * - **API ID Path**: steps.summary.primary.go_to_home_button
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	go_to_home_button: prismic.KeyTextField;
+	
+	/**
+	 * Details Section Heading field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: DETAILS
+	 * - **API ID Path**: steps.summary.primary.details_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	details_heading: prismic.KeyTextField;
+	
+	/**
+	 * Service Type Label field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Service Type
+	 * - **API ID Path**: steps.summary.primary.service_type_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	service_type_label: prismic.KeyTextField;
+	
+	/**
+	 * Package Details Heading field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: PACKAGE DETAILS
+	 * - **API ID Path**: steps.summary.primary.package_details_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	package_details_heading: prismic.KeyTextField;
+	
+	/**
+	 * Package Label Template field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Package
+	 * - **API ID Path**: steps.summary.primary.package_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	package_label: prismic.KeyTextField;
+	
+	/**
+	 * Origin Label field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Origin
+	 * - **API ID Path**: steps.summary.primary.origin_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	origin_label: prismic.KeyTextField;
+	
+	/**
+	 * Destination Label field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Destination
+	 * - **API ID Path**: steps.summary.primary.destination_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	destination_label: prismic.KeyTextField;
+	
+	/**
+	 * Weight Label field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Weight
+	 * - **API ID Path**: steps.summary.primary.weight_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	weight_label: prismic.KeyTextField;
+	
+	/**
+	 * Quantity Label field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Quantity
+	 * - **API ID Path**: steps.summary.primary.quantity_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	quantity_label: prismic.KeyTextField;
+	
+	/**
+	 * Length Label field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Length
+	 * - **API ID Path**: steps.summary.primary.length_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	length_label: prismic.KeyTextField;
+	
+	/**
+	 * Width Label field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Width
+	 * - **API ID Path**: steps.summary.primary.width_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	width_label: prismic.KeyTextField;
+	
+	/**
+	 * Height Label field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Height
+	 * - **API ID Path**: steps.summary.primary.height_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	height_label: prismic.KeyTextField;
+	
+	/**
+	 * FAQs Section Title field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: FAQs
+	 * - **API ID Path**: steps.summary.primary.faqs_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	faqs_title: prismic.KeyTextField;
+	
+	/**
+	 * Have a Chat Section Heading field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: HAVE A CHAT
+	 * - **API ID Path**: steps.summary.primary.have_a_chat_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	have_a_chat_heading: prismic.KeyTextField;
+	
+	/**
+	 * Get Help Heading field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Get help
+	 * - **API ID Path**: steps.summary.primary.get_help_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	get_help_heading: prismic.KeyTextField;
+	
+	/**
+	 * Contact Us Button Text field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: CONTACT US
+	 * - **API ID Path**: steps.summary.primary.contact_us_button
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	contact_us_button: prismic.KeyTextField;
+	
+	/**
+	 * Live Chat Button Text field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: LIVE CHAT
+	 * - **API ID Path**: steps.summary.primary.live_chat_button
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	live_chat_button: prismic.KeyTextField;
+	
+	/**
+	 * Loading Message field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Loading your quote summary...
+	 * - **API ID Path**: steps.summary.primary.loading_message
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	loading_message: prismic.KeyTextField;
+	
+	/**
+	 * No Data Message field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: No quote data found
+	 * - **API ID Path**: steps.summary.primary.no_data_message
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	no_data_message: prismic.KeyTextField;
+	
+	/**
+	 * Redirecting Message field in *Steps → Summary (Step 3) → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Redirecting you to the home page...
+	 * - **API ID Path**: steps.summary.primary.redirecting_message
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	redirecting_message: prismic.KeyTextField;
 }
 
 /**

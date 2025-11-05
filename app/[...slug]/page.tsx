@@ -5,6 +5,7 @@ import { SliceZone } from "@prismicio/react";
 import { createClient, locales, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata } from "@/lib/metadata";
+import QuoteSummaryPage from "@/app/quote/summary/page";
 
 type Params = { slug: string[] };
 
@@ -28,6 +29,13 @@ export default async function Page({ params }: { params: Promise<Params> }) {
   // Check if first segment is a locale code
   if (validLocaleCodes.includes(firstSegment as LocaleCode)) {
     locale = firstSegment as LocaleCode;
+    
+    // Check if this is quote/summary with locale prefix (e.g., /zh-cn/quote/summary)
+    if (slug.length >= 3 && slug[1] === "quote" && slug[2] === "summary") {
+      // Handle quote summary page with locale
+      return <QuoteSummaryPage params={Promise.resolve({ slug })} />;
+    }
+    
     uid = slug[1]; // Second segment is the uid
     
     // If no uid after locale, it's a localized homepage
@@ -38,13 +46,23 @@ export default async function Page({ params }: { params: Promise<Params> }) {
   } else {
     // No locale prefix, use default locale
     locale = defaultLocale;
+    
+    // Check if this is quote/summary without locale (e.g., /quote/summary)
+    // This should be handled by the specific route, but if it falls here, handle it
+    if (slug.length >= 2 && slug[0] === "quote" && slug[1] === "summary") {
+      return <QuoteSummaryPage params={Promise.resolve({ slug: [] })} />;
+    }
+    
     uid = firstSegment;
   }
   
   // Handle page types
   // Note: More specific routes like /solutions/[uid] will be matched first by Next.js
   try {
-    const page = await client.getByUID("page", uid, { lang: locale });
+    const page = await client.getByUID("page", uid, { 
+      lang: locale,
+      fetchOptions: { cache: 'no-store' } // Ensure fresh data for locale switching
+    });
     
     return (
       <main>

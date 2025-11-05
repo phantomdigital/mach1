@@ -52,7 +52,21 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
     setFormData,
     formData,
     resetFlow,
+    loadingMessage,
+    loadingSubmessage,
+    setLoadingMessages,
   } = useStepsFlow(stepNumber);
+
+  // Store loading messages from start slice in sessionStorage when it renders
+  useEffect(() => {
+    if (slice.variation === "start" && typeof window !== "undefined") {
+      const messages = {
+        loading: (slice.primary as any).loading_message || "Loading your quote form...",
+        loadingSubMessage: (slice.primary as any).loading_submessage || "Please wait a moment"
+      };
+      sessionStorage.setItem("steps_loading_messages", JSON.stringify(messages));
+    }
+  }, [slice.variation, slice.primary]);
 
   // Reset loading state when flow is reset (back to step 0)
   useEffect(() => {
@@ -251,8 +265,30 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
                   <div className="flex items-center justify-center py-32 w-full">
                     <div className="text-center">
                       <Loader2 className="w-12 h-12 text-dark-blue animate-spin mx-auto mb-4" />
-                      <p className="text-neutral-800 font-medium">Loading your quote form...</p>
-                      <p className="text-neutral-500 text-sm mt-2">Please wait a moment</p>
+                      <p className="text-neutral-800 font-medium">
+                        {(() => {
+                          if (typeof window !== "undefined") {
+                            const stored = sessionStorage.getItem("steps_loading_messages");
+                            if (stored) {
+                              const messages = JSON.parse(stored);
+                              return messages.loading || "Loading your quote form...";
+                            }
+                          }
+                          return "Loading your quote form...";
+                        })()}
+                      </p>
+                      <p className="text-neutral-500 text-sm mt-2">
+                        {(() => {
+                          if (typeof window !== "undefined") {
+                            const stored = sessionStorage.getItem("steps_loading_messages");
+                            if (stored) {
+                              const messages = JSON.parse(stored);
+                              return messages.loadingSubMessage || "Please wait a moment";
+                            }
+                          }
+                          return "Please wait a moment";
+                        })()}
+                      </p>
                     </div>
                   </div>
                 ) : (

@@ -17,7 +17,7 @@ export function RegionLanguageSelector() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   // Extract current locale from pathname (needed for initial state)
   const getCurrentLocale = (): LocaleCode => {
     const pathParts = pathname.split('/').filter(Boolean);
@@ -118,10 +118,17 @@ export function RegionLanguageSelector() {
             docType = 'page';
             uid = pathWithoutLocale;
           } else if (pathWithoutLocale.startsWith('quote/')) {
-            // Quote pages are handled differently, skip locale check
-            setAvailableLocales([currentLocale, defaultLocale]);
-            setIsLoadingLocales(false);
-            return;
+            // Handle quote pages - check if it's quote/summary
+            if (pathWithoutLocale === 'quote/summary') {
+              // Check for available translations of the quote page
+              docType = 'page';
+              uid = 'quote';
+            } else {
+              // Other quote pages (like quote?step=1) - show all locales
+              setAvailableLocales([currentLocale, defaultLocale]);
+              setIsLoadingLocales(false);
+              return;
+            }
           } else {
             // Default to page type
             docType = 'page';

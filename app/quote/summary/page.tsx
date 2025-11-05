@@ -1,7 +1,9 @@
 import { Metadata } from "next";
+import { headers } from "next/headers";
 import { isFilled, RichTextField } from "@prismicio/client";
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { generatePrismicMetadata } from "@/lib/metadata";
+import { getLocaleFromPathname } from "@/lib/locale-helpers";
 import SummaryClient from "./summary-client";
 import type { StepsSliceSummary, FaqSlice } from "@/types.generated";
 
@@ -12,11 +14,35 @@ import type { StepsSliceSummary, FaqSlice } from "@/types.generated";
  */
 const QUOTE_SUMMARY_UID = "quote";
 
-export default async function QuoteSummaryPage() {
+type Props = {
+  params: Promise<{ slug?: string[] }>;
+};
+
+export default async function QuoteSummaryPage({ params }: Props) {
   const client = createClient();
   
+  // Extract locale from URL - handle both /quote/summary and /[lang]/quote/summary
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug || [];
+  let locale: LocaleCode = defaultLocale;
+  
+  // Check if we have a locale in the slug (for catch-all route)
+  // Format: [locale, "quote", "summary"] or [] for default route
+  if (slug.length >= 3 && slug[1] === "quote" && slug[2] === "summary") {
+    // Format: /[locale]/quote/summary - handled by catch-all route
+    const firstSegment = slug[0];
+    const validLocales = ['en-us', 'zh-cn', 'hi-in'] as const;
+    if (validLocales.includes(firstSegment as LocaleCode)) {
+      locale = firstSegment as LocaleCode;
+    }
+  } else {
+    // Format: /quote/summary (default locale, handled by specific route)
+    // Use default locale - client-side will detect actual URL locale
+    locale = defaultLocale;
+  }
+  
   try {
-    const page = await client.getByUID("page", QUOTE_SUMMARY_UID);
+    const page = await client.getByUID("page", QUOTE_SUMMARY_UID, { lang: locale });
     
     // Find the summary slice (Steps slice with variation "summary")
     const summarySlice = page.data.slices.find(
@@ -37,11 +63,12 @@ export default async function QuoteSummaryPage() {
     
     if (primary.use_main_faqs && isFilled.contentRelationship(primary.main_faq_slice)) {
       try {
-        const linkedPage = await client.getByID(primary.main_faq_slice.id);
+        // Fetch linked FAQ page in the same locale
+        const linkedPage = await client.getByID(primary.main_faq_slice.id, { lang: locale });
         
         // Check if the document has slices (only Page documents have slices)
         if ('slices' in linkedPage.data && Array.isArray(linkedPage.data.slices)) {
-          // Find FAQ slice in the linked page
+          // Find FAQ slice in the linked page - fetch in same locale
           const faqSlice = linkedPage.data.slices.find(
             (slice) => slice.slice_type === "faq"
           ) as FaqSlice | undefined;
@@ -78,6 +105,27 @@ export default async function QuoteSummaryPage() {
         contactEmail={primary.contact_email || ""}
         contactTimeframe={primary.contact_timeframe || ""}
         faqs={faqs}
+        badgeText={primary.badge_text || "Quote Received"}
+        goToHomeButton={primary.go_to_home_button || "GO TO HOME"}
+        detailsHeading={primary.details_heading || "DETAILS"}
+        serviceTypeLabel={primary.service_type_label || "Service Type"}
+        packageDetailsHeading={primary.package_details_heading || "PACKAGE DETAILS"}
+        packageLabel={primary.package_label || "Package"}
+        originLabel={primary.origin_label || "Origin"}
+        destinationLabel={primary.destination_label || "Destination"}
+        weightLabel={primary.weight_label || "Weight"}
+        quantityLabel={primary.quantity_label || "Quantity"}
+        lengthLabel={primary.length_label || "Length"}
+        widthLabel={primary.width_label || "Width"}
+        heightLabel={primary.height_label || "Height"}
+        faqsTitle={primary.faqs_title || "FAQs"}
+        haveAChatHeading={primary.have_a_chat_heading || "HAVE A CHAT"}
+        getHelpHeading={primary.get_help_heading || "Get help"}
+        contactUsButton={primary.contact_us_button || "CONTACT US"}
+        liveChatButton={primary.live_chat_button || "LIVE CHAT"}
+        loadingMessage={primary.loading_message || "Loading your quote summary..."}
+        noDataMessage={primary.no_data_message || "No quote data found"}
+        redirectingMessage={primary.redirecting_message || "Redirecting you to the home page..."}
       />
     );
   } catch (error) {
@@ -87,14 +135,29 @@ export default async function QuoteSummaryPage() {
   }
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const client = createClient();
   
+  // Extract locale from params
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug || [];
+  let locale: LocaleCode = defaultLocale;
+  
+  if (slug.length > 0) {
+    const firstSegment = slug[0];
+    const validLocales = ['en-us', 'zh-cn', 'hi-in'] as const;
+    if (validLocales.includes(firstSegment as LocaleCode)) {
+      locale = firstSegment as LocaleCode;
+    }
+  }
+  
   try {
-    const page = await client.getByUID("page", QUOTE_SUMMARY_UID);
+    const page = await client.getByUID("page", QUOTE_SUMMARY_UID, { lang: locale });
+    
+    const summaryPath = locale === defaultLocale ? "/quote/summary" : `/${locale}/quote/summary`;
     
     return generatePrismicMetadata(page, {
-      url: "/quote/summary",
+      url: summaryPath,
       keywords: ["quote", "summary", "MACH 1 Logistics"],
     });
   } catch {

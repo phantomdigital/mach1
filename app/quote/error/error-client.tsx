@@ -7,6 +7,7 @@ import { HeroButton } from "@/components/ui/hero-button";
 
 export default function ErrorClient() {
   const router = useRouter();
+  const pathname = usePathname();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [hasQuoteData, setHasQuoteData] = useState(false);
 
@@ -36,14 +37,18 @@ export default function ErrorClient() {
   }, []);
 
   const handleRetry = () => {
-    // Go back to the summary page to retry
-    router.push("/quote/summary");
+    // Preserve locale when navigating to summary
+    const locale = getLocaleFromPathname(pathname);
+    const summaryPath = addLocaleToPathname("/quote/summary", locale);
+    router.push(summaryPath);
   };
 
   const handleStartOver = () => {
-    // Clear session storage and go back to step 1
+    // Clear session storage and go back to step 1, preserving locale
     sessionStorage.removeItem("steps_flow_data");
-    router.push("/quote?step=1");
+    const locale = getLocaleFromPathname(pathname);
+    const quotePath = addLocaleToPathname("/quote?step=1", locale);
+    router.push(quotePath);
   };
 
   return (

@@ -20,7 +20,9 @@
           "spans": []
         }
       ],
-      "start_button_text": "Start Quote"
+      "start_button_text": "Start Quote",
+      "loading_message": "Loading your quote form...",
+      "loading_submessage": "Please wait a moment"
     },
     "items": []
   },

@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { getLocaleFromPathname, addLocaleToPathname } from "@/lib/locale-helpers";
 
 interface StepsState {
   selectedCard: string;
   formData: Record<string, string> | null;
   isTransitioning: boolean;
+  loadingMessage?: string;
+  loadingSubmessage?: string;
 }
 
 const STORAGE_KEY = "steps_flow_data";
@@ -35,6 +38,7 @@ function setStoredData(state: StepsState) {
 
 export function useStepsFlow(stepNumber: number) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [data, setData] = useState<StepsState>(getStoredData);
 
@@ -118,8 +122,14 @@ export function useStepsFlow(stepNumber: number) {
   };
 
   const goToSummary = () => {
-    // Navigate to the summary page
-    router.push("/quote/summary");
+    // Preserve locale when navigating to summary
+    const locale = getLocaleFromPathname(pathname);
+    const summaryPath = addLocaleToPathname("/quote/summary", locale);
+    router.push(summaryPath);
+  };
+
+  const setLoadingMessages = (loadingMessage?: string, loadingSubmessage?: string) => {
+    updateData({ loadingMessage, loadingSubmessage });
   };
 
   return {
@@ -127,12 +137,15 @@ export function useStepsFlow(stepNumber: number) {
     selectedCard: data.selectedCard,
     formData: data.formData,
     isTransitioning: data.isTransitioning,
+    loadingMessage: data.loadingMessage,
+    loadingSubmessage: data.loadingSubmessage,
     goToNextStep,
     goToPreviousStep,
     goToStep,
     goToSummary,
     setSelectedCard,
     setFormData,
+    setLoadingMessages,
     resetFlow,
     isCurrentStep,
   };

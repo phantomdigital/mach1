@@ -35,15 +35,15 @@ export function ScrollDropdownCloser() {
 
     window.addEventListener('scroll', handleNativeScroll, { passive: true })
 
-    // Also listen to Lenis scroll events if available
-    if (lenis) {
+    // Also listen to Lenis scroll events if available and it supports event listeners
+    if (lenis && typeof lenis.on === 'function') {
       lenis.on('scroll', handleScroll)
     }
 
     // Cleanup
     return () => {
       window.removeEventListener('scroll', handleNativeScroll)
-      if (lenis) {
+      if (lenis && typeof lenis.off === 'function') {
         lenis.off('scroll', handleScroll)
       }
     }

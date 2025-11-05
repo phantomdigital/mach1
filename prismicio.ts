@@ -18,8 +18,8 @@ export const repositoryName =
  */
 export const locales = [
   { code: 'en-us', name: 'English', flag: '🇦🇺' },
-  { code: 'zh-cn', name: 'Chinese - China', flag: '🇨🇳' },
-  { code: 'hi-in', name: 'Hindi - India', flag: '🇮🇳' },
+  { code: 'zh-cn', name: 'Chinese - 中国人', flag: '🇨🇳' },
+  { code: 'hi-in', name: 'Hindi - हिंदी', flag: '🇮🇳' },
 ] as const;
 
 export type LocaleCode = typeof locales[number]['code'];

@@ -1,6 +1,7 @@
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, locales, type LocaleCode } from "@/prismicio";
 import { isFilled } from "@prismicio/client";
+import { headers } from "next/headers";
 import { NavigationDropdown } from "./navigation-dropdown";
 import { HeaderButtons } from "./header-buttons";
 import { ScrollDropdownCloser } from "./scroll-dropdown-closer";
@@ -9,6 +10,7 @@ import { MobileMenu } from "./mobile-menu";
 import { HeaderHeightTracker } from "./header-height-tracker";
 import { CompactHeader } from "./compact-header";
 import { ExternalLinkIcon } from "./external-link-icon";
+import { getLocaleFromPathname } from "@/lib/locale-helpers";
 import type { HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 // Server component for simple navigation items
@@ -41,12 +43,73 @@ const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationIte
   );
 };
 
-export default async function Header() {
+interface HeaderProps {
+  forcedLocale?: string;
+}
+
+export default async function Header({ forcedLocale }: HeaderProps = {}) {
   const client = createClient();
   
+  // Get locale - use forced locale from client wrapper if provided, otherwise detect from headers
+  let locale: LocaleCode = defaultLocale;
+  
+  if (forcedLocale) {
+    // Use locale passed from client wrapper
+    locale = forcedLocale as LocaleCode;
+  } else {
+    // Fallback to header detection (for SSR/initial load)
   try {
-    const header = await client.getSingle("header");
-    
+      const headersList = await headers();
+      const pathname = headersList.get("x-pathname");
+      if (pathname) {
+        locale = getLocaleFromPathname(pathname);
+      } else {
+        const referer = headersList.get("referer");
+        if (referer) {
+          try {
+            const url = new URL(referer);
+            locale = getLocaleFromPathname(url.pathname);
+          } catch {
+            // Invalid URL, use default
+          }
+        }
+      }
+    } catch (error) {
+      console.warn("Could not detect locale from headers:", error);
+      locale = defaultLocale;
+    }
+  }
+  
+  // Try to fetch header in the detected locale, fallback to default locale if not found
+  let header;
+  try {
+    // Fetch header with no cache to ensure it updates when locale changes
+    header = await client.getSingle("header", { 
+      lang: locale,
+      fetchOptions: { 
+        cache: 'no-store',
+        next: { revalidate: 0 }
+      }
+    });
+  } catch (error: any) {
+    // If header doesn't exist in requested locale, fallback to default locale
+    console.warn(`Header not found in locale ${locale}, falling back to default locale. Error:`, error?.message || error);
+    try {
+      header = await client.getSingle("header", { 
+        lang: defaultLocale,
+        fetchOptions: { 
+          cache: 'no-store',
+          next: { revalidate: 0 }
+        }
+      });
+    } catch (fallbackError) {
+      console.error("Header not found in any locale:", fallbackError);
+      // Will fall through to the catch block below
+      throw fallbackError;
+    }
+  }
+  
+  if (header) {
     return (
       <>
         {/* Compact Header - Desktop Only */}
@@ -222,7 +285,9 @@ export default async function Header() {
       </header>
     </>
     );
-  } catch {
+  }
+  
+  // If we get here, header wasn't found in any locale
     console.warn("No header document found in Prismic");
     // Return minimal fallback header - no content, just structure
     return (
@@ -324,5 +389,4 @@ export default async function Header() {
         </div>
       </header>
     );
-  }
 }

@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { RichTextField } from "@prismicio/client";
 import StepsSummary from "@/slices/Steps/steps-summary";
 import { getContainerClass, getPaddingBottomClass } from "@/lib/spacing";
+import { getLocaleFromPathname, addLocaleToPathname } from "@/lib/locale-helpers";
 
 interface SummaryData {
   selectedCard?: string;
@@ -18,6 +19,27 @@ interface SummaryClientProps {
   contactEmail?: string;
   contactTimeframe?: string;
   faqs?: Array<{ faq_question: string | null; faq_answer: RichTextField | null }>;
+  badgeText?: string;
+  goToHomeButton?: string;
+  detailsHeading?: string;
+  serviceTypeLabel?: string;
+  packageDetailsHeading?: string;
+  packageLabel?: string;
+  originLabel?: string;
+  destinationLabel?: string;
+  weightLabel?: string;
+  quantityLabel?: string;
+  lengthLabel?: string;
+  widthLabel?: string;
+  heightLabel?: string;
+  faqsTitle?: string;
+  haveAChatHeading?: string;
+  getHelpHeading?: string;
+  contactUsButton?: string;
+  liveChatButton?: string;
+  loadingMessage?: string;
+  noDataMessage?: string;
+  redirectingMessage?: string;
 }
 
 export default function SummaryClient({
@@ -26,8 +48,30 @@ export default function SummaryClient({
   contactEmail = "",
   contactTimeframe = "",
   faqs = [],
+  badgeText = "Quote Received",
+  goToHomeButton = "GO TO HOME",
+  detailsHeading = "DETAILS",
+  serviceTypeLabel = "Service Type",
+  packageDetailsHeading = "PACKAGE DETAILS",
+  packageLabel = "Package",
+  originLabel = "Origin",
+  destinationLabel = "Destination",
+  weightLabel = "Weight",
+  quantityLabel = "Quantity",
+  lengthLabel = "Length",
+  widthLabel = "Width",
+  heightLabel = "Height",
+  faqsTitle = "FAQs",
+  haveAChatHeading = "HAVE A CHAT",
+  getHelpHeading = "Get help",
+  contactUsButton = "CONTACT US",
+  liveChatButton = "LIVE CHAT",
+  loadingMessage = "Loading your quote summary...",
+  noDataMessage = "No quote data found",
+  redirectingMessage = "Redirecting you to the home page...",
 }: SummaryClientProps = {}) {
   const router = useRouter();
+  const pathname = usePathname();
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -48,9 +92,11 @@ export default function SummaryClient({
     const stored = sessionStorage.getItem("steps_flow_data");
     
     if (!stored) {
-      // No data - redirect back to start after brief delay
+      // No data - redirect back to start after brief delay, preserving locale
       console.warn("No quote data found - redirecting to home");
-      setTimeout(() => router.push("/"), 1000);
+      const locale = getLocaleFromPathname(pathname);
+      const homePath = locale === getLocaleFromPathname("/") ? "/" : `/${locale}`;
+      setTimeout(() => router.push(homePath), 1000);
       return;
     }
 
@@ -60,7 +106,9 @@ export default function SummaryClient({
       // Validate data structure - ensure we have the required fields
       if (!data.formData || Object.keys(data.formData).length === 0) {
         console.warn("Invalid quote data - redirecting to home");
-        setTimeout(() => router.push("/"), 1000);
+        const locale = getLocaleFromPathname(pathname);
+        const homePath = locale === getLocaleFromPathname("/") ? "/" : `/${locale}`;
+        setTimeout(() => router.push(homePath), 1000);
         return;
       }
       
@@ -68,9 +116,11 @@ export default function SummaryClient({
       setIsLoading(false);
     } catch (error) {
       console.error("Error parsing summary data:", error);
-      setTimeout(() => router.push("/"), 1000);
+      const locale = getLocaleFromPathname(pathname);
+      const homePath = locale === getLocaleFromPathname("/") ? "/" : `/${locale}`;
+      setTimeout(() => router.push(homePath), 1000);
     }
-  }, [router]);
+  }, [router, pathname]);
 
   // Prevent scrolling during loading
   useEffect(() => {
@@ -87,9 +137,11 @@ export default function SummaryClient({
   }, [isLoading]);
 
   const handleReset = () => {
-    // Clear session storage and redirect to home
+    // Clear session storage and redirect to home, preserving locale
     sessionStorage.removeItem("steps_flow_data");
-    router.push("/");
+    const locale = getLocaleFromPathname(pathname);
+    const homePath = locale === getLocaleFromPathname("/") ? "/" : `/${locale}`;
+    router.push(homePath);
   };
 
   if (isLoading) {
@@ -102,11 +154,11 @@ export default function SummaryClient({
           <Loader2 className="w-12 h-12 text-dark-blue animate-spin mx-auto mb-4" />
           {hasNoData ? (
             <>
-              <p className="text-neutral-800 font-medium mb-2">No quote data found</p>
-              <p className="text-neutral-600 text-sm">Redirecting you to the home page...</p>
+              <p className="text-neutral-800 font-medium mb-2">{noDataMessage}</p>
+              <p className="text-neutral-600 text-sm">{redirectingMessage}</p>
             </>
           ) : (
-            <p className="text-neutral-600">Loading your quote summary...</p>
+            <p className="text-neutral-600">{loadingMessage}</p>
           )}
         </div>
       </div>
@@ -131,6 +183,24 @@ export default function SummaryClient({
             formData={summaryData.formData}
             faqs={faqs}
             onReset={handleReset}
+            badgeText={badgeText}
+            goToHomeButton={goToHomeButton}
+            detailsHeading={detailsHeading}
+            serviceTypeLabel={serviceTypeLabel}
+            packageDetailsHeading={packageDetailsHeading}
+            packageLabel={packageLabel}
+            originLabel={originLabel}
+            destinationLabel={destinationLabel}
+            weightLabel={weightLabel}
+            quantityLabel={quantityLabel}
+            lengthLabel={lengthLabel}
+            widthLabel={widthLabel}
+            heightLabel={heightLabel}
+            faqsTitle={faqsTitle}
+            haveAChatHeading={haveAChatHeading}
+            getHelpHeading={getHelpHeading}
+            contactUsButton={contactUsButton}
+            liveChatButton={liveChatButton}
           />
         </div>
       </section>

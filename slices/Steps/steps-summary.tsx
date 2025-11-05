@@ -21,17 +21,51 @@ interface StepsSummaryProps {
   formData: Record<string, string> | null;
   faqs?: FaqItem[];
   onReset: () => void;
+  badgeText?: string;
+  goToHomeButton?: string;
+  detailsHeading?: string;
+  serviceTypeLabel?: string;
+  packageDetailsHeading?: string;
+  packageLabel?: string;
+  originLabel?: string;
+  destinationLabel?: string;
+  weightLabel?: string;
+  quantityLabel?: string;
+  lengthLabel?: string;
+  widthLabel?: string;
+  heightLabel?: string;
+  faqsTitle?: string;
+  haveAChatHeading?: string;
+  getHelpHeading?: string;
+  contactUsButton?: string;
+  liveChatButton?: string;
 }
 
 export default function StepsSummary({
   heading,
   description,
-  contactEmail,
-  contactTimeframe,
   selectedCard,
   formData,
   faqs = [],
   onReset,
+  badgeText = "Quote Received",
+  goToHomeButton = "GO TO HOME",
+  detailsHeading = "DETAILS",
+  serviceTypeLabel = "Service Type",
+  packageDetailsHeading = "PACKAGE DETAILS",
+  packageLabel = "Package",
+  originLabel = "Origin",
+  destinationLabel = "Destination",
+  weightLabel = "Weight",
+  quantityLabel = "Quantity",
+  lengthLabel = "Length",
+  widthLabel = "Width",
+  heightLabel = "Height",
+  faqsTitle = "FAQs",
+  haveAChatHeading = "HAVE A CHAT",
+  getHelpHeading = "Get help",
+  contactUsButton = "CONTACT US",
+  liveChatButton = "LIVE CHAT",
 }: StepsSummaryProps) {
 
   // Parse packages from form data
@@ -142,7 +176,7 @@ export default function StepsSummary({
         <div className="space-y-8">
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <Badge variant="green">Quote Received</Badge>
+              <Badge variant="green">{badgeText}</Badge>
             </div>
 
             <h2 className="text-neutral-800 text-4xl lg:text-5xl">
@@ -157,7 +191,7 @@ export default function StepsSummary({
           <div>
             <HeroButton asChild>
               <button onClick={onReset} className="cursor-pointer">
-                GO TO HOME
+                {goToHomeButton}
               </button>
             </HeroButton>
           </div>
@@ -165,14 +199,14 @@ export default function StepsSummary({
           {/* Shipment Details */}
           {formData && Object.keys(formData).length > 0 && (
             <div className={`${getMarginTopClass("medium")} space-y-4`}>
-              <h5 className="text-neutral-800 text-sm mb-4">DETAILS</h5>
+              <h5 className="text-neutral-800 text-sm mb-4">{detailsHeading}</h5>
               
               <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9]">
                 <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                   {/* Selected Service Type */}
                   {selectedCard && (
                     <div>
-                      <p className="text-xs text-neutral-500 mb-1">Service Type</p>
+                      <p className="text-xs text-neutral-500 mb-1">{serviceTypeLabel}</p>
                       <p className="text-neutral-800 font-medium text-sm">{formatServiceType(selectedCard)}</p>
                     </div>
                   )}
@@ -192,14 +226,14 @@ export default function StepsSummary({
           {/* Package Details */}
           {packages.length > 0 && (
             <div className={`${getMarginTopClass("small")} space-y-4`}>
-              <h5 className="text-neutral-800 text-sm mb-4">PACKAGE DETAILS</h5>
+              <h5 className="text-neutral-800 text-sm mb-4">{packageDetailsHeading}</h5>
               
               <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9] space-y-6">
                 {packages.map((pkg: any, index: number) => (
                   <div key={index} className={`${index > 0 ? 'pt-6 border-t border-neutral-300' : ''}`}>
                     {/* Package Header */}
                     <div className="mb-4">
-                      <h6 className="font-semibold text-neutral-800 text-base mb-1">Package {index + 1}</h6>
+                      <h6 className="font-semibold text-neutral-800 text-base mb-1">{packageLabel} {index + 1}</h6>
                       {pkg.description && (
                         <p className="text-sm text-neutral-600">{pkg.description}</p>
                       )}
@@ -210,13 +244,13 @@ export default function StepsSummary({
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 pb-4 border-b border-neutral-300">
                         {pkg.origin && (
                           <div>
-                            <p className="text-xs text-neutral-500 mb-1">Origin</p>
+                            <p className="text-xs text-neutral-500 mb-1">{originLabel}</p>
                             <p className="text-sm text-neutral-800 font-medium">{pkg.origin}</p>
                           </div>
                         )}
                         {pkg.destination && (
                           <div>
-                            <p className="text-xs text-neutral-500 mb-1">Destination</p>
+                            <p className="text-xs text-neutral-500 mb-1">{destinationLabel}</p>
                             <p className="text-sm text-neutral-800 font-medium">{pkg.destination}</p>
                           </div>
                         )}
@@ -227,31 +261,31 @@ export default function StepsSummary({
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                       {pkg.weight && (
                         <div>
-                          <p className="text-xs text-neutral-500 mb-1">Weight</p>
+                          <p className="text-xs text-neutral-500 mb-1">{weightLabel}</p>
                           <p className="text-sm text-neutral-800 font-medium">{pkg.weight} {pkg.weightUnit}</p>
                         </div>
                       )}
                       {pkg.quantity && (
                         <div>
-                          <p className="text-xs text-neutral-500 mb-1">Quantity</p>
+                          <p className="text-xs text-neutral-500 mb-1">{quantityLabel}</p>
                           <p className="text-sm text-neutral-800 font-medium">{pkg.quantity}</p>
                         </div>
                       )}
                       {pkg.length && (
                         <div>
-                          <p className="text-xs text-neutral-500 mb-1">Length</p>
+                          <p className="text-xs text-neutral-500 mb-1">{lengthLabel}</p>
                           <p className="text-sm text-neutral-800 font-medium">{pkg.length} {pkg.dimensionUnit}</p>
                         </div>
                       )}
                       {pkg.width && (
                         <div>
-                          <p className="text-xs text-neutral-500 mb-1">Width</p>
+                          <p className="text-xs text-neutral-500 mb-1">{widthLabel}</p>
                           <p className="text-sm text-neutral-800 font-medium">{pkg.width} {pkg.dimensionUnit}</p>
                         </div>
                       )}
                       {pkg.height && (
                         <div>
-                          <p className="text-xs text-neutral-500 mb-1">Height</p>
+                          <p className="text-xs text-neutral-500 mb-1">{heightLabel}</p>
                           <p className="text-sm text-neutral-800 font-medium">{pkg.height} {pkg.dimensionUnit}</p>
                         </div>
                       )}
@@ -266,22 +300,22 @@ export default function StepsSummary({
         {/* Right Column - FAQs and Help */}
         <div className="space-y-6">
           {/* FAQs */}
-          {faqs.length > 0 && <FaqAccordionCompact faqs={faqs} title="FAQs" />}
+          {faqs.length > 0 && <FaqAccordionCompact faqs={faqs} title={faqsTitle} />}
 
           {/* Get Help */}
           <div className="space-y-4">
-            <h5 className="text-neutral-800 text-sm">HAVE A CHAT</h5>
+            <h5 className="text-neutral-800 text-sm">{haveAChatHeading}</h5>
             <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9]">
-              <h3 className="text-neutral-800 text-2xl lg:text-3xl mb-6">Get help</h3>
+              <h3 className="text-neutral-800 text-2xl lg:text-3xl mb-6">{getHelpHeading}</h3>
               <div className="flex flex-wrap gap-3">
                 <HeroButton asChild>
                   <button className="cursor-pointer">
-                    CONTACT US
+                    {contactUsButton}
                   </button>
                 </HeroButton>
                 <HeroButton asChild>
                   <button className="cursor-pointer">
-                    LIVE CHAT
+                    {liveChatButton}
                   </button>
                 </HeroButton>
               </div>

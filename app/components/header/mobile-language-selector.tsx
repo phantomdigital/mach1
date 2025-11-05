@@ -118,9 +118,17 @@ export function MobileLanguageSelector({ onLocaleChange }: MobileLanguageSelecto
             docType = 'page';
             uid = pathWithoutLocale;
           } else if (pathWithoutLocale.startsWith('quote/')) {
-            setAvailableLocales([currentLocale, defaultLocale]);
-            setIsLoadingLocales(false);
-            return;
+            // Handle quote pages - check if it's quote/summary
+            if (pathWithoutLocale === 'quote/summary') {
+              // Check for available translations of the quote page
+              docType = 'page';
+              uid = 'quote';
+            } else {
+              // Other quote pages (like quote?step=1) - show all locales
+              setAvailableLocales([currentLocale, defaultLocale]);
+              setIsLoadingLocales(false);
+              return;
+            }
           } else {
             docType = 'page';
             uid = pathWithoutLocale;

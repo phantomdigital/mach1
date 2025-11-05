@@ -54,6 +54,20 @@
             "label": "Button Text",
             "placeholder": "Start Quote"
           }
+        },
+        "loading_message": {
+          "type": "Text",
+          "config": {
+            "label": "Loading Message",
+            "placeholder": "Loading your quote form..."
+          }
+        },
+        "loading_submessage": {
+          "type": "Text",
+          "config": {
+            "label": "Loading Submessage",
+            "placeholder": "Please wait a moment"
+          }
         }
       },
       "items": {}
@@ -343,6 +357,153 @@
           "config": {
             "label": "FAQ Limit",
             "placeholder": "5"
+          }
+        },
+        "badge_text": {
+          "type": "Text",
+          "config": {
+            "label": "Badge Text",
+            "placeholder": "Quote Received"
+          }
+        },
+        "go_to_home_button": {
+          "type": "Text",
+          "config": {
+            "label": "Go to Home Button Text",
+            "placeholder": "GO TO HOME"
+          }
+        },
+        "details_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Details Section Heading",
+            "placeholder": "DETAILS"
+          }
+        },
+        "service_type_label": {
+          "type": "Text",
+          "config": {
+            "label": "Service Type Label",
+            "placeholder": "Service Type"
+          }
+        },
+        "package_details_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Package Details Heading",
+            "placeholder": "PACKAGE DETAILS"
+          }
+        },
+        "package_label": {
+          "type": "Text",
+          "config": {
+            "label": "Package Label Template",
+            "placeholder": "Package"
+          }
+        },
+        "origin_label": {
+          "type": "Text",
+          "config": {
+            "label": "Origin Label",
+            "placeholder": "Origin"
+          }
+        },
+        "destination_label": {
+          "type": "Text",
+          "config": {
+            "label": "Destination Label",
+            "placeholder": "Destination"
+          }
+        },
+        "weight_label": {
+          "type": "Text",
+          "config": {
+            "label": "Weight Label",
+            "placeholder": "Weight"
+          }
+        },
+        "quantity_label": {
+          "type": "Text",
+          "config": {
+            "label": "Quantity Label",
+            "placeholder": "Quantity"
+          }
+        },
+        "length_label": {
+          "type": "Text",
+          "config": {
+            "label": "Length Label",
+            "placeholder": "Length"
+          }
+        },
+        "width_label": {
+          "type": "Text",
+          "config": {
+            "label": "Width Label",
+            "placeholder": "Width"
+          }
+        },
+        "height_label": {
+          "type": "Text",
+          "config": {
+            "label": "Height Label",
+            "placeholder": "Height"
+          }
+        },
+        "faqs_title": {
+          "type": "Text",
+          "config": {
+            "label": "FAQs Section Title",
+            "placeholder": "FAQs"
+          }
+        },
+        "have_a_chat_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Have a Chat Section Heading",
+            "placeholder": "HAVE A CHAT"
+          }
+        },
+        "get_help_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Get Help Heading",
+            "placeholder": "Get help"
+          }
+        },
+        "contact_us_button": {
+          "type": "Text",
+          "config": {
+            "label": "Contact Us Button Text",
+            "placeholder": "CONTACT US"
+          }
+        },
+        "live_chat_button": {
+          "type": "Text",
+          "config": {
+            "label": "Live Chat Button Text",
+            "placeholder": "LIVE CHAT"
+          }
+        },
+        "loading_message": {
+          "type": "Text",
+          "config": {
+            "label": "Loading Message",
+            "placeholder": "Loading your quote summary..."
+          }
+        },
+        "no_data_message": {
+          "type": "Text",
+          "config": {
+            "label": "No Data Message",
+            "placeholder": "No quote data found"
+          }
+        },
+        "redirecting_message": {
+          "type": "Text",
+          "config": {
+            "label": "Redirecting Message",
+            "placeholder": "Redirecting you to the home page..."
           }
         }
       },
