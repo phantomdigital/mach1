@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { RefreshCw } from "lucide-react";
 import { HeroButton } from "@/components/ui/hero-button";
+import { getLocaleFromPathname, addLocaleToPathname } from "@/lib/locale-helpers";
 
 export default function ErrorClient() {
   const router = useRouter();
