@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
-import HeaderWrapper from "./components/header/header-wrapper";
+import HeaderServerWrapper from "./components/header/header-server-wrapper";
 import Footer from "./components/footer/footer";
 import GSAPSmoothScrollProvider from "@/components/gsap-smooth-scroll-provider";
 import { DropdownStateProvider } from "./components/header/dropdown-state-context";
@@ -42,7 +42,7 @@ export default function RootLayout({
       <body className={`${jetbrainsMono.variable} ${manrope.variable} font-sans antialiased`}>
           <GSAPSmoothScrollProvider>
             <DropdownStateProvider>
-              <HeaderWrapper initialHeader={null} />
+              <HeaderServerWrapper />
               <main>{children}</main>
               <Footer />
             </DropdownStateProvider>
