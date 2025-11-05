@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
-import HeaderLocaleProvider from "./components/header/header-locale-provider";
+import { getHeaderData } from "./components/header/header";
+import HeaderWrapper from "./components/header/header-wrapper";
 import Footer from "./components/footer/footer";
 import GSAPSmoothScrollProvider from "@/components/gsap-smooth-scroll-provider";
 import { DropdownStateProvider } from "./components/header/dropdown-state-context";
@@ -24,12 +25,15 @@ export const metadata: Metadata = generateBaseMetadata({
   keywords: ["professional logistics", "transportation services", "freight forwarding", "Australia logistics"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const organizationSchema = generateOrganizationSchema();
+  
+  // Fetch header data server-side for initial render
+  const initialHeader = await getHeaderData();
 
   return (
     <html lang="en">
@@ -42,7 +46,7 @@ export default function RootLayout({
       <body className={`${jetbrainsMono.variable} ${manrope.variable} font-sans antialiased`}>
           <GSAPSmoothScrollProvider>
             <DropdownStateProvider>
-              <HeaderLocaleProvider />
+              <HeaderWrapper initialHeader={initialHeader} />
               <main>{children}</main>
               <Footer />
             </DropdownStateProvider>

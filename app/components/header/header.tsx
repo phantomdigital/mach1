@@ -11,7 +11,8 @@ import { HeaderHeightTracker } from "./header-height-tracker";
 import { CompactHeader } from "./compact-header";
 import { ExternalLinkIcon } from "./external-link-icon";
 import { getLocaleFromPathname } from "@/lib/locale-helpers";
-import type { HeaderDocumentDataNavigationItem } from "@/types.generated";
+import type { HeaderDocumentDataNavigationItem, HeaderDocument } from "@/types.generated";
+
 
 // Server component for simple navigation items
 const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationItem; index: number }) => {
@@ -43,11 +44,15 @@ const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationIte
   );
 };
 
+
 interface HeaderProps {
   forcedLocale?: string;
 }
 
-export default async function Header({ forcedLocale }: HeaderProps = {}) {
+/**
+ * Server function that fetches header data based on locale
+ */
+export async function getHeaderData(forcedLocale?: string): Promise<HeaderDocument | null> {
   const client = createClient();
   
   // Get locale - use forced locale from client wrapper if provided, otherwise detect from headers
@@ -58,7 +63,7 @@ export default async function Header({ forcedLocale }: HeaderProps = {}) {
     locale = forcedLocale as LocaleCode;
   } else {
     // Fallback to header detection (for SSR/initial load)
-  try {
+    try {
       const headersList = await headers();
       const pathname = headersList.get("x-pathname");
       if (pathname) {
@@ -81,34 +86,43 @@ export default async function Header({ forcedLocale }: HeaderProps = {}) {
   }
   
   // Try to fetch header in the detected locale, fallback to default locale if not found
-  let header;
   try {
     // Fetch header with no cache to ensure it updates when locale changes
-    header = await client.getSingle("header", { 
+    const header = await client.getSingle("header", { 
       lang: locale,
       fetchOptions: { 
         cache: 'no-store',
         next: { revalidate: 0 }
       }
     });
+    return header;
   } catch (error: unknown) {
     // If header doesn't exist in requested locale, fallback to default locale
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.warn(`Header not found in locale ${locale}, falling back to default locale. Error:`, errorMessage);
-    try {
-      header = await client.getSingle("header", { 
-        lang: defaultLocale,
-        fetchOptions: { 
-          cache: 'no-store',
-          next: { revalidate: 0 }
-        }
-      });
-    } catch (fallbackError) {
-      console.error("Header not found in any locale:", fallbackError);
-      // Will fall through to the catch block below
-      throw fallbackError;
+    
+    // Only try fallback if we're not already using the default locale
+    if (locale !== defaultLocale) {
+      try {
+        const header = await client.getSingle("header", { 
+          lang: defaultLocale,
+          fetchOptions: { 
+            cache: 'no-store',
+            next: { revalidate: 0 }
+          }
+        });
+        return header;
+      } catch (fallbackError) {
+        console.error("Header not found in default locale either:", fallbackError);
+        return null;
+      }
     }
+    return null;
   }
+}
+
+export default async function Header({ forcedLocale }: HeaderProps = {}) {
+  const header = await getHeaderData(forcedLocale);
   
   if (header) {
     return (
