@@ -1255,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = HeroBlockSlice | HomepageHeroSlice | NetworkSlice | TestimonialsSlice | SubmittedSlice | FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = SpecialtiesSlice | HeroBlockSlice | HomepageHeroSlice | NetworkSlice | TestimonialsSlice | SubmittedSlice | FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -4513,15 +4513,147 @@ export interface SolutionsSliceDefaultItem {
  * Default variation for Solutions Slice
  *
  * - **API ID**: `default`
- * - **Description**: Default
+ * - **Description**: Default - Limited number of solutions with 'See All' button
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type SolutionsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SolutionsSliceDefaultPrimary>, Simplify<SolutionsSliceDefaultItem>>;
 
 /**
+ * Primary content in *Solutions → All Solutions → Primary*
+ */
+export interface SolutionsSliceAllSolutionsPrimary {
+	/**
+	 * Subheading field in *Solutions → All Solutions → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our solutions
+	 * - **API ID Path**: solutions.allSolutions.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *Solutions → All Solutions → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Complete Logistics Solutions
+	 * - **API ID Path**: solutions.allSolutions.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Solutions → All Solutions → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Explore our comprehensive range of logistics and supply chain solutions.
+	 * - **API ID Path**: solutions.allSolutions.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Background Color field in *Solutions → All Solutions → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: solutions.allSolutions.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Top Margin field in *Solutions → All Solutions → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: solutions.allSolutions.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top (pt) field in *Solutions → All Solutions → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: solutions.allSolutions.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom (pb) field in *Solutions → All Solutions → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: solutions.allSolutions.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+}
+
+/**
+ * Primary content in *Solutions → Items*
+ */
+export interface SolutionsSliceAllSolutionsItem {
+	/**
+	 * Solution Title field in *Solutions → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Inventory Management
+	 * - **API ID Path**: solutions.items[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Solutions → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Comprehensive warehouse management and real-time inventory tracking.
+	 * - **API ID Path**: solutions.items[].description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Background Image field in *Solutions → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: solutions.items[].image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Link field in *Solutions → Items*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: Link to solution page
+	 * - **API ID Path**: solutions.items[].link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
+ * All Solutions variation for Solutions Slice
+ *
+ * - **API ID**: `allSolutions`
+ * - **Description**: All Solutions - Automatically fetches and displays all solution pages from Prismic. Items field is not used.
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SolutionsSliceAllSolutions = prismic.SharedSliceVariation<"allSolutions", Simplify<SolutionsSliceAllSolutionsPrimary>, Simplify<SolutionsSliceAllSolutionsItem>>;
+
+/**
  * Slice variation for *Solutions*
  */
-type SolutionsSliceVariation = SolutionsSliceDefault
+type SolutionsSliceVariation = SolutionsSliceDefault | SolutionsSliceAllSolutions
 
 /**
  * Solutions Shared Slice
@@ -4709,15 +4841,127 @@ export interface SpecialtiesSliceDefaultItem {
  * Default variation for Specialties Slice
  *
  * - **API ID**: `default`
- * - **Description**: Two-column layout with images and specialty list
+ * - **Description**: Two-column layout with images and specialty list (for homepage)
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type SpecialtiesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SpecialtiesSliceDefaultPrimary>, Simplify<SpecialtiesSliceDefaultItem>>;
 
 /**
+ * Primary content in *Specialties → All Specialties → Primary*
+ */
+export interface SpecialtiesSliceAllSpecialtiesPrimary {
+	/**
+	 * Subheading field in *Specialties → All Specialties → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our specialties
+	 * - **API ID Path**: specialties.allSpecialties.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *Specialties → All Specialties → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Specialized Logistics Expertise
+	 * - **API ID Path**: specialties.allSpecialties.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Specialties → All Specialties → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Explore our specialized capabilities in handling complex logistics challenges.
+	 * - **API ID Path**: specialties.allSpecialties.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Background Color field in *Specialties → All Specialties → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: specialties.allSpecialties.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Top Margin field in *Specialties → All Specialties → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: specialties.allSpecialties.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top (pt) field in *Specialties → All Specialties → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: specialties.allSpecialties.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	
+	/**
+	 * Padding Bottom (pb) field in *Specialties → All Specialties → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: specialties.allSpecialties.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+}
+
+/**
+ * Primary content in *Specialties → Items*
+ */
+export interface SpecialtiesSliceAllSpecialtiesItem {
+	/**
+	 * Specialty Title field in *Specialties → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Not used in this variant
+	 * - **API ID Path**: specialties.items[].specialty_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	specialty_title: prismic.KeyTextField;
+	
+	/**
+	 * Specialty Icon field in *Specialties → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: specialties.items[].specialty_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	specialty_icon: prismic.ImageField<never>;
+}
+
+/**
+ * All Specialties variation for Specialties Slice
+ *
+ * - **API ID**: `allSpecialties`
+ * - **Description**: All Specialties - Automatically fetches and displays all specialty pages from Prismic. Items field is not used.
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SpecialtiesSliceAllSpecialties = prismic.SharedSliceVariation<"allSpecialties", Simplify<SpecialtiesSliceAllSpecialtiesPrimary>, Simplify<SpecialtiesSliceAllSpecialtiesItem>>;
+
+/**
  * Slice variation for *Specialties*
  */
-type SpecialtiesSliceVariation = SpecialtiesSliceDefault
+type SpecialtiesSliceVariation = SpecialtiesSliceDefault | SpecialtiesSliceAllSpecialties
 
 /**
  * Specialties Shared Slice
@@ -6502,13 +6746,19 @@ declare module "@prismicio/client" {
 			SolutionsSlice,
 			SolutionsSliceDefaultPrimary,
 			SolutionsSliceDefaultItem,
+			SolutionsSliceAllSolutionsPrimary,
+			SolutionsSliceAllSolutionsItem,
 			SolutionsSliceVariation,
 			SolutionsSliceDefault,
+			SolutionsSliceAllSolutions,
 			SpecialtiesSlice,
 			SpecialtiesSliceDefaultPrimary,
 			SpecialtiesSliceDefaultItem,
+			SpecialtiesSliceAllSpecialtiesPrimary,
+			SpecialtiesSliceAllSpecialtiesItem,
 			SpecialtiesSliceVariation,
 			SpecialtiesSliceDefault,
+			SpecialtiesSliceAllSpecialties,
 			StatisticsSlice,
 			StatisticsSliceDefaultPrimary,
 			StatisticsSliceDefaultItem,

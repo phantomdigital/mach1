@@ -9,7 +9,7 @@
       "name": "Default",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
+      "description": "Default - Limited number of solutions with 'See All' button",
       "imageUrl": "",
       "primary": {
         "subheading": {
@@ -95,6 +95,103 @@
           "type": "Text",
           "config": {
             "label": "Description (shows on hover)",
+            "placeholder": "Comprehensive warehouse management and real-time inventory tracking."
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Background Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "link": {
+          "type": "Link",
+          "config": {
+            "label": "Link",
+            "placeholder": "Link to solution page",
+            "select": null
+          }
+        }
+      }
+    },
+    {
+      "id": "allSolutions",
+      "name": "All Solutions",
+      "docURL": "...",
+      "version": "initial",
+      "description": "All Solutions - Automatically fetches and displays all solution pages from Prismic. Items field is not used.",
+      "imageUrl": "",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "Our solutions"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Complete Logistics Solutions"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Explore our comprehensive range of logistics and supply chain solutions."
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top (pt)",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom (pb)",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large"],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Solution Title",
+            "placeholder": "Inventory Management"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
             "placeholder": "Comprehensive warehouse management and real-time inventory tracking."
           }
         },

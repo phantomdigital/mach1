@@ -7,6 +7,7 @@ import SolutionCard from "./solution-card";
 import SolutionsAnimation from "./solutions-animation";
 import { SliceHeader } from "@/components/slice-header";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
+import SolutionsAll from "./solutions-all";
 import React from "react";
 
 /**
@@ -18,6 +19,12 @@ export type SolutionsProps = SliceComponentProps<Content.SolutionsSlice>;
  * Component for "Solutions" Slices.
  */
 const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
+  // Route to appropriate variant component
+  if (slice.variation === "allSolutions") {
+    return <SolutionsAll slice={slice} />;
+  }
+  
+  // Default variation below
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
   const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");

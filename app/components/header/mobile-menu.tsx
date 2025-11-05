@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HeroButton } from "@/components/ui/hero-button";
 import Image from "next/image";
+import { MobileLanguageSelector } from "./mobile-language-selector";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 interface MobileMenuProps {
@@ -255,10 +256,20 @@ export function MobileMenu({ navigation, buttons, subheaderItems }: MobileMenuPr
                 </nav>
               )}
 
+              {/* Language Selector */}
+              <motion.div 
+                className="pt-6 pb-4 border-t border-gray-200"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+              >
+                <MobileLanguageSelector onLocaleChange={() => toggleMenu()} />
+              </motion.div>
+
               {/* Utility Links (Sub-header) - Bottom */}
               {subheaderItems && subheaderItems.length > 0 && (
                 <motion.div 
-                  className="pt-6 pb-2 border-t border-gray-200"
+                  className="pt-4 pb-2 border-t border-gray-200"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}

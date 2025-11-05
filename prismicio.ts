@@ -17,29 +17,17 @@ export const repositoryName =
  * These should match the locales configured in your Prismic repository
  */
 export const locales = [
-  { code: 'en-au', name: 'Australia', flag: '🇦🇺' },
-  { code: 'en-nz', name: 'New Zealand', flag: '🇳🇿' },
-  { code: 'en-us', name: 'United States', flag: '🇺🇸' },
-  { code: 'en-gb', name: 'United Kingdom', flag: '🇬🇧' },
-  { code: 'en-sg', name: 'Singapore', flag: '🇸🇬' },
-  { code: 'zh-cn', name: '中国 (China)', flag: '🇨🇳' },
-  { code: 'zh-tw', name: '台灣 (Taiwan)', flag: '🇹🇼' },
-  { code: 'ja', name: '日本 (Japan)', flag: '🇯🇵' },
-  { code: 'ko', name: '한국 (Korea)', flag: '🇰🇷' },
-  { code: 'es', name: 'España (Spain)', flag: '🇪🇸' },
-  { code: 'fr', name: 'France', flag: '🇫🇷' },
-  { code: 'de', name: 'Deutschland (Germany)', flag: '🇩🇪' },
-  { code: 'vi', name: 'Việt Nam (Vietnam)', flag: '🇻🇳' },
-  { code: 'th', name: 'ประเทศไทย (Thailand)', flag: '🇹🇭' },
-  { code: 'id', name: 'Indonesia', flag: '🇮🇩' },
+  { code: 'en-us', name: 'English', flag: '🇦🇺' },
+  { code: 'zh-cn', name: 'Chinese - China', flag: '🇨🇳' },
+  { code: 'hi-in', name: 'Hindi - India', flag: '🇮🇳' },
 ] as const;
 
 export type LocaleCode = typeof locales[number]['code'];
 
 /**
- * Default locale - Australian English
+ * Default locale - English (United States)
  */
-export const defaultLocale: LocaleCode = 'en-au';
+export const defaultLocale: LocaleCode = 'en-us';
 
 /**
  * A list of Route Resolver objects that define how a document's `url` field is resolved.

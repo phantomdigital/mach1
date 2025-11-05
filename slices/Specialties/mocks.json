@@ -1,5 +1,21 @@
 [
   {
+    "variation": "allSpecialties",
+    "name": "All Specialties",
+    "slice_type": "specialties",
+    "_comment": "Items are not used in this variant - specialties are automatically fetched from Prismic specialty pages",
+    "items": [],
+    "primary": {
+      "subheading": "Our specialties",
+      "heading": "Specialized logistics expertise for every challenge",
+      "description": "Explore our comprehensive range of specialized capabilities designed to handle the most complex logistics requirements.",
+      "background_color": "#ffffff",
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large"
+    }
+  },
+  {
     "variation": "default",
     "name": "Default",
     "slice_type": "specialties",

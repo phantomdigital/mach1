@@ -2,14 +2,14 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChevronDown, Globe } from 'lucide-react';
+import { ChevronDown, Globe, Loader2 } from 'lucide-react';
 import { locales, defaultLocale, type LocaleCode } from '@/prismicio';
 
 // Group locales by category
 const groupedLocales = {
-  english: locales.filter(l => l.code.startsWith('en-')),
-  asiaPacific: locales.filter(l => ['zh-cn', 'zh-tw', 'ja', 'ko', 'vi', 'th', 'id'].includes(l.code)),
-  europe: locales.filter(l => ['es', 'fr', 'de'].includes(l.code)),
+  english: locales.filter(l => l.code.startsWith('en-')) as readonly typeof locales[number][],
+  asiaPacific: locales.filter(l => ['zh-cn', 'zh-tw', 'ja', 'ko', 'vi', 'th', 'id', 'hi-in'].includes(l.code)) as readonly typeof locales[number][],
+  europe: locales.filter(l => ['es', 'fr', 'de'].includes(l.code)) as readonly typeof locales[number][],
 };
 
 export function RegionLanguageSelector() {
@@ -17,19 +17,29 @@ export function RegionLanguageSelector() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Extract current locale from pathname
+  
+  // Extract current locale from pathname (needed for initial state)
   const getCurrentLocale = (): LocaleCode => {
     const pathParts = pathname.split('/').filter(Boolean);
     const firstPart = pathParts[0];
-    
-    // Check if the first part is a valid locale code
     const locale = locales.find(l => l.code === firstPart);
     return locale ? locale.code : defaultLocale;
   };
+  
+  // Start with only current locale - will update when API responds with available translations
+  const [availableLocales, setAvailableLocales] = useState<LocaleCode[]>([getCurrentLocale()]);
+  const [isLoadingLocales, setIsLoadingLocales] = useState(true);
 
   const currentLocale = getCurrentLocale();
   const currentLocaleData = locales.find(l => l.code === currentLocale) || locales[0];
+  
+  // Format display name - show just "English" for default locale
+  const getDisplayName = (localeData: typeof currentLocaleData) => {
+    if (localeData.code === defaultLocale) {
+      return 'English';
+    }
+    return localeData.name;
+  };
 
   const handleLocaleChange = (newLocaleCode: LocaleCode) => {
     // Remove current locale from pathname
@@ -65,6 +75,93 @@ export function RegionLanguageSelector() {
     }, 150);
   };
 
+  // Fetch available translations for current page
+  useEffect(() => {
+    const fetchAvailableLocales = async () => {
+      setIsLoadingLocales(true);
+      
+      try {
+        // Extract page info from pathname
+        const pathParts = pathname.split('/').filter(Boolean);
+        const detectedLocale = pathParts[0] && locales.find(l => l.code === pathParts[0]);
+        const currentLocale: LocaleCode = detectedLocale ? (detectedLocale.code as LocaleCode) : defaultLocale;
+        
+        // Determine document type and UID from pathname
+        let docType: string | null = null;
+        let uid: string | null = null;
+        
+        // Handle homepage
+        if (pathname === '/' || (pathParts.length === 1 && locales.find(l => l.code === pathParts[0]))) {
+          docType = 'home';
+          uid = null;
+        } else {
+          // Handle different route patterns
+          const pathWithoutLocale = currentLocale !== defaultLocale 
+            ? pathParts.slice(1).join('/')
+            : pathParts.join('/');
+          
+          // Check for known route prefixes
+          if (pathWithoutLocale.startsWith('solutions/')) {
+            docType = 'solution';
+            uid = pathWithoutLocale.replace('solutions/', '');
+          } else if (pathWithoutLocale.startsWith('specialties/')) {
+            docType = 'specialty';
+            uid = pathWithoutLocale.replace('specialties/', '');
+          } else if (pathWithoutLocale.startsWith('news/')) {
+            docType = 'news';
+            uid = pathWithoutLocale.replace('news/', '');
+          } else if (pathWithoutLocale.startsWith('job/')) {
+            docType = 'job';
+            uid = pathWithoutLocale.replace('job/', '');
+          } else if (pathWithoutLocale.startsWith('careers/')) {
+            // Careers pages might be pages or a special route
+            docType = 'page';
+            uid = pathWithoutLocale;
+          } else if (pathWithoutLocale.startsWith('quote/')) {
+            // Quote pages are handled differently, skip locale check
+            setAvailableLocales([currentLocale, defaultLocale]);
+            setIsLoadingLocales(false);
+            return;
+          } else {
+            // Default to page type
+            docType = 'page';
+            uid = pathWithoutLocale;
+          }
+        }
+        
+        if (!docType) {
+          // If we can't determine type, only show current locale
+          setAvailableLocales([currentLocale]);
+          setIsLoadingLocales(false);
+          return;
+        }
+        
+        // Fetch document to get alternate languages
+        const response = await fetch(`/api/available-locales?type=${docType}${uid ? `&uid=${uid}` : ''}&lang=${currentLocale}`);
+        if (response.ok) {
+          const data = await response.json();
+          // Always include current locale, add any available alternates
+          const available = new Set([currentLocale, ...(data.availableLocales || [])]);
+          setAvailableLocales(Array.from(available) as LocaleCode[]);
+        } else {
+          // If API fails, only show current locale (page might not exist in other languages)
+          setAvailableLocales([currentLocale]);
+        }
+      } catch (error) {
+        console.warn('Failed to fetch available locales:', error);
+        // On error, only show current locale
+        const pathParts = pathname.split('/').filter(Boolean);
+        const detectedLocale = pathParts[0] && locales.find(l => l.code === pathParts[0]);
+        const currentLocale: LocaleCode = detectedLocale ? (detectedLocale.code as LocaleCode) : defaultLocale;
+        setAvailableLocales([currentLocale]);
+      } finally {
+        setIsLoadingLocales(false);
+      }
+    };
+    
+    fetchAvailableLocales();
+  }, [pathname]);
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -73,14 +170,17 @@ export function RegionLanguageSelector() {
     };
   }, []);
 
-  // Calculate dropdown height based on content
-  const headerHeight = 48;
-  const sectionHeaderHeight = 28;
-  const itemHeight = 41;
-  const totalSections = 1 + (groupedLocales.asiaPacific.length > 0 ? 1 : 0) + (groupedLocales.europe.length > 0 ? 1 : 0);
-  const totalItems = groupedLocales.english.length + groupedLocales.asiaPacific.length + groupedLocales.europe.length;
-  const contentHeight = headerHeight + (totalSections * sectionHeaderHeight) + (totalItems * itemHeight) + 20;
-  const dropdownHeight = Math.min(contentHeight, 400);
+  // Filter locales to only show available translations
+  const filterAvailableLocales = (localeList: readonly typeof locales[number][]) => {
+    return localeList.filter(locale => availableLocales.includes(locale.code));
+  };
+  
+  const filteredGroupedLocales = {
+    english: filterAvailableLocales(groupedLocales.english),
+    asiaPacific: filterAvailableLocales(groupedLocales.asiaPacific),
+    europe: filterAvailableLocales(groupedLocales.europe),
+  };
+
   const dropdownWidth = 280;
 
   return (
@@ -91,13 +191,16 @@ export function RegionLanguageSelector() {
     >
       {/* Trigger Button */}
       <button 
-        className="text-sm text-gray-700 hover:text-dark-blue transition-colors flex items-center gap-1.5 outline-none cursor-pointer"
+        className="text-sm text-gray-700 flex items-center gap-1.5 outline-none cursor-pointer"
+        aria-expanded={isOpen}
+        aria-haspopup="true"
+        aria-label="Select language"
       >
-        <Globe className="w-4 h-4" />
-        <span className="hidden sm:inline">{currentLocaleData.flag}</span>
-        <span className="font-medium">{currentLocaleData.name}</span>
+        <Globe className="w-4 h-4 transition-transform duration-200 flex-shrink-0" />
+        <span className="hidden sm:inline-block text-base leading-none align-middle">{currentLocaleData.flag}</span>
+        <span className="font-medium flex items-center">{getDisplayName(currentLocaleData)}</span>
         <ChevronDown 
-          className={`w-4 h-4 transition-transform duration-150 ${
+          className={`w-4 h-4 transition-transform duration-300 flex-shrink-0 ${
             isOpen ? 'rotate-180' : 'rotate-0'
           }`} 
         />
@@ -105,8 +208,8 @@ export function RegionLanguageSelector() {
 
       {/* Hover Bridge */}
       <div 
-        className={`absolute top-full left-0 w-full h-2 bg-transparent z-40 ${
-          isOpen ? 'pointer-events-auto' : 'pointer-events-none hidden'
+        className={`absolute top-full left-0 w-full h-2 bg-transparent z-40 transition-opacity duration-200 ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -114,36 +217,28 @@ export function RegionLanguageSelector() {
 
       {/* Dropdown Content */}
       <div 
-        className={`absolute right-0 z-50 transition-opacity duration-150 ${
+        className={`absolute right-0 z-50 transition-all duration-200 ease-out ${
           isOpen 
-            ? 'opacity-100 pointer-events-auto' 
-            : 'opacity-0 pointer-events-none hidden'
+            ? 'opacity-100 translate-y-0 pointer-events-auto visible' 
+            : 'opacity-0 -translate-y-2 pointer-events-none invisible'
         }`}
-        style={{ top: '32px' }}
+        style={{ top: '33px' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* SVG Background Container */}
-        <div className="relative" style={{ width: `${dropdownWidth}px`, height: `${dropdownHeight}px` }}>
-          {/* Simple rounded rectangle background */}
+        {/* Background Container */}
+        <div 
+          className="relative bg-neutral-100 shadow-lg border border-gray-200"
+          style={{ 
+            width: `${dropdownWidth}px`
+          }}
+        >
+          {/* Content Container */}
           <div 
-            className="absolute inset-0 bg-neutral-100 rounded-md shadow-lg border border-gray-200"
-            style={{ width: `${dropdownWidth}px`, height: `${dropdownHeight}px` }}
-          />
-
-          {/* Content Container with Scrolling */}
-          <div 
-            className="absolute inset-0 overflow-y-auto px-5 pt-10 pb-6"
-            style={{
-              scrollbarWidth: 'thin',
-              scrollbarColor: '#CBD5E0 #F7FAFC'
-            }}
-            onWheel={(e) => {
-              e.stopPropagation();
-            }}
+            className="px-5 pt-5 pb-6"
           >
             {/* Header */}
-            <div className="mb-4">
+            <div className="mb-4 flex items-center justify-between">
               <h6 
                 className="font-medium text-gray-500 uppercase tracking-widest" 
                 style={{ 
@@ -153,9 +248,13 @@ export function RegionLanguageSelector() {
               >
                 Select Region & Language
               </h6>
+              {isLoadingLocales && (
+                <Loader2 className="w-3 h-3 text-neutral-400 animate-spin" />
+              )}
             </div>
 
             {/* English Section */}
+            {filteredGroupedLocales.english.length > 0 && (
             <div className="mb-3">
               <div className="mb-2">
                 <p 
@@ -168,24 +267,30 @@ export function RegionLanguageSelector() {
                   English
                 </p>
               </div>
-              {groupedLocales.english.map((locale, idx) => (
+              {filteredGroupedLocales.english.map((locale, idx) => (
                 <div key={locale.code} className="relative group">
                   {/* Separator line */}
-                  {idx < groupedLocales.english.length - 1 && (
+                  {idx < filteredGroupedLocales.english.length - 1 && (
                     <div 
                       className="absolute bottom-0 left-0 h-px w-full"
                       style={{ backgroundColor: '#DFDFDF' }}
                     />
                   )}
                   
-                  {/* Hover indicator bar */}
+                  {/* Active/Hover indicator bar on the left */}
                   <div 
-                    className="absolute left-0 top-0 w-0.5 h-full bg-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
+                    className={`absolute left-0 top-0 w-0.5 h-full bg-gray-400 transition-opacity duration-200 ${
+                      currentLocale === locale.code ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                    }`}
                   />
                   
                   <button
                     onClick={() => handleLocaleChange(locale.code)}
-                    className="w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer text-gray-700 hover:text-black relative"
+                    className={`w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer relative ${
+                      currentLocale === locale.code 
+                        ? 'text-black' 
+                        : 'text-gray-700 hover:text-black'
+                    }`}
                     style={{
                       fontFamily: 'var(--font-inter-tight), sans-serif',
                       fontWeight: 500,
@@ -193,18 +298,16 @@ export function RegionLanguageSelector() {
                       lineHeight: '100%'
                     }}
                   >
-                    <span className="text-base">{locale.flag}</span>
-                    <span>{locale.name}</span>
-                    {currentLocale === locale.code && (
-                      <span className="ml-auto w-1.5 h-1.5 rounded-full bg-dark-blue" />
-                    )}
+                    <span className="text-base leading-none flex items-center">{locale.flag}</span>
+                    <span className="flex items-center">{getDisplayName(locale)}</span>
                   </button>
                 </div>
               ))}
             </div>
+            )}
 
             {/* Asia Pacific Section */}
-            {groupedLocales.asiaPacific.length > 0 && (
+            {filteredGroupedLocales.asiaPacific.length > 0 && (
               <div className="mb-3 pt-3" style={{ borderTop: '1px solid #DFDFDF' }}>
                 <div className="mb-2">
                   <p 
@@ -217,22 +320,29 @@ export function RegionLanguageSelector() {
                     Asia Pacific
                   </p>
                 </div>
-                {groupedLocales.asiaPacific.map((locale, idx) => (
+                {filteredGroupedLocales.asiaPacific.map((locale, idx) => (
                   <div key={locale.code} className="relative group">
-                    {idx < groupedLocales.asiaPacific.length - 1 && (
+                    {idx < filteredGroupedLocales.asiaPacific.length - 1 && (
                       <div 
                         className="absolute bottom-0 left-0 h-px w-full"
                         style={{ backgroundColor: '#DFDFDF' }}
                       />
                     )}
                     
+                    {/* Active/Hover indicator bar on the left */}
                     <div 
-                      className="absolute left-0 top-0 w-0.5 h-full bg-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
+                      className={`absolute left-0 top-0 w-0.5 h-full bg-gray-400 transition-opacity duration-200 ${
+                        currentLocale === locale.code ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                      }`}
                     />
                     
                     <button
                       onClick={() => handleLocaleChange(locale.code)}
-                      className="w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer text-gray-700 hover:text-black relative"
+                      className={`w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer relative ${
+                        currentLocale === locale.code 
+                          ? 'text-black' 
+                          : 'text-gray-700 hover:text-black'
+                      }`}
                       style={{
                         fontFamily: 'var(--font-inter-tight), sans-serif',
                         fontWeight: 500,
@@ -240,11 +350,8 @@ export function RegionLanguageSelector() {
                         lineHeight: '100%'
                       }}
                     >
-                      <span className="text-base">{locale.flag}</span>
-                      <span>{locale.name}</span>
-                      {currentLocale === locale.code && (
-                        <span className="ml-auto w-1.5 h-1.5 rounded-full bg-dark-blue" />
-                      )}
+                      <span className="text-base leading-none flex items-center">{locale.flag}</span>
+                      <span className="flex items-center">{locale.name}</span>
                     </button>
                   </div>
                 ))}
@@ -252,7 +359,7 @@ export function RegionLanguageSelector() {
             )}
 
             {/* Europe Section */}
-            {groupedLocales.europe.length > 0 && (
+            {filteredGroupedLocales.europe.length > 0 && (
               <div className="pt-3" style={{ borderTop: '1px solid #DFDFDF' }}>
                 <div className="mb-2">
                   <p 
@@ -265,22 +372,29 @@ export function RegionLanguageSelector() {
                     Europe
                   </p>
                 </div>
-                {groupedLocales.europe.map((locale, idx) => (
+                {filteredGroupedLocales.europe.map((locale, idx) => (
                   <div key={locale.code} className="relative group">
-                    {idx < groupedLocales.europe.length - 1 && (
+                    {idx < filteredGroupedLocales.europe.length - 1 && (
                       <div 
                         className="absolute bottom-0 left-0 h-px w-full"
                         style={{ backgroundColor: '#DFDFDF' }}
                       />
                     )}
                     
+                    {/* Active/Hover indicator bar on the left */}
                     <div 
-                      className="absolute left-0 top-0 w-0.5 h-full bg-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
+                      className={`absolute left-0 top-0 w-0.5 h-full bg-gray-400 transition-opacity duration-200 ${
+                        currentLocale === locale.code ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                      }`}
                     />
                     
                     <button
                       onClick={() => handleLocaleChange(locale.code)}
-                      className="w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer text-gray-700 hover:text-black relative"
+                      className={`w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer relative ${
+                        currentLocale === locale.code 
+                          ? 'text-black' 
+                          : 'text-gray-700 hover:text-black'
+                      }`}
                       style={{
                         fontFamily: 'var(--font-inter-tight), sans-serif',
                         fontWeight: 500,
@@ -288,11 +402,8 @@ export function RegionLanguageSelector() {
                         lineHeight: '100%'
                       }}
                     >
-                      <span className="text-base">{locale.flag}</span>
-                      <span>{locale.name}</span>
-                      {currentLocale === locale.code && (
-                        <span className="ml-auto w-1.5 h-1.5 rounded-full bg-dark-blue" />
-                      )}
+                      <span className="text-base leading-none flex items-center">{locale.flag}</span>
+                      <span className="flex items-center">{locale.name}</span>
                     </button>
                   </div>
                 ))}

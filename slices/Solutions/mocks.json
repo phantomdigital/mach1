@@ -1,5 +1,175 @@
 [
   {
+    "variation": "allSolutions",
+    "name": "All Solutions",
+    "slice_type": "solutions",
+    "_comment": "Items are not used in this variant - solutions are automatically fetched from Prismic solution pages",
+    "items": [
+      {
+        "title": "Inventory Management",
+        "description": "Comprehensive warehouse management and real-time inventory tracking across all Australian locations.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Forklift in warehouse managing inventory",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/inventory-management"
+        }
+      },
+      {
+        "title": "Delivery Solutions",
+        "description": "Fast, reliable delivery services with real-time tracking and proof of delivery.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Delivery tracking on mobile phone",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/delivery"
+        }
+      },
+      {
+        "title": "Logistics Solutions",
+        "description": "End-to-end logistics coordination from port to final destination, including customs clearance.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Package tracking interface",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/logistics"
+        }
+      },
+      {
+        "title": "Supply Optimization",
+        "description": "Strategic supply chain planning and optimization to reduce costs and improve efficiency.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Supply chain planning meeting",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/supply-optimization"
+        }
+      },
+      {
+        "title": "Freight Forwarding",
+        "description": "International and domestic freight forwarding services with comprehensive tracking.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Cargo ship at port",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/freight-forwarding"
+        }
+      },
+      {
+        "title": "Customs Brokerage",
+        "description": "Expert customs clearance and compliance services for seamless international trade.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Customs documentation and inspection",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1586528116493-a029325540fa?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/customs-brokerage"
+        }
+      },
+      {
+        "title": "Cold Chain Logistics",
+        "description": "Temperature-controlled storage and transportation for pharmaceutical and perishable goods.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Cold storage warehouse facility",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1565373679204-dbb5d9950c21?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/cold-chain"
+        }
+      },
+      {
+        "title": "E-commerce Fulfillment",
+        "description": "Complete order fulfillment solutions from picking and packing to last-mile delivery.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "E-commerce packaging and fulfillment",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/ecommerce-fulfillment"
+        }
+      },
+      {
+        "title": "Reverse Logistics",
+        "description": "Efficient returns management and product lifecycle solutions to maximize value recovery.",
+        "image": {
+          "dimensions": {
+            "width": 1200,
+            "height": 800
+          },
+          "alt": "Returns processing facility",
+          "copyright": null,
+          "url": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=1200&h=800&fit=crop"
+        },
+        "link": {
+          "link_type": "Web",
+          "url": "/solutions/reverse-logistics"
+        }
+      }
+    ],
+    "primary": {
+      "subheading": "Our solutions",
+      "heading": "Complete logistics solutions for your business",
+      "description": "Explore our comprehensive range of logistics and supply chain solutions designed to streamline your operations and drive growth.",
+      "background_color": "#ffffff",
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large"
+    }
+  },
+  {
     "variation": "default",
     "name": "Default",
     "slice_type": "solutions",

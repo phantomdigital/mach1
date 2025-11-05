@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { SliceHeader } from "@/components/slice-header";
 import { CheckCircle } from "lucide-react";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
+import SpecialtiesAll from "./specialties-all";
 
 /**
  * Props for `Specialties`.
@@ -18,6 +19,12 @@ export type SpecialtiesProps = SliceComponentProps<Content.SpecialtiesSlice>;
  * Two-column layout showcasing operational specialties with image collage
  */
 const Specialties = ({ slice }: SpecialtiesProps): React.ReactElement => {
+  // Route to appropriate variant component
+  if (slice.variation === "allSpecialties") {
+    return <SpecialtiesAll slice={slice} />;
+  }
+  
+  // Default variation below
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
   const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");

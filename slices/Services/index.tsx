@@ -154,15 +154,6 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {specialties.map((specialty) => (
                                             <div key={specialty.uid} className="flex items-start gap-3" data-animate="specialty">
-                                            {specialty.data.featured_image?.url ? (
-                                                <PrismicNextImage
-                                                    field={specialty.data.featured_image}
-                                                    width={24}
-                                                    height={24}
-                                                    className="w-6 h-6 object-contain flex-shrink-0 mt-0.5"
-                                                    quality={85}
-                                                />
-                                            ) : (
                                                 <svg 
                                                     className="w-6 h-6 text-neutral-800 flex-shrink-0 mt-0.5" 
                                                     fill="none" 
@@ -174,14 +165,13 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                                 >
                                                     <path d="M9 6l6 6-6 6" />
                                                 </svg>
-                                            )}
-                                            <span className="text-lg font-semibold text-neutral-800">
-                                                {specialty.data.title}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
+                                                <span className="text-lg font-semibold text-neutral-800">
+                                                    {specialty.data.title}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
 
                                 {/* CTA Button - animates with left-column parent, no separate animation needed */}
                                 <div className="pt-4 inline-flex">

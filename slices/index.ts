@@ -20,6 +20,7 @@ export const components = {
   page_topper: dynamic(() => import("./PageTopper")),
   services: dynamic(() => import("./Services")),
   solutions: dynamic(() => import("./Solutions")),
+  specialties: dynamic(() => import("./Specialties")),
   statistics: dynamic(() => import("./Statistics")),
   statistics_v2: dynamic(() => import("./StatisticsV2")),
   steps: dynamic(() => import("./Steps")),
