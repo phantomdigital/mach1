@@ -107,11 +107,11 @@ export function TabContentWithFixedHeight({ slice }: { slice: Content.HomepageHe
       <TabsContent value="specialties" className="hidden" />
       
       {/* Both contents rendered always - Freight in flow, Specialties absolutely positioned */}
-      <div className="relative" style={{ minHeight: containerHeight ? `${containerHeight}px` : undefined }}>
+      <div className="relative overflow-hidden" style={{ minHeight: containerHeight ? `${containerHeight}px` : undefined }}>
         {/* Freight Solutions - always rendered in normal flow to contribute to height */}
         <div 
           ref={freightRef}
-          className={`${activeTab === "freight_solutions" ? "opacity-100 visible relative z-10" : "opacity-0 invisible pointer-events-none"}`}
+          className={`${activeTab === "freight_solutions" ? "opacity-100 visible relative z-10" : "opacity-0 invisible absolute pointer-events-none"}`}
         >
           <div className="space-y-4">
             {freightItems.length > 0 ? (
