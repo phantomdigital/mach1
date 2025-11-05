@@ -24,6 +24,7 @@ import { ChevronDown } from "lucide-react";
 import { DropdownBackground } from "./dropdown-background";
 import { ExternalLinkIcon } from "./external-link-icon";
 import { useDropdownState } from "./dropdown-state-context";
+import { NavigationItemWithPrefetch } from "./navigation-item-with-prefetch";
 import type { 
   HeaderDocumentDataNavigationItem,
   HeaderDocumentDataNavigationDropdownItemsItem 
@@ -384,35 +385,40 @@ export function NavigationDropdown({
                         );
                       })()}
                       
-                      {/* Navigation Link */}
-                      <PrismicNextLink
-                        field={dropdownItem.link}
+                      {/* Navigation Link with prefetching */}
+                      <NavigationItemWithPrefetch
+                        link={dropdownItem.link}
+                        label={dropdownItem.label}
                         className={`flex items-center py-4 px-4 transition-colors duration-200 text-mach-gray hover:text-black ${hasDropdownImage ? 'justify-start' : 'justify-between'}`}
-                        style={{
-                          fontFamily: 'var(--font-inter-tight), sans-serif',
-                          fontWeight: 500,
-                          fontSize: '1.25rem',        // 20px
-                          lineHeight: '100%',         // Tight line height
-                          letterSpacing: '0%'         // No letter spacing
-                        }}
                       >
-                        <span>{dropdownItem.label}</span>
-                        
-                        {/* External link icon - appears on hover, positioned differently based on image presence */}
-                        {hasDropdownImage ? (
-                          // With image: icon appears next to text to avoid gray area
-                          <ExternalLinkIcon 
-                            className="w-[13px] h-[13px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-2" 
-                            color="currentColor"
-                          />
-                        ) : (
-                          // Without image: icon appears on far right as before
-                          <ExternalLinkIcon 
-                            className="w-[13px] h-[13px] opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
-                            color="currentColor"
-                          />
-                        )}
-                      </PrismicNextLink>
+                        <div 
+                          className="flex items-center justify-between w-full"
+                          style={{
+                            fontFamily: 'var(--font-inter-tight), sans-serif',
+                            fontWeight: 500,
+                            fontSize: '1.25rem',        // 20px
+                            lineHeight: '100%',         // Tight line height
+                            letterSpacing: '0%'         // No letter spacing
+                          }}
+                        >
+                          <span>{dropdownItem.label}</span>
+                          
+                          {/* External link icon - appears on hover, positioned differently based on image presence */}
+                          {hasDropdownImage ? (
+                            // With image: icon appears next to text to avoid gray area
+                            <ExternalLinkIcon 
+                              className="w-[13px] h-[13px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-2" 
+                              color="currentColor"
+                            />
+                          ) : (
+                            // Without image: icon appears on far right as before
+                            <ExternalLinkIcon 
+                              className="w-[13px] h-[13px] opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
+                              color="currentColor"
+                            />
+                          )}
+                        </div>
+                      </NavigationItemWithPrefetch>
                     </div>
                   ))}
                 </div>

@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { isFilled } from "@prismicio/client";
 import { NavigationDropdown } from "./navigation-dropdown";
@@ -8,22 +9,24 @@ import { MobileMenu } from "./mobile-menu";
 import { HeaderHeightTracker } from "./header-height-tracker";
 import { CompactHeader } from "./compact-header";
 import { ExternalLinkIcon } from "./external-link-icon";
+import { NavigationItemWithPrefetch } from "./navigation-item-with-prefetch";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
 
-// Server component for simple navigation items
+// Navigation items with hover prefetching
 const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationItem; index: number }) => {
   if (!item.has_dropdown || !item.dropdown_items || item.dropdown_items.length === 0) {
-    // Simple navigation item without dropdown
+    // Simple navigation item without dropdown - with hover prefetch
     return (
-      <PrismicNextLink
+      <NavigationItemWithPrefetch
         key={index}
-        field={item.link}
+        link={item.link}
+        label={item.label}
         className="text-black font-semibold text-[1.25rem] px-5 inline-flex items-center group h-full"
       >
         <span className="border-b-2 border-transparent group-hover:border-dark-blue transition-all duration-300 inline-block py-1">
           {item.label}
         </span>
-      </PrismicNextLink>
+      </NavigationItemWithPrefetch>
     );
   }
 
@@ -44,7 +47,7 @@ interface HeaderClientProps {
   header: HeaderDocument | null;
 }
 
-export default function HeaderClient({ header }: HeaderClientProps) {
+function HeaderClient({ header }: HeaderClientProps) {
   if (!header) {
     // Minimal loading/fallback header
     return (
@@ -165,13 +168,12 @@ export default function HeaderClient({ header }: HeaderClientProps) {
                     <div className="flex items-center gap-6 justify-end border-b-2 border-gray-200 pb-3">
                       {header.data.subheader_items && header.data.subheader_items.length > 0 && (
                         header.data.subheader_items.map((item, index) => (
-                          <PrismicNextLink
+                          <NavigationItemWithPrefetch
                             key={index}
-                            field={item.link}
+                            link={item.link}
+                            label={item.label}
                             className="text-sm text-gray-700 hover:text-dark-blue hover:underline transition-colors"
-                          >
-                            {item.label}
-                          </PrismicNextLink>
+                          />
                         ))
                       )}
                       <RegionLanguageSelector />
@@ -241,3 +243,5 @@ export default function HeaderClient({ header }: HeaderClientProps) {
   );
 }
 
+// Memoize to prevent unnecessary re-renders during locale transitions
+export default memo(HeaderClient);
