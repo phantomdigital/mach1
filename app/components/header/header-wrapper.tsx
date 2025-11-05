@@ -11,23 +11,26 @@ interface HeaderWrapperProps {
 }
 
 /**
- * Client wrapper that receives initial server-rendered header data
- * and updates it when the locale changes via pathname
+ * Client wrapper that fetches and updates header data based on locale changes
  */
 export default function HeaderWrapper({ initialHeader }: HeaderWrapperProps) {
   const pathname = usePathname();
   const [headerData, setHeaderData] = useState<HeaderDocument | null>(initialHeader);
   const previousHeaderRef = useRef<HeaderDocument | null>(initialHeader);
   const currentLocaleRef = useRef<string | null>(initialHeader?.lang || null);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     const fetchHeader = async () => {
       const locale = getLocaleFromPathname(pathname);
       
       // Check if locale has actually changed by comparing with current header's locale
-      if (currentLocaleRef.current === locale) {
+      // On initial load, always fetch
+      if (!isInitialLoad && currentLocaleRef.current === locale) {
         return; // Already have the correct locale
       }
+      
+      setIsInitialLoad(false);
       
       try {
         const response = await fetch(`/api/header?lang=${locale}`, {
@@ -44,7 +47,7 @@ export default function HeaderWrapper({ initialHeader }: HeaderWrapperProps) {
             cache: 'no-store'
           });
           if (defaultResponse.ok) {
-            const defaultData = await response.json();
+            const defaultData = await defaultResponse.json();
             setHeaderData(defaultData);
             previousHeaderRef.current = defaultData;
             currentLocaleRef.current = 'en-us';
@@ -63,7 +66,7 @@ export default function HeaderWrapper({ initialHeader }: HeaderWrapperProps) {
     };
 
     fetchHeader();
-  }, [pathname]);
+  }, [pathname, isInitialLoad]);
 
   // Always show header data (either new or previous during transition)
   return <HeaderClient header={headerData || previousHeaderRef.current} />;

@@ -1,7 +1,6 @@
 import { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
-import { SliceZone } from "@prismicio/react";
-
+import { notFound } from "next/navigation";
+import { SliceZone } from "@prismicio/react"
 import { createClient, locales, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata } from "@/lib/metadata";
@@ -13,10 +12,10 @@ export default async function Page({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const client = createClient();
   
-  // Handle empty slug (homepage)
-  if (slug.length === 0) {
-    const page = await client.getSingle("home", { lang: defaultLocale }).catch(() => notFound());
-    return <SliceZone slices={page.data.slices} components={components} />;
+  // Empty slug should be handled by app/page.tsx, not this route
+  // If we somehow get here with empty slug, redirect to notFound
+  if (!slug || slug.length === 0) {
+    notFound();
   }
   
   // Parse slug array to determine locale and uid
@@ -60,8 +59,7 @@ export default async function Page({ params }: { params: Promise<Params> }) {
   // Note: More specific routes like /solutions/[uid] will be matched first by Next.js
   try {
     const page = await client.getByUID("page", uid, { 
-      lang: locale,
-      fetchOptions: { cache: 'no-store' } // Ensure fresh data for locale switching
+      lang: locale
     });
     
     return (
@@ -83,13 +81,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const client = createClient();
   
-  // Handle empty slug (homepage)
-  if (slug.length === 0) {
-    const page = await client.getSingle("home", { lang: defaultLocale }).catch(() => notFound());
-    return generatePrismicMetadata(page, {
-      url: "/",
-      keywords: ["home", "logistics solutions", "freight services", "MACH1"],
-    });
+  // Empty slug should be handled by app/page.tsx metadata
+  if (!slug || slug.length === 0) {
+    return {
+      title: "MACH 1 Logistics",
+      description: "Professional logistics and transportation services",
+    };
   }
   
   const validLocaleCodes = locales.map(l => l.code);
@@ -136,8 +133,7 @@ export async function generateStaticParams() {
   
   const allParams: { slug: string[] }[] = [];
   
-  // Default locale homepage
-  allParams.push({ slug: [] });
+  // Note: Default locale homepage (slug: []) is handled by app/page.tsx, not this route
   
   // Default locale pages (no locale prefix)
   const defaultPages = await client.getAllByType("page", { lang: defaultLocale });

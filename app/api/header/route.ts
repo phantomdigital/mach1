@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient, defaultLocale, locales, type LocaleCode } from '@/prismicio';
 
+// Mark this route as dynamic
+export const dynamic = 'force-dynamic';
+
 /**
  * Validates that the provided locale code is in the allowed list
  */
@@ -33,11 +36,7 @@ export async function GET(request: NextRequest) {
     let header;
     try {
       header = await client.getSingle("header", { 
-        lang,
-        fetchOptions: { 
-          cache: 'no-store',
-          next: { revalidate: 0 }
-        }
+        lang
       });
     } catch (error: unknown) {
       // Log the error for debugging (but don't expose details to client)
@@ -49,11 +48,7 @@ export async function GET(request: NextRequest) {
       if (lang !== defaultLocale) {
         try {
           header = await client.getSingle("header", { 
-            lang: defaultLocale,
-            fetchOptions: { 
-              cache: 'no-store',
-              next: { revalidate: 0 }
-            }
+            lang: defaultLocale
           });
         } catch (fallbackError) {
           console.error("Header API: Not found in default locale either:", fallbackError);
