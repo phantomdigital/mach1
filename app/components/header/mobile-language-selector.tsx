@@ -172,7 +172,7 @@ export function MobileLanguageSelector({ onLocaleChange }: MobileLanguageSelecto
   }, []);
 
   // Filter locales to only show available translations
-  const filterAvailableLocales = (localeList: typeof locales) => {
+  const filterAvailableLocales = <T extends { code: LocaleCode; name: string; flag: string }>(localeList: T[]) => {
     return localeList.filter(locale => availableLocales.includes(locale.code));
   };
   

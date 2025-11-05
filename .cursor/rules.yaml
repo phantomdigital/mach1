@@ -39,6 +39,10 @@ rules:
       - "Maintain consistent spacing using Tailwind's spacing scale"
       - "For SVG styling: use 'currentColor' for fills/strokes and set color via text-* classes on container"
       - "Never put Tailwind class names directly in SVG fill/stroke attributes - use CSS classes instead"
+      - "Responsive padding pattern: Use 'pt-32 md:pt-32 xl:pt-40' for hero sections that align with header breakpoints"
+      - "Why this works: md (768px) maintains mobile padding, xl (1280px) matches header mobile/desktop switch, avoiding lg breakpoint prevents conflicts"
+      - "Breakpoint alignment: When padding needs to change at header breakpoint (xl: 1280px), skip lg breakpoint to avoid CSS specificity conflicts"
+      - "Clean progression: Mobile/tablet same padding (pt-32), then increase at desktop breakpoint (xl:pt-40) where header switches"
       
   - name: "Component Structure"
     description: "Maintain clean component architecture"

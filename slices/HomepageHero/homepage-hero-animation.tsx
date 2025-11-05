@@ -79,9 +79,8 @@ export function HomepageHeroAnimation({
       {heading && (
         <h1
           ref={headingRef}
-          className={`${textColors.heading} font-bold`}
+          className={`${textColors.heading} font-bold text-3xl lg:text-5xl xl:text-6xl`}
           style={{ 
-            fontSize: '52px',
             lineHeight: '1.15'
           }}
         >
@@ -93,11 +92,9 @@ export function HomepageHeroAnimation({
       {description && (
         <p
           ref={descriptionRef}
-          className={textColors.description}
+          className={`${textColors.description} text-sm md:text-base lg:text-lg max-w-full lg:max-w-lg xl:max-w-xl`}
           style={{ 
-            fontSize: '16px',
-            lineHeight: '1.7',
-            maxWidth: '540px'
+            lineHeight: '1.7'
           }}
         >
           {description}

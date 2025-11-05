@@ -60,24 +60,18 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
       <section
         data-slice-type={slice.slice_type}
         data-slice-variation={slice.variation}
-        className={`w-full relative ${getBackgroundClasses()} pt-40 overflow-hidden`}
+        className={`w-full relative ${getBackgroundClasses()} pt-32 md:pt-32 xl:pt-40 overflow-hidden`}
       >
         {/* Full-width grid with no gaps */}
         <div className="relative z-10 w-full">
           {layout === "split" && hasImage ? (
-            // New Layout: Hero image left with text overlay, stacked content right
-            <div className="relative grid grid-cols-1 lg:grid-cols-[2.5fr_1fr]">
-              {/* Left Column - Hero Image with Text Overlay */}
-              <div className="relative min-h-[600px] lg:min-h-[700px] overflow-hidden">
-                <HomepageHeroImage 
-                  image={slice.primary.background_image}
-                  positionX={slice.primary.image_position_x ?? undefined}
-                  positionY={slice.primary.image_position_y ?? undefined}
-                />
-                
-                {/* Text Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end px-8 py-12 lg:px-12 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
-                  <div className="max-w-2xl ml-0 lg:ml-52">
+            <>
+
+              {/* Desktop Text Content Overlay - Hidden on mobile, positioned over the grid */}
+              <div className="hidden lg:flex lg:items-end absolute bottom-0 left-0 right-0 py-8 xl:py-12 pointer-events-none z-30 lg:top-0 lg:bottom-auto lg:h-full">
+                <div className="w-full max-w-[88rem] mx-auto px-4 xl:px-8 pointer-events-auto">
+                  {/* Text Content */}
+                  <div className="max-w-2xl">
                     <HomepageHeroAnimation
                       subheading={slice.primary.subheading}
                       heading={slice.primary.heading}
@@ -99,8 +93,8 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
 
                   {/* CTA Buttons */}
                   {(slice.primary.button_1_text || slice.primary.button_2_text) && (
-                    <div className="max-w-2xl ml-0 lg:ml-36">
-                      <div className="flex flex-wrap gap-4 mt-6 lg:mt-8">
+                    <div className="max-w-2xl mt-6 xl:mt-8">
+                      <div className="flex flex-wrap gap-4">
                         {slice.primary.button_1_text && slice.primary.button_1_link && (
                           <PrismicNextLink field={slice.primary.button_1_link}>
                             <HeroButton>
@@ -124,11 +118,76 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                   )}
                 </div>
               </div>
+              
+              {/* Grid */}
+              <div className="relative grid grid-cols-1 lg:grid-cols-[2.5fr_1fr]">
+              {/* Left Column - Hero Image with Gradient Overlay */}
+              <div className="relative min-h-[400px] md:min-h-[500px] lg:min-h-[700px] overflow-hidden">
+                <HomepageHeroImage 
+                  image={slice.primary.background_image}
+                  positionX={slice.primary.image_position_x ?? undefined}
+                  positionY={slice.primary.image_position_y ?? undefined}
+                />
+                
+                {/* Gradient Overlay - Constrained to left column only */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pointer-events-none z-20" />
+                
+                {/* Mobile Text Content Overlay - Hidden on desktop, overlays this image container */}
+                <div className="lg:hidden absolute bottom-0 left-0 right-0 py-8 pointer-events-none z-30">
+                  <div className="w-full px-4 pointer-events-auto">
+                    <div className="max-w-2xl">
+                      <HomepageHeroAnimation
+                        subheading={slice.primary.subheading}
+                        heading={slice.primary.heading}
+                        description={slice.primary.description}
+                        textColors={{
+                          subheading: "text-white",
+                          heading: "text-white",
+                          description: "text-white/90"
+                        }}
+                        badgeButtonText={slice.primary.badge_button_text}
+                        badgeButtonLink={
+                          slice.primary.badge_button_link && 
+                          "url" in slice.primary.badge_button_link 
+                            ? slice.primary.badge_button_link.url 
+                            : undefined
+                        }
+                      />
+                    </div>
+
+                    {/* Mobile CTA Buttons */}
+                    {(slice.primary.button_1_text || slice.primary.button_2_text) && (
+                      <div className="max-w-2xl mt-6">
+                        <div className="flex flex-wrap gap-4">
+                          {slice.primary.button_1_text && slice.primary.button_1_link && (
+                            <PrismicNextLink field={slice.primary.button_1_link}>
+                              <HeroButton>
+                                {slice.primary.button_1_text}
+                              </HeroButton>
+                            </PrismicNextLink>
+                          )}
+
+                          {slice.primary.button_2_text && slice.primary.button_2_link && (
+                            <HeroButton asChild>
+                              <PrismicNextLink 
+                                field={slice.primary.button_2_link}
+                                className="!bg-transparent !border-2 !border-white hover:!bg-white hover:!text-dark-blue"
+                              >
+                                {slice.primary.button_2_text}
+                              </PrismicNextLink>
+                            </HeroButton>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
 
               {/* Right Column - Stacked Content */}
               <div className="flex flex-col">
                 {/* Top: Secondary Image */}
-                <div className="relative h-[250px] lg:flex-1 overflow-hidden bg-neutral-100">
+                <div className="relative h-[200px] md:h-[250px] lg:flex-1 overflow-hidden bg-neutral-100">
                   {slice.primary.secondary_image && (
                     <HomepageHeroImage 
                       image={slice.primary.secondary_image}
@@ -139,7 +198,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                 </div>
 
                 {/* Bottom: Features/Info List */}
-                <div className="flex-1 bg-neutral-100 px-16 py-14">
+                <div className="flex-1 bg-neutral-100 px-6 py-8 xl:px-16 xl:py-14">
                   {slice.items && slice.items.length > 0 ? (
                     <HomepageHeroTabs slice={slice} />
                   ) : (
@@ -163,6 +222,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                 </div>
               </div>
             </div>
+            </>
           ) : (
             // Centered Layout (no image or centered layout)
             <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
@@ -175,7 +235,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
 
               {/* CTA Buttons */}
               {(slice.primary.button_1_text || slice.primary.button_2_text) && (
-                <div className="flex flex-wrap gap-4 mt-6 lg:mt-8 justify-center">
+                <div className="flex flex-wrap gap-4 mt-6 xl:mt-8 justify-center">
                   {slice.primary.button_1_text && slice.primary.button_1_link && (
                     <PrismicNextLink field={slice.primary.button_1_link}>
                       <HeroButton>
