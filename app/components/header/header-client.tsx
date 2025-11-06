@@ -10,6 +10,7 @@ import { HeaderHeightTracker } from "./header-height-tracker";
 import { CompactHeader } from "./compact-header";
 import { ExternalLinkIcon } from "./external-link-icon";
 import { NavigationItemWithPrefetch } from "./navigation-item-with-prefetch";
+import { LogoLink } from "./logo-link";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 // Navigation items with hover prefetching
@@ -59,11 +60,11 @@ function HeaderClient({ header }: HeaderClientProps) {
             <div className="max-w-[88rem] mx-auto px-4 lg:px-8 py-3">
               <div className="hidden xl:grid xl:grid-cols-[auto_1fr] gap-8">
                 <div className="flex items-center">
-                  <PrismicNextLink href="/" className="block">
+                  <LogoLink className="block">
                     <div className="font-bold tracking-tight text-black" style={{ fontSize: '36px' }}>
                       Logo
                     </div>
-                  </PrismicNextLink>
+                  </LogoLink>
                 </div>
                 <div className="flex flex-col self-center gap-12">
                   <div className="flex items-center gap-6 justify-end">
@@ -73,11 +74,11 @@ function HeaderClient({ header }: HeaderClientProps) {
               </div>
               <div className="flex xl:hidden items-center justify-between">
                 <div className="flex items-center">
-                  <PrismicNextLink href="/" className="block">
+                  <LogoLink className="block">
                     <div className="font-bold tracking-tight text-black" style={{ fontSize: '24px' }}>
                       Logo
                     </div>
-                  </PrismicNextLink>
+                  </LogoLink>
                 </div>
                 <MobileMenu navigation={[]} buttons={[]} subheaderItems={[]} />
               </div>
@@ -135,7 +136,7 @@ function HeaderClient({ header }: HeaderClientProps) {
               {/* Desktop Layout */}
               <div className="hidden xl:grid xl:grid-cols-[auto_1fr] gap-8">
                 <div className="flex items-center">
-                  <PrismicNextLink href="/" className="block">
+                  <LogoLink className="block">
                     {header.data.logo.url ? (
                       <PrismicNextImage
                         field={header.data.logo}
@@ -160,7 +161,7 @@ function HeaderClient({ header }: HeaderClientProps) {
                         {header.data.site_title}
                       </div>
                     ) : null}
-                  </PrismicNextLink>
+                  </LogoLink>
                 </div>
 
                 <div className="flex flex-col self-center gap-5">
@@ -202,7 +203,7 @@ function HeaderClient({ header }: HeaderClientProps) {
               {/* Mobile Layout */}
               <div className="flex xl:hidden items-center justify-between">
                 <div className="flex items-center">
-                  <PrismicNextLink href="/" className="block">
+                  <LogoLink className="block">
                     {header.data.logo.url ? (
                       <PrismicNextImage
                         field={header.data.logo}
@@ -227,7 +228,7 @@ function HeaderClient({ header }: HeaderClientProps) {
                         {header.data.site_title}
                       </div>
                     ) : null}
-                  </PrismicNextLink>
+                  </LogoLink>
                 </div>
                 <MobileMenu 
                   navigation={header.data.navigation} 

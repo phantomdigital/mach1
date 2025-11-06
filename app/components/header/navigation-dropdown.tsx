@@ -389,10 +389,10 @@ export function NavigationDropdown({
                       <NavigationItemWithPrefetch
                         link={dropdownItem.link}
                         label={dropdownItem.label}
-                        className={`flex items-center py-4 px-4 transition-colors duration-200 text-mach-gray hover:text-black ${hasDropdownImage ? 'justify-start' : 'justify-between'}`}
+                        className={`group/link flex items-center py-4 px-4 transition-colors duration-200 text-mach-gray hover:text-black ${hasDropdownImage ? 'justify-start' : 'justify-between'}`}
                       >
                         <div 
-                          className="flex items-center justify-between w-full"
+                          className={`flex items-center w-full ${hasDropdownImage ? 'justify-start' : 'justify-between'}`}
                           style={{
                             fontFamily: 'var(--font-inter-tight), sans-serif',
                             fontWeight: 500,
@@ -407,13 +407,13 @@ export function NavigationDropdown({
                           {hasDropdownImage ? (
                             // With image: icon appears next to text to avoid gray area
                             <ExternalLinkIcon 
-                              className="w-[13px] h-[13px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-2" 
+                              className="w-[13px] h-[13px] opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 ml-2" 
                               color="currentColor"
                             />
                           ) : (
                             // Without image: icon appears on far right as before
                             <ExternalLinkIcon 
-                              className="w-[13px] h-[13px] opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
+                              className="w-[13px] h-[13px] opacity-0 group-hover/link:opacity-100 transition-opacity duration-200" 
                               color="currentColor"
                             />
                           )}
