@@ -398,7 +398,7 @@ export function NavigationDropdown({
                             fontWeight: 500,
                             fontSize: '1.25rem',        // 20px
                             lineHeight: '100%',         // Tight line height
-                            letterSpacing: '0%'         // No letter spacing
+                            letterSpacing: '0%'         // No letter spacin
                           }}
                         >
                           <span>{dropdownItem.label}</span>
