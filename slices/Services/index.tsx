@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import ServicesButton from "./services-button";
 import ServicesAnimation from "./services-animation";
 import { SliceHeader } from "@/components/slice-header";
-import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
+import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass, type MarginTopSize, type PaddingSize } from "@/lib/spacing";
 import { createClient } from "@/prismicio";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 
@@ -23,9 +23,18 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
     // Fetch all specialties from Prismic
     const client = createClient();
     const specialties = await client.getAllByType("specialty");
-    const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
-    const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
-    const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
+    
+    // Handle spacing values from Prismic (trim empty strings, fallback to defaults)
+    // Type assertion is safe because Prismic model restricts values to valid options
+    const marginTop = getMarginTopClass(
+        ((slice.primary.margin_top && slice.primary.margin_top.trim()) || "large") as MarginTopSize
+    );
+    const paddingTop = getPaddingTopClass(
+        ((slice.primary.padding_top && slice.primary.padding_top.trim()) || "large") as PaddingSize
+    );
+    const paddingBottom = getPaddingBottomClass(
+        ((slice.primary.padding_bottom && slice.primary.padding_bottom.trim()) || "large") as PaddingSize
+    );
     const backgroundColor = slice.primary.background_color || "#ffffff";
 
     // Render Two Column variation
