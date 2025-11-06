@@ -69,7 +69,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
 
               {/* Desktop Text Content Overlay - Hidden on mobile, positioned over the grid */}
               <div className="hidden lg:flex lg:items-end absolute bottom-0 left-0 right-0 py-8 xl:py-12 pointer-events-none z-30 lg:top-0 lg:bottom-auto lg:h-full">
-                <div className="w-full max-w-[88rem] mx-auto px-4 xl:px-8 pointer-events-auto">
+                <div className="w-full max-w-[88rem] mx-auto px-4 xl:px-8 pointer-events-none">
                   {/* Text Content */}
                   <div className="max-w-2xl">
                     <HomepageHeroAnimation
