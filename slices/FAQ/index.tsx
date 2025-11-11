@@ -19,7 +19,7 @@ const Faq = async ({ slice }: FaqProps): Promise<React.ReactElement> => {
   let faqs = slice.items.filter(item => item.question);
 
   // Referenced variant: Pull FAQs from another page
-  if (slice.variation === "referenced") {
+  if (slice.variation === ("referenced" as any)) {
     const faqPage = (slice.primary as any).faq_page;
     const filterCategory = (slice.primary as any).filter_by_category;
 
