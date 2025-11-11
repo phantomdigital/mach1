@@ -85,3 +85,17 @@ export function getPaddingBottomClass(size: PaddingSize = "large"): string {
   return paddings[size];
 }
 
+/**
+ * Get responsive top padding class with mobile-only padding
+ * Useful for sections that need padding on mobile but not on desktop
+ */
+export function getPaddingTopClassMobileOnly(size: PaddingSize = "medium"): string {
+  const paddings: Record<PaddingSize, string> = {
+    none: "pt-0",
+    small: "pt-8 lg:pt-0",
+    medium: "pt-16 lg:pt-0",
+    large: "pt-24 lg:pt-0",
+  };
+  return paddings[size];
+}
+

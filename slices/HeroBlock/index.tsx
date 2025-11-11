@@ -128,8 +128,8 @@ const HeroBlock = ({ slice }: HeroBlockProps): React.ReactElement => {
 
               {/* CTA Button */}
               {slice.primary.button_text && slice.primary.button_link && (
-                <div className="inline-flex" data-animate="button">
-                  <Button asChild variant="subtle" size="lg">
+                <div className="inline-flex " data-animate="button">
+                  <Button asChild variant="subtle" size="lg" className="!px-0">
                     <PrismicNextLink 
                       field={slice.primary.button_link}
                       className={`inline-flex items-center gap-1.5 ${isDarkBlue ? 'text-neutral-100' : 'text-neutral-800'}`}

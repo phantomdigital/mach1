@@ -1,6 +1,6 @@
 import type { Content } from "@prismicio/client";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
-import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
+import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass, getPaddingTopClassMobileOnly } from "@/lib/spacing";
 import { HeroButton } from "@/components/ui/hero-button";
 import NetworkOverviewAnimation from "./network-overview-animation";
 import { SliceHeader } from "@/components/slice-header";
@@ -18,7 +18,11 @@ export type NetworkOverviewProps = {
  */
 const NetworkOverview = ({ slice }: NetworkOverviewProps): React.ReactElement => {
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
-  const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
+  // Use mobile-only padding when padding_top is "none" to add spacing on mobile
+  const paddingTopSetting = slice.primary.padding_top || "large";
+  const paddingTop = paddingTopSetting === "none" 
+    ? getPaddingTopClassMobileOnly("medium") 
+    : getPaddingTopClass(paddingTopSetting);
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
   const backgroundColor = slice.primary.background_color || "#ffffff";
 

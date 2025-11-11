@@ -3,7 +3,7 @@
 import type { Content } from "@prismicio/client";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
+import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass, getPaddingTopClassMobileOnly } from "@/lib/spacing";
 import NetworkTabs from "./network-tabs";
 import NetworkDefaultAnimation from "./network-default-animation";
 import { SliceHeader } from "@/components/slice-header";
@@ -33,7 +33,11 @@ export type NetworkDefaultProps = {
  */
 const NetworkDefault = ({ slice }: NetworkDefaultProps): React.ReactElement => {
   const marginTop = getMarginTopClass(slice.primary.margin_top || "large");
-  const paddingTop = getPaddingTopClass(slice.primary.padding_top || "large");
+  // Use mobile-only padding when padding_top is "none" to add spacing on mobile
+  const paddingTopSetting = slice.primary.padding_top || "large";
+  const paddingTop = paddingTopSetting === "none" 
+    ? getPaddingTopClassMobileOnly("medium") 
+    : getPaddingTopClass(paddingTopSetting);
   const paddingBottom = getPaddingBottomClass(slice.primary.padding_bottom || "large");
   const backgroundColor = slice.primary.background_color || "#ffffff";
 
@@ -105,11 +109,19 @@ const NetworkDefault = ({ slice }: NetworkDefaultProps): React.ReactElement => {
           </div>
 
           {/* Main Content Grid: Globe + Tabs */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center overflow-visible">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center overflow-visible relative">
             {/* 3D Globe - reduced size, overflow left for design */}
             <div className="order-2 lg:order-1 relative overflow-visible" data-animate="globe">
-              {/* Half-dark container behind globe */}
-              <div className="absolute inset-y-0 left-1/2 w-1/2 bg-neutral-200/90 -z-10" />
+              {/* Gradient background box on left side - fades from left to right, extends to viewport edge */}
+              <div 
+                className="absolute inset-y-0 pointer-events-none" 
+                style={{
+                  left: '-100vw',
+                  width: 'calc(100vw + 60%)',
+                  background: 'linear-gradient(to right, rgba(229, 229, 229, 0.9) 0%, rgba(229, 229, 229, 0.9) 50%, rgba(229, 229, 229, 0) 100%)',
+                  zIndex: -1
+                }}
+              />
               <Globe3D 
                 activeRegion={activeRegion} 
                 allLocations={allLocations}

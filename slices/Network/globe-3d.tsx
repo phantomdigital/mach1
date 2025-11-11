@@ -513,6 +513,7 @@ export default function Globe3D({
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const globeGroupRef = useRef<THREE.Group | null>(null);
+  const gridGroupRef = useRef<THREE.Group | null>(null);
   const markerGroupRef = useRef<THREE.Group | null>(null);
   const linesGroupRef = useRef<THREE.Group | null>(null);
   const pulsesRef = useRef<THREE.Mesh[]>([]);
@@ -581,6 +582,7 @@ export default function Globe3D({
     controls.dampingFactor = 0.05;
     controls.enableZoom = false; // Disable zoom
     controls.enablePan = false;
+    controls.enableRotate = false; // Disable manual rotation - only rotate via tab changes
     controls.autoRotate = false; // No auto-rotation - only animate on tab change
     controlsRef.current = controls;
 
@@ -596,6 +598,123 @@ export default function Globe3D({
     scene.add(sun);
 
     // Starfield removed per design request (no background particles)
+
+    // Create radial grid background for visual interest
+    const gridGroup = new THREE.Group();
+    gridGroup.position.x = -0.75; // Align with globe x-position
+    gridGroup.position.z = -10; // Position much further behind the globe for better separation
+    gridGroup.scale.set(2.0, 2.0, 2.0); // Scale up significantly for more prominent background pattern
+    gridGroupRef.current = gridGroup;
+    scene.add(gridGroup);
+
+    // Longitude lines (meridians) - vertical circles with varying opacity
+    const longitudeCount = 24; // One every 15 degrees
+    for (let i = 0; i < longitudeCount; i++) {
+      const angle = (i / longitudeCount) * Math.PI * 2;
+      const points: THREE.Vector3[] = [];
+      const segments = 64;
+      
+      for (let j = 0; j <= segments; j++) {
+        const theta = (j / segments) * Math.PI;
+        const radius = 5.5; // Slightly larger than globe
+        const x = Math.sin(theta) * Math.cos(angle) * radius;
+        const y = Math.cos(theta) * radius;
+        const z = Math.sin(theta) * Math.sin(angle) * radius;
+        points.push(new THREE.Vector3(x, y, z));
+      }
+      
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      // Vary opacity - make cardinal directions (0°, 90°, 180°, 270°) slightly brighter
+      const isCardinal = i % 6 === 0;
+      const material = new THREE.LineBasicMaterial({
+        color: isCardinal ? 0x0AAE88 : 0x888888, // Green accent for cardinal directions
+        transparent: true,
+        opacity: isCardinal ? 0.15 : 0.08,
+        linewidth: 1,
+      });
+      const line = new THREE.Line(geometry, material);
+      gridGroup.add(line);
+    }
+
+    // Latitude lines (parallels) - horizontal circles with varying opacity
+    const latitudeCount = 12; // From pole to pole
+    for (let i = 1; i < latitudeCount; i++) {
+      const lat = (i / latitudeCount) * Math.PI;
+      const points: THREE.Vector3[] = [];
+      const segments = 64;
+      const radius = 5.5; // Slightly larger than globe
+      
+      for (let j = 0; j <= segments; j++) {
+        const lon = (j / segments) * Math.PI * 2;
+        const r = Math.sin(lat) * radius;
+        const x = r * Math.cos(lon);
+        const y = Math.cos(lat) * radius;
+        const z = r * Math.sin(lon);
+        points.push(new THREE.Vector3(x, y, z));
+      }
+      
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      // Make equator (middle line) slightly brighter
+      const isEquator = i === Math.floor(latitudeCount / 2);
+      const material = new THREE.LineBasicMaterial({
+        color: isEquator ? 0x0AAE88 : 0x888888, // Green accent for equator
+        transparent: true,
+        opacity: isEquator ? 0.15 : 0.08,
+        linewidth: 1,
+      });
+      const line = new THREE.Line(geometry, material);
+      gridGroup.add(line);
+    }
+
+    // Add concentric circles at different depths for layered effect
+    const concentricRings = [4.5, 5.0, 5.5, 6.0];
+    concentricRings.forEach((ringRadius, idx) => {
+      const points: THREE.Vector3[] = [];
+      const segments = 64;
+      
+      for (let i = 0; i <= segments; i++) {
+        const angle = (i / segments) * Math.PI * 2;
+        const x = Math.cos(angle) * ringRadius;
+        const y = Math.sin(angle) * ringRadius;
+        const z = 0;
+        points.push(new THREE.Vector3(x, y, z));
+      }
+      
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      const material = new THREE.LineBasicMaterial({
+        color: 0x0AAE88,
+        transparent: true,
+        opacity: 0.03 + (idx * 0.01), // Fade out as circles get larger
+        linewidth: 1,
+      });
+      const circle = new THREE.Line(geometry, material);
+      gridGroup.add(circle);
+    });
+
+    // Add radial lines from center for depth effect
+    const radialCount = 12;
+    for (let i = 0; i < radialCount; i++) {
+      const angle = (i / radialCount) * Math.PI * 2;
+      const points: THREE.Vector3[] = [];
+      
+      // Line from center outward
+      points.push(new THREE.Vector3(0, 0, 0));
+      points.push(new THREE.Vector3(
+        Math.cos(angle) * 6.5,
+        Math.sin(angle) * 6.5,
+        0
+      ));
+      
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      const material = new THREE.LineBasicMaterial({
+        color: 0x888888,
+        transparent: true,
+        opacity: 0.05,
+        linewidth: 1,
+      });
+      const line = new THREE.Line(geometry, material);
+      gridGroup.add(line);
+    }
 
     // Create globe
     const globeGroup = new THREE.Group();
@@ -707,8 +826,14 @@ export default function Globe3D({
       controlsRef.current.update();
       }
 
-      // Pulse glows
+      // Subtle rotation of radial grid background
       const time = performance.now() * 0.002;
+      if (gridGroupRef.current) {
+        gridGroupRef.current.rotation.y = time * 0.01; // Even slower rotation
+        gridGroupRef.current.rotation.x = Math.sin(time * 0.08) * 0.02; // Very gentle oscillation
+      }
+
+      // Pulse glows
       if (pulsesRef.current.length) {
         for (const mesh of pulsesRef.current) {
           const offset = (mesh as any).userData?.pulseOffset || 0;
@@ -883,16 +1008,13 @@ export default function Globe3D({
     return () => clearTimeout(timeoutId);
   }, [canvasHeight, mounted]);
 
-  const minHeight = Math.max(canvasHeight, 1000);
-  
   return (
     <div 
       ref={containerRef} 
-      className="relative bg-transparent w-[200%] -ml-[50%] h-[var(--canvas-height)] min-h-[var(--canvas-min-height)]"
+      className="relative bg-transparent w-[200%] -ml-[50%] h-[var(--canvas-height)] min-h-[500px] lg:min-h-[1000px]"
       style={{ 
-        '--canvas-height': `${canvasHeight}px`,
-        '--canvas-min-height': `${minHeight}px`
-      } as React.CSSProperties & { '--canvas-height': string; '--canvas-min-height': string }}
+        '--canvas-height': `${canvasHeight}px`
+      } as React.CSSProperties & { '--canvas-height': string }}
     />
   );
 }
