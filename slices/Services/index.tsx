@@ -216,19 +216,19 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
         <section
             data-slice-type={slice.slice_type}
             data-slice-variation={slice.variation}
-            className={`w-full ${marginTop} ${paddingTop} ${paddingBottom}`}
+            className={`w-full ${marginTop} ${paddingTop} ${paddingBottom} overflow-visible`}
             style={{ backgroundColor }}
         >
             <ServicesAnimation>
-                <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+                <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 overflow-visible">
                     {/* Add SliceHeader for consistent subheading treatment */}
                     <div data-animate="header">
                         <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
                     </div>
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 relative overflow-visible">
                         {/* Left Side - Content (appears first on mobile and desktop) */}
-                        <div className="lg:col-span-4 lg:order-1 flex flex-col justify-start lg:sticky lg:top-24 lg:self-start" data-animate="left-column">
+                        <div className="lg:col-span-4 lg:order-1 flex flex-col justify-start lg:sticky lg:top-24 lg:self-start lg:h-fit" data-animate="left-column">
                             <div className="lg:pr-8 space-y-6">
                             {/* Section Heading */}
                             {slice.primary.heading && (

@@ -51,7 +51,7 @@ export default function ServicesAnimation({ children }: ServicesAnimationProps) 
         }, 0);
       }
 
-      // Animate left column
+      // Animate left column (clear transforms after to preserve sticky behavior)
       if (leftColumn && leftColumn.children.length > 0) {
         masterTimeline.from(leftColumn.children, {
           y: 30,
@@ -59,6 +59,7 @@ export default function ServicesAnimation({ children }: ServicesAnimationProps) 
           duration: 0.6,
           stagger: 0.1,
           ease: "power2.out",
+          clearProps: "transform", // Clear transform after animation to allow sticky
         }, 0.1);
       }
 
@@ -109,6 +110,14 @@ export default function ServicesAnimation({ children }: ServicesAnimationProps) 
       if (masterTimeline.scrollTrigger) {
         scrollTriggerRef.current = masterTimeline.scrollTrigger;
         masterTimeline.eventCallback("onComplete", () => {
+          // Clear any transforms on left column to ensure sticky works
+          if (leftColumn) {
+            gsap.set(leftColumn, { clearProps: "all" });
+            if (leftColumn.children.length > 0) {
+              gsap.set(leftColumn.children, { clearProps: "transform" });
+            }
+          }
+          
           if (scrollTriggerRef.current) {
             scrollTriggerRef.current.kill();
             scrollTriggerRef.current = null;
@@ -129,6 +138,6 @@ export default function ServicesAnimation({ children }: ServicesAnimationProps) 
     };
   }, []);
 
-  return <div ref={sectionRef}>{children}</div>;
+  return <div ref={sectionRef} className="relative overflow-visible">{children}</div>;
 }
 
