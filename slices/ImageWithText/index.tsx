@@ -2,6 +2,7 @@ import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
 import { HeaderSeparator } from "@/components/ui/header-separator";
+import { SliceHeader } from "@/components/slice-header";
 import { ImageAnimation, TextAnimation } from "./image-with-text-animation";
 
 /**
@@ -13,8 +14,12 @@ export type ImageWithTextProps = SliceComponentProps<Content.ImageWithTextSlice>
  * Component for "ImageWithText" Slices.
  */
 const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
+  // Check if centered variant
+  const isCentered = slice.variation === 'centered';
+
   // Get flex direction based on selection
   const getFlexDirection = () => {
+    if (isCentered) return 'flex-col';
     return slice.primary.layout_direction === 'text-left' 
       ? 'lg:flex-row-reverse' 
       : 'lg:flex-row';
@@ -22,6 +27,7 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
 
   // Get image padding (opposite side of where text is)
   const getImagePadding = () => {
+    if (isCentered) return '';
     return slice.primary.layout_direction === 'text-left'
       ? 'lg:pl-12 2xl:pl-24' // Image on right, padding left
       : 'lg:pr-12 2xl:pr-24'; // Image on left, padding right
@@ -29,9 +35,29 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
 
   // Get text padding (opposite side of where image is)
   const getTextPadding = () => {
+    if (isCentered) return '';
     return slice.primary.layout_direction === 'text-left'
       ? 'lg:pr-12 2xl:pr-24' // Text on left, padding right
       : 'lg:pl-12 2xl:pl-24'; // Text on right, padding left
+  };
+
+  // Get image width class for centered variant
+  const getImageWidthClass = () => {
+    if (!isCentered) return 'w-full lg:w-1/2';
+    
+    const imageWidth = (slice.primary as any).image_width;
+    switch (imageWidth) {
+      case 'full':
+        return 'w-full';
+      case 'three-quarters':
+        return 'w-full lg:w-3/4';
+      case 'two-thirds':
+        return 'w-full lg:w-2/3';
+      case 'half':
+        return 'w-full lg:w-1/2';
+      default:
+        return 'w-full lg:w-2/3';
+    }
   };
 
   // Get margin top class based on selection (responsive: smaller on mobile)
@@ -88,18 +114,57 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
     }
   };
 
+  // Background color with white default
+  const backgroundColor = (slice.primary as any).background_color || "#ffffff";
+
   return (
-    <section className={`w-full bg-white ${getPaddingTopClass()} ${getPaddingBottomClass()}`}>
+    <section 
+      className={`w-full ${getPaddingTopClass()} ${getPaddingBottomClass()}`}
+      style={{ backgroundColor }}
+    >
       <div className={`w-full max-w-[88rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
         {/* Content Layout */}
-        <div className={`flex flex-col ${getFlexDirection()} items-center lg:items-stretch`}>
+        <div className={`flex ${getFlexDirection()} ${isCentered ? 'items-center' : 'items-center lg:items-stretch'}`}>
           
+          {/* Text Section - Rendered first for centered variant */}
+          {isCentered && (
+            <div className="w-full mb-12 lg:mb-16 flex flex-col items-center">
+              {slice.primary.subheading && (
+                <TextAnimation delay={0}>
+                  <SliceHeader 
+                    subheading={slice.primary.subheading} 
+                    textColor="text-neutral-800"
+                    textAlign="center"
+                  />
+                </TextAnimation>
+              )}
+              
+              {slice.primary.heading && (
+                <TextAnimation delay={0.1}>
+                  <h2 className="text-black mb-6 text-center">
+                    {slice.primary.heading}
+                  </h2>
+                </TextAnimation>
+              )}
+              
+              {slice.primary.description && (
+                <TextAnimation delay={0.2}>
+                  <div className="text-neutral-700 space-y-4 mx-auto lg:max-w-3xl text-center">
+                    {slice.primary.description.split('\n').map((paragraph, index) => (
+                      <p key={index}>{paragraph}</p>
+                    ))}
+                  </div>
+                </TextAnimation>
+              )}
+            </div>
+          )}
+
           {/* Image Section */}
-          <div className={`w-full lg:w-1/2 mb-8 sm:mb-10 md:mb-12 lg:mb-0 ${getImagePadding()}`}>
+          <div className={`${getImageWidthClass()} ${isCentered ? 'mx-auto' : `mb-8 sm:mb-10 md:mb-12 lg:mb-0 ${getImagePadding()}`}`}>
             {slice.primary.image && slice.primary.image.url ? (
                 <ImageAnimation>
                   <div 
-                    className="w-full aspect-video lg:aspect-[100/115] xl:aspect-[4/3] 2xl:aspect-video bg-neutral-100 overflow-hidden"
+                    className={`w-full ${isCentered ? 'aspect-[16/9]' : 'aspect-video lg:aspect-[100/115] xl:aspect-[4/3] 2xl:aspect-video'} bg-neutral-100 overflow-hidden`}
                     style={{
                       clipPath: 'polygon(0% 0%, 98% 0%, 100% 4%, 100% 100%, 2% 100%, 0% 98%)'
                     }}
@@ -116,7 +181,7 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
               ) : (
                 // Placeholder when no image is provided
                 <div 
-                  className="w-full aspect-video lg:aspect-[5/4] xl:aspect-[4/3] 2xl:aspect-video bg-neutral-200 overflow-hidden"
+                  className={`w-full ${isCentered ? 'aspect-[16/9]' : 'aspect-video lg:aspect-[5/4] xl:aspect-[4/3] 2xl:aspect-video'} bg-neutral-200 overflow-hidden`}
                   style={{
                     clipPath: 'polygon(0% 0%, 98% 0%, 100% 4%, 100% 100%, 2% 100%, 0% 98%)'
                   }}
@@ -136,8 +201,9 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
               )}
           </div>
 
-          {/* Text Section */}
-          <div className={`w-full lg:w-1/2 flex flex-col justify-center ${getTextPadding()}`}>
+          {/* Text Section - Default variant only */}
+          {!isCentered && (
+            <div className={`w-full lg:w-1/2 flex flex-col justify-center ${getTextPadding()}`}>
             {/* Accent Image at Top */}
             {slice.primary.background_accent_image?.url && (
               <div className="w-full max-w-[100px] mb-6">
@@ -151,9 +217,10 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
             
             {slice.primary.subheading && (
               <TextAnimation delay={0}>
-                <h5 className="text-black mb-4">
-                  {slice.primary.subheading}
-                </h5>
+                <SliceHeader 
+                  subheading={slice.primary.subheading} 
+                  textColor="text-neutral-800"
+                />
               </TextAnimation>
             )}
             
@@ -174,7 +241,8 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
                 </div>
               </TextAnimation>
             )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Bottom Separator */}

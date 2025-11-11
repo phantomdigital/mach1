@@ -22,5 +22,30 @@
       "show_bottom_separator": false
     },
     "items": []
+  },
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "centered",
+    "primary": {
+      "heading": "Track every shipment in real-time",
+      "subheading": "ADVANCED TRACKING TECHNOLOGY",
+      "description": "Our state-of-the-art tracking platform gives you complete visibility of your freight from pickup to delivery. Monitor location, temperature, and estimated arrival times with our mobile-friendly dashboard.\n\nReceive instant notifications for key milestones, customs clearance updates, and any exceptions that require attention. Your supply chain, transparent and under control.",
+      "margin_top": "medium",
+      "padding_top": "large",
+      "padding_bottom": "large",
+      "image": {
+        "dimensions": {
+          "width": 1200,
+          "height": 600
+        },
+        "alt": "Real-time freight tracking dashboard",
+        "copyright": null,
+        "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=600&fit=crop&crop=center"
+      },
+      "image_width": "two-thirds",
+      "background_color": "#ffffff",
+      "show_bottom_separator": false
+    },
+    "items": []
   }
 ]

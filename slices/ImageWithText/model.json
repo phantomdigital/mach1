@@ -120,6 +120,124 @@
         }
       },
       "items": {}
+    },
+    {
+      "id": "centered",
+      "name": "Centered",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Centered text with image below",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Track every shipment in real-time"
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "ADVANCED TRACKING TECHNOLOGY"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Our state-of-the-art tracking platform gives you complete visibility of your freight from pickup to delivery."
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Padding",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "medium"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Bottom Padding",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "medium"
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Image",
+            "constraint": {
+              "width": 1200,
+              "height": 600
+            },
+            "thumbnails": []
+          }
+        },
+        "image_width": {
+          "type": "Select",
+          "config": {
+            "label": "Image Width",
+            "placeholder": "Choose image width",
+            "options": [
+              "full",
+              "three-quarters",
+              "two-thirds",
+              "half"
+            ],
+            "default_value": "two-thirds"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "show_bottom_separator": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Bottom Separator",
+            "placeholder_false": "Hide Bottom Separator",
+            "placeholder_true": "Show Bottom Separator",
+            "default_value": false
+          }
+        }
+      },
+      "items": {}
     }
   ]
 }

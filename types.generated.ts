@@ -1315,7 +1315,7 @@ interface PageDocumentData {
  */
 export type PageDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-type SolutionDocumentDataSlicesSlice = TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
+type SolutionDocumentDataSlicesSlice = ImageWithTextSlice | HeroBlockSlice | TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Solution documents
@@ -2895,9 +2895,128 @@ export interface ImageWithTextSliceDefaultPrimary {
 export type ImageWithTextSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ImageWithTextSliceDefaultPrimary>, never>;
 
 /**
+ * Primary content in *ImageWithText → Centered → Primary*
+ */
+export interface ImageWithTextSliceCenteredPrimary {
+	/**
+	 * Heading field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Track every shipment in real-time
+	 * - **API ID Path**: image_with_text.centered.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Subheading field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: ADVANCED TRACKING TECHNOLOGY
+	 * - **API ID Path**: image_with_text.centered.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our state-of-the-art tracking platform gives you complete visibility of your freight from pickup to delivery.
+	 * - **API ID Path**: image_with_text.centered.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Top Margin field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: image_with_text.centered.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: medium
+	 * - **API ID Path**: image_with_text.centered.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: medium
+	 * - **API ID Path**: image_with_text.centered.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Image field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: image_with_text.centered.primary.image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	image: prismic.ImageField<never>;
+	
+	/**
+	 * Image Width field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose image width
+	 * - **Default Value**: two-thirds
+	 * - **API ID Path**: image_with_text.centered.primary.image_width
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	image_width: prismic.SelectField<"full" | "three-quarters" | "two-thirds" | "half", "filled">;
+	
+	/**
+	 * Background Color field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: image_with_text.centered.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Show Bottom Separator field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: false
+	 * - **API ID Path**: image_with_text.centered.primary.show_bottom_separator
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	show_bottom_separator: prismic.BooleanField;
+}
+
+/**
+ * Centered variation for ImageWithText Slice
+ *
+ * - **API ID**: `centered`
+ * - **Description**: Centered text with image below
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ImageWithTextSliceCentered = prismic.SharedSliceVariation<"centered", Simplify<ImageWithTextSliceCenteredPrimary>, never>;
+
+/**
  * Slice variation for *ImageWithText*
  */
-type ImageWithTextSliceVariation = ImageWithTextSliceDefault
+type ImageWithTextSliceVariation = ImageWithTextSliceDefault | ImageWithTextSliceCentered
 
 /**
  * ImageWithText Shared Slice
@@ -6930,8 +7049,10 @@ declare module "@prismicio/client" {
 			ImageClippedSliceDefault,
 			ImageWithTextSlice,
 			ImageWithTextSliceDefaultPrimary,
+			ImageWithTextSliceCenteredPrimary,
 			ImageWithTextSliceVariation,
 			ImageWithTextSliceDefault,
+			ImageWithTextSliceCentered,
 			LegalContentSlice,
 			LegalContentSliceDefaultPrimary,
 			LegalContentSliceVariation,
