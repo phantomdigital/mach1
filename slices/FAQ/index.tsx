@@ -5,50 +5,66 @@ import { createClient } from "@/prismicio";
 import { SliceHeader } from "@/components/slice-header";
 import FaqAccordion from "./faq-accordion";
 import SimpleFaqList from "./simple-faq-list";
+import type { FaqSliceDefaultItem } from "@/types.generated";
 
 /**
  * Props for `Faq`.
  */
 export type FaqProps = SliceComponentProps<Content.FaqSlice>;
 
+// No type guards needed - we'll use direct type checks
+
 /**
  * Component for "Faq" Slices.
  */
 const Faq = async ({ slice }: FaqProps): Promise<React.ReactElement> => {
   const faqLimit = slice.primary.faq_limit || 10;
-  let faqs = slice.items.filter(item => item.question);
+  const isReferenced = slice.variation !== "default";
 
-  // Referenced variant: Pull FAQs from another page
-  if (slice.variation === ("referenced" as any)) {
-    const faqPage = (slice.primary as any).faq_page;
-    const filterCategory = (slice.primary as any).filter_by_category;
+  // Get FAQs based on variant
+  let faqs: FaqSliceDefaultItem[] = [];
+  
+  if (!isReferenced) {
+    // Default variant: Get FAQs from slice items
+    faqs = slice.items.filter((item): item is FaqSliceDefaultItem => Boolean(item.question));
+  } else {
+    // Referenced variant: Pull FAQs from another page
+    const primary = slice.primary as Content.FaqSliceReferencedPrimary;
+    const faqPage = primary.faq_page;
+    const filterCategory = primary.filter_by_category;
 
-    if (faqPage && faqPage.id) {
+    if (faqPage && "id" in faqPage && faqPage.id) {
       try {
         const client = createClient();
         const referencedPage = await client.getByID(faqPage.id);
 
-        // Find FAQ slices in the referenced page
-        if (referencedPage.data.slices) {
-          const faqSlices = referencedPage.data.slices.filter(
-            (s: any) => s.slice_type === "faq"
+        // Check if page has slices (only Page documents have slices)
+        if ("slices" in referencedPage.data && Array.isArray(referencedPage.data.slices)) {
+          const pageSlices = referencedPage.data.slices;
+          
+          // Find FAQ slices
+          const faqSlices = pageSlices.filter(
+            (s): boolean => s.slice_type === "faq" && s.variation === "default"
           );
 
           // Collect all FAQ items from all FAQ slices
-          const allFaqs: any[] = [];
-          faqSlices.forEach((faqSlice: any) => {
-            if (faqSlice.items && Array.isArray(faqSlice.items)) {
-              allFaqs.push(...faqSlice.items);
+          const allFaqs: FaqSliceDefaultItem[] = [];
+          faqSlices.forEach((faqSlice) => {
+            if ("items" in faqSlice && Array.isArray(faqSlice.items)) {
+              // Type assert the items to FaqSliceDefaultItem
+              faqSlice.items.forEach((item) => {
+                if ("question" in item && item.question) {
+                  allFaqs.push(item as FaqSliceDefaultItem);
+                }
+              });
             }
           });
 
           // Filter by category if specified
-          faqs = allFaqs
-            .filter(item => item.question) // Only FAQs with questions
-            .filter(item => {
-              if (!filterCategory || filterCategory === "All") return true;
-              return item.category === filterCategory;
-            });
+          faqs = allFaqs.filter(item => {
+            if (!filterCategory || filterCategory === "All") return true;
+            return item.category === filterCategory;
+          });
         }
       } catch (error) {
         console.log("Could not fetch referenced FAQ page, using local items");
@@ -64,9 +80,10 @@ const Faq = async ({ slice }: FaqProps): Promise<React.ReactElement> => {
   }
 
   // Referenced variant: Simple design with heading (centered)
-  if (slice.variation === "referenced") {
-    const subheading = (slice.primary as any).subheading;
-    const heading = (slice.primary as any).heading;
+  if (isReferenced) {
+    const primary = slice.primary as Content.FaqSliceReferencedPrimary;
+    const subheading = primary.subheading;
+    const heading = primary.heading;
 
     return (
       <section
