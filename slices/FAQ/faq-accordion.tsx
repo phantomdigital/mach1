@@ -102,7 +102,7 @@ export default function FaqAccordion({ faqs }: FaqAccordionProps) {
   }, [filteredFaqs, selectedCategory]);
 
   return (
-    <div className="max-w-4xl">
+    <div className="w-full">
       {/* Search and Filter Controls */}
       <FaqSearch
         searchQuery={searchQuery}

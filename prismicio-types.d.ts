@@ -1473,6 +1473,8 @@ export type PageDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
 type SolutionDocumentDataSlicesSlice =
+  | FaqSlice
+  | ContentBlockSlice
   | ImageWithTextSlice
   | HeroBlockSlice
   | TestimonialsSlice
@@ -2195,9 +2197,211 @@ export type ContentBlockSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *ContentBlock → Benefits → Primary*
+ */
+export interface ContentBlockSliceBenefitsPrimary {
+  /**
+   * Heading field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Flexible, reliable, and fast—National Road Freight delivers
+   * - **API ID Path**: content_block.benefits.primary.heading
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Subheading field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: WHY CHOOSE ROAD FREIGHT
+   * - **API ID Path**: content_block.benefits.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  subheading: prismic.KeyTextField;
+
+  /**
+   * Description field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Road transport offers unmatched flexibility for domestic freight.
+   * - **API ID Path**: content_block.benefits.primary.description
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Text Alignment field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Choose text alignment
+   * - **Default Value**: center
+   * - **API ID Path**: content_block.benefits.primary.text_alignment
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  text_alignment: prismic.SelectField<"left" | "center" | "right", "filled">;
+
+  /**
+   * Content Width field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Choose content width
+   * - **Default Value**: two-thirds
+   * - **API ID Path**: content_block.benefits.primary.content_width
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  content_width: prismic.SelectField<
+    "full" | "three-quarters" | "two-thirds" | "half",
+    "filled"
+  >;
+
+  /**
+   * Top Margin field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Choose top margin
+   * - **Default Value**: large
+   * - **API ID Path**: content_block.benefits.primary.margin_top
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  margin_top: prismic.SelectField<
+    "none" | "small" | "medium" | "large" | "extra-large",
+    "filled"
+  >;
+
+  /**
+   * Top Padding field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Choose top padding
+   * - **Default Value**: large
+   * - **API ID Path**: content_block.benefits.primary.padding_top
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  padding_top: prismic.SelectField<
+    "none" | "small" | "medium" | "large" | "extra-large",
+    "filled"
+  >;
+
+  /**
+   * Bottom Padding field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Choose bottom padding
+   * - **Default Value**: large
+   * - **API ID Path**: content_block.benefits.primary.padding_bottom
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  padding_bottom: prismic.SelectField<
+    "none" | "small" | "medium" | "large" | "extra-large",
+    "filled"
+  >;
+
+  /**
+   * Background Color field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: #ffffff
+   * - **API ID Path**: content_block.benefits.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  background_color: prismic.ColorField;
+
+  /**
+   * Button Text field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Get a quote
+   * - **API ID Path**: content_block.benefits.primary.button_text
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  button_text: prismic.KeyTextField;
+
+  /**
+   * Button Link field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_block.benefits.primary.button_link
+   * - **Documentation**: https://prismic.io/docs/fields/link
+   */
+  button_link: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+
+  /**
+   * Button Style field in *ContentBlock → Benefits → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: default
+   * - **API ID Path**: content_block.benefits.primary.button_style
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  button_style: prismic.SelectField<
+    "default" | "hero-light" | "secondary",
+    "filled"
+  >;
+}
+
+/**
+ * Primary content in *ContentBlock → Items*
+ */
+export interface ContentBlockSliceBenefitsItem {
+  /**
+   * Benefit Icon field in *ContentBlock → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_block.items[].benefit_icon
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  benefit_icon: prismic.ImageField<never>;
+
+  /**
+   * Benefit Title field in *ContentBlock → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Door-to-Door Service
+   * - **API ID Path**: content_block.items[].benefit_title
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  benefit_title: prismic.KeyTextField;
+
+  /**
+   * Benefit Description field in *ContentBlock → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Direct delivery to any location without the need for additional transfers or handling.
+   * - **API ID Path**: content_block.items[].benefit_description
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  benefit_description: prismic.KeyTextField;
+}
+
+/**
+ * Benefits variation for ContentBlock Slice
+ *
+ * - **API ID**: `benefits`
+ * - **Description**: Benefits grid with repeatable benefit cards featuring icons
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ContentBlockSliceBenefits = prismic.SharedSliceVariation<
+  "benefits",
+  Simplify<ContentBlockSliceBenefitsPrimary>,
+  Simplify<ContentBlockSliceBenefitsItem>
+>;
+
+/**
  * Slice variation for *ContentBlock*
  */
-type ContentBlockSliceVariation = ContentBlockSliceDefault;
+type ContentBlockSliceVariation =
+  | ContentBlockSliceDefault
+  | ContentBlockSliceBenefits;
 
 /**
  * ContentBlock Shared Slice
@@ -3245,9 +3449,146 @@ export type ImageWithTextSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *ImageWithText → Centered → Primary*
+ */
+export interface ImageWithTextSliceCenteredPrimary {
+  /**
+   * Heading field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Track every shipment in real-time
+   * - **API ID Path**: image_with_text.centered.primary.heading
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Subheading field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: ADVANCED TRACKING TECHNOLOGY
+   * - **API ID Path**: image_with_text.centered.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  subheading: prismic.KeyTextField;
+
+  /**
+   * Description field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Our state-of-the-art tracking platform gives you complete visibility of your freight from pickup to delivery.
+   * - **API ID Path**: image_with_text.centered.primary.description
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Top Margin field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Choose top margin
+   * - **Default Value**: large
+   * - **API ID Path**: image_with_text.centered.primary.margin_top
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  margin_top: prismic.SelectField<
+    "none" | "small" | "medium" | "large" | "extra-large",
+    "filled"
+  >;
+
+  /**
+   * Top Padding field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Choose top padding
+   * - **Default Value**: medium
+   * - **API ID Path**: image_with_text.centered.primary.padding_top
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  padding_top: prismic.SelectField<
+    "none" | "small" | "medium" | "large" | "extra-large",
+    "filled"
+  >;
+
+  /**
+   * Bottom Padding field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Choose bottom padding
+   * - **Default Value**: medium
+   * - **API ID Path**: image_with_text.centered.primary.padding_bottom
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  padding_bottom: prismic.SelectField<
+    "none" | "small" | "medium" | "large" | "extra-large",
+    "filled"
+  >;
+
+  /**
+   * Image field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image_with_text.centered.primary.image
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Image Width field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: Choose image width
+   * - **Default Value**: two-thirds
+   * - **API ID Path**: image_with_text.centered.primary.image_width
+   * - **Documentation**: https://prismic.io/docs/fields/select
+   */
+  image_width: prismic.SelectField<
+    "full" | "three-quarters" | "two-thirds" | "half",
+    "filled"
+  >;
+
+  /**
+   * Background Color field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: #ffffff
+   * - **API ID Path**: image_with_text.centered.primary.background_color
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  background_color: prismic.ColorField;
+
+  /**
+   * Show Bottom Separator field in *ImageWithText → Centered → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: image_with_text.centered.primary.show_bottom_separator
+   * - **Documentation**: https://prismic.io/docs/fields/boolean
+   */
+  show_bottom_separator: prismic.BooleanField;
+}
+
+/**
+ * Centered variation for ImageWithText Slice
+ *
+ * - **API ID**: `centered`
+ * - **Description**: Centered text with image below
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ImageWithTextSliceCentered = prismic.SharedSliceVariation<
+  "centered",
+  Simplify<ImageWithTextSliceCenteredPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *ImageWithText*
  */
-type ImageWithTextSliceVariation = ImageWithTextSliceDefault;
+type ImageWithTextSliceVariation =
+  | ImageWithTextSliceDefault
+  | ImageWithTextSliceCentered;
 
 /**
  * ImageWithText Shared Slice
@@ -7678,8 +8019,11 @@ declare module "@prismicio/client" {
       ContactUsSliceDefault,
       ContentBlockSlice,
       ContentBlockSliceDefaultPrimary,
+      ContentBlockSliceBenefitsPrimary,
+      ContentBlockSliceBenefitsItem,
       ContentBlockSliceVariation,
       ContentBlockSliceDefault,
+      ContentBlockSliceBenefits,
       FaqSlice,
       FaqSliceDefaultPrimary,
       FaqSliceDefaultItem,
@@ -7711,8 +8055,10 @@ declare module "@prismicio/client" {
       ImageClippedSliceDefault,
       ImageWithTextSlice,
       ImageWithTextSliceDefaultPrimary,
+      ImageWithTextSliceCenteredPrimary,
       ImageWithTextSliceVariation,
       ImageWithTextSliceDefault,
+      ImageWithTextSliceCentered,
       LegalContentSlice,
       LegalContentSliceDefaultPrimary,
       LegalContentSliceVariation,

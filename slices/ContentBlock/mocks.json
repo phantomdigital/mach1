@@ -24,5 +24,82 @@
       "show_bottom_separator": false
     },
     "items": []
+  },
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "benefits",
+    "primary": {
+      "heading": "Flexible, reliable, and fast—National Road Freight delivers",
+      "subheading": "WHY CHOOSE ROAD FREIGHT",
+      "description": "Road transport offers unmatched flexibility for domestic freight. With door-to-door service, real-time tracking, and the ability to reach remote locations that rail, air, and sea can't access, National Road Freight is the backbone of Australian commerce.",
+      "text_alignment": "center",
+      "content_width": "two-thirds",
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large",
+      "background_color": "#ffffff",
+      "button_text": "Get a quote",
+      "button_link": {
+        "link_type": "Web",
+        "url": "/contact"
+      },
+      "button_style": "default"
+    },
+    "items": [
+      {
+        "benefit_icon": {
+          "dimensions": { "width": 128, "height": 128 },
+          "alt": "Door-to-door delivery icon",
+          "url": "https://cdn-icons-png.flaticon.com/128/411/411763.png"
+        },
+        "benefit_title": "Door-to-Door Service",
+        "benefit_description": "Direct delivery to any Australian address without the need for additional transfers, handling, or terminal pickups."
+      },
+      {
+        "benefit_icon": {
+          "dimensions": { "width": 128, "height": 128 },
+          "alt": "GPS tracking icon",
+          "url": "https://cdn-icons-png.flaticon.com/128/684/684908.png"
+        },
+        "benefit_title": "Real-Time GPS Tracking",
+        "benefit_description": "Live visibility of your shipments with instant notifications at every milestone from pickup to delivery."
+      },
+      {
+        "benefit_icon": {
+          "dimensions": { "width": 128, "height": 128 },
+          "alt": "Flexible scheduling icon",
+          "url": "https://cdn-icons-png.flaticon.com/128/2838/2838779.png"
+        },
+        "benefit_title": "Flexible Scheduling",
+        "benefit_description": "Same-day, overnight, and scheduled delivery options to meet your exact timeline requirements."
+      },
+      {
+        "benefit_icon": {
+          "dimensions": { "width": 128, "height": 128 },
+          "alt": "Australia coverage icon",
+          "url": "https://cdn-icons-png.flaticon.com/128/330/330557.png"
+        },
+        "benefit_title": "Remote Area Coverage",
+        "benefit_description": "Reach regional and remote destinations that other transport modes simply can't access."
+      },
+      {
+        "benefit_icon": {
+          "dimensions": { "width": 128, "height": 128 },
+          "alt": "Temperature control icon",
+          "url": "https://cdn-icons-png.flaticon.com/128/2948/2948037.png"
+        },
+        "benefit_title": "Temperature Control",
+        "benefit_description": "Refrigerated vehicles with precise temperature monitoring for perishable and sensitive cargo."
+      },
+      {
+        "benefit_icon": {
+          "dimensions": { "width": 128, "height": 128 },
+          "alt": "Dangerous goods certified icon",
+          "url": "https://cdn-icons-png.flaticon.com/128/2913/2913133.png"
+        },
+        "benefit_title": "Dangerous Goods Licensed",
+        "benefit_description": "Fully certified for Classes 1-9 dangerous goods transport with trained drivers and compliant vehicles."
+      }
+    ]
   }
 ]

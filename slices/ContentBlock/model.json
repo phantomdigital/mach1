@@ -161,6 +161,167 @@
         }
       },
       "items": {}
+    },
+    {
+      "id": "benefits",
+      "name": "Benefits",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Benefits grid with repeatable benefit cards featuring icons",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Flexible, reliable, and fast—National Road Freight delivers"
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "WHY CHOOSE ROAD FREIGHT"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Road transport offers unmatched flexibility for domestic freight."
+          }
+        },
+        "text_alignment": {
+          "type": "Select",
+          "config": {
+            "label": "Text Alignment",
+            "placeholder": "Choose text alignment",
+            "options": [
+              "left",
+              "center",
+              "right"
+            ],
+            "default_value": "center"
+          }
+        },
+        "content_width": {
+          "type": "Select",
+          "config": {
+            "label": "Content Width",
+            "placeholder": "Choose content width",
+            "options": [
+              "full",
+              "three-quarters",
+              "two-thirds",
+              "half"
+            ],
+            "default_value": "two-thirds"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Padding",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Bottom Padding",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Button Text",
+            "placeholder": "Get a quote"
+          }
+        },
+        "button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Button Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "button_style": {
+          "type": "Select",
+          "config": {
+            "label": "Button Style",
+            "placeholder": "",
+            "options": ["default", "hero-light", "secondary"],
+            "default_value": "default"
+          }
+        }
+      },
+      "items": {
+        "benefit_icon": {
+          "type": "Image",
+          "config": {
+            "label": "Benefit Icon",
+            "constraint": {
+              "width": 128,
+              "height": 128
+            },
+            "thumbnails": []
+          }
+        },
+        "benefit_title": {
+          "type": "Text",
+          "config": {
+            "label": "Benefit Title",
+            "placeholder": "Door-to-Door Service"
+          }
+        },
+        "benefit_description": {
+          "type": "Text",
+          "config": {
+            "label": "Benefit Description",
+            "placeholder": "Direct delivery to any location without the need for additional transfers or handling."
+          }
+        }
+      }
     }
   ]
 }

@@ -1315,7 +1315,7 @@ interface PageDocumentData {
  */
 export type PageDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-type SolutionDocumentDataSlicesSlice = ImageWithTextSlice | HeroBlockSlice | TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
+type SolutionDocumentDataSlicesSlice = FaqSlice | ContentBlockSlice | ImageWithTextSlice | HeroBlockSlice | TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Solution documents
@@ -1955,9 +1955,184 @@ export interface ContentBlockSliceDefaultPrimary {
 export type ContentBlockSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ContentBlockSliceDefaultPrimary>, never>;
 
 /**
+ * Primary content in *ContentBlock → Benefits → Primary*
+ */
+export interface ContentBlockSliceBenefitsPrimary {
+	/**
+	 * Heading field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Flexible, reliable, and fast—National Road Freight delivers
+	 * - **API ID Path**: content_block.benefits.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Subheading field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: WHY CHOOSE ROAD FREIGHT
+	 * - **API ID Path**: content_block.benefits.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Road transport offers unmatched flexibility for domestic freight.
+	 * - **API ID Path**: content_block.benefits.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Text Alignment field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose text alignment
+	 * - **Default Value**: center
+	 * - **API ID Path**: content_block.benefits.primary.text_alignment
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	text_alignment: prismic.SelectField<"left" | "center" | "right", "filled">;
+	
+	/**
+	 * Content Width field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose content width
+	 * - **Default Value**: two-thirds
+	 * - **API ID Path**: content_block.benefits.primary.content_width
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	content_width: prismic.SelectField<"full" | "three-quarters" | "two-thirds" | "half", "filled">;
+	
+	/**
+	 * Top Margin field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: content_block.benefits.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: content_block.benefits.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: content_block.benefits.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Background Color field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: content_block.benefits.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Button Text field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Get a quote
+	 * - **API ID Path**: content_block.benefits.primary.button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	button_text: prismic.KeyTextField;
+	
+	/**
+	 * Button Link field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: content_block.benefits.primary.button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Button Style field in *ContentBlock → Benefits → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: *None*
+	 * - **Default Value**: default
+	 * - **API ID Path**: content_block.benefits.primary.button_style
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	button_style: prismic.SelectField<"default" | "hero-light" | "secondary", "filled">;
+}
+
+/**
+ * Primary content in *ContentBlock → Items*
+ */
+export interface ContentBlockSliceBenefitsItem {
+	/**
+	 * Benefit Icon field in *ContentBlock → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: content_block.items[].benefit_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	benefit_icon: prismic.ImageField<never>;
+	
+	/**
+	 * Benefit Title field in *ContentBlock → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Door-to-Door Service
+	 * - **API ID Path**: content_block.items[].benefit_title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	benefit_title: prismic.KeyTextField;
+	
+	/**
+	 * Benefit Description field in *ContentBlock → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Direct delivery to any location without the need for additional transfers or handling.
+	 * - **API ID Path**: content_block.items[].benefit_description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	benefit_description: prismic.KeyTextField;
+}
+
+/**
+ * Benefits variation for ContentBlock Slice
+ *
+ * - **API ID**: `benefits`
+ * - **Description**: Benefits grid with repeatable benefit cards featuring icons
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ContentBlockSliceBenefits = prismic.SharedSliceVariation<"benefits", Simplify<ContentBlockSliceBenefitsPrimary>, Simplify<ContentBlockSliceBenefitsItem>>;
+
+/**
  * Slice variation for *ContentBlock*
  */
-type ContentBlockSliceVariation = ContentBlockSliceDefault
+type ContentBlockSliceVariation = ContentBlockSliceDefault | ContentBlockSliceBenefits
 
 /**
  * ContentBlock Shared Slice
@@ -2028,9 +2203,74 @@ export interface FaqSliceDefaultItem {
 export type FaqSliceDefault = prismic.SharedSliceVariation<"default", Simplify<FaqSliceDefaultPrimary>, Simplify<FaqSliceDefaultItem>>;
 
 /**
+ * Primary content in *FAQ → Referenced → Primary*
+ */
+export interface FaqSliceReferencedPrimary {
+	/**
+	 * Subheading field in *FAQ → Referenced → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: FREQUENTLY ASKED QUESTIONS
+	 * - **API ID Path**: faq.referenced.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *FAQ → Referenced → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Common questions about road freight
+	 * - **API ID Path**: faq.referenced.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * FAQ Page to Pull From field in *FAQ → Referenced → Primary*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: Select main FAQ page
+	 * - **API ID Path**: faq.referenced.primary.faq_page
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	faq_page: prismic.ContentRelationshipField<"page">;
+	
+	/**
+	 * Filter by Category field in *FAQ → Referenced → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Show all categories
+	 * - **Default Value**: All
+	 * - **API ID Path**: faq.referenced.primary.filter_by_category
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	filter_by_category: prismic.SelectField<"All" | "General" | "International Shipping" | "Air Freight" | "Sea Freight" | "Road Freight" | "Customs & Compliance" | "Pricing & Charges" | "Vehicle Transport" | "Warehousing", "filled">;
+	
+	/**
+	 * FAQ Limit field in *FAQ → Referenced → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: 10
+	 * - **API ID Path**: faq.referenced.primary.faq_limit
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	faq_limit: prismic.NumberField;
+}
+
+/**
+ * Referenced variation for FAQ Slice
+ *
+ * - **API ID**: `referenced`
+ * - **Description**: Pull FAQs from main FAQ page with filtering
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FaqSliceReferenced = prismic.SharedSliceVariation<"referenced", Simplify<FaqSliceReferencedPrimary>, never>;
+
+/**
  * Slice variation for *FAQ*
  */
-type FaqSliceVariation = FaqSliceDefault
+type FaqSliceVariation = FaqSliceDefault | FaqSliceReferenced
 
 /**
  * FAQ Shared Slice
@@ -7016,13 +7256,18 @@ declare module "@prismicio/client" {
 			ContactUsSliceDefault,
 			ContentBlockSlice,
 			ContentBlockSliceDefaultPrimary,
+			ContentBlockSliceBenefitsPrimary,
+			ContentBlockSliceBenefitsItem,
 			ContentBlockSliceVariation,
 			ContentBlockSliceDefault,
+			ContentBlockSliceBenefits,
 			FaqSlice,
 			FaqSliceDefaultPrimary,
 			FaqSliceDefaultItem,
+			FaqSliceReferencedPrimary,
 			FaqSliceVariation,
 			FaqSliceDefault,
+			FaqSliceReferenced,
 			HeroSlice,
 			HeroSliceDefaultPrimary,
 			HeroSliceDefaultItem,

@@ -55,6 +55,67 @@
           }
         }
       }
+    },
+    {
+      "id": "referenced",
+      "name": "Referenced",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Pull FAQs from main FAQ page with filtering",
+      "imageUrl": "",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "FREQUENTLY ASKED QUESTIONS"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Common questions about road freight"
+          }
+        },
+        "faq_page": {
+          "type": "Link",
+          "config": {
+            "label": "FAQ Page to Pull From",
+            "placeholder": "Select main FAQ page",
+            "select": "document",
+            "customtypes": ["page"]
+          }
+        },
+        "filter_by_category": {
+          "type": "Select",
+          "config": {
+            "label": "Filter by Category",
+            "placeholder": "Show all categories",
+            "options": [
+              "All",
+              "General",
+              "International Shipping",
+              "Air Freight",
+              "Sea Freight",
+              "Road Freight",
+              "Customs & Compliance",
+              "Pricing & Charges",
+              "Vehicle Transport",
+              "Warehousing"
+            ],
+            "default_value": "All"
+          }
+        },
+        "faq_limit": {
+          "type": "Number",
+          "config": {
+            "label": "FAQ Limit",
+            "placeholder": "10"
+          }
+        }
+      },
+      "items": {}
     }
   ]
 }
