@@ -26,6 +26,22 @@
             "placeholder": "BUILT ON RELATIONSHIPS"
           }
         },
+        "subheading_style": {
+          "type": "Select",
+          "config": {
+            "label": "Subheading Style",
+            "placeholder": "Choose subheading style",
+            "options": [
+              "badge",
+              "underline",
+              "pill",
+              "accent-bar",
+              "minimal",
+              "default"
+            ],
+            "default_value": "badge"
+          }
+        },
         "description": {
           "type": "Text",
           "config": {
@@ -141,6 +157,22 @@
           "config": {
             "label": "Subheading",
             "placeholder": "ADVANCED TRACKING TECHNOLOGY"
+          }
+        },
+        "subheading_style": {
+          "type": "Select",
+          "config": {
+            "label": "Subheading Style",
+            "placeholder": "Choose subheading style",
+            "options": [
+              "badge",
+              "underline",
+              "pill",
+              "accent-bar",
+              "minimal",
+              "default"
+            ],
+            "default_value": "badge"
           }
         },
         "description": {

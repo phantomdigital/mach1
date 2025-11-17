@@ -47,7 +47,12 @@ const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
         <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
           {/* Header with SliceHeader */}
           <div data-animate="header">
-            <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
+            <SliceHeader 
+              subheading={slice.primary.subheading} 
+              textColor="text-neutral-800"
+              variant="badge"
+              badgeVariant="green"
+            />
             {slice.primary.heading && (
               <div className="text-center mb-12 lg:mb-16">
                 <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl text-left tracking-tight">

@@ -4,6 +4,9 @@ import { PrismicNextImage } from "@prismicio/next";
 import { HeaderSeparator } from "@/components/ui/header-separator";
 import { SliceHeader } from "@/components/slice-header";
 import { ImageAnimation, TextAnimation } from "./image-with-text-animation";
+import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass, type MarginTopSize, type PaddingSize } from "@/lib/spacing";
+
+type SubheadingStyle = "badge" | "underline" | "pill" | "accent-bar" | "minimal" | "default";
 
 /**
  * Props for `ImageWithText`.
@@ -25,20 +28,11 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
       : 'lg:flex-row';
   };
 
-  // Get image padding (opposite side of where text is)
-  const getImagePadding = () => {
-    if (isCentered) return '';
-    return slice.primary.layout_direction === 'text-left'
-      ? 'lg:pl-12 2xl:pl-24' // Image on right, padding left
-      : 'lg:pr-12 2xl:pr-24'; // Image on left, padding right
-  };
-
-  // Get text padding (opposite side of where image is)
-  const getTextPadding = () => {
-    if (isCentered) return '';
-    return slice.primary.layout_direction === 'text-left'
-      ? 'lg:pr-12 2xl:pr-24' // Text on left, padding right
-      : 'lg:pl-12 2xl:pl-24'; // Text on right, padding left
+  // Get gap spacing for flex row layout (modern approach using gap utility)
+  const getFlexGap = () => {
+    if (isCentered) return 'gap-0';
+    // Standard spacing scale: smaller on mobile, consistent on desktop
+    return 'gap-8 lg:gap-12 xl:gap-16';
   };
 
   // Get image width class for centered variant
@@ -60,88 +54,41 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
     }
   };
 
-  // Get margin top class based on selection (responsive: smaller on mobile)
-  const getMarginTopClass = () => {
-    switch (slice.primary.margin_top) {
-      case 'none':
-        return 'mt-0';
-      case 'small':
-        return 'mt-6 lg:mt-12';
-      case 'medium':
-        return 'mt-12 lg:mt-24';
-      case 'large':
-        return 'mt-30 lg:mt-48';
-      case 'extra-large':
-        return 'mt-40 lg:mt-64';
-      default:
-        return 'mt-30 lg:mt-48';
-    }
-  };
-
-  // Get padding top class based on selection (responsive: smaller on mobile)
-  const getPaddingTopClass = () => {
-    switch (slice.primary.padding_top) {
-      case 'none':
-        return 'pt-0';
-      case 'small':
-        return 'pt-6 lg:pt-12';
-      case 'medium':
-        return 'pt-12 lg:pt-24';
-      case 'large':
-        return 'pt-16 lg:pt-32';
-      case 'extra-large':
-        return 'pt-24 lg:pt-48';
-      default:
-        return 'pt-12 lg:pt-24';
-    }
-  };
-
-  // Get padding bottom class based on selection (responsive: smaller on mobile)
-  const getPaddingBottomClass = () => {
-    switch (slice.primary.padding_bottom) {
-      case 'none':
-        return 'pb-0';
-      case 'small':
-        return 'pb-6 lg:pb-12';
-      case 'medium':
-        return 'pb-12 lg:pb-24';
-      case 'large':
-        return 'pb-16 lg:pb-32';
-      case 'extra-large':
-        return 'pb-24 lg:pb-48';
-      default:
-        return 'pb-12 lg:pb-24';
-    }
-  };
+  // Use spacing utilities from @/lib/spacing.ts following rules.yaml
+  const marginTopClass = getMarginTopClass(((slice.primary.margin_top as any) as MarginTopSize) || "large");
+  const paddingTopClass = getPaddingTopClass(((slice.primary.padding_top as any) as PaddingSize) || "medium");
+  const paddingBottomClass = getPaddingBottomClass(((slice.primary.padding_bottom as any) as PaddingSize) || "medium");
 
   // Background color with white default
   const backgroundColor = (slice.primary as any).background_color || "#ffffff";
 
   return (
     <section 
-      className={`w-full ${getPaddingTopClass()} ${getPaddingBottomClass()}`}
+      className={`w-full ${paddingTopClass} ${paddingBottomClass}`}
       style={{ backgroundColor }}
     >
-      <div className={`w-full max-w-[88rem] mx-auto px-4 lg:px-8 ${getMarginTopClass()}`}>
+      <div className={`w-full max-w-[88rem] mx-auto px-4 lg:px-8 ${marginTopClass}`}>
         {/* Content Layout */}
-        <div className={`flex ${getFlexDirection()} ${isCentered ? 'items-center' : 'items-center lg:items-stretch'}`}>
+        <div className={`flex ${getFlexDirection()} ${getFlexGap()} ${isCentered ? 'items-center' : 'items-center lg:items-stretch'}`}>
           
           {/* Text Section - Rendered first for centered variant */}
           {isCentered && (
-            <div className="w-full mb-12 lg:mb-16 flex flex-col items-center">
+            <div className="w-full mb-12 lg:mb-16 flex flex-col items-center gap-6">
               {slice.primary.subheading && (
                 <TextAnimation delay={0}>
                   <SliceHeader 
                     subheading={slice.primary.subheading} 
                     textColor="text-neutral-800"
                     textAlign="center"
+                    variant={(slice.primary.subheading_style as SubheadingStyle) || "badge"}
+                    badgeVariant="green"
                   />
                 </TextAnimation>
               )}
               
               {slice.primary.heading && (
                 <TextAnimation delay={0.1}>
-                  <h2 className="text-black mb-6 text-center">
+                  <h2 className="text-black text-center">
                     {slice.primary.heading}
                   </h2>
                 </TextAnimation>
@@ -160,7 +107,7 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
           )}
 
           {/* Image Section */}
-          <div className={`${getImageWidthClass()} ${isCentered ? 'mx-auto' : `mb-8 sm:mb-10 md:mb-12 lg:mb-0 ${getImagePadding()}`}`}>
+          <div className={`${getImageWidthClass()} ${isCentered ? 'mx-auto' : 'flex-shrink-0'}`}>
             {slice.primary.image && slice.primary.image.url ? (
                 <ImageAnimation>
                   <div 
@@ -203,44 +150,46 @@ const ImageWithText = ({ slice }: ImageWithTextProps): React.ReactElement => {
 
           {/* Text Section - Default variant only */}
           {!isCentered && (
-            <div className={`w-full lg:w-1/2 flex flex-col justify-center ${getTextPadding()}`}>
-            {/* Accent Image at Top */}
-            {slice.primary.background_accent_image?.url && (
-              <div className="w-full max-w-[100px] mb-6">
-                <PrismicNextImage
-                  field={slice.primary.background_accent_image}
-                  className="w-full h-auto"
-                  alt=""
-                />
-              </div>
-            )}
-            
-            {slice.primary.subheading && (
-              <TextAnimation delay={0}>
-                <SliceHeader 
-                  subheading={slice.primary.subheading} 
-                  textColor="text-neutral-800"
-                />
-              </TextAnimation>
-            )}
-            
-            {slice.primary.heading && (
-              <TextAnimation delay={0.1}>
-                <h2 className="text-black mb-6">
-                  {slice.primary.heading}
-                </h2>
-              </TextAnimation>
-            )}
-            
-            {slice.primary.description && (
-              <TextAnimation delay={0.2}>
-                <div className="text-neutral-700 space-y-4 lg:max-w-prose">
-                  {slice.primary.description.split('\n').map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
+            <div className="w-full lg:w-1/2 flex flex-col justify-center lg:min-w-0 gap-6">
+              {/* Accent Image at Top */}
+              {slice.primary.background_accent_image?.url && (
+                <div className="w-full max-w-[100px]">
+                  <PrismicNextImage
+                    field={slice.primary.background_accent_image}
+                    className="w-full h-auto"
+                    alt=""
+                  />
                 </div>
-              </TextAnimation>
-            )}
+              )}
+              
+              {slice.primary.subheading && (
+                <TextAnimation delay={0}>
+                  <SliceHeader 
+                    subheading={slice.primary.subheading} 
+                    textColor="text-neutral-800"
+                    variant={(slice.primary.subheading_style as SubheadingStyle) || "badge"}
+                    badgeVariant="green"
+                  />
+                </TextAnimation>
+              )}
+              
+              {slice.primary.heading && (
+                <TextAnimation delay={0.1}>
+                  <h2 className="text-black">
+                    {slice.primary.heading}
+                  </h2>
+                </TextAnimation>
+              )}
+              
+              {slice.primary.description && (
+                <TextAnimation delay={0.2}>
+                  <div className="text-neutral-700 space-y-4 lg:max-w-prose">
+                    {slice.primary.description.split('\n').map((paragraph, index) => (
+                      <p key={index}>{paragraph}</p>
+                    ))}
+                  </div>
+                </TextAnimation>
+              )}
             </div>
           )}
         </div>

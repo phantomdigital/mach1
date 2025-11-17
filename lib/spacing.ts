@@ -3,7 +3,7 @@
  */
 
 export type MarginTopSize = "none" | "small" | "medium" | "large" | "extra-large";
-export type PaddingSize = "none" | "small" | "medium" | "large";
+export type PaddingSize = "none" | "small" | "medium" | "large" | "extra-large";
 
 /**
  * Get responsive margin-top class for slices and page content
@@ -55,6 +55,7 @@ export function getPaddingYClass(size: PaddingSize = "large"): string {
     small: "py-8 lg:py-12",
     medium: "py-12 lg:py-16",
     large: "py-16 lg:py-24",
+    "extra-large": "py-24 lg:py-32",
   };
   return paddings[size];
 }
@@ -68,6 +69,7 @@ export function getPaddingTopClass(size: PaddingSize = "large"): string {
     small: "pt-8 lg:pt-12",
     medium: "pt-12 lg:pt-16",
     large: "pt-16 lg:pt-24",
+    "extra-large": "pt-24 lg:pt-32",
   };
   return paddings[size];
 }
@@ -81,6 +83,7 @@ export function getPaddingBottomClass(size: PaddingSize = "large"): string {
     small: "pb-8 lg:pb-12",
     medium: "pb-12 lg:pb-16",
     large: "pb-16 lg:pb-24",
+    "extra-large": "pb-24 lg:pb-32",
   };
   return paddings[size];
 }
@@ -95,6 +98,7 @@ export function getPaddingTopClassMobileOnly(size: PaddingSize = "medium"): stri
     small: "pt-8 lg:pt-0",
     medium: "pt-16 lg:pt-0",
     large: "pt-24 lg:pt-0",
+    "extra-large": "pt-32 lg:pt-0",
   };
   return paddings[size];
 }

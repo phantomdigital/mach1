@@ -100,6 +100,8 @@ const Faq = async ({ slice }: FaqProps): Promise<React.ReactElement> => {
                   subheading={subheading} 
                   textColor="text-neutral-800"
                   textAlign="center"
+                  variant="badge"
+                  badgeVariant="green"
                 />
               )}
               {heading && (

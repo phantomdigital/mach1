@@ -135,6 +135,8 @@ const ContentBlock = ({ slice }: ContentBlockProps): React.ReactElement => {
                       subheading={slice.primary.subheading} 
                       textColor="text-neutral-800"
                       textAlign={slice.primary.text_alignment as "left" | "center" | "right"}
+                      variant="badge"
+                      badgeVariant="green"
                     />
                   </div>
                 )}

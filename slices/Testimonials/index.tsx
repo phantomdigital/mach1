@@ -7,8 +7,9 @@ import TestimonialsAnimation from "./testimonials-animation";
 import HeadingWithUnderline from "./heading-with-underline";
 import TestimonialsStackedCarousel from "./testimonials-stacked-carousel";
 import TestimonialsStackedAnimation from "./testimonials-stacked-animation";
-import { HeroButton } from "@/components/ui/hero-button";
+import { Button } from "@/components/ui/button";
 import { PrismicNextLink } from "@prismicio/next";
+import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 
 /**
  * Props for `Testimonials`.
@@ -19,9 +20,9 @@ export type TestimonialsProps = SliceComponentProps<Content.TestimonialsSlice>;
  * Component for "Testimonials" Slices.
  */
 const Testimonials = ({ slice }: TestimonialsProps): React.ReactElement => {
-  const marginTop = getMarginTopClass(((slice.primary.margin_top as any) as MarginTopSize) || "large");
-  const paddingTop = getPaddingTopClass(((slice.primary.padding_top as any) as PaddingSize) || "large");
-  const paddingBottom = getPaddingBottomClass(((slice.primary.padding_bottom as any) as PaddingSize) || "large");
+  const marginTop = getMarginTopClass((slice.primary.margin_top as MarginTopSize) || "large");
+  const paddingTop = getPaddingTopClass((slice.primary.padding_top as PaddingSize) || "large");
+  const paddingBottom = getPaddingBottomClass((slice.primary.padding_bottom as PaddingSize) || "large");
   
   // Background color with white default
   const backgroundColor = slice.primary.background_color || "#ffffff";
@@ -62,50 +63,55 @@ const Testimonials = ({ slice }: TestimonialsProps): React.ReactElement => {
       style={{ backgroundColor }}
     >
       {isStackedCards ? (
-        // Stacked Cards Variant - Side by side layout (mobile optimized)
+        // Stacked Cards Variant - Vertical layout with wider cards
         <TestimonialsStackedAnimation>
-          <div className="w-full max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 lg:gap-16 items-center">
-              {/* Left Side - Header Content */}
-              <div className="w-full lg:w-2/5 flex-shrink-0 text-center lg:text-left">
+          <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+            <div className="flex flex-col gap-4 lg:gap-0">
+              {/* Header Content */}
+              <div className="w-full flex flex-col items-center text-center">
                 {(slice.primary.subheading || slice.primary.heading || slice.primary.description) && (
-                  <div className="max-w-lg mx-auto lg:mx-0" data-animate="header">
+                  <div className="max-w-3xl mx-auto flex flex-col gap-6 lg:gap-8" data-animate="header">
                     {slice.primary.subheading && (
                       <SliceHeader 
                         subheading={slice.primary.subheading} 
                         textColor={textColors.subheading}
                         lineColor={textColors.lineColor}
-                        textAlign="left"
-                        className="lg:text-left"
+                        textAlign="center"
+                        variant="badge"
+                        badgeVariant="green"
                       />
                     )}
                     {slice.primary.heading && (
-                      <h2 className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 ${textColors.heading}`}>
+                      <h2 className={`text-2xl lg:text-4xl xl:text-5xl font-bold leading-tight ${textColors.heading}`}>
                         {slice.primary.heading}
                       </h2>
                     )}
                     {slice.primary.description && (
-                      <p className={`${textColors.description} text-sm sm:text-base lg:text-lg leading-relaxed mb-6 lg:mb-8`}>
+                      <p className={`${textColors.description} text-base lg:text-lg leading-relaxed`}>
                         {slice.primary.description}
                       </p>
                     )}
                     
                     {/* Button */}
                     {slice.primary.button_text && slice.primary.button_link && (
-                      <div className="flex justify-center lg:justify-start">
-                        <HeroButton asChild>
-                          <PrismicNextLink field={slice.primary.button_link}>
-                            {slice.primary.button_text}
+                      <div className="flex justify-center pt-4">
+                        <Button asChild variant="subtle" size="lg" className="!px-0">
+                          <PrismicNextLink 
+                            field={slice.primary.button_link}
+                            className={`inline-flex items-center gap-1.5 ${textColors.heading}`}
+                          >
+                            <span>{slice.primary.button_text}</span>
+                            <ExternalLinkIcon className="w-2.5 h-2.5" color="currentColor" />
                           </PrismicNextLink>
-                        </HeroButton>
+                        </Button>
                       </div>
                     )}
                   </div>
                 )}
               </div>
 
-              {/* Right Side - Stacked Carousel */}
-              <div className="w-full lg:flex-1" data-animate="carousel">
+              {/* Stacked Carousel - Wider with more overlap */}
+              <div className="w-full -mx-4 lg:-mx-8" data-animate="carousel">
                 {slice.items && slice.items.length > 0 && (
                   <TestimonialsStackedCarousel
                     testimonials={slice.items}
@@ -129,6 +135,8 @@ const Testimonials = ({ slice }: TestimonialsProps): React.ReactElement => {
                     textColor={textColors.subheading}
                     lineColor={textColors.lineColor}
                     textAlign="center"
+                    variant="badge"
+                    badgeVariant="green"
                   />
                 )}
                 {slice.primary.heading && (

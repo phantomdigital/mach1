@@ -44,6 +44,7 @@ const StatisticsV2 = ({ slice }: StatisticsV2Props): React.ReactElement => {
     lineColor: "light" as const,
   };
 
+
   return (
     <section
       data-slice-type={slice.slice_type}
@@ -58,7 +59,9 @@ const StatisticsV2 = ({ slice }: StatisticsV2Props): React.ReactElement => {
             <div className="mb-12 lg:mb-16" data-animate="header">
               {slice.primary.subheading && (
                 <SliceHeader 
-                  subheading={slice.primary.subheading} 
+                  subheading={slice.primary.subheading}
+                  variant="badge"
+                  badgeVariant="green" 
                   textColor={textColors.subheading}
                   lineColor={textColors.lineColor}
                 />
@@ -71,6 +74,7 @@ const StatisticsV2 = ({ slice }: StatisticsV2Props): React.ReactElement => {
               )}
             </div>
           )}
+
 
           {/* Statistics Grid - Client Component for Animations */}
           <StatisticsGrid statistics={slice.primary.statistics || []} />

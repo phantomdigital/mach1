@@ -37,6 +37,8 @@ const Statistics = ({ slice }: StatisticsProps): React.ReactElement => {
                 textColor="text-neutral-800"
                 textAlign="center"
                 className="mb-4"
+                variant="badge"
+                badgeVariant="green"
               />
             )}
             

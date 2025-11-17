@@ -15,67 +15,105 @@ export default function StatisticsV2Animation({ children }: StatisticsV2Animatio
   const scrollTriggersRef = useRef<ScrollTrigger[]>([]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const header = sectionRef.current?.querySelector("[data-animate='header']");
-      const statCards = sectionRef.current?.querySelectorAll("[data-animate='stat-card']");
+    const section = sectionRef.current;
+    if (!section) return;
 
-      // Animate header (subheading)
-      if (header && header.children.length > 0) {
-        const headerTween = gsap.from(header.children, {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            end: "top 50%",
-            toggleActions: "play none none none",
-            once: true,
-            markers: false,
-            invalidateOnRefresh: false,
-          },
+    let ctx: gsap.Context | null = null;
+
+    // Use requestAnimationFrame to ensure DOM is fully ready
+    requestAnimationFrame(() => {
+      ctx = gsap.context(() => {
+        // Collect all elements to animate
+        const header = section.querySelector("[data-animate='header']");
+        const statCards = section.querySelectorAll("[data-animate='stat-card']");
+
+        // Debug: Log found elements
+        console.log("[StatisticsV2] Elements found:", {
+          header: !!header,
+          headerChildren: header?.children.length || 0,
+          statCardsCount: statCards?.length || 0,
         });
-        if (headerTween.scrollTrigger) {
-          scrollTriggersRef.current.push(headerTween.scrollTrigger);
-          headerTween.eventCallback("onComplete", () => {
-            if (headerTween.scrollTrigger) {
-              headerTween.scrollTrigger.kill();
-            }
-          });
-        }
-      }
 
-      // Animate stat cards with stagger
-      if (statCards && statCards.length > 0) {
-        const cardsTween = gsap.from(statCards, {
-          y: 40,
-          opacity: 0,
-          scale: 0.95,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out",
+        // Create a single master timeline with all animations (following rules.yaml pattern)
+        const masterTimeline = gsap.timeline({
           scrollTrigger: {
-            trigger: statCards[0],
+            trigger: section,
             start: "top 85%",
             end: "top 50%",
             toggleActions: "play none none none",
             once: true,
             markers: false,
             invalidateOnRefresh: false,
+            onEnter: () => {
+              console.log("[StatisticsV2] ScrollTrigger fired - animation starting");
+            },
+            onEnterBack: () => {
+              console.log("[StatisticsV2] ScrollTrigger onEnterBack");
+            },
           },
         });
-        if (cardsTween.scrollTrigger) {
-          scrollTriggersRef.current.push(cardsTween.scrollTrigger);
-          cardsTween.eventCallback("onComplete", () => {
-            if (cardsTween.scrollTrigger) {
-              cardsTween.scrollTrigger.kill();
+
+        // Set initial state for header children
+        if (header && header.children.length > 0) {
+          gsap.set(header.children, { y: 30, opacity: 0 });
+          masterTimeline.to(header.children, {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out",
+          }, 0);
+        }
+
+        // Set initial state for stat cards and animate them
+        if (statCards && statCards.length > 0) {
+          console.log("[StatisticsV2] Animating", statCards.length, "stat cards");
+          gsap.set(statCards, { y: 40, opacity: 0, scale: 0.95 });
+          masterTimeline.to(statCards, {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power2.out",
+          }, 0.1);
+        } else {
+          console.warn("[StatisticsV2] No stat cards found to animate!");
+        }
+
+        // Store the ScrollTrigger for cleanup
+        const scrollTrigger = masterTimeline.scrollTrigger;
+        if (scrollTrigger) {
+          scrollTriggersRef.current.push(scrollTrigger);
+          console.log("[StatisticsV2] ScrollTrigger created, isActive:", scrollTrigger.isActive);
+          
+          // Refresh ScrollTrigger to ensure it calculates positions correctly
+          ScrollTrigger.refresh();
+          
+          // Check if section is already in view and trigger animation manually if needed
+          const rect = section.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          const triggerPoint = viewportHeight * 0.85;
+          
+          if (rect.top < triggerPoint && rect.bottom > 0) {
+            console.log("[StatisticsV2] Section already in view, forcing animation");
+            masterTimeline.play(0);
+          }
+          
+          // Kill ScrollTrigger after animation completes
+          masterTimeline.eventCallback("onComplete", () => {
+            console.log("[StatisticsV2] Animation completed");
+            if (scrollTrigger) {
+              const index = scrollTriggersRef.current.indexOf(scrollTrigger);
+              if (index > -1) {
+                scrollTriggersRef.current.splice(index, 1);
+              }
+              scrollTrigger.kill();
             }
           });
         }
-      }
-    }, sectionRef);
+      }, sectionRef);
+    });
 
     return () => {
       // Kill all ScrollTrigger instances
@@ -86,7 +124,9 @@ export default function StatisticsV2Animation({ children }: StatisticsV2Animatio
       });
       scrollTriggersRef.current = [];
       // Revert GSAP context (this also cleans up any remaining ScrollTriggers)
-      ctx.revert();
+      if (ctx) {
+        ctx.revert();
+      }
     };
   }, []);
 

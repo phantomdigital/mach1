@@ -143,6 +143,8 @@ const NewsOverview = async ({ slice }: NewsOverviewProps): Promise<React.ReactEl
                   subheading={slice.primary.subheading} 
                   textColor={textColors.subheading}
                   lineColor={textColors.lineColor}
+                  variant="badge"
+                  badgeVariant="green"
                 />
               </div>
               

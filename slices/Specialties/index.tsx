@@ -37,7 +37,12 @@ const Specialties = ({ slice }: SpecialtiesProps): React.ReactElement => {
     >
       <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         {/* Header */}
-        <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
+        <SliceHeader 
+          subheading={slice.primary.subheading} 
+          textColor="text-neutral-800"
+          variant="badge"
+          badgeVariant="green"
+        />
 
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">

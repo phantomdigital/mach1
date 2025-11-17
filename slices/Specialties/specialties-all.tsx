@@ -64,7 +64,13 @@ const SpecialtiesAll = async ({ slice }: SpecialtiesAllProps): Promise<React.Rea
       <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         {/* Header with SliceHeader */}
         <div className="flex flex-col items-center">
-          <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" textAlign="center" />
+          <SliceHeader 
+            subheading={slice.primary.subheading} 
+            textColor="text-neutral-800" 
+            textAlign="center"
+            variant="badge"
+            badgeVariant="green"
+          />
           {slice.primary.heading && (
             <div className="text-center mb-12 lg:mb-16">
               <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl text-center tracking-tight">

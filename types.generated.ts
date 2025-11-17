@@ -3038,6 +3038,17 @@ export interface ImageWithTextSliceDefaultPrimary {
 	subheading: prismic.KeyTextField;
 	
 	/**
+	 * Subheading Style field in *ImageWithText → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose subheading style
+	 * - **Default Value**: badge
+	 * - **API ID Path**: image_with_text.default.primary.subheading_style
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	subheading_style: prismic.SelectField<"badge" | "underline" | "pill" | "accent-bar" | "minimal" | "default", "filled">;
+	
+	/**
 	 * Description field in *ImageWithText → Default → Primary*
 	 *
 	 * - **Field Type**: Text
@@ -3157,6 +3168,17 @@ export interface ImageWithTextSliceCenteredPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Subheading Style field in *ImageWithText → Centered → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose subheading style
+	 * - **Default Value**: badge
+	 * - **API ID Path**: image_with_text.centered.primary.subheading_style
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	subheading_style: prismic.SelectField<"badge" | "underline" | "pill" | "accent-bar" | "minimal" | "default", "filled">;
 	
 	/**
 	 * Description field in *ImageWithText → Centered → Primary*

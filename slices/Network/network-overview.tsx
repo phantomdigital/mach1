@@ -35,7 +35,11 @@ const NetworkOverview = ({ slice }: NetworkOverviewProps): React.ReactElement =>
     >
       <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         {/* Header Section */}
-        <SliceHeader subheading={slice.primary.subheading} />
+        <SliceHeader 
+          subheading={slice.primary.subheading} 
+          variant="badge"
+          badgeVariant="green"
+        />
         
         {slice.primary.heading && (
           <h2 className="text-neutral-800 text-4xl lg:text-6xl mb-16">

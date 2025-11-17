@@ -33,15 +33,15 @@ export default function TestimonialsStackedCarousel({
   };
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto px-8 sm:px-12 lg:px-20 py-8 sm:py-12 lg:py-20">
+    <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-16 lg:py-24">
       {/* Stack Container */}
-      <div className="relative h-[380px] sm:h-[420px] lg:h-[520px] flex items-center justify-center">
-        {/* Navigation Arrows - Responsive positioning */}
+      <div className="relative h-[380px] sm:h-[420px] lg:h-[520px] flex items-center justify-center overflow-visible">
+        {/* Navigation Arrows - Positioned much wider */}
         <button
           onClick={goToPrev}
           disabled={isAnimating}
           className={cn(
-            "absolute -left-4 sm:-left-8 lg:-left-20 z-50 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-200",
+            "absolute left-0 sm:-left-24 lg:-left-48 xl:-left-64 z-50 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-lg flex items-center justify-center transition-all duration-200",
             isDarkBackground
               ? "bg-white/90 hover:bg-white text-dark-blue shadow-lg"
               : "bg-white hover:bg-neutral-50 text-neutral-700 shadow-md border border-neutral-200",
@@ -49,14 +49,14 @@ export default function TestimonialsStackedCarousel({
           )}
           aria-label="Previous testimonial"
         >
-          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
         </button>
 
         <button
           onClick={goToNext}
           disabled={isAnimating}
           className={cn(
-            "absolute -right-4 sm:-right-8 lg:-right-20 z-50 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center transition-all duration-200",
+            "absolute right-0 sm:-right-24 lg:-right-48 xl:-right-64 z-50 w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-lg flex items-center justify-center transition-all duration-200",
             isDarkBackground
               ? "bg-white/90 hover:bg-white text-dark-blue shadow-lg"
               : "bg-white hover:bg-neutral-50 text-neutral-700 shadow-md border border-neutral-200",
@@ -64,11 +64,11 @@ export default function TestimonialsStackedCarousel({
           )}
           aria-label="Next testimonial"
         >
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
         </button>
 
-        {/* Stacked Cards - Responsive width */}
-        <div className="relative w-full max-w-sm sm:max-w-2xl lg:max-w-3xl h-full">
+        {/* Stacked Cards - Wider with more overlap */}
+        <div className="relative w-full max-w-2xl sm:max-w-3xl lg:max-w-5xl xl:max-w-6xl h-full">
           {testimonials.map((testimonial, index) => {
             // Calculate position relative to current
             let position = index - current;
@@ -92,9 +92,9 @@ export default function TestimonialsStackedCarousel({
                   transform: isCurrent
                     ? "translateX(0%) scale(1) translateZ(0)"
                     : isNext
-                    ? "translateX(12%) scale(0.92) translateZ(-100px)"
+                    ? "translateX(18%) scale(0.88) translateZ(-100px)"
                     : isPrev
-                    ? "translateX(-12%) scale(0.92) translateZ(-100px)"
+                    ? "translateX(-18%) scale(0.88) translateZ(-100px)"
                     : "translateX(0%) scale(0.8) translateZ(-200px)",
                   zIndex: isCurrent ? 30 : isNext || isPrev ? 20 : 10,
                   opacity: isVisible ? 1 : 0,

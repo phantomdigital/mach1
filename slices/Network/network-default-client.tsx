@@ -95,7 +95,12 @@ const NetworkDefault = ({ slice }: NetworkDefaultProps): React.ReactElement => {
         <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 overflow-visible">
           {/* Header with SliceHeader */}
           <div data-animate="header">
-            <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
+            <SliceHeader 
+              subheading={slice.primary.subheading} 
+              textColor="text-neutral-800"
+              variant="badge"
+              badgeVariant="green"
+            />
             {slice.primary.heading && (
               <h2 className="text-neutral-800 text-3xl lg:text-5xl font-bold leading-tight tracking-tight mb-6 lg:mb-8">
                 {slice.primary.heading}

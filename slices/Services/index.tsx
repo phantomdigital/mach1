@@ -50,7 +50,12 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                     <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
                         {/* Header */}
                         <div data-animate="header">
-                            <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
+                            <SliceHeader 
+                              subheading={slice.primary.subheading} 
+                              textColor="text-neutral-800"
+                              variant="badge"
+                              badgeVariant="green"
+                            />
                         </div>
 
                         {/* Two Column Layout */}
@@ -223,7 +228,12 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                 <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 overflow-visible">
                     {/* Add SliceHeader for consistent subheading treatment */}
                     <div data-animate="header">
-                        <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" />
+                        <SliceHeader 
+                          subheading={slice.primary.subheading} 
+                          textColor="text-neutral-800"
+                          variant="badge"
+                          badgeVariant="green"
+                        />
                     </div>
                     
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 relative overflow-visible">

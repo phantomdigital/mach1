@@ -85,6 +85,8 @@ const HeroBlock = ({ slice }: HeroBlockProps): React.ReactElement => {
                     subheading={slice.primary.subheading} 
                     textColor={textColors.subheading}
                     lineColor={textColors.lineColor}
+                    variant="badge"
+                    badgeVariant="green"
                   />
                 </div>
               )}
