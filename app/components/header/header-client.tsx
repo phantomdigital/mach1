@@ -45,6 +45,8 @@ const NavigationItem = memo(({ item, index }: { item: HeaderDocumentDataNavigati
   );
 });
 
+NavigationItem.displayName = 'NavigationItem';
+
 interface HeaderClientProps {
   header: HeaderDocument | null;
 }

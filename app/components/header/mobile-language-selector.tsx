@@ -67,19 +67,6 @@ export function MobileLanguageSelector({ onLocaleChange }: MobileLanguageSelecto
     onLocaleChange?.(); // Close mobile menu if callback provided
   };
 
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setIsOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setIsOpen(false);
-    }, 150);
-  };
 
   // Fetch available translations for current page
   useEffect(() => {

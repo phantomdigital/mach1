@@ -19,7 +19,6 @@
 'use client';
 
 import { useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { PrismicNextLink } from "@prismicio/next";
 import { ChevronDown } from "lucide-react";
 import { DropdownBackground } from "./dropdown-background";
 import { ExternalLinkIcon } from "./external-link-icon";
