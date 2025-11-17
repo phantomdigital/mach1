@@ -9,9 +9,9 @@ interface StatItem {
 }
 
 interface PrismicStatItem {
-  number?: { text?: string } | null;
-  suffix?: { text?: string } | null;
-  label?: { text?: string } | null;
+  number?: string | null;
+  suffix?: string | null;
+  label?: string | null;
 }
 
 interface StatisticsGridProps {
@@ -113,9 +113,9 @@ export default function StatisticsGrid({ statistics }: StatisticsGridProps) {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
       {statistics.map((stat, index) => {
         // Extract text values from Prismic fields
-        const number = typeof stat.number === 'string' ? stat.number : stat.number?.text;
-        const suffix = typeof stat.suffix === 'string' ? stat.suffix : stat.suffix?.text;
-        const label = typeof stat.label === 'string' ? stat.label : stat.label?.text;
+        const number = stat.number;
+        const suffix = stat.suffix;
+        const label = stat.label;
         
         
         return (
