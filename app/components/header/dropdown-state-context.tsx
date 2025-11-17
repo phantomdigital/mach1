@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react';
 
 interface DropdownStateContextType {
   /** Currently open dropdown ID (null if none open) */
@@ -42,12 +42,13 @@ export function DropdownStateProvider({ children }: DropdownStateProviderProps) 
     return openDropdownId === id;
   }, [openDropdownId]);
 
-  const value = {
+  // Memoize context value to prevent unnecessary re-renders
+  const value = useMemo(() => ({
     openDropdownId,
     openDropdown,
     closeDropdown,
     isDropdownOpen,
-  };
+  }), [openDropdownId, openDropdown, closeDropdown, isDropdownOpen]);
 
   return (
     <DropdownStateContext.Provider value={value}>

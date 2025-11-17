@@ -14,7 +14,8 @@ import { LogoLink } from "./logo-link";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 // Navigation items with hover prefetching
-const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationItem; index: number }) => {
+// Memoized to prevent unnecessary re-renders
+const NavigationItem = memo(({ item, index }: { item: HeaderDocumentDataNavigationItem; index: number }) => {
   if (!item.has_dropdown || !item.dropdown_items || item.dropdown_items.length === 0) {
     // Simple navigation item without dropdown - with hover prefetch
     return (
@@ -42,7 +43,7 @@ const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationIte
       dropdownId={`nav-${index}-${String(item.label || '').toLowerCase().replace(/\s+/g, '-')}`}
     />
   );
-};
+});
 
 interface HeaderClientProps {
   header: HeaderDocument | null;

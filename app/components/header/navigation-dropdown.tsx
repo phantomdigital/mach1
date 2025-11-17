@@ -18,7 +18,7 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { PrismicNextLink } from "@prismicio/next";
 import { ChevronDown } from "lucide-react";
 import { DropdownBackground } from "./dropdown-background";
@@ -75,73 +75,79 @@ export function NavigationDropdown({
   const previousImageRef = useRef<ImageField | undefined>(undefined); // Track previous image for crossfade
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isProgrammaticallyOpeningRef = useRef(false);
   
   // =================================================================
-  // DYNAMIC SIZING CALCULATIONS
+  // DYNAMIC SIZING CALCULATIONS (Memoized for performance)
   // =================================================================
   
-  // Check if any dropdown items have images
-  const hasIndividualImages = dropdownItems.some(item => item.image && item.image.url);
-  const hasDropdownImage = Boolean((dropdownImage && dropdownImage.url) || hasIndividualImages);
+  // Memoize expensive calculations that depend on dropdownItems and dropdownImage
+  const { hasDropdownImage, dynamicHeight, dynamicWidth, longestTextWidth } = useMemo(() => {
+    // Check if any dropdown items have images
+    const hasIndividualImages = dropdownItems.some(item => item.image && item.image.url);
+    const hasDropdownImage = Boolean((dropdownImage && dropdownImage.url) || hasIndividualImages);
 
-  // Height calculation - content-based with edge preservation
-  const itemHeight = 55;           // Height per dropdown item (py-6 + content)
-  const headerHeight = 48;         // Category header space (text + mb-6)
-  const topPadding = 40;           // pt-10 = 40px
-  const bottomPadding = hasDropdownImage ? 32 : 20; // Less padding for no-image dropdowns
-  const edgeBuffer = hasDropdownImage ? 100 : 60; // Reduced edge space for no-image dropdowns
-  
-  const contentHeight = topPadding + headerHeight + (dropdownItems.length * itemHeight) + bottomPadding;
-  const minHeight = contentHeight + edgeBuffer;
-  // Allow natural scaling based on content, with minimal safety buffer for images
-  const minImageHeight = hasDropdownImage ? 320 : 280;
-  const dynamicHeight = Math.max(minHeight, minImageHeight);
+    // Height calculation - content-based with edge preservation
+    const itemHeight = 55;           // Height per dropdown item (py-6 + content)
+    const headerHeight = 48;         // Category header space (text + mb-6)
+    const topPadding = 40;           // pt-10 = 40px
+    const bottomPadding = hasDropdownImage ? 32 : 20; // Less padding for no-image dropdowns
+    const edgeBuffer = hasDropdownImage ? 100 : 60; // Reduced edge space for no-image dropdowns
+    
+    const contentHeight = topPadding + headerHeight + (dropdownItems.length * itemHeight) + bottomPadding;
+    const minHeight = contentHeight + edgeBuffer;
+    // Allow natural scaling based on content, with minimal safety buffer for images
+    const minImageHeight = hasDropdownImage ? 320 : 280;
+    const dynamicHeight = Math.max(minHeight, minImageHeight);
 
-  // Width calculation - text-based with proper constraints
-  const calculateTextWidth = (text: string): number => {
-    // More accurate calculation for Inter Tight Medium at 20px (1.25rem)
-    const avgCharWidth = 12; // Increased from 12 to account for medium weight
-    return text.length * avgCharWidth;
-  };
+    // Width calculation - text-based with proper constraints
+    const calculateTextWidth = (text: string): number => {
+      // More accurate calculation for Inter Tight Medium at 20px (1.25rem)
+      const avgCharWidth = 12; // Increased from 12 to account for medium weight
+      return text.length * avgCharWidth;
+    };
 
-  const calculateHeaderTextWidth = (text: string): number => {
-    // Space Mono at 0.5rem (8px) - monospace so more predictable
-    const avgCharWidth = 4; // Much smaller due to 0.5rem size
-    return text.length * avgCharWidth;
-  };
+    const calculateHeaderTextWidth = (text: string): number => {
+      // Space Mono at 0.5rem (8px) - monospace so more predictable
+      const avgCharWidth = 4; // Much smaller due to 0.5rem size
+      return text.length * avgCharWidth;
+    };
 
-  // Find longest text content
-  const displayTitle = dropdownTitle || label;
-  const headerWidth = calculateHeaderTextWidth(String(displayTitle || ''));
-  const maxItemWidth = dropdownItems.reduce((max, item) => {
-    const itemWidth = calculateTextWidth(String(item.label || ''));
-    return Math.max(max, itemWidth);
-  }, 0);
-  
-  const longestTextWidth = Math.max(headerWidth, maxItemWidth);
-  
-  // Account for all padding and spacing
-  // px-5 (40px) + pl-7 pr-20 (108px) + px-4 (32px) + icon + buffer = ~200px
-  const horizontalPadding = 40 + 108 + 32 + 20; // 200px total
-  const minContentWidth = longestTextWidth + horizontalPadding;
-  
-  // Add extra buffer for safety to prevent wrapping
-  const safeContentWidth = minContentWidth * 1.02; // 3% buffer (minimal safety margin)
-  
+    // Find longest text content
+    const displayTitle = dropdownTitle || label;
+    const headerWidth = calculateHeaderTextWidth(String(displayTitle || ''));
+    const maxItemWidth = dropdownItems.reduce((max, item) => {
+      const itemWidth = calculateTextWidth(String(item.label || ''));
+      return Math.max(max, itemWidth);
+    }, 0);
+    
+    const longestTextWidth = Math.max(headerWidth, maxItemWidth);
+    
+    // Account for all padding and spacing
+    // px-5 (40px) + pl-7 pr-20 (108px) + px-4 (32px) + icon + buffer = ~200px
+    const horizontalPadding = 40 + 108 + 32 + 20; // 200px total
+    const minContentWidth = longestTextWidth + horizontalPadding;
+    
+    // Add extra buffer for safety to prevent wrapping
+    const safeContentWidth = minContentWidth * 1.02; // 3% buffer (minimal safety margin)
+    
+    // Width constraints
+    const minWidth = hasDropdownImage ? 878 : 300;
+    const maxWidth = hasDropdownImage ? 1000 : 800; // Increased max for no-image
+    
+    const dynamicWidth = Math.min(Math.max(safeContentWidth, minWidth), maxWidth);
+
+    return { hasDropdownImage, dynamicHeight, dynamicWidth, longestTextWidth };
+  }, [dropdownItems, dropdownImage, dropdownTitle, label]);
+
   // Get the current image to display (individual item image or fallback dropdown image)
-  const getCurrentImage = () => {
+  const getCurrentImage = useCallback(() => {
     const hoveredItem = dropdownItems[hoveredItemIndex];
     if (hoveredItem && hoveredItem.image && hoveredItem.image.url) {
       return hoveredItem.image;
     }
     return dropdownImage;
-  };
-  
-  // Width constraints
-  const minWidth = hasDropdownImage ? 878 : 300;
-  const maxWidth = hasDropdownImage ? 1000 : 800; // Increased max for no-image
-  
-  const dynamicWidth = Math.min(Math.max(safeContentWidth, minWidth), maxWidth);
+  }, [dropdownItems, hoveredItemIndex, dropdownImage]);
 
   // =================================================================
   // EVENT HANDLERS
@@ -170,17 +176,55 @@ export function NavigationDropdown({
    * Handles mouse leave - delays closing with CSS transitions handling the animation
    */
   const handleMouseLeave = (): void => {
+    // Don't set timeout if dropdown is not currently open
+    // or if we're in the process of programmatically opening
+    if (!isOpen || isProgrammaticallyOpeningRef.current) {
+      return;
+    }
+    
     timeoutRef.current = setTimeout(() => {
-      // Only close this specific dropdown - won't close if another dropdown is now open
-      closeDropdown(dropdownId);
-      setHoveredItemIndex(0); // Reset for next time
-    }, 150); // Slightly longer grace period
+      // Double-check dropdown is still open and we're not programmatically opening
+      // This prevents closing if it was reopened programmatically
+      if (isDropdownOpen(dropdownId) && !isProgrammaticallyOpeningRef.current) {
+        closeDropdown(dropdownId);
+        setHoveredItemIndex(0); // Reset for next time
+      }
+    }, 300); // Longer grace period to prevent accidental closing
   };
 
   // =================================================================
   // EFFECTS & CLEANUP
   // =================================================================
   
+  /**
+   * Clear timeout when dropdown is opened (including programmatically)
+   * This prevents the dropdown from closing immediately after being reopened
+   */
+  useEffect(() => {
+    if (isOpen) {
+      // Immediately clear any pending close timeout when dropdown opens
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+      
+      // Set flag to prevent new timeouts from being set during programmatic open
+      isProgrammaticallyOpeningRef.current = true;
+      
+      // Clear the flag after a short delay to allow normal hover behavior
+      const flagTimeout = setTimeout(() => {
+        isProgrammaticallyOpeningRef.current = false;
+      }, 350); // Slightly longer than the close timeout (300ms)
+      
+      return () => {
+        clearTimeout(flagTimeout);
+      };
+    } else {
+      // Reset flag when dropdown closes
+      isProgrammaticallyOpeningRef.current = false;
+    }
+  }, [isOpen]);
+
   /**
    * Cleanup timeouts on component unmount to prevent memory leaks
    */
@@ -202,6 +246,7 @@ export function NavigationDropdown({
   return (
     <div 
       className="relative"
+      data-dropdown-id={dropdownId}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -238,9 +283,10 @@ export function NavigationDropdown({
       
       {/* Maintains hover state across the visual gap between trigger and dropdown */}
       <div 
-        className={`absolute top-full left-0 w-full h-2 bg-transparent z-40 ${
+        className={`absolute top-full left-0 right-0 bg-transparent z-40 ${
           isOpen ? 'pointer-events-auto' : 'pointer-events-none hidden'
         }`}
+        style={{ height: `${topOffset + 4}px` }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       />

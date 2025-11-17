@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown, Globe, Loader2 } from 'lucide-react';
 import { locales, defaultLocale, type LocaleCode } from '@/prismicio';
@@ -18,20 +18,21 @@ export function RegionLanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Extract current locale from pathname (needed for initial state)
-  const getCurrentLocale = (): LocaleCode => {
+  // Extract current locale from pathname (memoized for performance)
+  const currentLocale = useMemo((): LocaleCode => {
     const pathParts = pathname.split('/').filter(Boolean);
     const firstPart = pathParts[0];
     const locale = locales.find(l => l.code === firstPart);
     return locale ? locale.code : defaultLocale;
-  };
+  }, [pathname]);
+  
+  const currentLocaleData = useMemo(() => {
+    return locales.find(l => l.code === currentLocale) || locales[0];
+  }, [currentLocale]);
   
   // Start with only current locale - will update when API responds with available translations
-  const [availableLocales, setAvailableLocales] = useState<LocaleCode[]>([getCurrentLocale()]);
+  const [availableLocales, setAvailableLocales] = useState<LocaleCode[]>([currentLocale]);
   const [isLoadingLocales, setIsLoadingLocales] = useState(true);
-
-  const currentLocale = getCurrentLocale();
-  const currentLocaleData = locales.find(l => l.code === currentLocale) || locales[0];
   
   // Format display name - show just "English" for default locale
   const getDisplayName = (localeData: typeof currentLocaleData) => {
@@ -72,7 +73,7 @@ export function RegionLanguageSelector() {
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
-    }, 150);
+    }, 300);
   };
 
   // Fetch available translations for current page
@@ -213,11 +214,12 @@ export function RegionLanguageSelector() {
         />
       </button>
 
-      {/* Hover Bridge */}
+      {/* Hover Bridge - covers gap between button and dropdown */}
       <div 
-        className={`absolute top-full left-0 w-full h-2 bg-transparent z-40 transition-opacity duration-200 ${
+        className={`absolute top-full left-0 right-0 bg-transparent z-40 transition-opacity duration-200 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
+        style={{ height: '0.75rem' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       />
@@ -229,7 +231,7 @@ export function RegionLanguageSelector() {
             ? 'opacity-100 translate-y-0 pointer-events-auto visible' 
             : 'opacity-0 -translate-y-2 pointer-events-none invisible'
         }`}
-        style={{ top: '33px' }}
+        style={{ top: 'calc(100% + 0.25rem)' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >

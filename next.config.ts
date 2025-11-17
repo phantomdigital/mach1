@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     qualities: [50, 75, 85, 90, 95, 100],
   },
+  compiler: {
+    // Remove console logs in production builds
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'], // Keep console.error and console.warn
+    } : false,
+  },
 };
 
 export default nextConfig;
