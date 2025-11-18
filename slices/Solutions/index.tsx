@@ -50,7 +50,7 @@ const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
         />
         {slice.primary.heading && (
           <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl text-left tracking-tight">
+            <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl text-left tracking-tight pt-5">
               {slice.primary.heading}
             </h2>
           </div>

@@ -153,9 +153,9 @@ export function NavigationDropdown({
   // =================================================================
   
   /**
-   * Handles mouse enter - opens dropdown and resets to first item
+   * Handles mouse enter on trigger button - opens dropdown and resets to first item
    */
-  const handleMouseEnter = (): void => {
+  const handleTriggerMouseEnter = (): void => {
     // Always clear any pending close timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -172,9 +172,20 @@ export function NavigationDropdown({
   };
 
   /**
-   * Handles mouse leave - delays closing with CSS transitions handling the animation
+   * Handles mouse enter on dropdown content - keeps dropdown open
    */
-  const handleMouseLeave = (): void => {
+  const handleDropdownMouseEnter = (): void => {
+    // Clear any pending close timeout when mouse enters dropdown
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+
+  /**
+   * Handles mouse leave from dropdown content - closes dropdown
+   */
+  const handleDropdownMouseLeave = (): void => {
     // Don't set timeout if dropdown is not currently open
     // or if we're in the process of programmatically opening
     if (!isOpen || isProgrammaticallyOpeningRef.current) {
@@ -188,7 +199,18 @@ export function NavigationDropdown({
         closeDropdown(dropdownId);
         setHoveredItemIndex(0); // Reset for next time
       }
-    }, 300); // Longer grace period to prevent accidental closing
+    }, 150); // Shorter delay for more responsive closing
+  };
+
+  /**
+   * Handles mouse leave from trigger button - closes dropdown if not hovering over dropdown
+   */
+  const handleTriggerMouseLeave = (): void => {
+    // Don't close immediately - give time to move to dropdown
+    // The dropdown's own mouse leave handler will handle closing
+    if (!isOpen) {
+      return;
+    }
   };
 
   // =================================================================
@@ -246,8 +268,6 @@ export function NavigationDropdown({
     <div 
       className="relative"
       data-dropdown-id={dropdownId}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       {/* =================================================================
           DROPDOWN TRIGGER BUTTON
@@ -255,6 +275,8 @@ export function NavigationDropdown({
       
       <button 
         className="text-black font-semibold text-[1.25rem] px-5 h-full outline-none cursor-pointer bg-transparent inline-flex items-center"
+        onMouseEnter={handleTriggerMouseEnter}
+        onMouseLeave={handleTriggerMouseLeave}
       >
         <span 
           className={`
@@ -280,14 +302,18 @@ export function NavigationDropdown({
           INVISIBLE HOVER BRIDGE
           ================================================================= */}
       
-      {/* Maintains hover state across the visual gap between trigger and dropdown */}
+      {/* Bridge to maintain hover state across the gap between trigger and dropdown */}
+      {/* Width is reduced by 40px (20px each side) to match actual dropdown bounds */}
       <div 
-        className={`absolute top-full left-0 right-0 bg-transparent z-40 ${
+        className={`absolute top-full left-1/2 -translate-x-1/2 bg-transparent z-40 ${
           isOpen ? 'pointer-events-auto' : 'pointer-events-none hidden'
         }`}
-        style={{ height: `${topOffset + 4}px` }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        style={{ 
+          height: `${topOffset + 4}px`,
+          width: `${Math.max(dynamicWidth - 40, 200)}px` // Reduced by 40px (20px each side) for tighter bounds
+        }}
+        onMouseEnter={handleDropdownMouseEnter}
+        onMouseLeave={handleDropdownMouseLeave}
       />
       
       {/* =================================================================
@@ -302,8 +328,6 @@ export function NavigationDropdown({
             : 'pointer-events-none hidden'
         }`}
         style={{ top: `${topOffset}px` }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
           {/* SVG Background Container */}
           <div className="relative" style={{ height: `${dynamicHeight}px` }}>
@@ -327,6 +351,24 @@ export function NavigationDropdown({
               style={{
                 height: `${dynamicHeight}px`,
                 width: `${dynamicWidth}px`
+              }}
+              onMouseEnter={handleDropdownMouseEnter}
+              onMouseLeave={(e) => {
+                // Check if mouse is actually leaving the tighter bounds (20px inset)
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = e.clientX;
+                const y = e.clientY;
+                
+                // Tighter bounds: 20px inset on all sides
+                const leftBound = rect.left + 20;
+                const rightBound = rect.right - 20;
+                const topBound = rect.top + 20;
+                const bottomBound = rect.bottom - 20;
+                
+                // Only close if mouse is outside the tighter bounds
+                if (x < leftBound || x > rightBound || y < topBound || y > bottomBound) {
+                  handleDropdownMouseLeave();
+                }
               }}
             >
               
