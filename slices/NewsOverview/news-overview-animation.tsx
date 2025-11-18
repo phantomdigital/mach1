@@ -19,19 +19,20 @@ export default function NewsOverviewAnimation({ children }: NewsOverviewAnimatio
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      // Collect all elements to animate
-      const header = section.querySelector("[data-animate='header']");
-      const sidebar = section.querySelector("[data-animate='sidebar']");
-      const featuredArticle = section.querySelector("[data-animate='featured-article']");
-      const previewCards = section.querySelectorAll("[data-animate='preview-card']");
-      const button = section.querySelector("[data-animate='button']");
+      // Batch DOM queries for better performance
+      const animateElements = {
+        header: section.querySelector("[data-animate='header']"),
+        sidebar: section.querySelector("[data-animate='sidebar']"),
+        featuredArticle: section.querySelector("[data-animate='featured-article']"),
+        previewCards: section.querySelectorAll("[data-animate='preview-card']"),
+        button: section.querySelector("[data-animate='button']")
+      };
 
-      // Create a single master timeline with all animations
+      // Create optimized timeline with reduced complexity
       const masterTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 85%",
-          end: "top 50%",
+          start: "top 90%", // Later trigger for better performance
           toggleActions: "play none none none",
           once: true,
           markers: false,
@@ -39,57 +40,26 @@ export default function NewsOverviewAnimation({ children }: NewsOverviewAnimatio
         },
       });
 
-      // Animate header (subheading)
-      if (header && header.children.length > 0) {
-        masterTimeline.from(header.children, {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-        }, 0);
-      }
+      // Simplified animations with proper type checking
+      const animationsConfig = [
+        { element: animateElements.header?.children, props: { y: 20, opacity: 0, duration: 0.4 }, time: 0 },
+        { element: animateElements.sidebar, props: { x: -20, opacity: 0, duration: 0.4 }, time: 0.05 },
+        { element: animateElements.featuredArticle, props: { y: 20, opacity: 0, duration: 0.4 }, time: 0.1 },
+        { element: animateElements.previewCards, props: { y: 20, opacity: 0, duration: 0.4, stagger: 0.05 }, time: 0.15 },
+        { element: animateElements.button, props: { y: 15, opacity: 0, duration: 0.3 }, time: 0.2 }
+      ];
 
-      // Animate sidebar (header info)
-      if (sidebar) {
-        masterTimeline.from(sidebar, {
-          x: -30,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power2.out",
-        }, 0.1);
-      }
-
-      // Animate featured article
-      if (featuredArticle) {
-        masterTimeline.from(featuredArticle, {
-          y: 40,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power2.out",
-        }, 0.2);
-      }
-
-      // Animate preview cards with stagger
-      if (previewCards && previewCards.length > 0) {
-        masterTimeline.from(previewCards, {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-        }, 0.3);
-      }
-
-      // Animate button
-      if (button) {
-        masterTimeline.from(button, {
-          y: 20,
-          opacity: 0,
-          duration: 0.5,
-          ease: "power2.out",
-        }, 0.4);
-      }
+      animationsConfig.forEach(({ element, props, time }) => {
+        if (element) {
+          // Check if it's a NodeList or HTMLCollection
+          const isCollection = 'length' in element;
+          if (isCollection && (element as NodeListOf<Element>).length > 0) {
+            masterTimeline.from(element, { ...props, ease: "power1.out" }, time);
+          } else if (!isCollection && element.nodeType) {
+            masterTimeline.from(element, { ...props, ease: "power1.out" }, time);
+          }
+        }
+      });
 
       // Store ScrollTrigger reference and kill it after animation completes
       if (masterTimeline.scrollTrigger) {

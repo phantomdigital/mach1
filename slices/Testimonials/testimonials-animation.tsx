@@ -1,11 +1,19 @@
 "use client";
 
 import { useMemo } from "react";
-import type { Content } from "@prismicio/client";
+import type { TestimonialsSliceDefaultItem } from "@/types.generated";
 import TestimonialCard from "./testimonial-card";
 
+// Extend CSSProperties to include CSS custom properties
+interface CSSCustomProperties extends React.CSSProperties {
+  '--gap'?: string;
+  '--duration'?: string;
+  '--set-width'?: string;
+  '--loop-distance'?: string;
+}
+
 interface TestimonialsAnimationProps {
-  testimonials: Content.TestimonialsSliceDefaultItem[];
+  testimonials: TestimonialsSliceDefaultItem[];
   numberOfRows: number | null;
   scrollSpeed: number | null;
   gap: number | null;
@@ -17,60 +25,74 @@ export default function TestimonialsAnimation({
   scrollSpeed = 1,
   gap = 32,
 }: TestimonialsAnimationProps) {
-  const rows = numberOfRows || 2;
-  const durationSeconds = useMemo(() => {
-    const speed = scrollSpeed || 1; // higher speed => shorter duration
+  // Memoize expensive calculations to prevent unnecessary recalculations
+  const animationConfig = useMemo(() => {
+    const rows = numberOfRows || 2;
+    const speed = scrollSpeed || 1;
     const base = 40; // seconds
-    const d = base / speed;
-    return Math.max(12, Math.min(120, d));
-  }, [scrollSpeed]);
+    const durationSeconds = Math.max(12, Math.min(120, base / speed));
+    const viewportWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
+    
+    return { rows, durationSeconds, viewportWidth };
+  }, [numberOfRows, scrollSpeed]);
   
-  // Distribute testimonials across rows
-  const distributeTestimonials = () => {
-    const distributed: Content.TestimonialsSliceDefaultItem[][] = Array.from(
-      { length: rows },
+  // Memoize testimonial distribution to avoid recalculating on every render
+  const rowsData = useMemo(() => {
+    const distributed: TestimonialsSliceDefaultItem[][] = Array.from(
+      { length: animationConfig.rows },
       () => []
     );
 
     testimonials.forEach((testimonial, index) => {
-      distributed[index % rows].push(testimonial);
+      distributed[index % animationConfig.rows].push(testimonial);
     });
 
     return distributed;
-  };
+  }, [testimonials, animationConfig.rows]);
 
-  const rowsData = distributeTestimonials();
-
-  const viewportWidth = typeof window !== "undefined" ? window.innerWidth : 1920;
+  // Memoize row calculations to avoid expensive recalculations
+  const rowCalculations = useMemo(() => {
+    const cardWidth = 400;
+    const gapPx = gap || 32;
+    
+    return rowsData.map((rowTestimonials) => {
+      const itemsInRow = rowTestimonials.length || 1;
+      const baseSetWidth = itemsInRow * cardWidth + Math.max(0, itemsInRow - 1) * gapPx;
+      const cycles = Math.max(1, Math.ceil((animationConfig.viewportWidth + cardWidth) / Math.max(1, baseSetWidth)));
+      const computedSetWidth = cycles * (itemsInRow * cardWidth) + ((cycles * itemsInRow) - 1) * gapPx;
+      const loopDistance = computedSetWidth + gapPx;
+      
+      return {
+        cycles,
+        computedSetWidth,
+        loopDistance,
+        gapPx,
+        itemsInRow
+      };
+    });
+  }, [rowsData, gap, animationConfig.viewportWidth]);
 
   return (
     <div className="w-full overflow-hidden">
       <div className="space-y-8">
         {rowsData.map((rowTestimonials, rowIndex) => {
-          const cardWidth = 400;
-          const gapPx = gap || 32;
-          const itemsInRow = rowTestimonials.length || 1;
-          const baseSetWidth = itemsInRow * cardWidth + Math.max(0, itemsInRow - 1) * gapPx;
-          const cycles = Math.max(1, Math.ceil((viewportWidth + cardWidth) / Math.max(1, baseSetWidth)));
-          const computedSetWidth = cycles * (itemsInRow * cardWidth) + ((cycles * itemsInRow) - 1) * gapPx;
-          const loopDistance = computedSetWidth + gapPx; // add one gap between sets
+          const calculations = rowCalculations[rowIndex];
 
           return (
           <div
             key={rowIndex}
             className="relative overflow-hidden marquee"
-            // Use CSS custom properties; TS doesn't understand string index on style, so cast
             style={{
-              ["--gap" as any]: `${gapPx}px`,
-              ["--duration" as any]: `${durationSeconds}s`,
-              ["--set-width" as any]: `${computedSetWidth}px`,
-              ["--loop-distance" as any]: `${loopDistance}px`,
-            } as React.CSSProperties}
+              '--gap': `${calculations.gapPx}px`,
+              '--duration': `${animationConfig.durationSeconds}s`,
+              '--set-width': `${calculations.computedSetWidth}px`,
+              '--loop-distance': `${calculations.loopDistance}px`,
+            } as CSSCustomProperties}
           >
             <div className={`track ${rowIndex % 2 !== 0 ? "reverse" : ""}`}>
               {/* first set */}
               <div className="track-set">
-                {Array.from({ length: cycles }).map((_, cycleIdx) =>
+                {Array.from({ length: calculations.cycles }).map((_, cycleIdx) =>
                   rowTestimonials.map((testimonial, cardIndex) => (
                     <TestimonialCard 
                       key={`a-${cycleIdx}-${cardIndex}`}
@@ -81,7 +103,7 @@ export default function TestimonialsAnimation({
               </div>
               {/* second set - exact duplicate for seamless wrap */}
               <div className="track-set">
-                {Array.from({ length: cycles }).map((_, cycleIdx) =>
+                {Array.from({ length: calculations.cycles }).map((_, cycleIdx) =>
                   rowTestimonials.map((testimonial, cardIndex) => (
                     <TestimonialCard 
                       key={`b-${cycleIdx}-${cardIndex}`}

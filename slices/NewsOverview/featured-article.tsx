@@ -3,13 +3,14 @@ import { PrismicNextImage } from "@prismicio/next";
 import type { Content } from "@prismicio/client";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import { formatAuDate } from "@/lib/date-utils";
+import { memo } from "react";
 
 interface FeaturedArticleProps {
   article: Content.NewsDocument;
   isDarkBackground?: boolean;
 }
 
-export default function FeaturedArticle({ article, isDarkBackground = false }: FeaturedArticleProps) {
+const FeaturedArticle = memo(function FeaturedArticle({ article, isDarkBackground = false }: FeaturedArticleProps) {
   // Text colors based on background
   const titleColor = isDarkBackground ? "text-neutral-100" : "text-neutral-800";
   const excerptColor = isDarkBackground ? "text-neutral-200" : "text-neutral-600";
@@ -36,9 +37,9 @@ export default function FeaturedArticle({ article, isDarkBackground = false }: F
               <PrismicNextImage
                 field={article.data.featured_image}
                 fill
-                sizes="(max-width: 768px) 128px, 300px"
-                quality={95}
-                priority
+                sizes="(max-width: 768px) 128px, 240px"
+                quality={85}
+                loading="lazy"
                 className={`object-cover transition-transform duration-300 ${imageRounding}`}
               />
             ) : (
@@ -96,6 +97,8 @@ export default function FeaturedArticle({ article, isDarkBackground = false }: F
       </Link>
     </div>
   );
-}
+});
+
+export default FeaturedArticle;
 
 

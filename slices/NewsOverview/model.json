@@ -19,6 +19,24 @@
             "placeholder": "Latest News"
           }
         },
+        "subheading_variant": {
+          "type": "Select",
+          "config": {
+            "label": "Subheading Style",
+            "placeholder": "Choose subheading style",
+            "options": ["default", "badge", "badge-outline", "underline", "pill", "accent-bar", "minimal"],
+            "default_value": "badge"
+          }
+        },
+        "subheading_badge_variant": {
+          "type": "Select",
+          "config": {
+            "label": "Badge Color (when using badge style)",
+            "placeholder": "Choose badge color",
+            "options": ["green", "featured", "closed", "success", "pending", "red", "default", "secondary", "destructive"],
+            "default_value": "green"
+          }
+        },
         "heading": {
           "type": "Text",
           "config": {

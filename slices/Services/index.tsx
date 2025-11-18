@@ -1,14 +1,17 @@
+import React, { Suspense } from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { ImageOff, Globe, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ServicesButton from "./services-button";
-import ServicesAnimation from "./services-animation";
 import { SliceHeader } from "@/components/slice-header";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass, type MarginTopSize, type PaddingSize } from "@/lib/spacing";
 import { createClient } from "@/prismicio";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
+
+// Lazy load animation component to improve initial page load
+const ServicesAnimation = React.lazy(() => import("./services-animation"));
 
 
 /**
@@ -39,15 +42,8 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
 
     // Render Two Column variation
     if (slice.variation === "twoColumn") {
-        return (
-            <section
-                data-slice-type={slice.slice_type}
-                data-slice-variation={slice.variation}
-                className={`w-full ${marginTop} ${paddingTop} ${paddingBottom}`}
-                style={{ backgroundColor }}
-            >
-                <ServicesAnimation>
-                    <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+        const twoColumnContent = (
+            <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
                         {/* Header */}
                         <div data-animate="header">
                             <SliceHeader 
@@ -74,8 +70,8 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                                 fill
                                                 className="object-cover"
                                                 sizes="(max-width: 1024px) 50vw, 25vw"
-                                                quality={90}
-                                                priority
+                                                quality={85}
+                                                loading="lazy"
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center">
@@ -92,7 +88,8 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                                 fill
                                                 className="object-cover"
                                                 sizes="(max-width: 1024px) 50vw, 25vw"
-                                                quality={90}
+                                                quality={85}
+                                                loading="lazy"
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center">
@@ -114,7 +111,8 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                                         width={24}
                                                         height={24}
                                                         className="w-full h-full object-contain filter brightness-0 invert"
-                                                        quality={85}
+                                                        quality={80}
+                                                        loading="lazy"
                                                     />
                                                 </div>
                                             ) : (
@@ -139,7 +137,8 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                                 fill
                                                 className="object-cover"
                                                 sizes="(max-width: 1024px) 50vw, 25vw"
-                                                quality={90}
+                                                quality={85}
+                                                loading="lazy"
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center">
@@ -211,21 +210,27 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                             </div>
                         </div>
                     </div>
-                </ServicesAnimation>
+        );
+
+        return (
+            <section
+                data-slice-type={slice.slice_type}
+                data-slice-variation={slice.variation}
+                className={`w-full ${marginTop} ${paddingTop} ${paddingBottom}`}
+                style={{ backgroundColor }}
+            >
+                <Suspense fallback={<div>{twoColumnContent}</div>}>
+                    <ServicesAnimation>
+                        {twoColumnContent}
+                    </ServicesAnimation>
+                </Suspense>
             </section>
         );
     }
 
     // Default Grid variation
-    return (
-        <section
-            data-slice-type={slice.slice_type}
-            data-slice-variation={slice.variation}
-            className={`w-full ${marginTop} ${paddingTop} ${paddingBottom} overflow-visible`}
-            style={{ backgroundColor }}
-        >
-            <ServicesAnimation>
-                <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 overflow-visible">
+    const gridContent = (
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 overflow-visible">
                     {/* Add SliceHeader for consistent subheading treatment */}
                     <div data-animate="header">
                         <SliceHeader 
@@ -281,7 +286,8 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                                                     height={44}
                                                     className="h-full w-auto object-contain"
                                                     alt=""
-                                                    quality={85}
+                                                    quality={80}
+                                                    loading="lazy"
                                                 />
                                             </div>
                                         ) : (
@@ -310,7 +316,20 @@ const Services = async ({ slice }: ServicesProps): Promise<React.ReactElement> =
                         </div>
                     </div>
                 </div>
-            </ServicesAnimation>
+    );
+
+    return (
+        <section
+            data-slice-type={slice.slice_type}
+            data-slice-variation={slice.variation}
+            className={`w-full ${marginTop} ${paddingTop} ${paddingBottom} overflow-visible`}
+            style={{ backgroundColor }}
+        >
+            <Suspense fallback={<div>{gridContent}</div>}>
+                <ServicesAnimation>
+                    {gridContent}
+                </ServicesAnimation>
+            </Suspense>
         </section>
     );
 };

@@ -1,14 +1,16 @@
+import React, { Suspense } from "react";
 import type { Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass } from "@/lib/spacing";
 import { Button } from "@/components/ui/button";
 import { PrismicNextLink } from "@prismicio/next";
 import SolutionCard from "./solution-card";
-import SolutionsAnimation from "./solutions-animation";
 import { SliceHeader } from "@/components/slice-header";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import SolutionsAll from "./solutions-all";
-import React from "react";
+
+// Lazy load animation component to improve initial page load
+const SolutionsAnimation = React.lazy(() => import("./solutions-animation"));
 
 /**
  * Props for `Solutions`.
@@ -36,6 +38,51 @@ const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
   // Background color with white default
   const backgroundColor = slice.primary.background_color || "#ffffff";
 
+  const solutionsContent = (
+    <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+      {/* Header with SliceHeader */}
+      <div data-animate="header">
+        <SliceHeader 
+          subheading={slice.primary.subheading} 
+          textColor="text-neutral-800"
+          variant="badge"
+          badgeVariant="green"
+        />
+        {slice.primary.heading && (
+          <div className="text-center mb-12 lg:mb-16">
+            <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl text-left tracking-tight">
+              {slice.primary.heading}
+            </h2>
+          </div>
+        )}
+      </div>
+
+      {/* Solutions Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12">
+        {displayedItems.map((item, index) => (
+          <div key={index} data-animate="card">
+            <SolutionCard item={item} index={index} />
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom Button */}
+      {slice.primary.button_text && slice.primary.button_link && (
+        <div className="flex justify-center" data-animate="button">
+          <Button asChild variant="subtle" size="lg">
+            <PrismicNextLink 
+              field={slice.primary.button_link}
+              className="inline-flex items-center gap-1.5 text-neutral-800"
+            >
+              <span>{slice.primary.button_text}</span>
+              <ExternalLinkIcon className="w-2.5 h-2.5" color="currentColor" />
+            </PrismicNextLink>
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <section
       data-slice-type={slice.slice_type}
@@ -43,50 +90,11 @@ const Solutions = ({ slice }: SolutionsProps): React.ReactElement => {
       className={`w-full ${marginTop} ${paddingTop} ${paddingBottom}`}
       style={{ backgroundColor }}
     >
-      <SolutionsAnimation>
-        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
-          {/* Header with SliceHeader */}
-          <div data-animate="header">
-            <SliceHeader 
-              subheading={slice.primary.subheading} 
-              textColor="text-neutral-800"
-              variant="badge"
-              badgeVariant="green"
-            />
-            {slice.primary.heading && (
-              <div className="text-center mb-12 lg:mb-16">
-                <h2 className="text-neutral-800 text-2xl lg:text-4xl max-w-4xl text-left tracking-tight">
-                  {slice.primary.heading}
-                </h2>
-              </div>
-            )}
-          </div>
-
-          {/* Solutions Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-12">
-            {displayedItems.map((item, index) => (
-              <div key={index} data-animate="card">
-                <SolutionCard item={item} index={index} />
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom Button */}
-          {slice.primary.button_text && slice.primary.button_link && (
-            <div className="flex justify-center" data-animate="button">
-              <Button asChild variant="subtle" size="lg">
-                <PrismicNextLink 
-                  field={slice.primary.button_link}
-                  className="inline-flex items-center gap-1.5 text-neutral-800"
-                >
-                  <span>{slice.primary.button_text}</span>
-                  <ExternalLinkIcon className="w-2.5 h-2.5" color="currentColor" />
-                </PrismicNextLink>
-              </Button>
-            </div>
-          )}
-        </div>
-      </SolutionsAnimation>
+      <Suspense fallback={<div>{solutionsContent}</div>}>
+        <SolutionsAnimation>
+          {solutionsContent}
+        </SolutionsAnimation>
+      </Suspense>
     </section>
   );
 };

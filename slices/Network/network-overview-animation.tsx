@@ -25,36 +25,40 @@ export default function NetworkOverviewAnimation({ children }: NetworkOverviewAn
       if (!leftColumn || !rightColumn) return;
 
       // Create a single master timeline with all animations
+      // Optimized trigger point - starts later to reduce lag when scrolling
       const masterTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 85%",
+          start: "top 90%", // Later trigger for better performance
           end: "top 50%",
           toggleActions: "play none none none",
           once: true,
           markers: false,
           invalidateOnRefresh: false,
+          // Reduce animation complexity for better performance
+          anticipatePin: 1,
         },
       });
 
-      // Animate left column elements
+      // Optimized animations with reduced complexity for better performance
+      // Animate left column elements - reduced movement and faster duration
       if (leftColumn.children.length > 0) {
         masterTimeline.from(leftColumn.children, {
-          y: 30,
+          y: 20,
           opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power1.out", // Lighter easing for better performance
         }, 0);
       }
 
-      // Animate right column (warehouse image)
+      // Animate right column (warehouse image) - reduced movement
       masterTimeline.from(rightColumn, {
-        x: 30,
+        x: 20,
         opacity: 0,
-        duration: 0.7,
-        ease: "power2.out",
-      }, 0.1);
+        duration: 0.4,
+        ease: "power1.out",
+      }, 0.05);
 
       // Store ScrollTrigger reference and kill it after animation completes
       if (masterTimeline.scrollTrigger) {

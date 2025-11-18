@@ -28,82 +28,86 @@ export default function ServicesAnimation({ children }: ServicesAnimationProps) 
       const statisticCard = section.querySelector("[data-animate='statistic']");
 
       // Create a single master timeline with all animations
+      // Optimized trigger point - starts later to reduce lag when scrolling
       const masterTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 85%",
+          start: "top 90%", // Later trigger for better performance
           end: "top 50%",
           toggleActions: "play none none none",
           once: true,
           markers: false,
           invalidateOnRefresh: false,
+          // Reduce animation complexity for better performance
+          anticipatePin: 1,
         },
       });
 
-      // Animate header
+      // Optimized animations with reduced complexity for better performance
+      // Animate header - reduced movement and faster duration
       if (header && header.children.length > 0) {
         masterTimeline.from(header.children, {
-          y: 30,
+          y: 20,
           opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power1.out", // Lighter easing for better performance
         }, 0);
       }
 
       // Animate left column (clear transforms after to preserve sticky behavior)
       if (leftColumn && leftColumn.children.length > 0) {
         masterTimeline.from(leftColumn.children, {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          clearProps: "transform", // Clear transform after animation to allow sticky
-        }, 0.1);
-      }
-
-      // Animate images (grouped together)
-      if (images && images.length > 0) {
-        masterTimeline.from(images, {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-        }, 0.1);
-      }
-
-      // Animate statistic card
-      if (statisticCard) {
-        masterTimeline.from(statisticCard, {
-          scale: 0.95,
-          opacity: 0,
-          duration: 0.5,
-          ease: "power2.out",
-        }, 0.2);
-      }
-
-      // Animate cards
-      if (cards && cards.length > 0) {
-        masterTimeline.from(cards, {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-        }, 0.2);
-      }
-
-      // Animate specialties
-      if (specialties && specialties.length > 0) {
-        masterTimeline.from(specialties, {
           y: 20,
           opacity: 0,
-          duration: 0.5,
+          duration: 0.4,
           stagger: 0.05,
-          ease: "power2.out",
-        }, 0.3);
+          ease: "power1.out",
+          clearProps: "transform", // Clear transform after animation to allow sticky
+        }, 0.05);
+      }
+
+      // Animate images (grouped together) - reduced movement
+      if (images && images.length > 0) {
+        masterTimeline.from(images, {
+          y: 20,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power1.out",
+        }, 0.05);
+      }
+
+      // Animate statistic card - reduced scale change
+      if (statisticCard) {
+        masterTimeline.from(statisticCard, {
+          scale: 0.98,
+          opacity: 0,
+          duration: 0.4,
+          ease: "power1.out",
+        }, 0.1);
+      }
+
+      // Animate cards - optimized for performance
+      if (cards && cards.length > 0) {
+        masterTimeline.from(cards, {
+          y: 20,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.05, // Reduced stagger for faster completion
+          ease: "power1.out",
+        }, 0.1);
+      }
+
+      // Animate specialties - reduced movement
+      if (specialties && specialties.length > 0) {
+        masterTimeline.from(specialties, {
+          y: 15,
+          opacity: 0,
+          duration: 0.3,
+          stagger: 0.03, // Reduced stagger for faster completion
+          ease: "power1.out",
+        }, 0.15);
       }
 
       // Store ScrollTrigger reference and kill it after animation completes

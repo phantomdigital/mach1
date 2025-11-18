@@ -1,10 +1,10 @@
 "use client";
 
 import { PrismicNextImage } from "@prismicio/next";
-import type { Content } from "@prismicio/client";
+import type { TestimonialsSliceDefaultItem } from "@/types.generated";
 
 interface TestimonialCardProps {
-  testimonial: Content.TestimonialsSliceDefaultItem;
+  testimonial: TestimonialsSliceDefaultItem;
 }
 
 export default function TestimonialCard({ testimonial }: TestimonialCardProps) {

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Content } from "@prismicio/client";
+import type { TestimonialsSliceDefaultItem } from "@/types.generated";
 import { PrismicNextImage } from "@prismicio/next";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface TestimonialsStackedCarouselProps {
-  testimonials: Content.TestimonialsSliceDefaultItem[];
+  testimonials: TestimonialsSliceDefaultItem[];
   isDarkBackground?: boolean;
 }
 
@@ -120,7 +120,7 @@ function StackedTestimonialCard({
   testimonial,
   isActive,
 }: {
-  testimonial: Content.TestimonialsSliceDefaultItem;
+  testimonial: TestimonialsSliceDefaultItem;
   isActive: boolean;
 }) {
   return (

@@ -3975,6 +3975,28 @@ export interface NewsOverviewSliceDefaultPrimary {
 	subheading: prismic.KeyTextField;
 	
 	/**
+	 * Subheading Style field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose subheading style
+	 * - **Default Value**: badge
+	 * - **API ID Path**: news_overview.default.primary.subheading_variant
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	subheading_variant: prismic.SelectField<"default" | "badge" | "badge-outline" | "underline" | "pill" | "accent-bar" | "minimal", "filled">;
+	
+	/**
+	 * Badge Color (when using badge style) field in *NewsOverview → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose badge color
+	 * - **Default Value**: green
+	 * - **API ID Path**: news_overview.default.primary.subheading_badge_variant
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	subheading_badge_variant: prismic.SelectField<"green" | "featured" | "closed" | "success" | "pending" | "red" | "default" | "secondary" | "destructive", "filled">;
+	
+	/**
 	 * Heading field in *NewsOverview → Default → Primary*
 	 *
 	 * - **Field Type**: Text

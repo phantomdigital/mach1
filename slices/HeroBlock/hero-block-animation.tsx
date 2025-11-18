@@ -27,68 +27,72 @@ export default function HeroBlockAnimation({ children }: HeroBlockAnimationProps
       const button = section.querySelector("[data-animate='button']");
 
       // Create a single master timeline with all animations
+      // Optimized trigger point - starts later to reduce lag when scrolling
       const masterTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 85%",
+          start: "top 90%", // Later trigger for better performance
           end: "top 50%",
           toggleActions: "play none none none",
           once: true,
           markers: false,
           invalidateOnRefresh: false,
+          // Reduce animation complexity for better performance
+          anticipatePin: 1,
         },
       });
 
-      // Animate image (slide in from left)
+      // Optimized animations with reduced complexity for better performance
+      // Animate image (slide in from left) - reduced distance for smoother animation
       if (image) {
         masterTimeline.from(image, {
-          x: -50,
+          x: -30,
           opacity: 0,
-          duration: 0.7,
-          ease: "power2.out",
+          duration: 0.5,
+          ease: "power1.out", // Lighter easing for better performance
         }, 0);
       }
 
-      // Animate header (subheading)
+      // Animate header (subheading) - reduced stagger for faster animation
       if (header && header.children.length > 0) {
         masterTimeline.from(header.children, {
-          y: 30,
+          y: 20,
           opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power1.out",
+        }, 0.05);
+      }
+
+      // Animate heading - reduced movement for smoother animation
+      if (heading) {
+        masterTimeline.from(heading, {
+          y: 20,
+          opacity: 0,
+          duration: 0.4,
+          ease: "power1.out",
         }, 0.1);
       }
 
-      // Animate heading
-      if (heading) {
-        masterTimeline.from(heading, {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          ease: "power2.out",
-        }, 0.2);
-      }
-
-      // Animate stat cards with stagger
+      // Animate stat cards with stagger - optimized for performance
       if (statCards && statCards.length > 0) {
         masterTimeline.from(statCards, {
-          y: 30,
-          opacity: 0,
-          duration: 0.5,
-          stagger: 0.05,
-          ease: "power2.out",
-        }, 0.3);
-      }
-
-      // Animate button
-      if (button) {
-        masterTimeline.from(button, {
           y: 20,
           opacity: 0,
-          duration: 0.5,
-          ease: "power2.out",
-        }, 0.4);
+          duration: 0.4,
+          stagger: 0.03, // Reduced stagger for faster completion
+          ease: "power1.out",
+        }, 0.15);
+      }
+
+      // Animate button - reduced movement
+      if (button) {
+        masterTimeline.from(button, {
+          y: 15,
+          opacity: 0,
+          duration: 0.3,
+          ease: "power1.out",
+        }, 0.2);
       }
 
       // Store ScrollTrigger reference and kill it after animation completes

@@ -4,6 +4,7 @@ import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import type { Content } from "@prismicio/client";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import { formatAuDate } from "@/lib/date-utils";
+import { memo } from "react";
 
 interface NewsCardCompactProps {
   article: Content.NewsDocument;
@@ -11,7 +12,7 @@ interface NewsCardCompactProps {
   isDarkBackground?: boolean;
 }
 
-export default function NewsCardCompact({ article, index, isDarkBackground = false }: NewsCardCompactProps) {
+const NewsCardCompact = memo(function NewsCardCompact({ article, index, isDarkBackground = false }: NewsCardCompactProps) {
   const formattedDate = formatAuDate(article.first_publication_date);
 
 
@@ -43,8 +44,9 @@ export default function NewsCardCompact({ article, index, isDarkBackground = fal
               <PrismicNextImage
                 field={article.data.featured_image}
                 fill
-                sizes="(max-width: 768px) 126px, 312px"
-                quality={95}
+                sizes="(max-width: 768px) 96px, 160px"
+                quality={85}
+                loading="lazy"
                 className={`object-cover transition-transform duration-300 ${imageRounding}`}
               />
             ) : (
@@ -98,5 +100,7 @@ export default function NewsCardCompact({ article, index, isDarkBackground = fal
       </PrismicNextLink>
     </article>
   );
-}
+});
+
+export default NewsCardCompact;
 
