@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
 interface ScrollInstance {
-  scrollTo: (target: string | number | HTMLElement, options?: { immediate?: boolean; duration?: number; offset?: number }) => void
+  scrollTo: (target: string | number | HTMLElement, options?: { immediate?: boolean; duration?: number; offset?: number; easing?: (t: number) => number }) => void
   scroll: number
   stop?: () => void
   start?: () => void

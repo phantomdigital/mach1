@@ -32,7 +32,7 @@ export default function GSAPSmoothScrollProvider({ children }: GSAPSmoothScrollP
     // Expose scroll methods globally for compatibility with existing code
     // Uses GSAP for smooth programmatic scrolling when needed
     const smoothScroll = {
-      scrollTo: (target: string | number | HTMLElement, options?: { immediate?: boolean; duration?: number; offset?: number }) => {
+      scrollTo: (target: string | number | HTMLElement, options?: { immediate?: boolean; duration?: number; offset?: number; easing?: (t: number) => number }) => {
         let scrollTarget = 0
         
         if (typeof target === 'number') {
@@ -63,10 +63,15 @@ export default function GSAPSmoothScrollProvider({ children }: GSAPSmoothScrollP
           
           const startScroll = window.scrollY
           
+          // Use custom easing if provided, otherwise default to power2.out
+          const ease = options?.easing 
+            ? options.easing 
+            : 'power2.out'
+          
           scrollTweenRef.current = gsap.to({ value: startScroll }, {
             value: scrollTarget,
             duration,
-            ease: 'power2.out',
+            ease,
             onUpdate: function() {
               const val = this.targets()[0].value
               window.scrollTo(0, val)
