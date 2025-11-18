@@ -2,7 +2,8 @@ import React, { Suspense } from "react";
 import type { Content } from "@prismicio/client";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass, getPaddingTopClassMobileOnly } from "@/lib/spacing";
-import { HeroButton } from "@/components/ui/hero-button";
+import { Button } from "@/components/ui/button";
+import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import { SliceHeader } from "@/components/slice-header";
 
 // Lazy load animation component to improve initial page load
@@ -15,8 +16,29 @@ export type NetworkOverviewProps = {
   slice: Content.NetworkSliceNetworkOverview;
 };
 
+// Helper function to split statistic number into number and suffix
+function splitStatisticNumber(value: string | null | undefined): { number: string; suffix: string } {
+  if (!value) return { number: "", suffix: "" };
+  
+  // Match digits (including decimals) followed by non-digit characters
+  const match = value.match(/^(\d+(?:\.\d+)?)(.*)$/);
+  
+  if (match) {
+    return {
+      number: match[1],
+      suffix: match[2]
+    };
+  }
+  
+  // If no match, return the whole value as number
+  return { number: value, suffix: "" };
+}
+
 // Content component that renders immediately (no animation dependency)
 function NetworkOverviewContent({ slice }: NetworkOverviewProps) {
+  // Split statistic number into number and suffix
+  const { number: statNumber, suffix: statSuffix } = splitStatisticNumber(slice.primary.statistic_number);
+  
   const networkContent = (
     <div className="flex flex-col lg:flex-row gap-6 lg:gap-28 pt-12">
       {/* Left Column - Globe with Overlay, Text, and Button */}
@@ -33,11 +55,14 @@ function NetworkOverviewContent({ slice }: NetworkOverviewProps) {
             />
             
             {/* Statistic Overlay - Bottom Left */}
-            {(slice.primary.statistic_number || slice.primary.statistic_label) && (
+            {(statNumber || slice.primary.statistic_label) && (
               <div className="absolute bottom-0 left-0">
-                {slice.primary.statistic_number && (
-                  <div className="text-neutral-300 text-5xl lg:text-6xl font-bold leading-none tracking-tight">
-                    {slice.primary.statistic_number}
+                {statNumber && (
+                  <div className="text-neutral-800 text-5xl lg:text-6xl font-bold leading-none tracking-tight">
+                    {statNumber}
+                    {statSuffix && (
+                      <span className="text-mach1-green">{statSuffix}</span>
+                    )}
                   </div>
                 )}
                 {slice.primary.statistic_label && (
@@ -60,11 +85,15 @@ function NetworkOverviewContent({ slice }: NetworkOverviewProps) {
         {/* Button */}
         {slice.primary.button_text && slice.primary.button_link && (
           <div className="mt-auto">
-            <HeroButton asChild size="small" className="w-fit">
-              <PrismicNextLink field={slice.primary.button_link}>
-                {slice.primary.button_text}
+            <Button asChild variant="subtle" size="lg" className="w-fit">
+              <PrismicNextLink 
+                field={slice.primary.button_link}
+                className="inline-flex items-center gap-1.5 text-neutral-800 px-0!"
+              >
+                <span>{slice.primary.button_text}</span>
+                <ExternalLinkIcon className="w-2.5 h-2.5" color="currentColor" />
               </PrismicNextLink>
-            </HeroButton>
+            </Button>
           </div>
         )}
       </div>
@@ -76,7 +105,7 @@ function NetworkOverviewContent({ slice }: NetworkOverviewProps) {
             <div className="relative w-full h-full min-h-[400px]">
               <PrismicNextImage
                 field={slice.primary.warehouse_image}
-                className="w-full h-full object-cover rounded-xs"
+                className="w-full h-full object-cover rounded-sm"
                 loading="lazy"
                 quality={85}
                 sizes="(max-width: 1024px) 100vw, 60vw"

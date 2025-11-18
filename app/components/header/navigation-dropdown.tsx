@@ -305,12 +305,17 @@ export function NavigationDropdown({
       {/* Bridge to maintain hover state across the gap between trigger and dropdown */}
       {/* Width is reduced by 40px (20px each side) to match actual dropdown bounds */}
       <div 
-        className={`absolute top-full left-1/2 -translate-x-1/2 bg-transparent z-40 ${
+        className={`absolute top-full left-1/2 -translate-x-1/2 z-40 ${
           isOpen ? 'pointer-events-auto' : 'pointer-events-none hidden'
         }`}
         style={{ 
           height: `${topOffset + 4}px`,
-          width: `${Math.max(dynamicWidth - 40, 200)}px` // Reduced by 40px (20px each side) for tighter bounds
+          width: `${Math.max(dynamicWidth - 40, 200)}px`, // Reduced by 40px (20px each side) for tighter bounds
+          background: 'transparent',
+          border: 'none',
+          outline: 'none',
+          opacity: 0,
+          pointerEvents: isOpen ? 'auto' : 'none'
         }}
         onMouseEnter={handleDropdownMouseEnter}
         onMouseLeave={handleDropdownMouseLeave}
