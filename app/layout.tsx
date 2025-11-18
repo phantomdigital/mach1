@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Manrope } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import HeaderServerWrapper from "./components/header/header-server-wrapper";
 import Footer from "./components/footer/footer";
@@ -47,6 +48,22 @@ export default function RootLayout({
               <Footer />
             </DropdownStateProvider>
           </GSAPSmoothScrollProvider>
+          {/* Privacy-friendly analytics by Plausible */}
+          <Script
+            src="https://plausible.io/js/pa-MgCdtXHVcpVBqSjqd-DX3.js"
+            strategy="afterInteractive"
+          />
+          <Script
+            id="plausible-init"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)};
+                plausible.init=plausible.init||function(i){plausible.o=i||{}};
+                plausible.init();
+              `,
+            }}
+          />
       </body>
     </html>
   );

@@ -122,7 +122,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
               {/* Grid */}
               <div className="relative grid grid-cols-1 lg:grid-cols-[2.5fr_1fr]">
               {/* Left Column - Hero Image with Gradient Overlay */}
-              <div className="relative min-h-[400px] md:min-h-[500px] lg:min-h-[700px] overflow-hidden">
+              <div className="relative min-h-[400px] md:min-h-[500px] lg:min-h-[720px] overflow-hidden">
                 <HomepageHeroImage 
                   image={slice.primary.background_image}
                   positionX={slice.primary.image_position_x ?? undefined}
