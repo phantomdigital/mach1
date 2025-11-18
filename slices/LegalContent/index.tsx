@@ -9,6 +9,7 @@ import {
 } from "@/lib/spacing";
 import { LegalHeader } from "./legal-header";
 import { TableOfContents } from "./table-of-contents";
+import { ScrollToTopButton } from "./scroll-to-top-button";
 
 /**
  * Props for `LegalContent`.
@@ -93,6 +94,9 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
           </div>
         </div>
       </div>
+
+      {/* Scroll to Top Button */}
+      <ScrollToTopButton />
     </section>
   );
 };

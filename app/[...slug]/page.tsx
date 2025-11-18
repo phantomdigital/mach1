@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import { SliceZone } from "@prismicio/react"
 import { createClient, locales, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
-import { generatePrismicMetadata } from "@/lib/metadata";
+import { generatePrismicMetadata, generateMetadata as generateCustomMetadata } from "@/lib/metadata";
+import { LegalDatesProvider } from "@/slices/LegalContent/legal-dates-context";
 import QuoteSummaryPage from "@/app/quote/summary/page";
+import type { Content } from "@prismicio/client";
 
 type Params = { slug: string[] };
 
@@ -62,6 +64,24 @@ export default async function Page({ params }: { params: Promise<Params> }) {
       lang: locale
     });
     
+    // Check if page contains LegalContent slice
+    const hasLegalContent = page.data.slices?.some(
+      (slice) => slice.slice_type === "legal_content"
+    );
+    
+    if (hasLegalContent) {
+      return (
+        <main>
+          <LegalDatesProvider 
+            firstPublicationDate={page.first_publication_date}
+            lastPublicationDate={page.last_publication_date}
+          >
+            <SliceZone slices={page.data.slices} components={components} />
+          </LegalDatesProvider>
+        </main>
+      );
+    }
+    
     return (
       <main>
         <SliceZone slices={page.data.slices} components={components} />
@@ -115,6 +135,24 @@ export async function generateMetadata({
     const page = await client.getByUID("page", uid, { lang: locale });
     
     const url = locale === defaultLocale ? `/${uid}` : `/${locale}/${uid}`;
+    
+    // Check if page contains LegalContent slice and extract title
+    const legalContentSlice = page.data.slices?.find(
+      (slice) => slice.slice_type === "legal_content"
+    ) as Content.LegalContentSlice | undefined;
+    
+    // For legal pages, use the page title from the LegalContent slice
+    if (legalContentSlice?.primary?.page_title) {
+      const title = legalContentSlice.primary.page_title;
+      return generateCustomMetadata({
+        title: title,
+        description: `Read our ${title.toLowerCase()} to understand your rights and obligations.`,
+        url,
+        keywords: [uid.replace(/-/g, " "), "MACH 1 Logistics", "legal", title.toLowerCase()],
+        publishedTime: page.first_publication_date || undefined,
+        modifiedTime: page.last_publication_date || undefined,
+      });
+    }
     
     return generatePrismicMetadata(page, {
       url,
