@@ -13,75 +13,94 @@ interface NewsOverviewAnimationProps {
 export default function NewsOverviewAnimation({ children }: NewsOverviewAnimationProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const animationInitializedRef = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section || animationInitializedRef.current) return;
 
-    const ctx = gsap.context(() => {
-      // Batch DOM queries for better performance
-      const animateElements = {
-        header: section.querySelector("[data-animate='header']"),
-        sidebar: section.querySelector("[data-animate='sidebar']"),
-        featuredArticle: section.querySelector("[data-animate='featured-article']"),
-        previewCards: section.querySelectorAll("[data-animate='preview-card']"),
-        button: section.querySelector("[data-animate='button']")
-      };
+    // Use Intersection Observer to delay ScrollTrigger initialization until near viewport
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        // Only initialize when element is within 200vh of viewport
+        if (entry.isIntersecting || entry.boundingClientRect.top < window.innerHeight * 2) {
+          observer.disconnect();
+          if (animationInitializedRef.current) return;
+          animationInitializedRef.current = true;
 
-      // Create optimized timeline with reduced complexity
-      const masterTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 90%", // Later trigger for better performance
-          toggleActions: "play none none none",
-          once: true,
-          markers: false,
-          invalidateOnRefresh: false,
-        },
-      });
+          const ctx = gsap.context(() => {
+            // Batch DOM queries for better performance
+            const animateElements = {
+              header: section.querySelector("[data-animate='header']"),
+              sidebar: section.querySelector("[data-animate='sidebar']"),
+              featuredArticle: section.querySelector("[data-animate='featured-article']"),
+              previewCards: section.querySelectorAll("[data-animate='preview-card']"),
+              button: section.querySelector("[data-animate='button']")
+            };
 
-      // Simplified animations with proper type checking
-      const animationsConfig = [
-        { element: animateElements.header?.children, props: { y: 20, opacity: 0, duration: 0.4 }, time: 0 },
-        { element: animateElements.sidebar, props: { x: -20, opacity: 0, duration: 0.4 }, time: 0.05 },
-        { element: animateElements.featuredArticle, props: { y: 20, opacity: 0, duration: 0.4 }, time: 0.1 },
-        { element: animateElements.previewCards, props: { y: 20, opacity: 0, duration: 0.4, stagger: 0.05 }, time: 0.15 },
-        { element: animateElements.button, props: { y: 15, opacity: 0, duration: 0.3 }, time: 0.2 }
-      ];
+            // Create optimized timeline with reduced complexity
+            const masterTimeline = gsap.timeline({
+              scrollTrigger: {
+                trigger: section,
+                start: "top 95%", // Even later trigger for better performance
+                toggleActions: "play none none none",
+                once: true,
+                markers: false,
+                invalidateOnRefresh: false,
+                refreshPriority: -1, // Lower priority to reduce checks
+              },
+            });
 
-      animationsConfig.forEach(({ element, props, time }) => {
-        if (element) {
-          // Check if it's a NodeList or HTMLCollection
-          const isCollection = 'length' in element;
-          if (isCollection && (element as NodeListOf<Element>).length > 0) {
-            masterTimeline.from(element, { ...props, ease: "power1.out" }, time);
-          } else if (!isCollection && element.nodeType) {
-            masterTimeline.from(element, { ...props, ease: "power1.out" }, time);
-          }
+            // Simplified animations with proper type checking
+            const animationsConfig = [
+              { element: animateElements.header?.children, props: { y: 20, opacity: 0, duration: 0.4 }, time: 0 },
+              { element: animateElements.sidebar, props: { x: -20, opacity: 0, duration: 0.4 }, time: 0.05 },
+              { element: animateElements.featuredArticle, props: { y: 20, opacity: 0, duration: 0.4 }, time: 0.1 },
+              { element: animateElements.previewCards, props: { y: 20, opacity: 0, duration: 0.4, stagger: 0.05 }, time: 0.15 },
+              { element: animateElements.button, props: { y: 15, opacity: 0, duration: 0.3 }, time: 0.2 }
+            ];
+
+            animationsConfig.forEach(({ element, props, time }) => {
+              if (element) {
+                // Check if it's a NodeList or HTMLCollection
+                const isCollection = 'length' in element;
+                if (isCollection && (element as NodeListOf<Element>).length > 0) {
+                  masterTimeline.from(element, { ...props, ease: "power1.out" }, time);
+                } else if (!isCollection && element.nodeType) {
+                  masterTimeline.from(element, { ...props, ease: "power1.out" }, time);
+                }
+              }
+            });
+
+            // Store ScrollTrigger reference and kill it after animation completes
+            if (masterTimeline.scrollTrigger) {
+              scrollTriggerRef.current = masterTimeline.scrollTrigger;
+              masterTimeline.eventCallback("onComplete", () => {
+                if (scrollTriggerRef.current) {
+                  scrollTriggerRef.current.kill();
+                  scrollTriggerRef.current = null;
+                }
+              });
+            }
+          }, section);
         }
-      });
-
-      // Store ScrollTrigger reference and kill it after animation completes
-      if (masterTimeline.scrollTrigger) {
-        scrollTriggerRef.current = masterTimeline.scrollTrigger;
-        masterTimeline.eventCallback("onComplete", () => {
-          if (scrollTriggerRef.current) {
-            scrollTriggerRef.current.kill();
-            scrollTriggerRef.current = null;
-          }
-        });
+      },
+      {
+        rootMargin: "200vh 0px", // Start observing 200vh before viewport
+        threshold: 0
       }
-    }, section);
+    );
+
+    observer.observe(section);
 
     return () => {
+      observer.disconnect();
       // Kill ScrollTrigger if it exists
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
         scrollTriggerRef.current = null;
       }
-      
-      // Revert GSAP context
-      ctx.revert();
     };
   }, []);
 
