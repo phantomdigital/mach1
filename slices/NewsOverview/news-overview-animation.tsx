@@ -10,135 +10,90 @@ interface NewsOverviewAnimationProps {
   children: React.ReactNode;
 }
 
+/**
+ * NewsOverview Animation - Component-scoped GSAP ScrollTrigger animation.
+ * Animation logic lives within this component, following React best practices.
+ */
 export default function NewsOverviewAnimation({ children }: NewsOverviewAnimationProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
-  const animationInitializedRef = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section || animationInitializedRef.current) return;
+    if (!section) return;
 
-    // Simple check: if element is far from viewport, delay ScrollTrigger initialization
-    const initScrollTrigger = () => {
-      if (animationInitializedRef.current) return;
-      animationInitializedRef.current = true;
+    const ctx = gsap.context(() => {
+      const header = section.querySelector("[data-animate='header']");
+      const sidebar = section.querySelector("[data-animate='sidebar']");
+      const featuredArticle = section.querySelector("[data-animate='featured-article']");
+      const previewCards = section.querySelectorAll("[data-animate='preview-card']");
+      const button = section.querySelector("[data-animate='button']");
 
-      const ctx = gsap.context(() => {
-            // Batch DOM queries for better performance
-            const animateElements = {
-              header: section.querySelector("[data-animate='header']"),
-              sidebar: section.querySelector("[data-animate='sidebar']"),
-              featuredArticle: section.querySelector("[data-animate='featured-article']"),
-              previewCards: section.querySelectorAll("[data-animate='preview-card']"),
-              button: section.querySelector("[data-animate='button']")
-            };
+      if (!header && !sidebar) return;
 
-            // Create optimized timeline with reduced complexity
-            const masterTimeline = gsap.timeline({
-              scrollTrigger: {
-                trigger: section,
-                start: "top 95%", // Even later trigger for better performance
-                toggleActions: "play none none none",
-                once: true,
-                markers: false,
-                invalidateOnRefresh: false,
-                refreshPriority: -1, // Lower priority to reduce checks
-              },
-            });
+      // Create timeline with ScrollTrigger
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
 
-            // Simplified animations with proper type checking
-            const animationsConfig = [
-              { element: animateElements.header?.children, props: { y: 20, opacity: 0, duration: 0.4 }, time: 0 },
-              { element: animateElements.sidebar, props: { x: -20, opacity: 0, duration: 0.4 }, time: 0.05 },
-              { element: animateElements.featuredArticle, props: { y: 20, opacity: 0, duration: 0.4 }, time: 0.1 },
-              { element: animateElements.previewCards, props: { y: 20, opacity: 0, duration: 0.4, stagger: 0.05 }, time: 0.15 },
-              { element: animateElements.button, props: { y: 15, opacity: 0, duration: 0.3 }, time: 0.2 }
-            ];
-
-            animationsConfig.forEach(({ element, props, time }) => {
-              if (element) {
-                // Check if it's a NodeList or HTMLCollection
-                const isCollection = 'length' in element;
-                if (isCollection && (element as NodeListOf<Element>).length > 0) {
-                  masterTimeline.from(element, { ...props, ease: "power1.out" }, time);
-                } else if (!isCollection && element.nodeType) {
-                  masterTimeline.from(element, { ...props, ease: "power1.out" }, time);
-                }
-              }
-            });
-
-            // Store ScrollTrigger reference and kill it after animation completes
-            if (masterTimeline.scrollTrigger) {
-              scrollTriggerRef.current = masterTimeline.scrollTrigger;
-              masterTimeline.eventCallback("onComplete", () => {
-                if (scrollTriggerRef.current) {
-                  scrollTriggerRef.current.kill();
-                  scrollTriggerRef.current = null;
-                }
-              });
-            }
-          }, section);
-    };
-
-    // Check if element is near viewport (within 200vh)
-    const checkPosition = () => {
-      const rect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const distanceFromTop = rect.top;
-      
-      // If within 200vh of viewport, initialize immediately
-      if (distanceFromTop < viewportHeight * 2) {
-        initScrollTrigger();
-        return true;
+      // Animate header children
+      if (header?.children.length) {
+        tl.from(header.children, {
+          y: 20,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power1.out",
+        }, 0);
       }
-      return false;
-    };
 
-    // Throttled scroll handler for checking position
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (checkPosition()) {
-            window.removeEventListener('scroll', handleScroll);
-          }
-          ticking = false;
-        });
-        ticking = true;
+      // Animate sidebar
+      if (sidebar) {
+        tl.from(sidebar, {
+          x: -20,
+          opacity: 0,
+          duration: 0.4,
+          ease: "power1.out",
+        }, 0.05);
       }
-    };
 
-    // Check immediately on mount
-    if (!checkPosition()) {
-      // If far away, set up a throttled scroll listener to check periodically
-      // Use requestIdleCallback if available, otherwise setTimeout
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(() => {
-          if (!animationInitializedRef.current) {
-            window.addEventListener('scroll', handleScroll, true);
-            // Also check on next frame in case already scrolled
-            requestAnimationFrame(checkPosition);
-          }
-        });
-      } else {
-        setTimeout(() => {
-          if (!animationInitializedRef.current) {
-            window.addEventListener('scroll', handleScroll, true);
-            requestAnimationFrame(checkPosition);
-          }
-        }, 100);
+      // Animate featured article
+      if (featuredArticle) {
+        tl.from(featuredArticle, {
+          y: 20,
+          opacity: 0,
+          duration: 0.4,
+          ease: "power1.out",
+        }, 0.1);
       }
-    }
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll, true);
-      // Kill ScrollTrigger if it exists
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
-        scrollTriggerRef.current = null;
+      // Animate preview cards
+      if (previewCards.length) {
+        tl.from(previewCards, {
+          y: 20,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power1.out",
+        }, 0.15);
       }
-    };
+
+      // Animate button
+      if (button) {
+        tl.from(button, {
+          y: 15,
+          opacity: 0,
+          duration: 0.3,
+          ease: "power1.out",
+        }, 0.2);
+      }
+    }, section);
+
+    return () => ctx.revert();
   }, []);
 
   return <div ref={sectionRef}>{children}</div>;
