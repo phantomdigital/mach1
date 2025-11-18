@@ -19,17 +19,12 @@ export default function SolutionsAnimation({ children }: SolutionsAnimationProps
     const section = sectionRef.current;
     if (!section || animationInitializedRef.current) return;
 
-    // Use Intersection Observer to delay ScrollTrigger initialization until near viewport
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        // Only initialize when element is within 200vh of viewport
-        if (entry.isIntersecting || entry.boundingClientRect.top < window.innerHeight * 2) {
-          observer.disconnect();
-          if (animationInitializedRef.current) return;
-          animationInitializedRef.current = true;
+    // Simple check: if element is far from viewport, delay ScrollTrigger initialization
+    const initScrollTrigger = () => {
+      if (animationInitializedRef.current) return;
+      animationInitializedRef.current = true;
 
-          const ctx = gsap.context(() => {
+      const ctx = gsap.context(() => {
             const header = section.querySelector("[data-animate='header']");
             const cards = section.querySelectorAll("[data-animate='card']");
             const button = section.querySelector("[data-animate='button']");
@@ -97,18 +92,59 @@ export default function SolutionsAnimation({ children }: SolutionsAnimationProps
               });
             }
           }, section);
-        }
-      },
-      {
-        rootMargin: "100vh 0px", // Start observing 200vh before viewport
-        threshold: 0
-      }
-    );
+    };
 
-    observer.observe(section);
+    // Check if element is near viewport (within 200vh)
+    const checkPosition = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const distanceFromTop = rect.top;
+      
+      // If within 200vh of viewport, initialize immediately
+      if (distanceFromTop < viewportHeight * 2) {
+        initScrollTrigger();
+        return true;
+      }
+      return false;
+    };
+
+    // Throttled scroll handler for checking position
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (checkPosition()) {
+            window.removeEventListener('scroll', handleScroll);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Check immediately on mount
+    if (!checkPosition()) {
+      // If far away, set up a throttled scroll listener to check periodically
+      // Use requestIdleCallback if available, otherwise setTimeout
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => {
+          if (!animationInitializedRef.current) {
+            window.addEventListener('scroll', handleScroll, true);
+            requestAnimationFrame(checkPosition);
+          }
+        });
+      } else {
+        setTimeout(() => {
+          if (!animationInitializedRef.current) {
+            window.addEventListener('scroll', handleScroll, true);
+            requestAnimationFrame(checkPosition);
+          }
+        }, 100);
+      }
+    }
 
     return () => {
-      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll, true);
       // Kill ScrollTrigger if it exists
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
