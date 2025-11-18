@@ -76,7 +76,7 @@ function NetworkOverviewContent({ slice }: NetworkOverviewProps) {
             <div className="relative w-full h-full min-h-[400px]">
               <PrismicNextImage
                 field={slice.primary.warehouse_image}
-                className="w-full h-full object-cover rounded-sm"
+                className="w-full h-full object-cover rounded-xs"
                 loading="lazy"
                 quality={85}
                 sizes="(max-width: 1024px) 100vw, 60vw"
