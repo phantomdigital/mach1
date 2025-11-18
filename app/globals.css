@@ -485,35 +485,27 @@ body {
   animation: slow-pan 20s ease-in-out infinite alternate;
 }
 
-/* Lenis Smooth Scrolling Styles */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
-
-/* Performance optimization: reduce repaints during scroll */
-.lenis.lenis-smooth {
-  will-change: scroll-position;
-}
-
-html.lenis-smooth {
+/* Native Smooth Scrolling - Hardware Accelerated */
+html {
+  scroll-behavior: smooth;
   scroll-padding-top: 0;
+}
+
+/* Performance optimization: use native scrolling for better performance */
+body {
+  -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
+  overscroll-behavior-y: contain; /* Prevent overscroll bounce */
+}
+
+/* Optimize scroll performance */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent layout shifts during scroll */
+[data-lenis-prevent] {
+  overscroll-behavior: contain;
 }
 
 ::selection {

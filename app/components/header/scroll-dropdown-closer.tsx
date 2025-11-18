@@ -1,16 +1,14 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { useLenis } from '@/hooks/use-lenis'
 import { useDropdownState } from './dropdown-state-context'
 
 /**
  * Client component that closes header dropdowns when user scrolls
- * Uses both Lenis and native scroll events for comprehensive coverage
+ * Uses native scroll events for optimal performance
  * Reopens dropdown if mouse is still over navigation item after scroll
  */
 export function ScrollDropdownCloser() {
-  const lenis = useLenis()
   const { closeDropdown, openDropdown, openDropdownId } = useDropdownState()
   const reopenTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const scrollCheckTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -91,7 +89,7 @@ export function ScrollDropdownCloser() {
       }, 200) // Wait 200ms after last scroll event before checking
     }
 
-    // Listen to native scroll events (catches all scroll scenarios)
+    // Listen to native scroll events - throttled for performance
     let ticking = false
     const handleNativeScroll = () => {
       if (!ticking) {
@@ -105,18 +103,10 @@ export function ScrollDropdownCloser() {
 
     window.addEventListener('scroll', handleNativeScroll, { passive: true })
 
-    // Also listen to Lenis scroll events if available and it supports event listeners
-    if (lenis && typeof lenis.on === 'function') {
-      lenis.on('scroll', handleScroll)
-    }
-
     // Cleanup
     return () => {
       window.removeEventListener('scroll', handleNativeScroll)
       window.removeEventListener('mousemove', handleMouseMove)
-      if (lenis && typeof lenis.off === 'function') {
-        lenis.off('scroll', handleScroll)
-      }
       if (reopenTimeoutRef.current) {
         clearTimeout(reopenTimeoutRef.current)
       }
@@ -124,7 +114,7 @@ export function ScrollDropdownCloser() {
         clearTimeout(scrollCheckTimeoutRef.current)
       }
     }
-  }, [lenis, closeDropdown, openDropdown, openDropdownId])
+  }, [closeDropdown, openDropdown, openDropdownId])
 
   // This component doesn't render anything
   return null
