@@ -10,57 +10,62 @@ interface TestimonialsStackedAnimationProps {
   children: React.ReactNode;
 }
 
+/**
+ * TestimonialsStacked Animation - Component-scoped GSAP ScrollTrigger animation.
+ * Animation logic lives within this component, following React best practices.
+ */
 export default function TestimonialsStackedAnimation({ children }: TestimonialsStackedAnimationProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
     const ctx = gsap.context(() => {
-      const header = sectionRef.current?.querySelector("[data-animate='header']");
-      const carousel = sectionRef.current?.querySelector("[data-animate='carousel']");
+      const header = section.querySelector("[data-animate='header']");
+      const carousel = section.querySelector("[data-animate='carousel']");
 
-      if (!header && !carousel) {
-        return;
-      }
+      if (!header && !carousel) return;
 
-      // Animate header (subheading, heading, description)
-      if (header && header.children.length > 0) {
-        gsap.from(header.children, {
-          y: 30,
+      // Create timeline with ScrollTrigger - optimized for performance
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+          markers: false,
+          invalidateOnRefresh: false,
+        },
+      });
+
+      // Animate header children - faster duration for snappier feel
+      if (header?.children.length) {
+        tl.from(header.children, {
+          y: 20,
           opacity: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            end: "top 50%",
-            toggleActions: "play none none none",
-            once: true,
-          },
-        });
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power1.out",
+        }, 0);
       }
 
-      // Animate carousel
+      // Animate carousel - optimized with will-change hint
       if (carousel) {
-        gsap.from(carousel, {
-          x: 50,
+        gsap.set(carousel, { willChange: "transform, opacity" });
+        tl.from(carousel, {
+          x: 30,
           opacity: 0,
-          duration: 1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: carousel,
-            start: "top 80%",
-            end: "top 50%",
-            toggleActions: "play none none none",
-            once: true,
+          duration: 0.5,
+          ease: "power1.out",
+          onComplete: () => {
+            gsap.set(carousel, { willChange: "auto" });
           },
-        });
+        }, 0.1);
       }
-    }, sectionRef);
+    }, section);
 
-    return () => {
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return <div ref={sectionRef}>{children}</div>;

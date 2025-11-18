@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import type { TestimonialsSliceDefaultItem } from "@/types.generated";
 import { PrismicNextImage } from "@prismicio/next";
 import { cn } from "@/lib/utils";
@@ -18,19 +18,43 @@ export default function TestimonialsStackedCarousel({
   const [current, setCurrent] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrent((prev) => (prev + 1) % testimonials.length);
-    setTimeout(() => setIsAnimating(false), 600);
-  };
+    setTimeout(() => setIsAnimating(false), 500);
+  }, [isAnimating, testimonials.length]);
 
-  const goToPrev = () => {
+  const goToPrev = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-    setTimeout(() => setIsAnimating(false), 600);
-  };
+    setTimeout(() => setIsAnimating(false), 500);
+  }, [isAnimating, testimonials.length]);
+
+  // Memoize visible cards to avoid unnecessary renders
+  const visibleCards = useMemo(() => {
+    return testimonials.map((testimonial, index) => {
+      let position = index - current;
+      if (position < -1) position = position + testimonials.length;
+      if (position > testimonials.length - 2) position = position - testimonials.length;
+
+      const isCurrent = position === 0;
+      const isNext = position === 1;
+      const isPrev = position === -1;
+      const isVisible = isCurrent || isNext || isPrev;
+
+      return {
+        testimonial,
+        index,
+        position,
+        isCurrent,
+        isNext,
+        isPrev,
+        isVisible,
+      };
+    });
+  }, [testimonials, current]);
 
   return (
     <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-16 lg:py-24">
@@ -69,35 +93,23 @@ export default function TestimonialsStackedCarousel({
 
         {/* Stacked Cards - Wider with more overlap */}
         <div className="relative w-full max-w-2xl sm:max-w-3xl lg:max-w-5xl xl:max-w-6xl h-full">
-          {testimonials.map((testimonial, index) => {
-            // Calculate position relative to current
-            let position = index - current;
-            if (position < -1) position = position + testimonials.length;
-            if (position > testimonials.length - 2) position = position - testimonials.length;
-
-            // Determine which layer this card is in
-            const isCurrent = position === 0;
-            const isNext = position === 1;
-            const isPrev = position === -1;
-            const isVisible = isCurrent || isNext || isPrev;
+          {visibleCards.map(({ testimonial, index, isCurrent, isNext, isPrev, isVisible }) => {
+            // Only render cards that are visible (current, next, prev) for performance
+            if (!isVisible) return null;
 
             return (
               <div
                 key={index}
-                className={cn(
-                  "absolute inset-0 transition-all duration-600 ease-out",
-                  !isVisible && "opacity-0 pointer-events-none"
-                )}
+                className="absolute inset-0"
                 style={{
                   transform: isCurrent
                     ? "translateX(0%) scale(1) translateZ(0)"
                     : isNext
                     ? "translateX(18%) scale(0.88) translateZ(-100px)"
-                    : isPrev
-                    ? "translateX(-18%) scale(0.88) translateZ(-100px)"
-                    : "translateX(0%) scale(0.8) translateZ(-200px)",
-                  zIndex: isCurrent ? 30 : isNext || isPrev ? 20 : 10,
-                  opacity: isVisible ? 1 : 0,
+                    : "translateX(-18%) scale(0.88) translateZ(-100px)",
+                  zIndex: isCurrent ? 30 : 20,
+                  willChange: "transform",
+                  transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
               >
                 <StackedTestimonialCard
@@ -115,8 +127,8 @@ export default function TestimonialsStackedCarousel({
   );
 }
 
-// Individual card component with full-width image and overlay text
-function StackedTestimonialCard({
+// Individual card component with full-width image and overlay text - memoized for performance
+const StackedTestimonialCard = React.memo(function StackedTestimonialCard({
   testimonial,
   isActive,
 }: {
@@ -126,9 +138,12 @@ function StackedTestimonialCard({
   return (
     <div 
       className={cn(
-        "w-full h-full rounded-sm overflow-hidden bg-white transition-shadow duration-300",
+        "w-full h-full rounded-sm overflow-hidden bg-white",
         isActive && "shadow-2xl"
       )}
+      style={{
+        transition: isActive ? "box-shadow 0.3s ease-out" : "none",
+      }}
     >
       {/* Full width/height background image with text overlay */}
       <div className="relative w-full h-full">
@@ -138,10 +153,17 @@ function StackedTestimonialCard({
             <PrismicNextImage
               field={testimonial.client_photo}
               className="w-full h-full object-cover"
+              priority={isActive}
+              loading={isActive ? "eager" : "lazy"}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 70vw"
             />
-            {/* Dark gradient overlay for text contrast - extended coverage */}
-            <div className="absolute inset-0 bg-gradient-to-t from-dark-blue via-dark-blue/85 to-dark-blue/50" />
-            <div className="absolute inset-0 bg-gradient-to-r from-dark-blue/40 via-transparent to-dark-blue/40" />
+            {/* Optimized single gradient overlay for better performance */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: "linear-gradient(to top, rgba(20, 20, 51, 1) 0%, rgba(20, 20, 51, 0.85) 50%, rgba(20, 20, 51, 0.5) 100%), linear-gradient(to right, rgba(20, 20, 51, 0.4) 0%, transparent 50%, rgba(20, 20, 51, 0.4) 100%)",
+              }}
+            />
           </div>
         ) : (
           // Fallback solid background if no photo
@@ -204,5 +226,5 @@ function StackedTestimonialCard({
       </div>
     </div>
   );
-}
+});
 
