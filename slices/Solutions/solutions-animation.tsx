@@ -41,33 +41,33 @@ export default function SolutionsAnimation({ children }: SolutionsAnimationProps
       // Animate header children
       if (header?.children.length) {
         tl.from(header.children, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power1.out",
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
         }, 0);
       }
 
       // Animate cards with stagger
       if (cards.length) {
         tl.from(cards, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power1.out",
-        }, 0.1);
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
+        }, 0.2);
       }
 
       // Animate button
       if (button) {
         tl.from(button, {
-          y: 15,
+          y: 20,
           opacity: 0,
-          duration: 0.3,
-          ease: "power1.out",
-        }, 0.2);
+          duration: 0.7,
+          ease: "power2.out",
+        }, 0.4);
       }
     }, section);
 

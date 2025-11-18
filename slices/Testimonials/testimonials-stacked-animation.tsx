@@ -39,14 +39,14 @@ export default function TestimonialsStackedAnimation({ children }: TestimonialsS
         },
       });
 
-      // Animate header children - faster duration for snappier feel
+      // Animate header children - slower, more elegant animation
       if (header?.children.length) {
         tl.from(header.children, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power1.out",
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
         }, 0);
       }
 
@@ -54,14 +54,14 @@ export default function TestimonialsStackedAnimation({ children }: TestimonialsS
       if (carousel) {
         gsap.set(carousel, { willChange: "transform, opacity" });
         tl.from(carousel, {
-          x: 30,
+          x: 40,
           opacity: 0,
-          duration: 0.5,
-          ease: "power1.out",
+          duration: 0.9,
+          ease: "power2.out",
           onComplete: () => {
             gsap.set(carousel, { willChange: "auto" });
           },
-        }, 0.1);
+        }, 0.2);
       }
     }, section);
 

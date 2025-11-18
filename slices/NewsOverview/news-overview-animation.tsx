@@ -43,53 +43,53 @@ export default function NewsOverviewAnimation({ children }: NewsOverviewAnimatio
       // Animate header children
       if (header?.children.length) {
         tl.from(header.children, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power1.out",
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
         }, 0);
       }
 
       // Animate sidebar
       if (sidebar) {
         tl.from(sidebar, {
-          x: -20,
+          x: -30,
           opacity: 0,
-          duration: 0.4,
-          ease: "power1.out",
-        }, 0.05);
+          duration: 0.8,
+          ease: "power2.out",
+        }, 0.1);
       }
 
       // Animate featured article
       if (featuredArticle) {
         tl.from(featuredArticle, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          ease: "power1.out",
-        }, 0.1);
+          duration: 0.8,
+          ease: "power2.out",
+        }, 0.2);
       }
 
       // Animate preview cards
       if (previewCards.length) {
         tl.from(previewCards, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power1.out",
-        }, 0.15);
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
+        }, 0.3);
       }
 
       // Animate button
       if (button) {
         tl.from(button, {
-          y: 15,
+          y: 20,
           opacity: 0,
-          duration: 0.3,
-          ease: "power1.out",
-        }, 0.2);
+          duration: 0.7,
+          ease: "power2.out",
+        }, 0.5);
       }
     }, section);
 

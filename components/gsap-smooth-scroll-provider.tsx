@@ -11,8 +11,8 @@ interface GSAPSmoothScrollProviderProps {
 }
 
 /**
- * Simplified scroll provider that uses native browser scrolling for optimal performance.
- * ScrollTrigger works perfectly with native scrolling - no need for custom smooth scroll.
+ * Scroll provider that uses native browser scrolling for optimal performance.
+ * ScrollTrigger works perfectly with native scrolling.
  * Only provides programmatic scrollTo functionality for compatibility.
  */
 export default function GSAPSmoothScrollProvider({ children }: GSAPSmoothScrollProviderProps) {

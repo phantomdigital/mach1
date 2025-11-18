@@ -53,66 +53,66 @@ export default function ServicesAnimation({ children }: ServicesAnimationProps) 
       // Animate header children
       if (header?.children.length) {
         tl.from(header.children, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power1.out",
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
         }, 0);
       }
 
       // Animate left column
       if (leftColumn?.children.length) {
         tl.from(leftColumn.children, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power1.out",
-        }, 0.05);
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
+        }, 0.1);
       }
 
       // Animate images
       if (images.length) {
         tl.from(images, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power1.out",
-        }, 0.05);
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
+        }, 0.1);
       }
 
       // Animate statistic card
       if (statisticCard) {
         tl.from(statisticCard, {
-          scale: 0.98,
+          scale: 0.95,
           opacity: 0,
-          duration: 0.4,
-          ease: "power1.out",
-        }, 0.1);
+          duration: 0.7,
+          ease: "power2.out",
+        }, 0.2);
       }
 
       // Animate cards
       if (cards.length) {
         tl.from(cards, {
-          y: 20,
+          y: 30,
           opacity: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power1.out",
-        }, 0.1);
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power2.out",
+        }, 0.2);
       }
 
       // Animate specialties
       if (specialties.length) {
         tl.from(specialties, {
-          y: 15,
+          y: 20,
           opacity: 0,
-          duration: 0.3,
-          stagger: 0.03,
-          ease: "power1.out",
-        }, 0.15);
+          duration: 0.6,
+          stagger: 0.08,
+          ease: "power2.out",
+        }, 0.3);
       }
     }, section);
 
