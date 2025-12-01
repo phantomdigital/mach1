@@ -5,6 +5,7 @@ import { PageTopperClient, PageTopperVisibilityController } from "./page-topper-
 import { PageTopperAnimation } from "./page-topper-animation";
 import { PageTopperButtons } from "./page-topper-buttons";
 import { PageTopperBgImage } from "./page-topper-bg-image";
+import { PageTopperBgAnimation } from "./page-topper-bg-animation";
 
 /**
  * Props for `PageTopper`.
@@ -13,8 +14,20 @@ export type PageTopperProps = SliceComponentProps<Content.PageTopperSlice>;
 
 /**
  * Component for "PageTopper" Slices.
- * Automatically hides when ?step query param is present (e.g., during quote flow).
- * Content is server-rendered for SEO, client component only handles conditional visibility.
+ * 
+ * Architecture:
+ * - Server Component (this file): Renders all static content, fetches data
+ * - PageTopperBgImage (Server): Renders the hero image with SSR optimisation
+ * - PageTopperBgAnimation (Client): Wraps image for scale animation only
+ * - PageTopperAnimation (Client): Handles text reveal animations with progressive enhancement
+ * - PageTopperButtons (Client): Handles button hover animations
+ * - PageTopperClient (Client): Handles viewport height calculation
+ * - PageTopperVisibilityController (Client): Handles URL-based visibility (quote flow)
+ * 
+ * Progressive Enhancement:
+ * - Image is SSR'd in scaled position, animates to normal on client
+ * - Text is SSR'd visible, animations enhance the experience
+ * - If JS fails, content is still fully visible and functional
  */
 const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
   // Get width class based on selection (full width on mobile, constrained on desktop)
@@ -41,20 +54,23 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
           <section className="w-full">
             {/* Dark Blue Header Section */}
             <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden" style={{ height: 'calc(var(--page-topper-vh, 1vh) * 89)' }}>
-              {/* Background Image with scale animation */}
+              {/* Background Image - Server rendered, client animated */}
               {slice.primary.hero_image?.url && (
-                <PageTopperBgImage 
-                  heroImage={slice.primary.hero_image}
-                  imagePosition={slice.primary.image_position as 'top' | 'center' | 'bottom' | undefined}
-                />
+                <PageTopperBgAnimation>
+                  <PageTopperBgImage 
+                    heroImage={slice.primary.hero_image}
+                    imagePosition={slice.primary.image_position as 'top' | 'center' | 'bottom' | undefined}
+                  />
+                </PageTopperBgAnimation>
               )}
+              
               {/* Vignette Overlay - Dark edges, lighter center */}
               <div className="absolute inset-0 z-5 bg-gradient-to-b from-black/70 via-black/10 to-black/85"></div>
 
               {/* Content */}
               <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 pb-8 lg:pb-12 relative z-10">
                 <div className={getWidthClass()}>
-                  {/* Header with Animation */}
+                  {/* Header with Animation - Progressive enhancement */}
                   <PageTopperAnimation 
                     subheading={slice.primary.subheading || undefined}
                     heading={slice.primary.heading || undefined}
@@ -81,4 +97,3 @@ const PageTopper = ({ slice }: PageTopperProps): React.ReactElement => {
 };
 
 export default PageTopper;
-

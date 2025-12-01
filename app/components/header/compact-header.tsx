@@ -155,14 +155,13 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
           <div className="flex items-center">
             <PrismicNextLink href="/" className="block">
               {logo.url ? (
-                <PrismicNextImage
-                  field={logo}
-                  className="w-auto object-contain"
+                <img
+                  src={logo.url}
+                  alt={logo.alt || 'Logo'}
+                  className="object-contain"
                   style={{ 
-                    height: '60px',
-                    imageRendering: 'crisp-edges',
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale'
+                    width: 'auto',
+                    height: '60px'
                   }}
                 />
               ) : siteTitle ? (

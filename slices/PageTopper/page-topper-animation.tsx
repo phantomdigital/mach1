@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
 import { Home } from "lucide-react";
@@ -12,7 +12,17 @@ interface PageTopperAnimationProps {
   paragraph?: string;
 }
 
+/**
+ * Client component that handles text animations for PageTopper.
+ * 
+ * Progressive Enhancement Strategy:
+ * - Content is visible by default (opacity: 1)
+ * - When JS loads, we add 'js-ready' class to hide content
+ * - Then animate it back to visible
+ * - If JS fails, content remains visible (good for SEO and accessibility)
+ */
 export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopperAnimationProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const homeIconRef = useRef<HTMLAnchorElement>(null);
   const subheadingRef = useRef<HTMLHeadingElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -20,16 +30,15 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const splitsRef = useRef<SplitText[]>([]);
   const hasAnimatedRef = useRef(false);
+  const [jsReady, setJsReady] = useState(false);
 
   // Memoized cleanup function
   const cleanup = useCallback(() => {
-    // Kill existing timeline
     if (timelineRef.current) {
       timelineRef.current.kill();
       timelineRef.current = null;
     }
     
-    // Revert all SplitText instances
     splitsRef.current.forEach((split) => {
       if (split && split.revert) {
         split.revert();
@@ -42,10 +51,7 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
   const animate = useCallback(() => {
     if (hasAnimatedRef.current) return;
     
-    // Register plugin once
     gsap.registerPlugin(SplitText);
-    
-    // Clean up any existing animations
     cleanup();
     
     const textElements: HTMLElement[] = [];
@@ -62,22 +68,21 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
       textElements.push(paragraphRef.current);
     }
 
-    // Create timeline with performance optimizations
     timelineRef.current = gsap.timeline({
       defaults: {
         ease: "expo.out",
-        force3D: true, // Force GPU acceleration
+        force3D: true,
       }
     });
 
     const tl = timelineRef.current;
 
-    // Animate home icon with GPU acceleration
+    // Animate home icon
     if (homeIconRef.current) {
       gsap.set(homeIconRef.current, { 
         opacity: 0, 
         y: 20,
-        willChange: "transform, opacity" // Optimize for animations
+        willChange: "transform, opacity"
       });
       
       tl.to(homeIconRef.current, {
@@ -85,21 +90,18 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
         opacity: 1,
         y: 0,
         onComplete: () => {
-          // Remove will-change after animation
           gsap.set(homeIconRef.current, { willChange: "auto" });
         }
       });
     }
 
-    // Animate text elements with optimizations
+    // Animate text elements
     if (textElements.length > 0) {
-      // Set initial state with GPU acceleration hints
       gsap.set(textElements, { 
         opacity: 1,
         willChange: "transform, opacity"
       });
 
-      // Create SplitText instances more efficiently
       textElements.forEach((element, index) => {
         const split = new SplitText(element, {
           type: "words,lines",
@@ -108,7 +110,6 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
         
         splitsRef.current.push(split);
 
-        // Set initial state for lines
         gsap.set(split.lines, {
           yPercent: 100,
           opacity: 0,
@@ -123,7 +124,6 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
           opacity: 1,
           stagger: 0.1,
           onComplete: () => {
-            // Remove will-change after animation
             gsap.set(split.lines, { willChange: "auto" });
             gsap.set(element, { willChange: "auto" });
           }
@@ -135,9 +135,11 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
   }, [subheading, heading, paragraph, cleanup]);
 
   useEffect(() => {
-    // Use requestAnimationFrame for better performance
+    // Mark JS as ready - this will hide content before animation
+    setJsReady(true);
+    
+    // Small delay to ensure the hide class is applied before animation starts
     const animationFrame = requestAnimationFrame(() => {
-      // Check if fonts are already loaded, otherwise wait
       if (document.fonts.status === 'loaded') {
         animate();
       } else {
@@ -145,7 +147,6 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
       }
     });
 
-    // Cleanup function
     return () => {
       cancelAnimationFrame(animationFrame);
       cleanup();
@@ -154,51 +155,58 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
   }, [animate, cleanup]);
 
   return (
-    <div className="space-y-4">
+    <div ref={containerRef} className="space-y-4">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-3 mb-5">
-        {/* Home Breadcrumb */}
+        {/* Home Breadcrumb - hidden initially, animated in */}
         <Link 
           ref={homeIconRef}
           href="/"
-          className="text-red-200 text-xs font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-red rounded-2xl w-fit flex items-center hover:bg-red-700 transition-colors opacity-0 transform-gpu"
-          style={{ willChange: 'auto' }}
+          className="text-red-200 text-xs font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-red rounded-2xl w-fit flex items-center hover:bg-red-700 transition-colors transform-gpu"
+          style={{ 
+            // Start invisible, animate will set opacity
+            opacity: jsReady ? 0 : 1 
+          }}
         >
           <Home className="w-3 h-3 lg:w-4 lg:h-4" />
         </Link>
         
-        {/* Separator */}
+        {/* Current Page Breadcrumb */}
         {subheading && (
-          <>
-            {/* Current Page Breadcrumb */}
-            <h5 
-              ref={subheadingRef}
-              className="text-red-200 text-xs font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-red rounded-2xl w-fit opacity-0 transform-gpu"
-              style={{ willChange: 'auto' }}
-            >
-              {subheading}
-            </h5>
-          </>
+          <h5 
+            ref={subheadingRef}
+            className="text-red-200 text-xs font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-red rounded-2xl w-fit transform-gpu overflow-hidden"
+            style={{ 
+              // Visible by default, animation handles the reveal
+              opacity: jsReady ? 1 : 1 
+            }}
+          >
+            {subheading}
+          </h5>
         )}
       </nav>
 
-      {/* Heading */}
+      {/* Heading - visible by default, animated when JS loads */}
       {heading && (
         <h2 
           ref={headingRef}
-          className="text-neutral-100 text-3xl md:text-4xl lg:text-6xl font-bold leading-tight opacity-0 transform-gpu"
-          style={{ willChange: 'auto' }}
+          className="text-neutral-100 text-3xl md:text-4xl lg:text-6xl font-bold leading-tight transform-gpu overflow-hidden"
+          style={{ 
+            opacity: jsReady ? 1 : 1 
+          }}
         >
           {heading}
         </h2>
       )}
 
-      {/* Paragraph */}
+      {/* Paragraph - visible by default, animated when JS loads */}
       {paragraph && (
         <p 
           ref={paragraphRef}
-          className="text-neutral-200 text-xs md:text-sm lg:text-lg max-w-3xl opacity-0 transform-gpu mt-6"
-          style={{ willChange: 'auto' }}
+          className="text-neutral-200 text-xs md:text-sm lg:text-lg max-w-3xl transform-gpu mt-6 overflow-hidden"
+          style={{ 
+            opacity: jsReady ? 1 : 1 
+          }}
         >
           {paragraph}
         </p>
@@ -206,4 +214,3 @@ export function PageTopperAnimation({ subheading, heading, paragraph }: PageTopp
     </div>
   );
 }
-

@@ -41,7 +41,7 @@ export async function submitContactForm(
     // Send email using Resend
     const { data, error } = await resend.emails.send({
       from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@testing.phantomdigital.au>",
-      to: [process.env.EMAIL_TO || "admin@mach1logistics.com.au"], // Main recipient
+      to: [process.env.EMAIL_TO || "quotes@mach1logistics.com.au"], // Main recipient
       replyTo: validatedData.email, // Allow direct reply to customer
       subject: `New Contact Form Submission - ${validatedData.enquiryType}`,
       react: ContactFormEmail({
