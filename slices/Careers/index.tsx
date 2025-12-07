@@ -99,7 +99,7 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
     employmentType: job.data.employment_type?.toUpperCase().replace('-', '_') || "FULL_TIME",
     hiringOrganization: {
       "@type": "Organization",
-      name: "MACH 1 Logistics",
+      name: "MACH1 Logistics",
       sameAs: baseUrl,
       logo: `${baseUrl}/logo.png`,
     },

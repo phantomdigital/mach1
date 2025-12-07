@@ -4,7 +4,7 @@ import { HeroButton } from "@/components/ui/hero-button";
 import { getContainerClass } from "@/lib/spacing";
 
 export const metadata: Metadata = {
-  title: "Page Not Found | MACH 1 Logistics",
+  title: "Page Not Found | MACH1 Logistics",
   description: "The page you're looking for doesn't exist. Explore our freight forwarding solutions, careers, and services.",
   robots: {
     index: false,

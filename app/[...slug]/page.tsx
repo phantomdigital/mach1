@@ -104,7 +104,7 @@ export async function generateMetadata({
   // Empty slug should be handled by app/page.tsx metadata
   if (!slug || slug.length === 0) {
     return {
-      title: "MACH 1 Logistics",
+      title: "MACH1 Logistics",
       description: "Professional logistics and transportation services",
     };
   }
@@ -148,7 +148,7 @@ export async function generateMetadata({
         title: title,
         description: `Read our ${title.toLowerCase()} to understand your rights and obligations.`,
         url,
-        keywords: [uid.replace(/-/g, " "), "MACH 1 Logistics", "legal", title.toLowerCase()],
+        keywords: [uid.replace(/-/g, " "), "MACH1 Logistics", "legal", title.toLowerCase()],
         publishedTime: page.first_publication_date || undefined,
         modifiedTime: page.last_publication_date || undefined,
       });
@@ -156,11 +156,11 @@ export async function generateMetadata({
     
     return generatePrismicMetadata(page, {
       url,
-      keywords: [uid.replace(/-/g, " "), "MACH 1 Logistics", "logistics services"],
+      keywords: [uid.replace(/-/g, " "), "MACH1 Logistics", "logistics services"],
     });
   } catch {
     return {
-      title: "Page Not Found | MACH 1 Logistics",
+      title: "Page Not Found | MACH1 Logistics",
       description: "The requested page could not be found.",
     };
   }

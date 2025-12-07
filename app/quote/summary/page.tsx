@@ -158,12 +158,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     
     return generatePrismicMetadata(page, {
       url: summaryPath,
-      keywords: ["quote", "summary", "MACH 1 Logistics"],
+      keywords: ["quote", "summary", "MACH1 Logistics"],
     });
   } catch {
     // Return default metadata if page doesn't exist
     return {
-      title: "Quote Summary | MACH 1 Logistics",
+      title: "Quote Summary | MACH1 Logistics",
       description: "Your quote request has been received.",
       robots: {
         index: false,

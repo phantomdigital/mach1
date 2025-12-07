@@ -234,7 +234,7 @@ export default async function NewsArticlePage({
             } : undefined,
             publisher: {
               "@type": "Organization",
-              name: "MACH 1 Logistics",
+              name: "MACH1 Logistics",
               logo: {
                 "@type": "ImageObject",
                 url: `${baseUrl}/logo.png`,
@@ -293,10 +293,10 @@ export async function generateMetadata({
     : null;
 
   return {
-    title: `${title} | MACH 1 Logistics`,
+    title: `${title} | MACH1 Logistics`,
     description,
     openGraph: {
-      title: `${title} | MACH 1 Logistics`,
+      title: `${title} | MACH1 Logistics`,
       description,
       type: "article",
       publishedTime: page.first_publication_date,
@@ -306,7 +306,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | MACH 1 Logistics`,
+      title: `${title} | MACH1 Logistics`,
       description,
       images: image ? [image] : undefined,
     },

@@ -131,13 +131,6 @@ export default function SpecialtyCard({ item, index }: SpecialtyCardProps) {
                 {item.title}
               </span>
             </h3>
-            
-            {/* Description - visible by default */}
-            {item.description && (
-              <p className="text-neutral-100 font-medium text-[12px] lg:text-xs leading-relaxed max-w-md">
-                {item.description}
-              </p>
-            )}
           </div>
 
           {/* Arrow Circle - Top Right */}

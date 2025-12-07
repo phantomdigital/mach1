@@ -309,7 +309,7 @@ export default async function JobPage({
             employmentType: page.data.employment_type || undefined,
             hiringOrganization: {
               "@type": "Organization",
-              name: "MACH 1 Logistics",
+              name: "MACH1 Logistics",
               sameAs: "https://mach1logistics.com.au",
             },
             jobLocation: (page.data.city || page.data.state) ? {
@@ -354,21 +354,21 @@ export async function generateMetadata({
   }
 
   const title = page.data.meta_title || `${page.data.title} - ${page.data.department || 'Career'}`;
-  const description = page.data.meta_description || page.data.summary || `Join MACH 1 Logistics as a ${page.data.title}`;
+  const description = page.data.meta_description || page.data.summary || `Join MACH1 Logistics as a ${page.data.title}`;
   const image = page.data.meta_image?.url;
 
   return {
-    title: `${title} | MACH 1 Logistics Careers`,
+    title: `${title} | MACH1 Logistics Careers`,
     description,
     openGraph: {
-      title: `${title} | MACH 1 Logistics Careers`,
+      title: `${title} | MACH1 Logistics Careers`,
       description,
       type: "website",
       images: image ? [{ url: image }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | MACH 1 Logistics Careers`,
+      title: `${title} | MACH1 Logistics Careers`,
       description,
       images: image ? [image] : undefined,
     },
