@@ -128,13 +128,13 @@ export async function generateMetadata(): Promise<Metadata> {
     
     return generatePrismicMetadata(page, {
       url: "/contact/thank-you",
-      keywords: ["contact", "thank you", "MACH1 Logistics"],
+      keywords: ["contact", "thank you", "MACH 1 Logistics"],
     });
   } catch {
     // Return default metadata if page doesn't exist
     return {
-      title: "Thank You | MACH1 Logistics",
-      description: "Thank you for contacting MACH1 Logistics. We'll be in touch soon.",
+      title: "Thank You | MACH 1 Logistics",
+      description: "Thank you for contacting MACH 1 Logistics. We'll be in touch soon.",
       robots: {
         index: false,
         follow: true,

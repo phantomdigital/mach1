@@ -72,7 +72,7 @@ export async function submitJobApplication(
 
     // Send email to HR/hiring team with attachments
     const { data: hrEmailData, error: hrEmailError } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "MACH1 Logistics <noreply@testing.phantomdigital.au>",
+      from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@testing.phantomdigital.au>",
       to: [recipientEmail],
       replyTo: validatedData.email, // Allow direct reply to applicant
       subject: `Job Application: ${validatedData.jobTitle} - ${validatedData.fullName}`,
@@ -100,7 +100,7 @@ export async function submitJobApplication(
 
     // Send confirmation email to applicant (no attachments needed)
     const { data: confirmationEmailData, error: confirmationEmailError } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "MACH1 Logistics <noreply@testing.phantomdigital.au>",
+      from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@testing.phantomdigital.au>",
       to: [validatedData.email],
       subject: `Application Received: ${validatedData.jobTitle} Position`,
       react: JobApplicationConfirmationEmail({
