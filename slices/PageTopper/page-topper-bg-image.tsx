@@ -6,10 +6,18 @@ interface PageTopperBgImageProps {
   imagePosition?: 'top' | 'center' | 'bottom';
 }
 
+// Dark blue placeholder (matches bg-dark-blue: #141433) - 1x1 pixel base64
+// This loads instantly and provides a seamless transition to the actual image
+const DARK_BLUE_PLACEHOLDER = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNITEz8HwAEcgHRgLz/WgAAAABJRU5ErkJggg==';
+
 /**
  * Server component that renders the background image.
  * Animation is handled by the parent client wrapper.
  * Image is SSR'd in its final position for instant display.
+ * 
+ * Uses a dark color placeholder matching the page background for smooth loading.
+ * On client-side navigation, users see the dark background instantly,
+ * then the image fades in smoothly.
  */
 export function PageTopperBgImage({ heroImage, imagePosition = 'center' }: PageTopperBgImageProps) {
   // Map position to Tailwind classes
@@ -35,6 +43,8 @@ export function PageTopperBgImage({ heroImage, imagePosition = 'center' }: PageT
       sizes="100vw"
       quality={85}
       loading="eager"
+      placeholder="blur"
+      blurDataURL={DARK_BLUE_PLACEHOLDER}
     />
   );
 }
