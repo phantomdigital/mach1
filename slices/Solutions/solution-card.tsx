@@ -125,12 +125,12 @@ export default function SolutionCard({ item, index }: SolutionCardProps) {
               </span>
             </h3>
             
-            {/* Description - visible by default */}
+            {/* Description - visible by default
             {item.description && (
               <p className="text-neutral-100 font-medium text-[12px] lg:text-xs leading-relaxed max-w-md">
                 {item.description}
               </p>
-            )}
+            )} */}
           </div>
 
           {/* Arrow Circle - Top Right */}
