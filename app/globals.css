@@ -429,11 +429,16 @@ body {
   
   html {
     overflow-x: hidden;
+    overflow-y: auto; /* Explicitly enable vertical scrolling */
+    height: auto; /* Ensure height is not fixed */
   }
   
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
+    overflow-y: auto; /* Explicitly enable vertical scrolling */
+    height: auto; /* Ensure height is not fixed */
+    min-height: 100vh; /* Allow content to extend beyond viewport */
   }
   
   button {

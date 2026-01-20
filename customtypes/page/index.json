@@ -17,6 +17,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "globe": {
+              "type": "SharedSlice"
+            },
             "specialties": {
               "type": "SharedSlice"
             },
