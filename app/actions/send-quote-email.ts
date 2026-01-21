@@ -1,9 +1,11 @@
 "use server";
 
 import { Resend } from "resend";
+import { headers } from "next/headers";
 import QuoteRequestEmail from "@/emails/quote-request-email";
 import QuoteRequestConfirmationEmail from "@/emails/quote-request-confirmation-email";
 import { quoteRequestSchema, packageSchema } from "@/lib/validation-schemas";
+import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
 import { z } from "zod";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -34,6 +36,19 @@ export async function sendQuoteEmail({
   packages = [],
 }: SendQuoteEmailParams) {
   try {
+    // Rate limiting check (5 requests per hour per IP)
+    const headersList = await headers();
+    const clientId = getClientIdentifier(headersList);
+    const rateLimit = await checkRateLimit(`quote-request:${clientId}`, 5, 60 * 60 * 1000);
+    
+    if (!rateLimit.allowed) {
+      console.warn(`Rate limit exceeded for quote request: ${clientId}`);
+      return {
+        success: false,
+        error: "Too many requests. Please try again later.",
+      };
+    }
+
     // SERVER-SIDE VALIDATION
     // Validate the entire request
     const validationResult = quoteRequestSchema.safeParse({
@@ -75,8 +90,8 @@ export async function sendQuoteEmail({
     }
 
     // Sanitize and validate email addresses
-    const customerEmail = formData.email || formData.Email || '';
-    const customerName = formData.fullName || formData.name || 'Customer';
+    const customerEmail = (formData.email || formData.Email || '').trim().toLowerCase();
+    const customerName = (formData.fullName || formData.name || 'Customer').trim();
 
     // Basic email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -86,6 +101,11 @@ export async function sendQuoteEmail({
         error: "Invalid customer email address" 
       };
     }
+
+    // Sanitize subject line inputs to prevent header injection
+    const sanitizeForSubject = (str: string): string => {
+      return str.replace(/[\r\n]/g, '').substring(0, 50); // Remove newlines and limit length
+    };
 
     // Check environment variables are set
     if (!process.env.RESEND_API_KEY) {
@@ -106,9 +126,9 @@ export async function sendQuoteEmail({
 
     // Send email to company
     const { data: companyData, error: companyError } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "test@testing.phantomdigital.au",
+      from: process.env.EMAIL_FROM || "MACH1 Logistics <noreply@mach1logistics.com.au>",
       to: process.env.EMAIL_TO,
-      subject: `New Quote Request${serviceType ? ` - ${serviceType}` : ''}${customerName ? ` from ${customerName}` : ''}`,
+      subject: `New Quote Request${serviceType ? ` - ${sanitizeForSubject(serviceType)}` : ''}${customerName ? ` from ${sanitizeForSubject(customerName)}` : ''}`,
       react: QuoteRequestEmail({
         serviceType,
         formData,
@@ -128,7 +148,7 @@ export async function sendQuoteEmail({
     // Send confirmation email to customer (if they provided an email)
     if (customerEmail) {
       const { data: customerData, error: customerError } = await resend.emails.send({
-        from: process.env.EMAIL_FROM || "test@testing.phantomdigital.au",
+        from: process.env.EMAIL_FROM_CUSTOMER || process.env.EMAIL_FROM || "MACH1 Logistics <team@mach1logistics.com.au>",
         to: customerEmail,
         subject: `Quote Request Received - MACH1 Logistics`,
         react: QuoteRequestConfirmationEmail({

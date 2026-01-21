@@ -1,10 +1,12 @@
 "use server";
 
 import { Resend } from "resend";
+import { headers } from "next/headers";
 import type { Attachment } from "resend";
 import JobApplicationEmail from "@/emails/job-application-email";
 import JobApplicationConfirmationEmail from "@/emails/job-application-confirmation-email";
 import { jobApplicationSchema, safeValidate } from "@/lib/validation-schemas";
+import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -19,6 +21,19 @@ export async function submitJobApplication(
   formData: unknown
 ): Promise<JobApplicationResponse> {
   try {
+    // Rate limiting check (3 requests per hour per IP - job applications are less frequent)
+    const headersList = await headers();
+    const clientId = getClientIdentifier(headersList);
+    const rateLimit = await checkRateLimit(`job-application:${clientId}`, 3, 60 * 60 * 1000);
+    
+    if (!rateLimit.allowed) {
+      console.warn(`Rate limit exceeded for job application: ${clientId}`);
+      return {
+        success: false,
+        error: "Too many requests. Please try again later.",
+      };
+    }
+
     // Validate environment variable
     if (!process.env.RESEND_API_KEY) {
       console.error("RESEND_API_KEY is not configured");
@@ -39,6 +54,11 @@ export async function submitJobApplication(
     }
 
     const validatedData = validation.data;
+
+    // Sanitize subject line inputs to prevent header injection
+    const sanitizeForSubject = (str: string): string => {
+      return str.replace(/[\r\n]/g, '').substring(0, 50); // Remove newlines and limit length
+    };
 
     // Determine the recipient email (use application-specific email if provided, otherwise use env var)
     const recipientEmail = validatedData.applicationEmail || process.env.EMAIL_TO || "careers@mach1logistics.com.au";
@@ -72,10 +92,10 @@ export async function submitJobApplication(
 
     // Send email to HR/hiring team with attachments
     const { data: hrEmailData, error: hrEmailError } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@testing.phantomdigital.au>",
+      from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@mach1logistics.com.au>",
       to: [recipientEmail],
       replyTo: validatedData.email, // Allow direct reply to applicant
-      subject: `Job Application: ${validatedData.jobTitle} - ${validatedData.fullName}`,
+      subject: `Job Application: ${sanitizeForSubject(validatedData.jobTitle)} - ${sanitizeForSubject(validatedData.fullName)}`,
       react: JobApplicationEmail({
         fullName: validatedData.fullName,
         email: validatedData.email,
@@ -100,9 +120,9 @@ export async function submitJobApplication(
 
     // Send confirmation email to applicant (no attachments needed)
     const { data: confirmationEmailData, error: confirmationEmailError } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@testing.phantomdigital.au>",
+      from: process.env.EMAIL_FROM_CUSTOMER || process.env.EMAIL_FROM || "Mach1 Logistics <team@mach1logistics.com.au>",
       to: [validatedData.email],
-      subject: `Application Received: ${validatedData.jobTitle} Position`,
+      subject: `Application Received: ${sanitizeForSubject(validatedData.jobTitle)} Position`,
       react: JobApplicationConfirmationEmail({
         fullName: validatedData.fullName,
         jobTitle: validatedData.jobTitle,

@@ -192,7 +192,7 @@
       "summary_description": [
         {
           "type": "paragraph",
-          "text": "One of our logistics specialists will contact you at tom@phantomdigital.au within 24 hours to discuss your requirements. We're looking forward to hearing how we can help optimize your supply chain.",
+          "text": "One of our logistics specialists will contact you at contact@mach1logistics.com.au within 24 hours to discuss your requirements. We're looking forward to hearing how we can help optimize your supply chain.",
           "spans": [
             {
               "start": 56,
@@ -202,7 +202,7 @@
           ]
         }
       ],
-      "contact_email": "tom@phantomdigital.au",
+      "contact_email": "contact@mach1logistics.com.au",
       "contact_timeframe": "24 hours",
       "use_main_faqs": false,
       "main_faq_slice": {

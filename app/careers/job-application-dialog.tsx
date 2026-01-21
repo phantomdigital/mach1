@@ -118,7 +118,7 @@ export function JobApplicationDialog({
         email: formData.email,
         phone: formData.phone,
         jobTitle,
-        applicationEmail: applicationEmail || "test@testing.phantomdigital.au",
+        applicationEmail: applicationEmail || "careers@mach1logistics.com.au",
         resume: resumeData,
         coverLetter: coverLetterData,
         otherFiles: otherFilesData,

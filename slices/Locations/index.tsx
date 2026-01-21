@@ -2,6 +2,7 @@ import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { LocationsMap } from "./locations-map";
 import { LocationsNav } from "./locations-nav";
+import { obfuscateMailtoLink } from "@/lib/email-obfuscation";
 
 /**
  * Props for `Locations`.
@@ -66,7 +67,12 @@ const Locations = ({ slice }: LocationsProps): React.ReactElement => {
                       Phone: <a href={`tel:${location.phone}`} className="underline hover:text-neutral-600 transition-colors">{location.phone}</a>
                     </p>
                     <p className="text-neutral-400 text-xl font-normal leading-loose">
-                      Email: <a href={`mailto:${location.email}`} className="underline hover:text-neutral-600 transition-colors">{location.email}</a>
+                      Email: {location.email && (() => {
+                        const obfuscated = obfuscateMailtoLink(location.email);
+                        return (
+                          <a href={obfuscated.href} className="underline hover:text-neutral-600 transition-colors" dangerouslySetInnerHTML={{ __html: obfuscated.display }} />
+                        );
+                      })()}
                     </p>
                   </div>
 

@@ -1,6 +1,7 @@
 import { Content } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import ContactForm from "./contact-form";
+import { obfuscateMailtoLink } from "@/lib/email-obfuscation";
 
 /**
  * Props for `ContactUs`.
@@ -43,14 +44,16 @@ const ContactUs = ({ slice }: ContactUsProps): React.ReactElement => {
             )}
 
             {/* Email */}
-            {slice.primary.email && (
-              <a
-                href={`mailto:${slice.primary.email}`}
-                className="block text-dark-blue text-sm underline hover:text-dark-blue/80 transition-colors"
-              >
-                {slice.primary.email}
-              </a>
-            )}
+            {slice.primary.email && (() => {
+              const obfuscated = obfuscateMailtoLink(slice.primary.email);
+              return (
+                <a
+                  href={obfuscated.href}
+                  className="block text-dark-blue text-sm underline hover:text-dark-blue/80 transition-colors"
+                  dangerouslySetInnerHTML={{ __html: obfuscated.display }}
+                />
+              );
+            })()}
 
             {/* Locations */}
             {slice.items.length > 0 && (

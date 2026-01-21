@@ -10,6 +10,7 @@ import {
   Img,
   Tailwind,
 } from "@react-email/components";
+import { obfuscateMailtoLink } from "@/lib/email-obfuscation";
 
 interface ContactFormEmailProps {
   fullName: string;
@@ -46,6 +47,9 @@ export default function ContactFormEmail({
   
   // Logo URL - using PNG format for better email compatibility
   const logoUrl = `${baseUrl}/logo/email-logo.png`;
+
+  // Obfuscate email for display to prevent bot scraping
+  const obfuscatedEmail = obfuscateMailtoLink(email);
 
   return (
     <Html>
@@ -132,9 +136,7 @@ export default function ContactFormEmail({
                       Email:
                     </td>
                     <td className="px-0 py-3 align-top text-base text-mach1-black">
-                      <a href={`mailto:${email}`} className="font-semibold text-dark-blue no-underline">
-                        {email}
-                      </a>
+                      <a href={obfuscatedEmail.href} className="font-semibold text-dark-blue no-underline" dangerouslySetInnerHTML={{ __html: obfuscatedEmail.display }} />
                     </td>
                   </tr>
                   <tr>

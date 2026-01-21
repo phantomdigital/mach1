@@ -325,7 +325,7 @@
           "type": "Text",
           "config": {
             "label": "Contact Email",
-            "placeholder": "tom@phantomdigital.au"
+            "placeholder": "contact@mach1logistics.com.au"
           }
         },
         "contact_timeframe": {

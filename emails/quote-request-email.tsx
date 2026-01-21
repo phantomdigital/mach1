@@ -10,6 +10,7 @@ import {
   Img,
   Tailwind,
 } from "@react-email/components";
+import { obfuscateMailtoLink } from "@/lib/email-obfuscation";
 
 interface Package {
   id: string;
@@ -149,11 +150,12 @@ export default function QuoteRequestEmail({
                               {formatFieldName(key)}:
                             </td>
                             <td className="px-0 py-3 align-top text-base text-mach1-black">
-                              {key.toLowerCase().includes('email') ? (
-                                <a href={`mailto:${value}`} className="font-semibold text-dark-blue no-underline">
-                                  {value}
-                                </a>
-                              ) : key.toLowerCase().includes('phone') || key.toLowerCase().includes('tel') ? (
+                              {key.toLowerCase().includes('email') ? (() => {
+                                const obfuscated = obfuscateMailtoLink(String(value));
+                                return (
+                                  <a href={obfuscated.href} className="font-semibold text-dark-blue no-underline" dangerouslySetInnerHTML={{ __html: obfuscated.display }} />
+                                );
+                              })() : key.toLowerCase().includes('phone') || key.toLowerCase().includes('tel') ? (
                                 <a 
                                   href={`tel:${value?.replace(/\s/g, '') || ''}`} 
                                   className="font-semibold text-dark-blue no-underline"

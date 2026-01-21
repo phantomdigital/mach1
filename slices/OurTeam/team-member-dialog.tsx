@@ -11,6 +11,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { obfuscateMailtoLink } from "@/lib/email-obfuscation";
 
 interface TeamMemberDialogProps {
     member: {
@@ -101,12 +102,16 @@ export function TeamMemberDialog({ member, children }: TeamMemberDialogProps) {
                                              >
                                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                              </svg>
-                                             <a
-                                                 href={`mailto:${member.email}`}
-                                                 className="text-neutral-800 hover:text-dark-blue transition-colors duration-150 border-b-2 border-transparent hover:border-dark-blue"
-                                             >
-                                                 {member.email}
-                                             </a>
+                                             {member.email && (() => {
+                                               const obfuscated = obfuscateMailtoLink(member.email);
+                                               return (
+                                                 <a
+                                                   href={obfuscated.href}
+                                                   className="text-neutral-800 hover:text-dark-blue transition-colors duration-150 border-b-2 border-transparent hover:border-dark-blue"
+                                                   dangerouslySetInnerHTML={{ __html: obfuscated.display }}
+                                                 />
+                                               );
+                                             })()}
                                          </div>
                                      )}
                                      {isFilled.link(member.linkedin) && (
