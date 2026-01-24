@@ -55,18 +55,8 @@ export function JobApplicationDialog({
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Handle dialog open/close and Lenis
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
-    
-    const lenis = (window as typeof window & { __lenis?: { stop: () => void; start: () => void } }).__lenis;
-    if (lenis) {
-      if (open) {
-        lenis.stop();
-      } else {
-        lenis.start();
-      }
-    }
     
     // Reset form when modal closes
     if (!open && isSubmitted) {
@@ -260,10 +250,6 @@ export function JobApplicationDialog({
             style={{
               scrollbarWidth: 'thin',
               scrollbarColor: '#d4d4d4 transparent'
-            }}
-            onWheel={(e) => {
-              // Ensure scroll events are handled by this element
-              e.stopPropagation()
             }}
           >
             <div className="space-y-6">

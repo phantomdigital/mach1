@@ -34,18 +34,8 @@ export function TeamMemberDialog({ member, children }: TeamMemberDialogProps) {
         isFilled.keyText(member.email) ||
         isFilled.link(member.linkedin);
 
-    // Handle dialog open/close and Lenis
     const handleOpenChange = (open: boolean) => {
         setIsOpen(open);
-        
-        const lenis = (window as any).__lenis;
-        if (lenis) {
-            if (open) {
-                lenis.stop();
-            } else {
-                lenis.start();
-            }
-        }
     };
 
     if (!hasContent) {

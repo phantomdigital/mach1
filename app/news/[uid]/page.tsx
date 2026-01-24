@@ -128,7 +128,7 @@ export default async function NewsArticlePage({
             {/* Category */}
             {page.data.category && (
               <span 
-                className="inline-block text-green-200 text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-green rounded-2xl mb-4 lg:mb-6"
+                className="inline-block text-sky-100 text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-green rounded-2xl mb-4 lg:mb-6"
                 style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
               >
                 {page.data.category}

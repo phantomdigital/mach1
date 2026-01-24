@@ -1,7 +1,5 @@
 "use client";
 
-import { useLenis } from "@/hooks/use-lenis";
-
 interface TableOfContentsItem {
   id: number;
   text: string;
@@ -13,20 +11,18 @@ interface TableOfContentsProps {
 }
 
 export function TableOfContents({ items }: TableOfContentsProps) {
-  const lenis = useLenis();
-
   const handleScrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault();
     const element = document.getElementById(sectionId);
-    if (element && lenis) {
-      // Use Lenis for smooth scrolling with offset for header
-      lenis.scrollTo(element, {
-        offset: -128, // 32 * 4 = 128px offset for header
-        duration: 1.2,
+    if (element) {
+      const offset = 128;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
       });
-    } else if (element) {
-      // Fallback to native scrollIntoView if Lenis not available
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 

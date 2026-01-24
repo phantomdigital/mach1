@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useScrollTo } from "@/hooks/use-lenis";
 import { useCompactHeaderVisible } from "@/hooks/use-compact-header-visible";
 
 interface LocationNavProps {
@@ -13,10 +12,8 @@ interface LocationNavProps {
 }
 
 export function LocationsNav({ locations }: LocationNavProps) {
-  // Track compact header visibility for desktop positioning
   const isCompactHeaderVisible = useCompactHeaderVisible();
   const [activeLocation, setActiveLocation] = useState<number>(0);
-  const { scrollToElement, lenis } = useScrollTo();
 
   // Group locations by state
   const locationsByState = locations.reduce((acc, location) => {
@@ -52,24 +49,14 @@ export function LocationsNav({ locations }: LocationNavProps) {
     const element = document.getElementById(`location-${index}`);
     
     if (element) {
-      if (lenis) {
-        // Use Lenis for smooth scroll
-        lenis.scrollTo(element, {
-          offset: -150,
-          duration: 1,
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        });
-      } else {
-        // Fallback to native smooth scroll
-        const offset = 150;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
+      const offset = 150;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 

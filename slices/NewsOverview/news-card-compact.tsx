@@ -60,7 +60,7 @@ const NewsCardCompact = memo(function NewsCardCompact({ article, index, isDarkBa
             <div className="flex items-center gap-2 flex-wrap">
               {article.data.category && (
                 <span 
-                  className="inline-block text-green-200 text-[10px] font-bold tracking-wider uppercase px-3 py-0.5 bg-mach1-green rounded-2xl"
+                  className="inline-block text-sky-100 text-[10px] font-bold tracking-wider uppercase px-3 py-0.5 bg-mach1-green rounded-2xl"
                   style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
                 >
                   {article.data.category}

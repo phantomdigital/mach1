@@ -92,7 +92,7 @@ export function FeaturedHero({ article }: FeaturedHeroProps) {
           <div className="flex items-center gap-3 flex-wrap">
             {article.data.category && (
               <span 
-                className="inline-block text-green-200 text-xs font-bold tracking-wider uppercase px-4 py-2 bg-mach1-green rounded-2xl"
+                className="inline-block text-sky-100 text-xs font-bold tracking-wider uppercase px-4 py-2 bg-mach1-green rounded-2xl"
                 style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
               >
                 {article.data.category}

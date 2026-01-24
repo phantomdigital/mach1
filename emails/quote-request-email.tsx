@@ -72,7 +72,7 @@ export default function QuoteRequestEmail({
                 "mach1-red": "#ED1E24",
                 "mach1-blue": "#0000FF",
                 "mach1-black": "#262626",
-                "mach1-green": "#0AAE88",
+                "mach1-green": "#0EA5E9",
                 "mach-gray": "#747474",
                 "dark-blue": "#141433",
               },

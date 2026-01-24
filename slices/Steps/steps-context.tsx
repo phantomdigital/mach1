@@ -36,18 +36,9 @@ function setStoredData(state: StepsState) {
   window.dispatchEvent(new CustomEvent("stepsDataChange", { detail: state }));
 }
 
-// Helper function to reset scroll position (both window and GSAP smooth scroll)
-function resetScrollPosition(immediate: boolean = true) {
+function resetScrollPosition() {
   if (typeof window === "undefined") return;
-  
-  // Reset window scroll
   window.scrollTo(0, 0);
-  
-  // Reset GSAP smooth scroll if available
-  const lenis = (window as typeof window & { __lenis?: { scrollTo: (value: number, options?: { immediate?: boolean }) => void } }).__lenis;
-  if (lenis) {
-    lenis.scrollTo(0, { immediate });
-  }
 }
 
 export function useStepsFlow(stepNumber: number) {
@@ -92,8 +83,7 @@ export function useStepsFlow(stepNumber: number) {
     // Reset scroll position if requested, otherwise maintain current position
     requestAnimationFrame(() => {
       if (scrollToTop) {
-        // Reset both window scroll and GSAP smooth scroll
-        resetScrollPosition(true);
+        resetScrollPosition();
       }
       // If not scrolling to top, maintain current scroll position (no action needed)
       
@@ -118,9 +108,8 @@ export function useStepsFlow(stepNumber: number) {
       setStoredData(resetData);
       router.push(window.location.pathname, { scroll: false });
       
-      // Reset scroll position when going back to start
       requestAnimationFrame(() => {
-        resetScrollPosition(true);
+        resetScrollPosition();
       });
     }
   };
@@ -140,9 +129,8 @@ export function useStepsFlow(stepNumber: number) {
     // Return to start screen (step 0) - remove step param
     router.push(window.location.pathname, { scroll: false });
     
-    // Reset scroll position when resetting flow
     requestAnimationFrame(() => {
-      resetScrollPosition(true);
+      resetScrollPosition();
     });
   };
 

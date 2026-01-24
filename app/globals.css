@@ -281,7 +281,7 @@
   --color-mach1-blue: #0000FF;
   --color-mach1-red: #ED1E24;
   --color-mach1-black: #262626;
-  --color-mach1-green: #0AAE88;
+  --color-mach1-green: #0EA5E9;
   --color-mach-gray: #747474;
   --color-dark-blue: #141433;
 
@@ -524,10 +524,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Prevent layout shifts during scroll */
-[data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
 
 ::selection {
   background-color: hsl(230, 53%, 39%);

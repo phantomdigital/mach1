@@ -54,7 +54,7 @@ export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
                 </p>
               )}
               {(testimonial.client_title || testimonial.company_name) && (
-                <p className="text-green-200 text-xs">
+                <p className="text-sky-100 text-xs">
                   {testimonial.client_title}
                   {testimonial.client_title && testimonial.company_name && ", "}
                   {testimonial.company_name}

@@ -19,7 +19,7 @@ export default function NotFound() {
         <div className="max-w-3xl mx-auto text-center">
           {/* Error Badge */}
           <div className="mb-8">
-            <h5 className="inline-block text-green-200 text-xs font-bold tracking-wider uppercase px-3 py-1.5 bg-mach1-green rounded-2xl">
+            <h5 className="inline-block text-sky-100 text-xs font-bold tracking-wider uppercase px-3 py-1.5 bg-mach1-green rounded-2xl">
               Error 404
             </h5>
           </div>
