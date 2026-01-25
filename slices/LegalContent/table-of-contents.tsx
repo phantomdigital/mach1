@@ -19,10 +19,19 @@ export function TableOfContents({ items }: TableOfContentsProps) {
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      const lenis = (window as typeof window & { lenis?: { scrollTo: (target: number, options?: { duration?: number; easing?: (t: number) => number }) => void } }).lenis;
+
+      if (lenis?.scrollTo) {
+        lenis.scrollTo(offsetPosition, {
+          duration: 0.8,
+          easing: (t) => 1 - Math.pow(1 - t, 3),
+        });
+      } else {
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
     }
   };
 

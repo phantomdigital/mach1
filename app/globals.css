@@ -506,19 +506,29 @@ body {
   animation: glow-pulse 4s ease-in-out infinite;
 }
 
-/* Native Smooth Scrolling - Hardware Accelerated */
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 0;
 }
 
-/* Performance optimization: use native scrolling for better performance */
-body {
-  -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
-  overscroll-behavior-y: contain; /* Prevent overscroll bounce */
+/* Lenis base styles */
+html.lenis,
+html.lenis body {
+  height: auto;
 }
 
-/* Optimize scroll performance */
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  -webkit-overflow-scrolling: touch; 
+}
+
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

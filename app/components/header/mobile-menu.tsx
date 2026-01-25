@@ -18,10 +18,28 @@ interface MobileMenuProps {
 export function MobileMenu({ navigation, buttons, subheaderItems }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Track viewport to avoid body-lock on desktop
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 1280px)');
+    const handleChange = () => setIsDesktop(mediaQuery.matches);
+    handleChange();
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  // Ensure mobile menu closes if we cross into desktop
+  useEffect(() => {
+    if (isDesktop && isOpen) {
+      setIsOpen(false);
+      setOpenDropdownIndex(null);
+    }
+  }, [isDesktop, isOpen]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !isDesktop) {
       // Save current scroll position
       const scrollY = window.scrollY;
       document.body.style.position = 'fixed';
@@ -44,7 +62,7 @@ export function MobileMenu({ navigation, buttons, subheaderItems }: MobileMenuPr
       document.body.style.width = '';
       document.body.style.overflow = '';
     };
-  }, [isOpen]);
+  }, [isOpen, isDesktop]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

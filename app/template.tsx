@@ -11,6 +11,12 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     closeDropdown();
+    // Safety: clear any stale scroll locks that might block wheel scrolling
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
     window.scrollTo(0, 0);
   }, [pathname, closeDropdown]);
 

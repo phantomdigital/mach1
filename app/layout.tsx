@@ -4,7 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import HeaderServerWrapper from "./components/header/header-server-wrapper";
 import Footer from "./components/footer/footer";
-import GSAPSmoothScrollProvider from "@/components/gsap-smooth-scroll-provider";
+import LenisProvider from "@/components/lenis-provider";
 import { DropdownStateProvider } from "./components/header/dropdown-state-context";
 
 import { generateMetadata as generateBaseMetadata, generateOrganizationSchema } from "@/lib/metadata";
@@ -41,14 +41,13 @@ export default function RootLayout({
         />
       </head>
       <body className={`${jetbrainsMono.variable} ${manrope.variable} font-sans antialiased`}>
-          <GSAPSmoothScrollProvider>
+          <LenisProvider>
             <DropdownStateProvider>
               <HeaderServerWrapper />
               <main>{children}</main>
               <Footer />
             </DropdownStateProvider>
-          </GSAPSmoothScrollProvider>
-          {/* Privacy-friendly analytics by Plausible */}
+          </LenisProvider>
           <Script
             src="https://plausible.io/js/pa-MgCdtXHVcpVBqSjqd-DX3.js"
             strategy="afterInteractive"
