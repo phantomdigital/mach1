@@ -87,7 +87,7 @@ export function TabContentWithFixedHeight({ slice }: { slice: Content.HomepageHe
       
       {/* Hover line - matches header dropdown with bottom-up animation */}
       <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out origin-bottom scale-y-0 group-hover:scale-y-100" />
-      --header-height: -56px; scroll-behavior: smooth;    </div>
+  </div>
   );
   
   const renderServiceList = (items: any[], listRef: React.RefObject<HTMLDivElement | null>) => (

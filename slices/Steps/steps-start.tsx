@@ -85,7 +85,7 @@ export default function StepsStart({
             </motion.div>
             {/* Road - extends to left edge using negative margin */}
             <motion.div
-              className="h-8 bg-mach1-green -ml-[100vw] pl-[100vw] border-b-6 border-green-300"
+              className="h-8 bg-mach1-green -ml-[100vw] pl-[100vw] border-b-6 border-blue-300"
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
               transition={{
