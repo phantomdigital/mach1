@@ -95,14 +95,14 @@ const HeroBlock = ({ slice }: HeroBlockProps): React.ReactElement => {
             </h2>
           )}
 
-          {/* Statistics Grid - 2 rows x 3 columns */}
+          {/* Statistics - Flexible layout that adapts to content */}
           {slice.items && slice.items.length > 0 && (
-            <div className="grid grid-cols-3 gap-4 lg:gap-6 mb-8 lg:mb-12">
+            <div className="flex flex-wrap gap-4 lg:gap-6 mb-8 lg:mb-12">
               {slice.items.map((item, index) => (
                 <div 
                   key={index}
                   data-animate="stat-card"
-                  className="flex flex-col"
+                  className="flex flex-col flex-shrink-0"
                 >
                   {/* Stat Number */}
                   {item.stat_number && (
