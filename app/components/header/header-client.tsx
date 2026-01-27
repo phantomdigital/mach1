@@ -41,6 +41,7 @@ const NavigationItem = memo(({ item, index }: { item: HeaderDocumentDataNavigati
       dropdownItems={item.dropdown_items}
       dropdownImage={item.dropdown_image}
       dropdownId={`nav-${index}-${String(item.label || '').toLowerCase().replace(/\s+/g, '-')}`}
+      topOffset={-7}
     />
   );
 });

@@ -5,7 +5,6 @@ import { gsap } from 'gsap';
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { NavigationDropdown } from "./navigation-dropdown";
 import { HeaderButtons } from "./header-buttons";
-import { ScrollDropdownCloser } from "./scroll-dropdown-closer";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 interface CompactHeaderProps {
@@ -136,7 +135,7 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
         dropdownItems={item.dropdown_items}
         dropdownImage={item.dropdown_image}
         dropdownId={`compact-nav-${index}-${String(item.label || '').toLowerCase().replace(/\s+/g, '-')}`}
-        topOffset={44}
+        topOffset={2}
       />
     );
   };
@@ -144,11 +143,10 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
   return (
     <div
       ref={headerRef}
-      className="fixed top-0 left-0 right-0 z-50 bg-neutral-100 border-b-3 border-neutral-200 transform-gpu"
+      className={`fixed top-0 left-0 right-0 z-50 bg-neutral-100 border-b-3 border-neutral-200 transform-gpu ${
+        isVisible ? 'pointer-events-auto' : 'pointer-events-none'
+      }`}
     >
-      {/* Close dropdowns on scroll */}
-      <ScrollDropdownCloser />
-      
       <div className="max-w-[88rem] mx-auto px-4 lg:px-8 py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Compact Logo */}

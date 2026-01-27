@@ -3,10 +3,11 @@
  * 
  * A sophisticated dropdown menu component for navigation items with the following features:
  * - Hover-controlled dropdown with smooth animations
+ * - Zustand-powered state management for reliable behavior
  * - Dynamic width and height based on content
  * - Custom SVG backgrounds that preserve design integrity
  * - Support for dropdown images
- * - Proper TypeScript integration with Prismic CMS
+ * - Shape-aware bounds checking for angled SVG corners
  * 
  * @example
  * <NavigationDropdown 
@@ -22,7 +23,7 @@ import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { ChevronDown } from "lucide-react";
 import { DropdownBackground } from "./dropdown-background";
 import { ExternalLinkIcon } from "./external-link-icon";
-import { useDropdownState } from "./dropdown-state-context";
+import { useDropdownStore } from "./dropdown-store";
 import { NavigationItemWithPrefetch } from "./navigation-item-with-prefetch";
 import type { 
   HeaderDocumentDataNavigationItem,
@@ -64,196 +65,176 @@ export function NavigationDropdown({
 }: NavigationDropdownProps) {
   
   // =================================================================
-  // STATE & REFS
+  // ZUSTAND STATE
   // =================================================================
   
-  const { openDropdown, closeDropdown, isDropdownOpen } = useDropdownState();
+  const { openDropdown, closeDropdown, isDropdownOpen, isInGracePeriod } = useDropdownStore();
   const isOpen = isDropdownOpen(dropdownId);
+  
+  // =================================================================
+  // LOCAL STATE & REFS
+  // =================================================================
+  
   const [hoveredItemIndex, setHoveredItemIndex] = useState<number>(0);
   const [imageTransitionKey, setImageTransitionKey] = useState<number>(0);
-  const previousImageRef = useRef<ImageField | undefined>(undefined); // Track previous image for crossfade
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const previousImageRef = useRef<ImageField | undefined>(undefined);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isProgrammaticallyOpeningRef = useRef(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const dropdownContentRef = useRef<HTMLDivElement>(null);
   
   // =================================================================
   // DYNAMIC SIZING CALCULATIONS (Memoized for performance)
   // =================================================================
   
-  // Memoize expensive calculations that depend on dropdownItems and dropdownImage
   const { hasDropdownImage, dynamicHeight, dynamicWidth, longestTextWidth } = useMemo(() => {
-    // Check if any dropdown items have images
     const hasIndividualImages = dropdownItems.some(item => item.image && item.image.url);
     const hasDropdownImage = Boolean((dropdownImage && dropdownImage.url) || hasIndividualImages);
 
-    // Height calculation - content-based with edge preservation
-    const itemHeight = 55;           // Height per dropdown item (py-6 + content)
-    const headerHeight = 48;         // Category header space (text + mb-6)
-    const topPadding = 40;           // pt-10 = 40px
-    const bottomPadding = hasDropdownImage ? 32 : 20; // Less padding for no-image dropdowns
-    const edgeBuffer = hasDropdownImage ? 100 : 60; // Reduced edge space for no-image dropdowns
+    // Height calculation
+    const itemHeight = 55;
+    const headerHeight = 48;
+    const topPadding = 40;
+    const bottomPadding = hasDropdownImage ? 32 : 20;
+    const edgeBuffer = hasDropdownImage ? 100 : 60;
     
     const contentHeight = topPadding + headerHeight + (dropdownItems.length * itemHeight) + bottomPadding;
     const minHeight = contentHeight + edgeBuffer;
-    // Allow natural scaling based on content, with minimal safety buffer for images
     const minImageHeight = hasDropdownImage ? 320 : 280;
     const dynamicHeight = Math.max(minHeight, minImageHeight);
 
-    // Width calculation - text-based with proper constraints
-    const calculateTextWidth = (text: string): number => {
-      // More accurate calculation for Inter Tight Medium at 20px (1.25rem)
-      const avgCharWidth = 12; // Increased from 12 to account for medium weight
-      return text.length * avgCharWidth;
-    };
+    // Width calculation
+    const calculateTextWidth = (text: string): number => text.length * 12;
+    const calculateHeaderTextWidth = (text: string): number => text.length * 4;
 
-    const calculateHeaderTextWidth = (text: string): number => {
-      // Space Mono at 0.5rem (8px) - monospace so more predictable
-      const avgCharWidth = 4; // Much smaller due to 0.5rem size
-      return text.length * avgCharWidth;
-    };
-
-    // Find longest text content
     const displayTitle = dropdownTitle || label;
     const headerWidth = calculateHeaderTextWidth(String(displayTitle || ''));
     const maxItemWidth = dropdownItems.reduce((max, item) => {
-      const itemWidth = calculateTextWidth(String(item.label || ''));
-      return Math.max(max, itemWidth);
+      return Math.max(max, calculateTextWidth(String(item.label || '')));
     }, 0);
     
     const longestTextWidth = Math.max(headerWidth, maxItemWidth);
-    
-    // Account for all padding and spacing
-    // px-5 (40px) + pl-7 pr-20 (108px) + px-4 (32px) + icon + buffer = ~200px
-    const horizontalPadding = 40 + 108 + 32 + 20; // 200px total
+    const horizontalPadding = 200;
     const minContentWidth = longestTextWidth + horizontalPadding;
+    const safeContentWidth = minContentWidth * 1.02;
     
-    // Add extra buffer for safety to prevent wrapping
-    const safeContentWidth = minContentWidth * 1.02; // 3% buffer (minimal safety margin)
-    
-    // Width constraints
     const minWidth = hasDropdownImage ? 878 : 300;
-    const maxWidth = hasDropdownImage ? 1000 : 800; // Increased max for no-image
-    
+    const maxWidth = hasDropdownImage ? 1000 : 800;
     const dynamicWidth = Math.min(Math.max(safeContentWidth, minWidth), maxWidth);
 
     return { hasDropdownImage, dynamicHeight, dynamicWidth, longestTextWidth };
   }, [dropdownItems, dropdownImage, dropdownTitle, label]);
 
-  // Get the current image to display (individual item image or fallback dropdown image)
+  // Get current image to display
   const getCurrentImage = useCallback(() => {
     const hoveredItem = dropdownItems[hoveredItemIndex];
-    if (hoveredItem && hoveredItem.image && hoveredItem.image.url) {
+    if (hoveredItem?.image?.url) {
       return hoveredItem.image;
     }
     return dropdownImage;
   }, [dropdownItems, hoveredItemIndex, dropdownImage]);
 
   // =================================================================
+  // SHAPE-AWARE BOUNDS CHECKING
+  // =================================================================
+  
+  /**
+   * Checks if a point is within the actual SVG shape (handles angled corners).
+   */
+  const isPointInDropdownShape = useCallback((
+    clientX: number, 
+    clientY: number,
+    contentRect: DOMRect
+  ): boolean => {
+    const relX = clientX - contentRect.left;
+    const relY = clientY - contentRect.top;
+    
+    // Basic bounds check
+    if (relX < 0 || relX > dynamicWidth || relY < 0 || relY > dynamicHeight) {
+      return false;
+    }
+    
+    // Check the angled corner "dead zone" on top-right
+    const angleStartX = dynamicWidth - 88;
+    const angleStartY = 19;
+    const angleEndY = 80;
+    
+    if (relX > angleStartX && relY < angleEndY) {
+      const slope = (angleEndY - angleStartY) / (dynamicWidth - angleStartX);
+      const lineYAtX = angleStartY + (relX - angleStartX) * slope;
+      
+      if (relY < lineYAtX) {
+        return false;
+      }
+    }
+    
+    return true;
+  }, [dynamicWidth, dynamicHeight]);
+
+  // =================================================================
   // EVENT HANDLERS
   // =================================================================
   
-  /**
-   * Handles mouse enter on trigger button - opens dropdown and resets to first item
-   */
-  const handleTriggerMouseEnter = (): void => {
-    // Always clear any pending close timeout
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    
-    // Open this dropdown (will close others automatically)
+  const handleMouseEnter = useCallback((): void => {
     if (!isOpen) {
-      setHoveredItemIndex(0); // Always start with first item
-      previousImageRef.current = undefined; // Clear previous image for clean start
+      setHoveredItemIndex(0);
+      previousImageRef.current = undefined;
       setImageTransitionKey(prev => prev + 1);
     }
-    openDropdown(dropdownId); // Always call this to ensure this dropdown stays open
-  };
+    openDropdown(dropdownId);
+  }, [isOpen, dropdownId, openDropdown]);
 
-  /**
-   * Handles mouse enter on dropdown content - keeps dropdown open
-   */
-  const handleDropdownMouseEnter = (): void => {
-    // Clear any pending close timeout when mouse enters dropdown
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-  };
-
-  /**
-   * Handles mouse leave from dropdown content - closes dropdown
-   */
-  const handleDropdownMouseLeave = (): void => {
-    // Don't set timeout if dropdown is not currently open
-    // or if we're in the process of programmatically opening
-    if (!isOpen || isProgrammaticallyOpeningRef.current) {
-      return;
-    }
-    
-    timeoutRef.current = setTimeout(() => {
-      // Double-check dropdown is still open and we're not programmatically opening
-      // This prevents closing if it was reopened programmatically
-      if (isDropdownOpen(dropdownId) && !isProgrammaticallyOpeningRef.current) {
-        closeDropdown(dropdownId);
-        setHoveredItemIndex(0); // Reset for next time
-      }
-    }, 150); // Shorter delay for more responsive closing
-  };
-
-  /**
-   * Handles mouse leave from trigger button - closes dropdown if not hovering over dropdown
-   */
-  const handleTriggerMouseLeave = (): void => {
-    // Don't close immediately - give time to move to dropdown
-    // The dropdown's own mouse leave handler will handle closing
-    if (!isOpen) {
-      return;
-    }
-  };
+  const handleMouseLeave = useCallback((): void => {
+    // Zustand store handles grace period internally
+    closeDropdown(dropdownId);
+    setHoveredItemIndex(0);
+  }, [dropdownId, closeDropdown]);
 
   // =================================================================
-  // EFFECTS & CLEANUP
+  // SHAPE-AWARE MOUSEMOVE EFFECT
   // =================================================================
   
-  /**
-   * Clear timeout when dropdown is opened (including programmatically)
-   * This prevents the dropdown from closing immediately after being reopened
-   */
   useEffect(() => {
-    if (isOpen) {
-      // Immediately clear any pending close timeout when dropdown opens
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
+    if (!isOpen) return;
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      // Skip during grace period to prevent immediate close
+      if (isInGracePeriod()) return;
+      
+      const contentEl = dropdownContentRef.current;
+      const wrapperEl = wrapperRef.current;
+      
+      if (!contentEl || !wrapperEl) return;
+      
+      const wrapperRect = wrapperEl.getBoundingClientRect();
+      const contentRect = contentEl.getBoundingClientRect();
+      
+      // Check if within wrapper
+      const inWrapper = (
+        e.clientX >= wrapperRect.left &&
+        e.clientX <= wrapperRect.right &&
+        e.clientY >= wrapperRect.top &&
+        e.clientY <= wrapperRect.bottom
+      );
+      
+      if (!inWrapper) return; // Let onMouseLeave handle it
+      
+      // Check if over trigger (above dropdown content)
+      if (e.clientY < contentRect.top) return;
+      
+      // Check if within actual SVG shape
+      if (!isPointInDropdownShape(e.clientX, e.clientY, contentRect)) {
+        closeDropdown(dropdownId);
+        setHoveredItemIndex(0);
       }
-      
-      // Set flag to prevent new timeouts from being set during programmatic open
-      isProgrammaticallyOpeningRef.current = true;
-      
-      // Clear the flag after a short delay to allow normal hover behavior
-      const flagTimeout = setTimeout(() => {
-        isProgrammaticallyOpeningRef.current = false;
-      }, 350); // Slightly longer than the close timeout (300ms)
-      
-      return () => {
-        clearTimeout(flagTimeout);
-      };
-    } else {
-      // Reset flag when dropdown closes
-      isProgrammaticallyOpeningRef.current = false;
-    }
-  }, [isOpen]);
+    };
+    
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => document.removeEventListener('mousemove', handleMouseMove);
+  }, [isOpen, dropdownId, closeDropdown, isPointInDropdownShape, isInGracePeriod]);
 
-  /**
-   * Cleanup timeouts on component unmount to prevent memory leaks
-   */
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current);
       }
@@ -266,17 +247,15 @@ export function NavigationDropdown({
   
   return (
     <div 
+      ref={wrapperRef}
       className="relative"
       data-dropdown-id={dropdownId}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {/* =================================================================
-          DROPDOWN TRIGGER BUTTON
-          ================================================================= */}
-      
+      {/* Trigger Button */}
       <button 
         className="text-black font-semibold text-[1.25rem] px-5 h-full outline-none cursor-pointer bg-transparent inline-flex items-center"
-        onMouseEnter={handleTriggerMouseEnter}
-        onMouseLeave={handleTriggerMouseLeave}
       >
         <span 
           className={`
@@ -287,9 +266,7 @@ export function NavigationDropdown({
             }
           `}
         >
-          <span className="inline whitespace-nowrap">
-            {label}
-          </span>
+          <span className="inline whitespace-nowrap">{label}</span>
           <ChevronDown 
             className={`ml-1 h-4 w-4 transition-transform duration-150 ease-out flex-shrink-0 ${
               isOpen ? 'rotate-180' : 'rotate-0'
@@ -298,231 +275,143 @@ export function NavigationDropdown({
         </span>
       </button>
       
-      {/* =================================================================
-          INVISIBLE HOVER BRIDGE
-          ================================================================= */}
-      
-      {/* Bridge to maintain hover state across the gap between trigger and dropdown */}
-      {/* Width is reduced by 40px (20px each side) to match actual dropdown bounds */}
+      {/* Dropdown Content */}
       <div 
-        className={`absolute top-full left-1/2 -translate-x-1/2 z-40 ${
+        className={`absolute left-1/2 -translate-x-1/2 z-50 ${
           isOpen ? 'pointer-events-auto' : 'pointer-events-none hidden'
         }`}
         style={{ 
-          height: `${topOffset + 4}px`,
-          width: `${Math.max(dynamicWidth - 40, 200)}px`, // Reduced by 40px (20px each side) for tighter bounds
-          background: 'transparent',
-          border: 'none',
-          outline: 'none',
-          opacity: 0,
-          pointerEvents: isOpen ? 'auto' : 'none'
+          top: '100%',
+          marginTop: `${topOffset}px`,
+          paddingTop: '4px' // Small gap for hover bridge
         }}
-        onMouseEnter={handleDropdownMouseEnter}
-        onMouseLeave={handleDropdownMouseLeave}
-      />
-      
-      {/* =================================================================
-          DROPDOWN CONTENT
-          ================================================================= */}
-      
-      {/* Dropdown Content with CSS-only transitions */}
-      <div 
-        className={`absolute left-1/2 -translate-x-1/2 z-50 ${
-          isOpen 
-            ? 'pointer-events-auto' 
-            : 'pointer-events-none hidden'
-        }`}
-        style={{ top: `${topOffset}px` }}
       >
-          {/* SVG Background Container */}
-          <div className="relative" style={{ height: `${dynamicHeight}px` }}>
-            
-            {/* Custom SVG Background */}
-            <DropdownBackground 
-              hasImage={hasDropdownImage}
-              height={dynamicHeight}
-              width={dynamicWidth}
-              itemCount={dropdownItems.length}
-              longestTextWidth={longestTextWidth}
-              image={getCurrentImage()}
-              previousImage={previousImageRef.current}
-              imageKey={`${imageTransitionKey}`}
-              dropdownId={dropdownId}
-            />
+        <div 
+          ref={dropdownContentRef}
+          className="relative" 
+          style={{ height: `${dynamicHeight}px` }}
+        >
+          {/* SVG Background */}
+          <DropdownBackground 
+            hasImage={hasDropdownImage}
+            height={dynamicHeight}
+            width={dynamicWidth}
+            itemCount={dropdownItems.length}
+            longestTextWidth={longestTextWidth}
+            image={getCurrentImage()}
+            previousImage={previousImageRef.current}
+            imageKey={`${imageTransitionKey}`}
+            dropdownId={dropdownId}
+          />
 
-            {/* Content Container */}
-            <div 
-              className="relative z-10 flex"
-              style={{
-                height: `${dynamicHeight}px`,
-                width: `${dynamicWidth}px`
-              }}
-              onMouseEnter={handleDropdownMouseEnter}
-              onMouseLeave={(e) => {
-                // Check if mouse is actually leaving the tighter bounds (20px inset)
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = e.clientX;
-                const y = e.clientY;
-                
-                // Tighter bounds: 20px inset on all sides
-                const leftBound = rect.left + 20;
-                const rightBound = rect.right - 20;
-                const topBound = rect.top + 20;
-                const bottomBound = rect.bottom - 20;
-                
-                // Only close if mouse is outside the tighter bounds
-                if (x < leftBound || x > rightBound || y < topBound || y > bottomBound) {
-                  handleDropdownMouseLeave();
-                }
-              }}
-            >
+          {/* Content Container */}
+          <div 
+            className="relative z-10 flex"
+            style={{
+              height: `${dynamicHeight}px`,
+              width: `${dynamicWidth}px`
+            }}
+          >
+            {/* Vertical separator line */}
+            {(() => {
+              const startY = 70;
+              const contentEndY = dynamicHeight - 18;
+              const lineHeight = contentEndY - startY;
               
-              {/* Vertical separator line - positioned relative to entire dropdown */}
-              {(() => {
-                // ========== DYNAMIC LINE BASED ON ACTUAL CONTENT ==========
-                // Start position: identical for both variants
-                const startY = 70;   // Same fixed position for both image and no-image
-                
-                // End position: go almost to the bottom of the SVG, leaving small margin
-                const contentEndY = dynamicHeight - 18; // 25px from bottom edge
-                const lineHeight = contentEndY - startY;
-                
-                return (
-                  <div 
-                    className="absolute w-px bg-gray-200" 
-                    style={{ 
-                      left: '37px',
-                      top: `${startY}px`,
-                      height: `${lineHeight}px`,
-                      backgroundColor: '#DFDFDF' 
-                    }} 
-                  />
-                );
-              })()}
-              
-              {/* =================================================================
-                  DROPDOWN NAVIGATION ITEMS
-                  ================================================================= */}
-              
-              <div className="flex-1 px-5 pt-10 pb-8">
-                
-                {/* Category Header */}
-                <h5 
-                  className="font-medium text-gray-500 uppercase tracking-widest mb-2 pl-4" 
+              return (
+                <div 
+                  className="absolute w-px bg-gray-200" 
                   style={{ 
-                    color: '#747474',
-                    fontSize: '0.55rem'
-                  }}
-                >
-                  {dropdownTitle || label}
-                </h5>
-                
-                {/* Navigation Items List */}
-                <div className={`space-y-0 pl-7 relative pt-2 ${hasDropdownImage ? 'pr-8' : 'pr-20'}`}>
-                  {dropdownItems.map((dropdownItem: HeaderDocumentDataNavigationDropdownItemsItem, dropdownIndex: number) => (
-                    <div 
-                      key={dropdownIndex} 
-                      className="relative group"
-                      onMouseEnter={() => {
-                        if (hoverTimeoutRef.current) {
-                          clearTimeout(hoverTimeoutRef.current);
-                        }
-                        
-                        hoverTimeoutRef.current = setTimeout(() => {
-                          if (dropdownIndex !== hoveredItemIndex) {
-                            // Store current image as previous before changing hover index
-                            const currentItem = dropdownItems[hoveredItemIndex];
-                            if (currentItem && currentItem.image && currentItem.image.url) {
-                              previousImageRef.current = currentItem.image;
-                            } else {
-                              previousImageRef.current = dropdownImage;
-                            }
-                            
-                            setHoveredItemIndex(dropdownIndex);
-                            setImageTransitionKey(prev => prev + 1);
-                          }
-                        }, 50);
-                      }}
-                    >
+                    left: '37px',
+                    top: `${startY}px`,
+                    height: `${lineHeight}px`,
+                    backgroundColor: '#DFDFDF' 
+                  }} 
+                />
+              );
+            })()}
+            
+            {/* Navigation Items */}
+            <div className="flex-1 px-5 pt-10 pb-8">
+              <h5 
+                className="font-medium text-gray-500 uppercase tracking-widest mb-2 pl-4" 
+                style={{ color: '#747474', fontSize: '0.55rem' }}
+              >
+                {dropdownTitle || label}
+              </h5>
+              
+              <div className={`space-y-0 pl-7 relative pt-2 ${hasDropdownImage ? 'pr-8' : 'pr-20'}`}>
+                {dropdownItems.map((dropdownItem: HeaderDocumentDataNavigationDropdownItemsItem, dropdownIndex: number) => (
+                  <div 
+                    key={dropdownIndex} 
+                    className="relative group"
+                    onMouseEnter={() => {
+                      if (hoverTimeoutRef.current) {
+                        clearTimeout(hoverTimeoutRef.current);
+                      }
                       
-                      {/* Horizontal separator line - positioned relative to this nav item */}
-                      {dropdownIndex < dropdownItems.length - 1 && (
-                        <div 
-                          className="absolute bottom-0 left-0 h-px bg-gray-200"
-                          style={{ 
-                            marginLeft: '-23px', // Align with vertical line
-                            backgroundColor: '#DFDFDF',
-                            // Dynamic width: stop before image area (519px) when present, or use text-based width
-                            width: hasDropdownImage 
-                              ? `${dynamicWidth - 519 - 40}px`  // Stop before 519px gray area + padding
-                              : `${longestTextWidth + 60}px`     // Text width + padding for no-image
-                          }} 
-                        />
-                      )}
-                      
-                      {/* Left hover bar - easy positioning controls with bottom-up animation */}
-                      {(() => {
-                        // ========== HOVER BAR POSITION CONTROLS ==========
-                        const withImagePosition = -11.825;    // ← Adjust this number to move bar left/right when dropdown has image
-                        const noImagePosition = -11.825;       // ← Adjust this number to move bar left/right when dropdown has no image
-                        
-                        return (
-                          <div 
-                            className="absolute bottom-0 w-0.5 bg-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out origin-bottom scale-y-0 group-hover:scale-y-100" 
-                            style={{ 
-                              left: `${hasDropdownImage ? withImagePosition : noImagePosition}px`,
-                              height: '100%'
-                            }} 
-                          />
-                        );
-                      })()}
-                      
-                      {/* Navigation Link with prefetching */}
-                      <NavigationItemWithPrefetch
-                        link={dropdownItem.link}
-                        label={dropdownItem.label}
-                        className={`group/link flex items-center py-4 px-4 transition-colors duration-200 text-mach-gray hover:text-black ${hasDropdownImage ? 'justify-start' : 'justify-between'}`}
-                      >
-                        <div 
-                          className={`flex items-center w-full ${hasDropdownImage ? 'justify-start' : 'justify-between'}`}
-                          style={{
-                            fontFamily: 'var(--font-inter-tight), sans-serif',
-                            fontWeight: 500,
-                            fontSize: '1.25rem',        // 20px
-                            lineHeight: '100%',         // Tight line height
-                            letterSpacing: '0%'         // No letter spacin
-                          }}
-                        >
-                          <span>{dropdownItem.label}</span>
+                      hoverTimeoutRef.current = setTimeout(() => {
+                        if (dropdownIndex !== hoveredItemIndex) {
+                          const currentItem = dropdownItems[hoveredItemIndex];
+                          previousImageRef.current = currentItem?.image?.url 
+                            ? currentItem.image 
+                            : dropdownImage;
                           
-                          {/* External link icon - appears on hover, positioned differently based on image presence */}
-                          {hasDropdownImage ? (
-                            // With image: icon appears next to text to avoid gray area
-                            <ExternalLinkIcon 
-                              className="w-[13px] h-[13px] opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 ml-2" 
-                              color="currentColor"
-                            />
-                          ) : (
-                            // Without image: icon appears on far right as before
-                            <ExternalLinkIcon 
-                              className="w-[13px] h-[13px] opacity-0 group-hover/link:opacity-100 transition-opacity duration-200" 
-                              color="currentColor"
-                            />
-                          )}
-                        </div>
-                      </NavigationItemWithPrefetch>
-                    </div>
-                  ))}
-                </div>
+                          setHoveredItemIndex(dropdownIndex);
+                          setImageTransitionKey(prev => prev + 1);
+                        }
+                      }, 50);
+                    }}
+                  >
+                    {/* Horizontal separator */}
+                    {dropdownIndex < dropdownItems.length - 1 && (
+                      <div 
+                        className="absolute bottom-0 left-0 h-px bg-gray-200"
+                        style={{ 
+                          marginLeft: '-23px',
+                          backgroundColor: '#DFDFDF',
+                          width: hasDropdownImage 
+                            ? `${dynamicWidth - 519 - 40}px`
+                            : `${longestTextWidth + 60}px`
+                        }} 
+                      />
+                    )}
+                    
+                    {/* Left hover bar */}
+                    <div 
+                      className="absolute bottom-0 w-0.5 bg-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out origin-bottom scale-y-0 group-hover:scale-y-100" 
+                      style={{ left: '-11.825px', height: '100%' }} 
+                    />
+                    
+                    {/* Navigation Link */}
+                    <NavigationItemWithPrefetch
+                      link={dropdownItem.link}
+                      label={dropdownItem.label}
+                      className={`group/link flex items-center py-4 px-4 transition-colors duration-200 text-mach-gray hover:text-black ${hasDropdownImage ? 'justify-start' : 'justify-between'}`}
+                    >
+                      <div 
+                        className={`flex items-center w-full ${hasDropdownImage ? 'justify-start' : 'justify-between'}`}
+                        style={{
+                          fontFamily: 'var(--font-inter-tight), sans-serif',
+                          fontWeight: 500,
+                          fontSize: '1.25rem',
+                          lineHeight: '100%',
+                          letterSpacing: '0%'
+                        }}
+                      >
+                        <span>{dropdownItem.label}</span>
+                        <ExternalLinkIcon 
+                          className={`w-[13px] h-[13px] opacity-0 group-hover/link:opacity-100 transition-opacity duration-200 ${hasDropdownImage ? 'ml-2' : ''}`}
+                          color="currentColor"
+                        />
+                      </div>
+                    </NavigationItemWithPrefetch>
+                  </div>
+                ))}
               </div>
-              
-              {/* =================================================================
-                  OPTIONAL DROPDOWN IMAGE
-                  ================================================================= */}
-              
-              {/* Image will be rendered inside the gray SVG for natural clipping */}
             </div>
           </div>
+        </div>
       </div>
     </div>
   );

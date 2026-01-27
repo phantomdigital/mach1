@@ -3,14 +3,14 @@
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { useDropdownState } from "./components/header/dropdown-state-context";
+import { useCloseAllDropdowns } from "./components/header/dropdown-store";
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { closeDropdown } = useDropdownState();
+  const forceClose = useCloseAllDropdowns();
 
   useEffect(() => {
-    closeDropdown();
+    forceClose();
     // Safety: clear any stale scroll locks that might block wheel scrolling
     document.body.style.position = '';
     document.body.style.top = '';
@@ -18,7 +18,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
     window.scrollTo(0, 0);
-  }, [pathname, closeDropdown]);
+  }, [pathname, forceClose]);
 
   return (
     <motion.div
