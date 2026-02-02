@@ -6,6 +6,7 @@ interface ObfuscatedEmailProps {
   email: string;
   className?: string;
   displayText?: string;
+  isBase64Encoded?: boolean;
 }
 
 /**
@@ -19,7 +20,8 @@ interface ObfuscatedEmailProps {
 export function ObfuscatedEmail({ 
   email, 
   className = "",
-  displayText 
+  displayText,
+  isBase64Encoded = false
 }: ObfuscatedEmailProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [decodedEmail, setDecodedEmail] = useState("");
@@ -28,24 +30,41 @@ export function ObfuscatedEmail({
     // Delay rendering to prevent immediate bot scraping
     const timer = setTimeout(() => {
       setIsMounted(true);
-      // Decode email from base64 (encoded in server component)
+      // Decode email from base64 if encoded
       try {
         if (typeof window !== 'undefined') {
-          setDecodedEmail(email);
+          if (isBase64Encoded) {
+            // Decode base64 email
+            const decoded = atob(email);
+            setDecodedEmail(decoded);
+          } else {
+            setDecodedEmail(email);
+          }
         }
       } catch (e) {
         // Fallback to plain email if decoding fails
+        console.warn('Failed to decode email:', e);
         setDecodedEmail(email);
       }
     }, 100); // Small delay to prevent immediate scraping
 
     return () => clearTimeout(timer);
-  }, [email]);
+  }, [email, isBase64Encoded]);
 
   // Show placeholder or obfuscated version before mount
   if (!isMounted) {
+    // Decode email first if it's base64 encoded, then obfuscate with HTML entities
+    let emailToObfuscate = email;
+    if (isBase64Encoded) {
+      try {
+        emailToObfuscate = typeof window !== 'undefined' ? atob(email) : email;
+      } catch (e) {
+        emailToObfuscate = email;
+      }
+    }
+    
     // Show obfuscated version (HTML entities)
-    const obfuscated = email
+    const obfuscated = emailToObfuscate
       .split('')
       .map((char) => {
         if (char === '@') return '&#64;';

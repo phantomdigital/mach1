@@ -1,3 +1,4 @@
+import React from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps, PrismicRichText, JSXMapSerializer } from "@prismicio/react";
 import { 
@@ -10,6 +11,58 @@ import {
 import { LegalHeader } from "./legal-header";
 import { TableOfContents } from "./table-of-contents";
 import { ScrollToTopButton } from "./scroll-to-top-button";
+import { ObfuscatedEmail } from "@/components/obfuscated-email";
+import { encodeEmailForJS } from "@/lib/email-obfuscation";
+
+/**
+ * Email regex pattern to detect email addresses in text content
+ */
+const EMAIL_REGEX = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+
+/**
+ * Function to process text content and replace emails with obfuscated components
+ */
+const processTextForEmails = (text: string) => {
+  if (!text || typeof text !== 'string') return text;
+  
+  const emails = text.match(EMAIL_REGEX);
+  if (!emails || emails.length === 0) return text;
+  
+  // Split text by emails and create array of text parts and email components
+  const parts: (string | React.ReactElement)[] = [];
+  let lastIndex = 0;
+  
+  emails.forEach((email, index) => {
+    const emailIndex = text.indexOf(email, lastIndex);
+    
+    // Add text before email
+    if (emailIndex > lastIndex) {
+      parts.push(text.substring(lastIndex, emailIndex));
+    }
+    
+    // Encode email with base64 for server-side obfuscation
+    const encodedEmail = encodeEmailForJS(email);
+    
+    // Add obfuscated email component with base64 encoded email
+    parts.push(
+      <ObfuscatedEmail 
+        key={`email-${index}`}
+        email={encodedEmail}
+        isBase64Encoded={true}
+        className="text-blue-600 hover:text-blue-800 underline"
+      />
+    );
+    
+    lastIndex = emailIndex + email.length;
+  });
+  
+  // Add remaining text after last email
+  if (lastIndex < text.length) {
+    parts.push(text.substring(lastIndex));
+  }
+  
+  return parts;
+};
 
 /**
  * Props for `LegalContent`.
@@ -47,7 +100,7 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
   // Create a ref to track heading index across renders
   const headingIndexRef = { current: 0 };
   
-  // Custom serializer to add IDs to headings for anchor links
+  // Custom serializer to add IDs to headings for anchor links and obfuscate emails
   const components: JSXMapSerializer = {
     heading2: ({ children }) => {
       headingIndexRef.current++;
@@ -66,6 +119,50 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
           {children}
         </h3>
       );
+    },
+    paragraph: ({ children }) => {
+      // Process paragraph content for emails
+      const processedChildren = React.Children.map(children, (child) => {
+        if (typeof child === 'string') {
+          return processTextForEmails(child);
+        }
+        return child;
+      });
+      
+      return <p>{processedChildren}</p>;
+    },
+    listItem: ({ children }) => {
+      // Process list item content for emails
+      const processedChildren = React.Children.map(children, (child) => {
+        if (typeof child === 'string') {
+          return processTextForEmails(child);
+        }
+        return child;
+      });
+      
+      return <li>{processedChildren}</li>;
+    },
+    strong: ({ children }) => {
+      // Process strong text content for emails
+      const processedChildren = React.Children.map(children, (child) => {
+        if (typeof child === 'string') {
+          return processTextForEmails(child);
+        }
+        return child;
+      });
+      
+      return <strong>{processedChildren}</strong>;
+    },
+    em: ({ children }) => {
+      // Process emphasized text content for emails
+      const processedChildren = React.Children.map(children, (child) => {
+        if (typeof child === 'string') {
+          return processTextForEmails(child);
+        }
+        return child;
+      });
+      
+      return <em>{processedChildren}</em>;
     },
   };
 
