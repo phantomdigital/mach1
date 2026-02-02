@@ -2495,7 +2495,7 @@ export interface HeroSliceDefaultPrimary {
 	 * Title field in *Hero → Default → Primary*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: The Mach 1 Difference
+	 * - **Placeholder**: The MACH1 Difference
 	 * - **API ID Path**: hero.default.primary.title
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
