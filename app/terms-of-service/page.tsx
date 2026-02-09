@@ -51,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const title = legalContentSlice?.primary?.page_title || "Terms of Service";
 
   return {
-    title: `${title} | MACH1 Logistics`,
+    title: `${title} | MACH 1 Logistics`,
     description: `Read our ${title.toLowerCase()} to understand your rights and obligations.`,
   };
 }

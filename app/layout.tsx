@@ -47,7 +47,7 @@ export default function RootLayout({
             <Footer />
           </LenisProvider>
           <Script
-            src="https://plausible.io/js/pa-MgCdtXHVcpVBqSjqd-DX3.js"
+            src="https://plausible.io/js/pa-URrITWEbkA-vPSKi-oc0v.js"
             strategy="afterInteractive"
           />
           <Script
@@ -55,9 +55,8 @@ export default function RootLayout({
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
-                window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)};
-                plausible.init=plausible.init||function(i){plausible.o=i||{}};
-                plausible.init();
+                window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+                plausible.init()
               `,
             }}
           />
