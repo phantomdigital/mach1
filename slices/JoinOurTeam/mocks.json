@@ -48,5 +48,49 @@
       "padding_top": "large",
       "padding_bottom": "large"
     }
+  },
+  {
+    "variation": "flipped",
+    "name": "Flipped",
+    "slice_type": "join_our_team",
+    "items": [
+      {
+        "point_text": "Stable, long-term roles in a growing logistics business"
+      },
+      {
+        "point_text": "Supportive team environment with real progression paths"
+      }
+    ],
+    "primary": {
+      "subheading": "JOIN OUR TEAM",
+      "heading": "Build your career with MACH1",
+      "description": "Same content, but with the image on the right and text on the left.",
+      "staff_image": {
+        "dimensions": {
+          "width": 1200,
+          "height": 1400
+        },
+        "alt": "MACH1 staff member",
+        "copyright": null,
+        "url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&h=1400&fit=crop"
+      },
+      "staff_name": "Jordan Smith",
+      "staff_role": "Operations Coordinator, 4 years at MACH1",
+      "primary_button_text": "View Open Roles",
+      "primary_button_link": {
+        "link_type": "Web",
+        "url": "/careers/vacancies"
+      },
+      "secondary_button_text": "Learn About Our Team",
+      "secondary_button_link": {
+        "link_type": "Web",
+        "url": "/about"
+      },
+      "background_color": "#F7F7F2",
+      "left_panel_color": "#141433",
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large"
+    }
   }
 ]

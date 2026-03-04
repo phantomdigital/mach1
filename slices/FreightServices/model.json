@@ -1,0 +1,104 @@
+{
+  "id": "freight_services",
+  "type": "SharedSlice",
+  "name": "Freight Services",
+  "description": "Freight, delivery and logistics services section with left intro and 2x2 grid of service feature blocks",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Left column with heading + intro, right column with 2x2 grid of service blocks",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Main Heading",
+            "placeholder": "Freight, delivery & logistics services built for Australian businesses"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Introduction",
+            "placeholder": "We deliver almost anything - parcels, pallets, containers and speciality goods - with a network designed for speed and reliability."
+          }
+        },
+        "primary_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Primary Button Text",
+            "placeholder": "Get a quote"
+          }
+        },
+        "primary_button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Primary Button Link",
+            "select": null
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        }
+      },
+      "items": {
+        "icon": {
+          "type": "Image",
+          "config": {
+            "label": "Icon",
+            "placeholder": "Upload SVG or PNG icon (line-art style, green accent recommended)",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Feature Title",
+            "placeholder": "Freight services"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "From metro routes to remote regions, our freight network connects Australia end-to-end."
+          }
+        }
+      }
+    }
+  ]
+}

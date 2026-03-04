@@ -808,7 +808,7 @@ interface HeaderDocumentData {
  */
 export type HeaderDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HeaderDocumentData>, "header", Lang>;
 
-type HomeDocumentDataSlicesSlice = HeroBlockSlice | NewsOverviewSlice | ServicesSlice | NetworkSlice | HomepageHeroSlice | JoinOurTeamSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
+type HomeDocumentDataSlicesSlice = FreightServicesSlice | HeroBlockSlice | NewsOverviewSlice | ServicesSlice | NetworkSlice | HomepageHeroSlice | JoinOurTeamSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Home documents
@@ -2282,6 +2282,152 @@ type FaqSliceVariation = FaqSliceDefault | FaqSliceReferenced
 export type FaqSlice = prismic.SharedSlice<"faq", FaqSliceVariation>;
 
 /**
+ * Primary content in *Freight Services → Default → Primary*
+ */
+export interface FreightServicesSliceDefaultPrimary {
+	/**
+	 * Main Heading field in *Freight Services → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Freight, delivery & logistics services built for Australian businesses
+	 * - **API ID Path**: freight_services.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Introduction field in *Freight Services → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: We deliver almost anything - parcels, pallets, containers and speciality goods - with a network designed for speed and reliability.
+	 * - **API ID Path**: freight_services.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Primary Button Text field in *Freight Services → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Get a quote
+	 * - **API ID Path**: freight_services.default.primary.primary_button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	primary_button_text: prismic.KeyTextField;
+	
+	/**
+	 * Primary Button Link field in *Freight Services → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: freight_services.default.primary.primary_button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	primary_button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Top Margin field in *Freight Services → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: freight_services.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top field in *Freight Services → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: freight_services.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Bottom field in *Freight Services → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: freight_services.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Background Color field in *Freight Services → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: freight_services.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+}
+
+/**
+ * Primary content in *Freight Services → Items*
+ */
+export interface FreightServicesSliceDefaultItem {
+	/**
+	 * Icon field in *Freight Services → Items*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: Upload SVG or PNG icon (line-art style, green accent recommended)
+	 * - **API ID Path**: freight_services.items[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	icon: prismic.ImageField<never>;
+	
+	/**
+	 * Feature Title field in *Freight Services → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Freight services
+	 * - **API ID Path**: freight_services.items[].title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Freight Services → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: From metro routes to remote regions, our freight network connects Australia end-to-end.
+	 * - **API ID Path**: freight_services.items[].description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for Freight Services Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Left column with heading + intro, right column with 2x2 grid of service blocks
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FreightServicesSliceDefault = prismic.SharedSliceVariation<"default", Simplify<FreightServicesSliceDefaultPrimary>, Simplify<FreightServicesSliceDefaultItem>>;
+
+/**
+ * Slice variation for *Freight Services*
+ */
+type FreightServicesSliceVariation = FreightServicesSliceDefault
+
+/**
+ * Freight Services Shared Slice
+ *
+ * - **API ID**: `freight_services`
+ * - **Description**: Freight, delivery and logistics services section with left intro and 2x2 grid of service feature blocks
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type FreightServicesSlice = prismic.SharedSlice<"freight_services", FreightServicesSliceVariation>;
+
+/**
  * Primary content in *Hero → Default → Primary*
  */
 export interface HeroSliceDefaultPrimary {
@@ -3527,9 +3673,191 @@ export interface JoinOurTeamSliceDefaultItem {
 export type JoinOurTeamSliceDefault = prismic.SharedSliceVariation<"default", Simplify<JoinOurTeamSliceDefaultPrimary>, Simplify<JoinOurTeamSliceDefaultItem>>;
 
 /**
+ * Primary content in *JoinOurTeam → Flipped → Primary*
+ */
+export interface JoinOurTeamSliceFlippedPrimary {
+	/**
+	 * Subheading field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: CAREERS AT MACH1
+	 * - **API ID Path**: join_our_team.flipped.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Build your career with MACH1
+	 * - **API ID Path**: join_our_team.flipped.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Join a team that values initiative, reliability, and people who care about delivering great service.
+	 * - **API ID Path**: join_our_team.flipped.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Staff Image field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.flipped.primary.staff_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	staff_image: prismic.ImageField<never>;
+	
+	/**
+	 * Staff Name (Optional) field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Jordan Smith
+	 * - **API ID Path**: join_our_team.flipped.primary.staff_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	staff_name: prismic.KeyTextField;
+	
+	/**
+	 * Staff Role (Optional) field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Operations Coordinator, 4 years at MACH1
+	 * - **API ID Path**: join_our_team.flipped.primary.staff_role
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	staff_role: prismic.KeyTextField;
+	
+	/**
+	 * Primary Button Text field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: View Open Roles
+	 * - **API ID Path**: join_our_team.flipped.primary.primary_button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	primary_button_text: prismic.KeyTextField;
+	
+	/**
+	 * Primary Button Link field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.flipped.primary.primary_button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	primary_button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Secondary Button Text (Optional) field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Learn About Our Team
+	 * - **API ID Path**: join_our_team.flipped.primary.secondary_button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	secondary_button_text: prismic.KeyTextField;
+	
+	/**
+	 * Secondary Button Link field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.flipped.primary.secondary_button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	secondary_button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Background Color field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #F7F7F2
+	 * - **API ID Path**: join_our_team.flipped.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Panel Color (right side in this layout) field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #E9EEE8
+	 * - **API ID Path**: join_our_team.flipped.primary.left_panel_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	left_panel_color: prismic.ColorField;
+	
+	/**
+	 * Top Margin field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: join_our_team.flipped.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: join_our_team.flipped.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: join_our_team.flipped.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+}
+
+/**
+ * Primary content in *JoinOurTeam → Items*
+ */
+export interface JoinOurTeamSliceFlippedItem {
+	/**
+	 * Selling Point field in *JoinOurTeam → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Supportive team culture
+	 * - **API ID Path**: join_our_team.items[].point_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	point_text: prismic.KeyTextField;
+}
+
+/**
+ * Flipped variation for JoinOurTeam Slice
+ *
+ * - **API ID**: `flipped`
+ * - **Description**: Same layout with image on right, content on left
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type JoinOurTeamSliceFlipped = prismic.SharedSliceVariation<"flipped", Simplify<JoinOurTeamSliceFlippedPrimary>, Simplify<JoinOurTeamSliceFlippedItem>>;
+
+/**
  * Slice variation for *JoinOurTeam*
  */
-type JoinOurTeamSliceVariation = JoinOurTeamSliceDefault
+type JoinOurTeamSliceVariation = JoinOurTeamSliceDefault | JoinOurTeamSliceFlipped
 
 /**
  * JoinOurTeam Shared Slice
@@ -7598,6 +7926,11 @@ declare module "@prismicio/client" {
 			FaqSliceVariation,
 			FaqSliceDefault,
 			FaqSliceReferenced,
+			FreightServicesSlice,
+			FreightServicesSliceDefaultPrimary,
+			FreightServicesSliceDefaultItem,
+			FreightServicesSliceVariation,
+			FreightServicesSliceDefault,
 			HeroSlice,
 			HeroSliceDefaultPrimary,
 			HeroSliceDefaultItem,
@@ -7632,8 +7965,11 @@ declare module "@prismicio/client" {
 			JoinOurTeamSlice,
 			JoinOurTeamSliceDefaultPrimary,
 			JoinOurTeamSliceDefaultItem,
+			JoinOurTeamSliceFlippedPrimary,
+			JoinOurTeamSliceFlippedItem,
 			JoinOurTeamSliceVariation,
 			JoinOurTeamSliceDefault,
+			JoinOurTeamSliceFlipped,
 			LegalContentSlice,
 			LegalContentSliceDefaultPrimary,
 			LegalContentSliceVariation,

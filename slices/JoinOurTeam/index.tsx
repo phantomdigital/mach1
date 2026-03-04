@@ -5,6 +5,7 @@ import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { Check } from "lucide-react";
 import { SliceHeader } from "@/components/slice-header";
 import { Button } from "@/components/ui/button";
+import JoinOurTeamButton from "./join-our-team-button";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass, type MarginTopSize, type PaddingSize } from "@/lib/spacing";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import type { JoinOurTeamSlice } from "@/types.generated";
@@ -22,7 +23,8 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
   const paddingTopClass = getPaddingTopClass((slice.primary.padding_top as PaddingSize) || "large");
   const paddingBottomClass = getPaddingBottomClass((slice.primary.padding_bottom as PaddingSize) || "large");
   const backgroundColor = slice.primary.background_color || "#ffffff";
-  const leftPanelColor = slice.primary.left_panel_color || "#141433";
+  const panelColor = slice.primary.left_panel_color || "#141433";
+  const isFlipped = slice.variation === "flipped";
 
   return (
     <section
@@ -34,13 +36,13 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
       {/* Mobile: full-width panel rising from section bottom upward */}
       <div
         className="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none lg:hidden"
-        style={{ backgroundColor: leftPanelColor }}
+        style={{ backgroundColor: panelColor }}
       />
 
-      {/* Left color panel: desktop = full height, extends further on larger viewports */}
+      {/* Color panel: left (default) or right (flipped) */}
       <div
-        className="absolute inset-y-0 left-0 w-1/4 xl:w-1/3 2xl:w-[45%] pointer-events-none hidden lg:block overflow-hidden"
-        style={{ backgroundColor: leftPanelColor }}
+        className={`absolute inset-y-0 w-1/4 xl:w-1/3 2xl:w-[45%] pointer-events-none hidden lg:block overflow-hidden ${isFlipped ? "right-0 left-auto" : "left-0 right-auto"}`}
+        style={{ backgroundColor: panelColor }}
       >
         {/* Mapbox static map - overlays when token is set */}
         {process.env.NEXT_PUBLIC_MAPBOX_TOKEN?.trim() && (
@@ -73,17 +75,21 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
       {/* Main content */}
       <div className="relative z-10 w-full max-w-[88rem] mx-auto px-4 lg:px-[clamp(2rem,5vw,4rem)]">
         <div className="flex flex-col lg:flex-row lg:items-stretch gap-10 lg:gap-16">
-          {/* Left side: image anchored to the left edge */}
-          <div className="order-2 lg:order-1 lg:flex-1 flex pt-2 pb-2 lg:pt-4 lg:pb-4">
-            <div className="relative w-full lg:w-[clamp(24rem,46vw,42rem)] lg:mr-auto shrink-0">
+          {/* Image block: left (default) or right (flipped) */}
+          <div className={`${isFlipped ? "order-2 lg:order-2" : "order-2 lg:order-1"} lg:flex-1 flex pt-2 pb-2 lg:pt-4 lg:pb-4`}>
+            <div className={`relative w-full lg:w-[clamp(24rem,46vw,42rem)] shrink-0 ${isFlipped ? "lg:ml-auto" : "lg:mr-auto"}`}>
               <div
                 className="relative z-10 w-full h-full min-h-[320px] lg:min-h-[clamp(24rem,32vw,29rem)] overflow-hidden bg-neutral-200"
-                style={{ clipPath: "polygon(0 0, calc(100% - 2.5rem) 0, 100% 2rem, 100% 100%, 0 100%)" }}
+                style={{
+                  clipPath: isFlipped
+                    ? "polygon(0 0, 100% 0, 100% 100%, 2.5rem 100%, 0 calc(100% - 2rem))"
+                    : "polygon(0 0, calc(100% - 2.5rem) 0, 100% 2rem, 100% 100%, 0 100%)",
+                }}
               >
                 {slice.primary.staff_image?.url ? (
                   <PrismicNextImage
                     field={slice.primary.staff_image}
-                    className="w-full h-full object-cover object-left"
+                    className={`w-full h-full object-cover ${isFlipped ? "object-right" : "object-left"}`}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-neutral-500">
@@ -94,7 +100,9 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
                 <div
                   className="absolute inset-0 pointer-events-none"
                   style={{
-                    clipPath: "polygon(0 0, calc(100% - 2.5rem) 0, 100% 2rem, 100% 100%, 0 100%)",
+                    clipPath: isFlipped
+                      ? "polygon(0 0, 100% 0, 100% 100%, 2.5rem 100%, 0 calc(100% - 2rem))"
+                      : "polygon(0 0, calc(100% - 2.5rem) 0, 100% 2rem, 100% 100%, 0 100%)",
                     boxShadow:
                       "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset",
                   }}
@@ -103,8 +111,8 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
             </div>
           </div>
 
-          {/* Right side: content pinned to outer right edge */}
-          <div className="order-1 lg:order-2 lg:flex-1 flex lg:justify-end">
+          {/* Content block: right (default) or left (flipped) */}
+          <div className={`order-1 ${isFlipped ? "lg:order-1 lg:justify-start" : "lg:order-2 lg:justify-end"} lg:flex-1 flex`}>
             <div className="w-full lg:max-w-[clamp(24rem,40vw,44rem)] flex flex-col justify-center items-start gap-6 lg:gap-8">
             {slice.primary.subheading && (
               <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" variant="badge" badgeVariant="green" />
@@ -142,11 +150,10 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
 
             <div className="flex flex-wrap items-center justify-start self-start gap-4 pt-2">
               {isFilled.keyText(slice.primary.primary_button_text) && isFilled.link(slice.primary.primary_button_link) && (
-                <Button asChild variant="hero">
-                  <PrismicNextLink field={slice.primary.primary_button_link}>
-                    {slice.primary.primary_button_text}
-                  </PrismicNextLink>
-                </Button>
+                <JoinOurTeamButton
+                  buttonText={slice.primary.primary_button_text}
+                  buttonLink={slice.primary.primary_button_link}
+                />
               )}
 
               {isFilled.keyText(slice.primary.secondary_button_text) && isFilled.link(slice.primary.secondary_button_link) && (

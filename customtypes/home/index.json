@@ -11,6 +11,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "freight_services": {
+              "type": "SharedSlice"
+            },
             "hero_block": {
               "type": "SharedSlice"
             },
