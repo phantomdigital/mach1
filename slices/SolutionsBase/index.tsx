@@ -4,6 +4,7 @@ import { SliceComponentProps, PrismicRichText, JSXMapSerializer } from "@prismic
 import { PrismicNextImage } from "@prismicio/next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Button } from "@/components/ui/button";
 import { 
@@ -133,10 +134,10 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <div className="w-full max-w-[80rem] mx-auto px-4 lg:px-8">
+      <div className="w-full max-w-[80rem] mx-auto px-4 lg:px-8 pt-6 lg:pt-0">
         {/* Hero Image - same width as content below */}
         {slice.primary.hero_image?.url && (
-          <div className="w-full pt-12 lg:pt-20">
+          <div className="w-full pt-16 lg:pt-20">
             <div 
               className="relative w-full aspect-[16/9] lg:aspect-[21/9] bg-neutral-100 overflow-hidden"
               style={{
@@ -160,42 +161,30 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
           </div>
         )}
 
-        {/* Two columns: content left, band right */}
+        {/* Two columns: content left, band right. On mobile: band (under hero, with breadcrumbs inside), content */}
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12 lg:gap-16">
-          {/* Left col: Breadcrumbs, H1, Rich Text */}
-          <div className="py-12 lg:py-16">
-              {(slice.primary.breadcrumb_home_text || slice.primary.breadcrumb_current_text) && (
-                <nav className="flex items-center gap-2 mb-8 lg:mb-12">
-                  {slice.primary.breadcrumb_home_text && (
-                    <>
-                      <Link href="/" className="text-sm text-neutral-600 hover:text-neutral-900 transition-colors">
-                        {slice.primary.breadcrumb_home_text}
-                      </Link>
-                      {slice.primary.breadcrumb_current_text && <ChevronRight className="w-4 h-4 text-neutral-400" />}
-                    </>
-                  )}
-                  {slice.primary.breadcrumb_current_text && (
-                    <span className="text-sm text-neutral-900 font-medium">{slice.primary.breadcrumb_current_text}</span>
-                  )}
-                </nav>
-              )}
-              {slice.primary.heading && (
-                <h1 className="text-black text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-8 lg:mb-12">
-                  {slice.primary.heading}
-                </h1>
-              )}
-              {slice.primary.content && (
-                <div className="prose prose-sm lg:prose-base max-w-none">
-                  <PrismicRichText field={slice.primary.content} components={components} />
-                </div>
-              )}
-          </div>
-
-          {/* Right: Band - full height, sticky on scroll */}
+          {/* Right: Band - order-1 on mobile (under hero), contains breadcrumbs on mobile, full height, sticky on desktop */}
           <div 
-            className="lg:min-h-full pt-12 lg:pt-16 px-6 lg:px-8 pb-6 lg:pb-8 space-y-4 lg:sticky lg:top-[calc(var(--header-height,128px)+1rem)]"
+            className="order-1 lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:min-h-full pt-6 lg:pt-16 px-6 lg:px-8 pb-6 lg:pb-8 space-y-4 lg:sticky lg:top-[calc(var(--header-height,128px)+1rem)]"
             style={{ backgroundColor: cardBackgroundColor }}
           >
+            {/* Breadcrumbs - inside card, top on mobile; hidden on desktop (shown in left col) */}
+            {(slice.primary.breadcrumb_home_text || slice.primary.breadcrumb_current_text) && (
+              <nav className="flex items-center gap-2 py-3 lg:hidden">
+                {slice.primary.breadcrumb_home_text && (
+                  <>
+                    <Link href="/" className="text-sm text-neutral-600 hover:text-neutral-900 transition-colors">
+                      {slice.primary.breadcrumb_home_text}
+                    </Link>
+                    {slice.primary.breadcrumb_current_text && <ChevronRight className="w-4 h-4 text-neutral-400" />}
+                  </>
+                )}
+                {slice.primary.breadcrumb_current_text && (
+                  <span className="text-sm text-neutral-900 font-medium">{slice.primary.breadcrumb_current_text}</span>
+                )}
+              </nav>
+            )}
+
             <p className="text-neutral-600 text-[11px] leading-relaxed">
               {slice.primary.card_description || "Contact us today for a customised freight solution. Our team is ready to help with your logistics needs."}
             </p>
@@ -221,9 +210,16 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
               <HeroButton asChild size="small">
                 <Link href="/quote">Get a Quote</Link>
               </HeroButton>
-              <Button asChild variant="subtle" className="!px-0">
-                <Link href="/contact" className="inline-flex items-center gap-1.5 text-neutral-800">
-                  Contact Us
+              <Button asChild variant="subtle" className="!px-0 !no-underline hover:!underline">
+                <Link 
+                  href="/contact" 
+                  className="group inline-flex items-center gap-1.5 text-neutral-800"
+                >
+                  <span>Contact Us</span>
+                  <ExternalLinkIcon 
+                    className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" 
+                    color="currentColor"
+                  />
                 </Link>
               </Button>
             </div>
@@ -240,15 +236,49 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
                       <li key={item.id} className={item.level === 3 ? "pl-3" : ""}>
                         <a
                           href={`#section-${item.id}`}
-                          className="text-neutral-600 hover:text-neutral-900 hover:underline transition-colors block leading-relaxed"
+                          className="group inline-flex items-center gap-1.5 text-neutral-600 hover:text-neutral-900 no-underline hover:underline transition-colors leading-relaxed"
                         >
-                          {item.text}
+                          <span>{item.text}</span>
+                          <ExternalLinkIcon 
+                            className="w-1.5 h-1.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" 
+                            color="currentColor"
+                          />
                         </a>
                       </li>
                     ))}
                   </ol>
                 </nav>
               </>
+            )}
+          </div>
+
+          {/* Left col: Breadcrumbs (desktop only), H1, Rich Text - order-2 on mobile (after band) */}
+          <div className="order-2 lg:col-start-1 lg:row-start-1 lg:row-span-2 pt-8 pb-12 lg:pt-0 lg:pb-16">
+            {/* Breadcrumbs - desktop only, in left column */}
+            {(slice.primary.breadcrumb_home_text || slice.primary.breadcrumb_current_text) && (
+              <nav className="hidden lg:flex items-center gap-2 mb-8 pt-8">
+                {slice.primary.breadcrumb_home_text && (
+                  <>
+                    <Link href="/" className="text-sm text-neutral-600 hover:text-neutral-900 transition-colors">
+                      {slice.primary.breadcrumb_home_text}
+                    </Link>
+                    {slice.primary.breadcrumb_current_text && <ChevronRight className="w-4 h-4 text-neutral-400" />}
+                  </>
+                )}
+                {slice.primary.breadcrumb_current_text && (
+                  <span className="text-sm text-neutral-900 font-medium">{slice.primary.breadcrumb_current_text}</span>
+                )}
+              </nav>
+            )}
+            {slice.primary.heading && (
+              <h1 className="text-black text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-8 lg:mb-12">
+                {slice.primary.heading}
+              </h1>
+            )}
+            {slice.primary.content && (
+              <div className="prose prose-sm lg:prose-base max-w-none">
+                <PrismicRichText field={slice.primary.content} components={components} />
+              </div>
             )}
           </div>
         </div>
