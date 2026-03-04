@@ -1,0 +1,52 @@
+[
+  {
+    "variation": "default",
+    "name": "Default",
+    "slice_type": "join_our_team",
+    "items": [
+      {
+        "point_text": "Stable, long-term roles in a growing logistics business"
+      },
+      {
+        "point_text": "Supportive team environment with real progression paths"
+      },
+      {
+        "point_text": "National footprint with meaningful day-to-day impact"
+      },
+      {
+        "point_text": "Safety-first culture with modern systems and tools"
+      }
+    ],
+    "primary": {
+      "subheading": "CAREERS AT MACH1",
+      "heading": "Build your career with MACH1",
+      "description": "We are always looking for committed people who care about service, teamwork, and doing the job right. If that sounds like you, explore our current opportunities.",
+      "staff_image": {
+        "dimensions": {
+          "width": 1200,
+          "height": 1400
+        },
+        "alt": "MACH1 staff member",
+        "copyright": null,
+        "url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&h=1400&fit=crop"
+      },
+      "staff_name": "Chris Marshall",
+      "staff_role": "Operations Supervisor, 6 years at MACH1",
+      "primary_button_text": "View Open Roles",
+      "primary_button_link": {
+        "link_type": "Web",
+        "url": "/careers/vacancies"
+      },
+      "secondary_button_text": "Learn About MACH1",
+      "secondary_button_link": {
+        "link_type": "Web",
+        "url": "/about"
+      },
+      "background_color": "#F7F7F2",
+      "left_panel_color": "#E9EEE8",
+      "margin_top": "large",
+      "padding_top": "large",
+      "padding_bottom": "large"
+    }
+  }
+]

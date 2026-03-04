@@ -808,7 +808,7 @@ interface HeaderDocumentData {
  */
 export type HeaderDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<HeaderDocumentData>, "header", Lang>;
 
-type HomeDocumentDataSlicesSlice = HeroBlockSlice | NewsOverviewSlice | ServicesSlice | NetworkSlice | HomepageHeroSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
+type HomeDocumentDataSlicesSlice = HeroBlockSlice | NewsOverviewSlice | ServicesSlice | NetworkSlice | HomepageHeroSlice | JoinOurTeamSlice | PageTopperSlice | StatisticsV2Slice | TestimonialsSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Home documents
@@ -1255,7 +1255,7 @@ interface NewsDocumentData {
  */
 export type NewsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<NewsDocumentData>, "news", Lang>;
 
-type PageDocumentDataSlicesSlice = SpecialtiesSlice | HeroBlockSlice | HomepageHeroSlice | NetworkSlice | TestimonialsSlice | SubmittedSlice | FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
+type PageDocumentDataSlicesSlice = SpecialtiesSlice | HeroBlockSlice | HomepageHeroSlice | JoinOurTeamSlice | NetworkSlice | TestimonialsSlice | SubmittedSlice | FaqSlice | LegalContentSlice | ImageCarouselSlice | CareersSlice | StatisticsV2Slice | NewsSlice | ContactUsSlice | TrackingSlice | StepsSlice | PageTopperSlice | ImageWithTextSlice | ContentBlockSlice | OurTeamSlice | HeroSlice | ImageClippedSlice | LocationsSlice | ServicesSlice | SolutionsSlice | StatisticsSlice
 
 /**
  * Content for Page documents
@@ -3343,6 +3343,202 @@ type ImageWithTextSliceVariation = ImageWithTextSliceDefault | ImageWithTextSlic
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type ImageWithTextSlice = prismic.SharedSlice<"image_with_text", ImageWithTextSliceVariation>;
+
+/**
+ * Primary content in *JoinOurTeam → Default → Primary*
+ */
+export interface JoinOurTeamSliceDefaultPrimary {
+	/**
+	 * Subheading field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: CAREERS AT MACH1
+	 * - **API ID Path**: join_our_team.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
+	 * Heading field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Build your career with MACH1
+	 * - **API ID Path**: join_our_team.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Join a team that values initiative, reliability, and people who care about delivering great service.
+	 * - **API ID Path**: join_our_team.default.primary.description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	description: prismic.KeyTextField;
+	
+	/**
+	 * Staff Image field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.default.primary.staff_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	staff_image: prismic.ImageField<never>;
+	
+	/**
+	 * Staff Name (Optional) field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Jordan Smith
+	 * - **API ID Path**: join_our_team.default.primary.staff_name
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	staff_name: prismic.KeyTextField;
+	
+	/**
+	 * Staff Role (Optional) field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Operations Coordinator, 4 years at MACH1
+	 * - **API ID Path**: join_our_team.default.primary.staff_role
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	staff_role: prismic.KeyTextField;
+	
+	/**
+	 * Primary Button Text field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: View Open Roles
+	 * - **API ID Path**: join_our_team.default.primary.primary_button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	primary_button_text: prismic.KeyTextField;
+	
+	/**
+	 * Primary Button Link field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.default.primary.primary_button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	primary_button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Secondary Button Text (Optional) field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Learn About Our Team
+	 * - **API ID Path**: join_our_team.default.primary.secondary_button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	secondary_button_text: prismic.KeyTextField;
+	
+	/**
+	 * Secondary Button Link field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.default.primary.secondary_button_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	secondary_button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+	
+	/**
+	 * Background Color field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #F7F7F2
+	 * - **API ID Path**: join_our_team.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Left Panel Color field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #E9EEE8
+	 * - **API ID Path**: join_our_team.default.primary.left_panel_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	left_panel_color: prismic.ColorField;
+	
+	/**
+	 * Top Margin field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: join_our_team.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Top Padding field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: join_our_team.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Bottom Padding field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: join_our_team.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+}
+
+/**
+ * Primary content in *JoinOurTeam → Items*
+ */
+export interface JoinOurTeamSliceDefaultItem {
+	/**
+	 * Selling Point field in *JoinOurTeam → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Supportive team culture
+	 * - **API ID Path**: join_our_team.items[].point_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	point_text: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for JoinOurTeam Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type JoinOurTeamSliceDefault = prismic.SharedSliceVariation<"default", Simplify<JoinOurTeamSliceDefaultPrimary>, Simplify<JoinOurTeamSliceDefaultItem>>;
+
+/**
+ * Slice variation for *JoinOurTeam*
+ */
+type JoinOurTeamSliceVariation = JoinOurTeamSliceDefault
+
+/**
+ * JoinOurTeam Shared Slice
+ *
+ * - **API ID**: `join_our_team`
+ * - **Description**: Image-led careers call-to-action for homepage bottom placement
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type JoinOurTeamSlice = prismic.SharedSlice<"join_our_team", JoinOurTeamSliceVariation>;
 
 /**
  * Primary content in *LegalContent → Default → Primary*
@@ -7433,6 +7629,11 @@ declare module "@prismicio/client" {
 			ImageWithTextSliceVariation,
 			ImageWithTextSliceDefault,
 			ImageWithTextSliceCentered,
+			JoinOurTeamSlice,
+			JoinOurTeamSliceDefaultPrimary,
+			JoinOurTeamSliceDefaultItem,
+			JoinOurTeamSliceVariation,
+			JoinOurTeamSliceDefault,
 			LegalContentSlice,
 			LegalContentSliceDefaultPrimary,
 			LegalContentSliceVariation,

@@ -1,0 +1,156 @@
+{
+  "id": "join_our_team",
+  "type": "SharedSlice",
+  "name": "JoinOurTeam",
+  "description": "Image-led careers call-to-action for homepage bottom placement",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "CAREERS AT MACH1"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Build your career with MACH1"
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": "Join a team that values initiative, reliability, and people who care about delivering great service."
+          }
+        },
+        "staff_image": {
+          "type": "Image",
+          "config": {
+            "label": "Staff Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "staff_name": {
+          "type": "Text",
+          "config": {
+            "label": "Staff Name (Optional)",
+            "placeholder": "Jordan Smith"
+          }
+        },
+        "staff_role": {
+          "type": "Text",
+          "config": {
+            "label": "Staff Role (Optional)",
+            "placeholder": "Operations Coordinator, 4 years at MACH1"
+          }
+        },
+        "primary_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Primary Button Text",
+            "placeholder": "View Open Roles"
+          }
+        },
+        "primary_button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Primary Button Link",
+            "select": null
+          }
+        },
+        "secondary_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Secondary Button Text (Optional)",
+            "placeholder": "Learn About Our Team"
+          }
+        },
+        "secondary_button_link": {
+          "type": "Link",
+          "config": {
+            "label": "Secondary Button Link",
+            "select": null
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#F7F7F2"
+          }
+        },
+        "left_panel_color": {
+          "type": "Color",
+          "config": {
+            "label": "Left Panel Color",
+            "placeholder": "#E9EEE8"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Padding",
+            "placeholder": "Choose top padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Bottom Padding",
+            "placeholder": "Choose bottom padding",
+            "options": [
+              "none",
+              "small",
+              "medium",
+              "large",
+              "extra-large"
+            ],
+            "default_value": "large"
+          }
+        }
+      },
+      "items": {
+        "point_text": {
+          "type": "Text",
+          "config": {
+            "label": "Selling Point",
+            "placeholder": "Supportive team culture"
+          }
+        }
+      }
+    }
+  ]
+}

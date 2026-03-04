@@ -26,6 +26,9 @@
             "homepage_hero": {
               "type": "SharedSlice"
             },
+            "join_our_team": {
+              "type": "SharedSlice"
+            },
             "page_topper": {
               "type": "SharedSlice"
             },

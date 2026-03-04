@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         hostname: 'images.unsplash.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.mapbox.com',
+        pathname: '/styles/**/static/**',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     qualities: [50, 75, 85, 90, 95, 100],
