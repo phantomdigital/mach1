@@ -86,7 +86,7 @@ const NetworkSupabaseLayout = ({ slice }: NetworkSupabaseLayoutProps): React.Rea
   const activeRegionData = regions[activeRegion];
   const activeLocations = activeRegionData?.locations || [];
 
-  const stats = slice.primary.statistics || [];
+  const stats = (slice.primary as { statistics?: unknown[] }).statistics || [];
 
   return (
     <section
@@ -129,8 +129,8 @@ const NetworkSupabaseLayout = ({ slice }: NetworkSupabaseLayoutProps): React.Rea
             {/* Stats Row - Supabase style */}
             {Array.isArray(stats) && stats.length > 0 && (
               <div data-animate="stats">
-                <NetworkStats statistics={stats} />
-              </div>
+                <NetworkStats statistics={stats as Array<{ number?: string | null; suffix?: string | null; label?: string | null; sub_label?: string | null }>} />
+                </div>
             )}
           </div>
 
