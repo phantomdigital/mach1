@@ -161,7 +161,7 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
         )}
 
         {/* Two columns: content left, band right */}
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12 lg:gap-16 mb-12 lg:mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12 lg:gap-16">
           {/* Left col: Breadcrumbs, H1, Rich Text */}
           <div className="py-12 lg:py-16">
               {(slice.primary.breadcrumb_home_text || slice.primary.breadcrumb_current_text) && (
