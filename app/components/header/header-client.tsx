@@ -12,10 +12,11 @@ import { ExternalLinkIcon } from "./external-link-icon";
 import { NavigationItemWithPrefetch } from "./navigation-item-with-prefetch";
 import { LogoLink } from "./logo-link";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
+import { computeMaxDropdownHeight } from "./dropdown-height-utils";
 
 // Navigation items with hover prefetching
 // Memoized to prevent unnecessary re-renders
-const NavigationItem = memo(({ item, index }: { item: HeaderDocumentDataNavigationItem; index: number }) => {
+const NavigationItem = memo(({ item, index, minDropdownHeight }: { item: HeaderDocumentDataNavigationItem; index: number; minDropdownHeight?: number }) => {
   if (!item.has_dropdown || !item.dropdown_items || item.dropdown_items.length === 0) {
     // Simple navigation item without dropdown - with hover prefetch
     return (
@@ -42,6 +43,7 @@ const NavigationItem = memo(({ item, index }: { item: HeaderDocumentDataNavigati
       dropdownImage={item.dropdown_image}
       dropdownId={`nav-${index}-${String(item.label || '').toLowerCase().replace(/\s+/g, '-')}`}
       topOffset={-7}
+      minDropdownHeight={minDropdownHeight}
     />
   );
 });
@@ -188,11 +190,12 @@ function HeaderClient({ header }: HeaderClientProps) {
                   <div className="flex items-center justify-between gap-4 xl:gap-8">
                     <div className="flex-1 flex justify-center">
                       <nav className="flex items-center gap-4 xl:gap-8">
-                        {header.data.navigation && header.data.navigation.length > 0 && (
-                          header.data.navigation.map((item: HeaderDocumentDataNavigationItem, index: number) => (
-                            <NavigationItem key={index} item={item} index={index} />
-                          ))
-                        )}
+                        {header.data.navigation && header.data.navigation.length > 0 && (() => {
+                          const minDropdownHeight = computeMaxDropdownHeight(header.data.navigation);
+                          return header.data.navigation!.map((item: HeaderDocumentDataNavigationItem, index: number) => (
+                            <NavigationItem key={index} item={item} index={index} minDropdownHeight={minDropdownHeight} />
+                          ));
+                        })()}
                       </nav>
                     </div>
                     <div className="flex items-center">

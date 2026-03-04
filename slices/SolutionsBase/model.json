@@ -49,7 +49,7 @@
             "label": "Rich Text Content",
             "placeholder": "Add your content here with headings, paragraphs, lists, etc.",
             "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,list-item,o-list-item"
+            "multi": "paragraph,preformatted,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
           }
         },
         "card_heading": {

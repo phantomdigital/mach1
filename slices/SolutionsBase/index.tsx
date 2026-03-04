@@ -1,5 +1,5 @@
 import React from "react";
-import { Content } from "@prismicio/client";
+import { Content, type ImageField } from "@prismicio/client";
 import { SliceComponentProps, PrismicRichText, JSXMapSerializer } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
 import Link from "next/link";
@@ -123,6 +123,24 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
         >
           {children}
         </a>
+      );
+    },
+    image: ({ node }) => {
+      const field = node as unknown as ImageField;
+      if (!field?.url) return null;
+      return (
+        <figure className="my-6">
+          <PrismicNextImage
+            field={field}
+            className="w-full rounded-lg overflow-hidden"
+            sizes="(max-width: 896px) 100vw, 896px"
+          />
+          {field.alt && (
+            <figcaption className="mt-2 text-sm text-neutral-600 text-center">
+              {field.alt}
+            </figcaption>
+          )}
+        </figure>
       );
     },
   };

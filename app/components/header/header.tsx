@@ -12,10 +12,11 @@ import { CompactHeader } from "./compact-header";
 import { ExternalLinkIcon } from "./external-link-icon";
 import { getLocaleFromPathname } from "@/lib/locale-helpers";
 import type { HeaderDocumentDataNavigationItem, HeaderDocument } from "@/types.generated";
+import { computeMaxDropdownHeight } from "./dropdown-height-utils";
 
 
 // Server component for simple navigation items
-const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationItem; index: number }) => {
+const NavigationItem = ({ item, index, minDropdownHeight }: { item: HeaderDocumentDataNavigationItem; index: number; minDropdownHeight?: number }) => {
   if (!item.has_dropdown || !item.dropdown_items || item.dropdown_items.length === 0) {
     // Simple navigation item without dropdown
     return (
@@ -40,6 +41,7 @@ const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationIte
       dropdownItems={item.dropdown_items}
       dropdownImage={item.dropdown_image}
       dropdownId={`nav-${index}-${String(item.label || '').toLowerCase().replace(/\s+/g, '-')}`}
+      minDropdownHeight={minDropdownHeight}
     />
   );
 };
@@ -236,11 +238,12 @@ export default async function Header({ forcedLocale }: HeaderProps = {}) {
                       {/* Centered Navigation */}
                       <div className="flex-1 flex justify-center">
                         <nav className="flex items-center gap-4 xl:gap-8">
-                          {header.data.navigation && header.data.navigation.length > 0 && (
-                            header.data.navigation.map((item: HeaderDocumentDataNavigationItem, index: number) => (
-                              <NavigationItem key={index} item={item} index={index} />
-                            ))
-                          )}
+                          {header.data.navigation && header.data.navigation.length > 0 && (() => {
+                            const minDropdownHeight = computeMaxDropdownHeight(header.data.navigation);
+                            return header.data.navigation!.map((item: HeaderDocumentDataNavigationItem, index: number) => (
+                              <NavigationItem key={index} item={item} index={index} minDropdownHeight={minDropdownHeight} />
+                            ));
+                          })()}
                         </nav>
                       </div>
 

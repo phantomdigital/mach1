@@ -1598,6 +1598,7 @@ export type SolutionDocument<Lang extends string = string> =
   >;
 
 type SpecialtyDocumentDataSlicesSlice =
+  | SolutionsBaseSlice
   | TestimonialsSlice
   | StatisticsV2Slice
   | PageTopperSlice
@@ -6477,6 +6478,16 @@ export interface SolutionsBaseSliceDefaultPrimary {
   breadcrumb_current_text: prismic.KeyTextField;
 
   /**
+   * Main Heading (H1) field in *Solutions Base → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Our Solutions
+   * - **API ID Path**: solutions_base.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
    * Rich Text Content field in *Solutions Base → Default → Primary*
    *
    * - **Field Type**: Rich Text
@@ -6485,6 +6496,26 @@ export interface SolutionsBaseSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/fields/rich-text
    */
   content: prismic.RichTextField;
+
+  /**
+   * Card Heading field in *Solutions Base → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Get a Quote
+   * - **API ID Path**: solutions_base.default.primary.card_heading
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  card_heading: prismic.KeyTextField;
+
+  /**
+   * Card Description field in *Solutions Base → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Contact us today for a customized freight solution
+   * - **API ID Path**: solutions_base.default.primary.card_description
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  card_description: prismic.KeyTextField;
 
   /**
    * Top Margin field in *Solutions Base → Default → Primary*
@@ -6537,6 +6568,16 @@ export interface SolutionsBaseSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/fields/color
    */
   background_color: prismic.ColorField;
+
+  /**
+   * Card Background Color field in *Solutions Base → Default → Primary*
+   *
+   * - **Field Type**: Color
+   * - **Placeholder**: #F0FCFB
+   * - **API ID Path**: solutions_base.default.primary.card_background_color
+   * - **Documentation**: https://prismic.io/docs/fields/color
+   */
+  card_background_color: prismic.ColorField;
 }
 
 /**
@@ -6544,24 +6585,24 @@ export interface SolutionsBaseSliceDefaultPrimary {
  */
 export interface SolutionsBaseSliceDefaultItem {
   /**
-   * Full Width Image field in *Solutions Base → Items*
-   *
-   * - **Field Type**: Image
-   * - **Placeholder**: *None*
-   * - **API ID Path**: solutions_base.items[].full_width_image
-   * - **Documentation**: https://prismic.io/docs/fields/image
-   */
-  full_width_image: prismic.ImageField<never>;
-
-  /**
-   * Image Caption (Optional) field in *Solutions Base → Items*
+   * Contact Label field in *Solutions Base → Items*
    *
    * - **Field Type**: Text
-   * - **Placeholder**: Add a caption for this image
-   * - **API ID Path**: solutions_base.items[].image_caption
+   * - **Placeholder**: Phone
+   * - **API ID Path**: solutions_base.items[].contact_label
    * - **Documentation**: https://prismic.io/docs/fields/text
    */
-  image_caption: prismic.KeyTextField;
+  contact_label: prismic.KeyTextField;
+
+  /**
+   * Contact Value field in *Solutions Base → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: 1300 123 456
+   * - **API ID Path**: solutions_base.items[].contact_value
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  contact_value: prismic.KeyTextField;
 }
 
 /**

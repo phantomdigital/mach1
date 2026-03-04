@@ -52,6 +52,8 @@ interface NavigationDropdownProps {
   topOffset?: number;
   /** Whether this dropdown is in the compact header (uses fixed positioning) */
   isCompact?: boolean;
+  /** Minimum height shared across all dropdowns (tallest dropdown's height) */
+  minDropdownHeight?: number;
 }
 
 // =================================================================
@@ -65,7 +67,8 @@ export function NavigationDropdown({
   dropdownImage,
   dropdownId,
   topOffset = -7,
-  isCompact = false
+  isCompact = false,
+  minDropdownHeight = 0
 }: NavigationDropdownProps) {
   const dropdownPanelId = `${dropdownId}-panel`;
   
@@ -129,6 +132,9 @@ export function NavigationDropdown({
     return { hasDropdownImage, dynamicHeight, dynamicWidth, longestTextWidth };
   }, [dropdownItems, dropdownImage, dropdownTitle, label]);
 
+  // Use the taller of this dropdown's height or the shared minimum (tallest dropdown)
+  const effectiveHeight = Math.max(dynamicHeight, minDropdownHeight);
+
   // Get current image to display
   const getCurrentImage = useCallback(() => {
     const hoveredItem = dropdownItems[hoveredItemIndex];
@@ -154,7 +160,7 @@ export function NavigationDropdown({
     const relY = clientY - contentRect.top;
     
     // Basic bounds check
-    if (relX < 0 || relX > dynamicWidth || relY < 0 || relY > dynamicHeight) {
+    if (relX < 0 || relX > dynamicWidth || relY < 0 || relY > effectiveHeight) {
       return false;
     }
     
@@ -173,7 +179,7 @@ export function NavigationDropdown({
     }
     
     return true;
-  }, [dynamicWidth, dynamicHeight]);
+  }, [dynamicWidth, effectiveHeight]);
 
   // =================================================================
   // EVENT HANDLERS
@@ -277,12 +283,12 @@ export function NavigationDropdown({
         <div 
           ref={dropdownContentRef}
           className="relative" 
-          style={{ height: `${dynamicHeight}px` }}
+          style={{ height: `${effectiveHeight}px` }}
         >
           {/* SVG Background */}
           <DropdownBackground 
             hasImage={hasDropdownImage}
-            height={dynamicHeight}
+            height={effectiveHeight}
             width={dynamicWidth}
             itemCount={dropdownItems.length}
             longestTextWidth={longestTextWidth}
@@ -296,14 +302,14 @@ export function NavigationDropdown({
           <div 
             className="relative z-10 flex"
             style={{
-              height: `${dynamicHeight}px`,
+              height: `${effectiveHeight}px`,
               width: `${dynamicWidth}px`
             }}
           >
             {/* Vertical separator line */}
             {(() => {
               const startY = 70;
-              const contentEndY = dynamicHeight - 18;
+              const contentEndY = effectiveHeight - 18;
               const lineHeight = contentEndY - startY;
               
               return (

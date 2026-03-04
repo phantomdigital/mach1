@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { NavigationDropdown } from "./navigation-dropdown";
 import { HeaderButtons } from "./header-buttons";
+import { computeMaxDropdownHeight } from "./dropdown-height-utils";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
 
 interface CompactHeaderProps {
@@ -109,6 +110,8 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
     };
   }, [isVisible]);
 
+  const minDropdownHeight = computeMaxDropdownHeight(navigation);
+
   // Server component for simple navigation items
   const NavigationItem = ({ item, index }: { item: HeaderDocumentDataNavigationItem; index: number }) => {
     if (!item.has_dropdown || !item.dropdown_items || item.dropdown_items.length === 0) {
@@ -137,6 +140,7 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
         dropdownId={`compact-nav-${index}-${String(item.label || '').toLowerCase().replace(/\s+/g, '-')}`}
         topOffset={2}
         isCompact={true}
+        minDropdownHeight={minDropdownHeight}
       />
     );
   };
