@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
   Popover,
+  PopoverAnchor,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
@@ -62,6 +63,12 @@ export function TrackingSearch({
     }
   }
 
+  React.useEffect(() => {
+    if (!error) return
+    const timer = setTimeout(() => setError(""), 5000)
+    return () => clearTimeout(timer)
+  }, [error])
+
   const isLight = variant === "light"
   
   return (
@@ -93,49 +100,104 @@ export function TrackingSearch({
               </PopoverContent>
             </Popover>
           )}
-          {error && (
-            <p className="text-[10px] text-red-500 ml-auto animate-in fade-in duration-200">
-              {error}
-            </p>
-          )}
         </div>
       )}
-      <form 
-        onSubmit={handleSubmit}
-        className="w-full"
-      >
-        <div className={cn(
-          "relative flex items-center gap-1.5 p-1 rounded-md backdrop-blur-sm border bg-white transition-colors",
-          error 
-            ? "border-red-400/70" 
-            : "border-neutral-400/50"
-        )}>
-          <Input
-            ref={inputRef}
-            type="text"
-            value={trackingNumber}
-            onChange={handleChange}
-            placeholder={placeholder}
-            className={cn(
-              "border-0 border-b-0 pb-0 px-2 py-1 text-[11px] lg:text-xs flex-1 placeholder:text-[11px] lg:placeholder:text-xs transition-colors",
-              isLight
-                ? "text-neutral-800 placeholder:text-neutral-500"
-                : "text-neutral-800 placeholder:text-neutral-500",
-              error && "placeholder:text-red-400/70"
-            )}
-            style={{ 
-              fontFamily: 'var(--font-jetbrains-mono), monospace',
-            }}
-          />
-          <Button 
-            type="submit"
-            variant="hero"
-            className="flex-shrink-0 !py-1.5 !px-3 lg:!px-4 !h-auto !text-[11px] lg:!text-sm !bg-dark-blue hover:!bg-dark-blue/90"
+      {error ? (
+        <Popover open>
+          <PopoverAnchor asChild>
+            <form
+              onSubmit={handleSubmit}
+              className="w-full"
+            >
+              <div className={cn(
+                "relative flex items-center gap-1.5 p-1 rounded-md backdrop-blur-sm border bg-white transition-colors",
+                "border-red-400/70"
+              )}>
+                <Input
+                  ref={inputRef}
+                  type="text"
+                  value={trackingNumber}
+                  onChange={handleChange}
+                  placeholder={placeholder}
+                  className={cn(
+                    "border-0 border-b-0 pb-0 px-2 py-1 text-[11px] lg:text-xs flex-1 placeholder:text-[11px] lg:placeholder:text-xs transition-colors",
+                    isLight
+                      ? "text-neutral-800 placeholder:text-neutral-500"
+                      : "text-neutral-800 placeholder:text-neutral-500",
+                    "placeholder:text-red-400/70"
+                  )}
+                  style={{ 
+                    fontFamily: 'var(--font-jetbrains-mono), monospace',
+                  }}
+                />
+                <Button 
+                  type="submit"
+                  variant="hero"
+                  className="flex-shrink-0 !py-1.5 !px-3 lg:!px-4 !h-auto !text-[11px] lg:!text-sm !bg-dark-blue hover:!bg-dark-blue/90"
+                >
+                  Track
+                </Button>
+              </div>
+            </form>
+          </PopoverAnchor>
+          <PopoverContent
+            side="top"
+            align="start"
+            sideOffset={6}
+            className="w-fit max-w-[260px] p-3 pr-8 border border-red-200 bg-red-50 text-neutral-800 shadow-lg relative rounded-none"
+            onOpenAutoFocus={(e) => e.preventDefault()}
           >
-            Track
-          </Button>
-        </div>
-      </form>
+            <p className="text-[11px] text-red-500 animate-in fade-in duration-200">
+              {error}
+            </p>
+            <button
+              type="button"
+              onClick={() => setError("")}
+              className="absolute top-3 right-2 p-0.5 rounded text-red-500 hover:text-red-600 transition-colors"
+              aria-label="Dismiss error"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
+            </button>
+          </PopoverContent>
+        </Popover>
+      ) : (
+        <form 
+          onSubmit={handleSubmit}
+          className="w-full"
+        >
+          <div className={cn(
+            "relative flex items-center gap-1.5 p-1 rounded-md backdrop-blur-sm border bg-white transition-colors",
+            "border-neutral-400/50"
+          )}>
+            <Input
+              ref={inputRef}
+              type="text"
+              value={trackingNumber}
+              onChange={handleChange}
+              placeholder={placeholder}
+              className={cn(
+                "border-0 border-b-0 pb-0 px-2 py-1 text-[11px] lg:text-xs flex-1 placeholder:text-[11px] lg:placeholder:text-xs transition-colors",
+                isLight
+                  ? "text-neutral-800 placeholder:text-neutral-500"
+                  : "text-neutral-800 placeholder:text-neutral-500"
+              )}
+              style={{ 
+                fontFamily: 'var(--font-jetbrains-mono), monospace',
+              }}
+            />
+            <Button 
+              type="submit"
+              variant="hero"
+              className="flex-shrink-0 !py-1.5 !px-3 lg:!px-4 !h-auto !text-[11px] lg:!text-sm !bg-dark-blue hover:!bg-dark-blue/90"
+            >
+              Track
+            </Button>
+          </div>
+        </form>
+      )}
     </div>
   )
 }
