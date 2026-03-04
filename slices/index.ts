@@ -31,5 +31,6 @@ export const components = {
   news_overview: dynamic(() => import("./NewsOverview")),
   hero_block: dynamic(() => import("./HeroBlock")),
   freight_services: dynamic(() => import("./FreightServices")),
+  solutions_base: dynamic(() => import("./SolutionsBase")),
   
 };

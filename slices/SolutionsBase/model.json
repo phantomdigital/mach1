@@ -1,0 +1,129 @@
+{
+  "id": "solutions_base",
+  "type": "SharedSlice",
+  "name": "Solutions Base",
+  "description": "Base solutions content slice with hero image, breadcrumbs, rich text content, and full-width images",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Full-width content section with hero image (clipped edge), breadcrumbs, rich text, and optional full-width images",
+      "primary": {
+        "hero_image": {
+          "type": "Image",
+          "config": {
+            "label": "Hero Image",
+            "constraint": {
+              "width": 1920,
+              "height": 800
+            },
+            "thumbnails": []
+          }
+        },
+        "breadcrumb_home_text": {
+          "type": "Text",
+          "config": {
+            "label": "Breadcrumb Home Text",
+            "placeholder": "Home"
+          }
+        },
+        "breadcrumb_current_text": {
+          "type": "Text",
+          "config": {
+            "label": "Breadcrumb Current Page",
+            "placeholder": "Solutions"
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Main Heading (H1)",
+            "placeholder": "Our Solutions"
+          }
+        },
+        "content": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Rich Text Content",
+            "placeholder": "Add your content here with headings, paragraphs, lists, etc.",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,list-item,o-list-item"
+          }
+        },
+        "card_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Card Heading",
+            "placeholder": "Get a Quote"
+          }
+        },
+        "card_description": {
+          "type": "Text",
+          "config": {
+            "label": "Card Description",
+            "placeholder": "Contact us today for a customized freight solution"
+          }
+        },
+        "margin_top": {
+          "type": "Select",
+          "config": {
+            "label": "Top Margin",
+            "placeholder": "Choose top margin",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top",
+            "placeholder": "Select top padding",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom",
+            "placeholder": "Select bottom padding",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "card_background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Card Background Color",
+            "placeholder": "#F0FCFB"
+          }
+        }
+      },
+      "items": {
+        "contact_label": {
+          "type": "Text",
+          "config": {
+            "label": "Contact Label",
+            "placeholder": "Phone"
+          }
+        },
+        "contact_value": {
+          "type": "Text",
+          "config": {
+            "label": "Contact Value",
+            "placeholder": "1300 123 456"
+          }
+        }
+      }
+    }
+  ]
+}

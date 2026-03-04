@@ -1315,7 +1315,7 @@ interface PageDocumentData {
  */
 export type PageDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-type SolutionDocumentDataSlicesSlice = FaqSlice | ContentBlockSlice | ImageWithTextSlice | HeroBlockSlice | TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
+type SolutionDocumentDataSlicesSlice = SolutionsBaseSlice | FaqSlice | ContentBlockSlice | ImageWithTextSlice | HeroBlockSlice | TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
 
 /**
  * Content for Solution documents
@@ -5682,6 +5682,182 @@ type SolutionsSliceVariation = SolutionsSliceDefault | SolutionsSliceAllSolution
 export type SolutionsSlice = prismic.SharedSlice<"solutions", SolutionsSliceVariation>;
 
 /**
+ * Primary content in *Solutions Base → Default → Primary*
+ */
+export interface SolutionsBaseSliceDefaultPrimary {
+	/**
+	 * Hero Image field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: solutions_base.default.primary.hero_image
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	hero_image: prismic.ImageField<never>;
+	
+	/**
+	 * Breadcrumb Home Text field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Home
+	 * - **API ID Path**: solutions_base.default.primary.breadcrumb_home_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	breadcrumb_home_text: prismic.KeyTextField;
+	
+	/**
+	 * Breadcrumb Current Page field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Solutions
+	 * - **API ID Path**: solutions_base.default.primary.breadcrumb_current_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	breadcrumb_current_text: prismic.KeyTextField;
+	
+	/**
+	 * Main Heading (H1) field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Our Solutions
+	 * - **API ID Path**: solutions_base.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	heading: prismic.KeyTextField;
+	
+	/**
+	 * Rich Text Content field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Add your content here with headings, paragraphs, lists, etc.
+	 * - **API ID Path**: solutions_base.default.primary.content
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	content: prismic.RichTextField;
+	
+	/**
+	 * Card Heading field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Get a Quote
+	 * - **API ID Path**: solutions_base.default.primary.card_heading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	card_heading: prismic.KeyTextField;
+	
+	/**
+	 * Card Description field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Contact us today for a customized freight solution
+	 * - **API ID Path**: solutions_base.default.primary.card_description
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	card_description: prismic.KeyTextField;
+	
+	/**
+	 * Top Margin field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: solutions_base.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select top padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: solutions_base.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Bottom field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select bottom padding
+	 * - **Default Value**: large
+	 * - **API ID Path**: solutions_base.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Background Color field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: solutions_base.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
+	
+	/**
+	 * Card Background Color field in *Solutions Base → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #F0FCFB
+	 * - **API ID Path**: solutions_base.default.primary.card_background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	card_background_color: prismic.ColorField;
+}
+
+/**
+ * Primary content in *Solutions Base → Items*
+ */
+export interface SolutionsBaseSliceDefaultItem {
+	/**
+	 * Contact Label field in *Solutions Base → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Phone
+	 * - **API ID Path**: solutions_base.items[].contact_label
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	contact_label: prismic.KeyTextField;
+	
+	/**
+	 * Contact Value field in *Solutions Base → Items*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: 1300 123 456
+	 * - **API ID Path**: solutions_base.items[].contact_value
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	contact_value: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for Solutions Base Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Full-width content section with hero image (clipped edge), breadcrumbs, rich text, and optional full-width images
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SolutionsBaseSliceDefault = prismic.SharedSliceVariation<"default", Simplify<SolutionsBaseSliceDefaultPrimary>, Simplify<SolutionsBaseSliceDefaultItem>>;
+
+/**
+ * Slice variation for *Solutions Base*
+ */
+type SolutionsBaseSliceVariation = SolutionsBaseSliceDefault
+
+/**
+ * Solutions Base Shared Slice
+ *
+ * - **API ID**: `solutions_base`
+ * - **Description**: Base solutions content slice with hero image, breadcrumbs, rich text content, and full-width images
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type SolutionsBaseSlice = prismic.SharedSlice<"solutions_base", SolutionsBaseSliceVariation>;
+
+/**
  * Primary content in *Specialties → Default → Primary*
  */
 export interface SpecialtiesSliceDefaultPrimary {
@@ -8020,6 +8196,11 @@ declare module "@prismicio/client" {
 			SolutionsSliceVariation,
 			SolutionsSliceDefault,
 			SolutionsSliceAllSolutions,
+			SolutionsBaseSlice,
+			SolutionsBaseSliceDefaultPrimary,
+			SolutionsBaseSliceDefaultItem,
+			SolutionsBaseSliceVariation,
+			SolutionsBaseSliceDefault,
 			SpecialtiesSlice,
 			SpecialtiesSliceDefaultPrimary,
 			SpecialtiesSliceDefaultItem,

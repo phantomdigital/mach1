@@ -55,6 +55,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "solutions_base": {
+              "type": "SharedSlice"
+            },
             "faq": {
               "type": "SharedSlice"
             },
