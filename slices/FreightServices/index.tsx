@@ -22,22 +22,22 @@ function ServiceBlock({
   description: string | null | undefined;
 }) {
   return (
-    <div className="flex flex-col items-start gap-3 lg:gap-4 min-w-0">
+    <div className="flex flex-col items-start gap-4 md:gap-3 lg:gap-4 min-w-0">
       {/* Icon - stacked on top, uploadable in Prismic */}
       {icon?.url && (
-        <div className="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14">
+        <div className="flex-shrink-0 w-16 h-16 md:w-12 md:h-12 lg:w-14 lg:h-14">
           <PrismicNextImage
             field={icon}
             className="w-full h-full object-contain"
             loading="lazy"
             quality={85}
-            sizes="56px"
+            sizes="(max-width: 768px) 64px, 56px"
           />
         </div>
       )}
-      <div className="flex flex-col gap-0.5 min-w-0">
+      <div className="flex flex-col gap-3 md:gap-0.5 min-w-0">
         {title && (
-          <h3 className="text-neutral-800 text-base md:text-lg font-semibold leading-tight m-0">
+          <h3 className="text-neutral-800 text-lg font-semibold leading-tight m-0">
             {title}
           </h3>
         )}
