@@ -73,7 +73,7 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 w-full max-w-[88rem] mx-auto px-4 lg:px-[clamp(2rem,5vw,4rem)]">
+      <div className="relative z-10 w-full max-w-[80rem] mx-auto px-4 lg:px-[clamp(2rem,5vw,2rem)]">
         <div className="flex flex-col lg:flex-row lg:items-stretch gap-10 lg:gap-16">
           {/* Image block: left (default) or right (flipped) */}
           <div className={`${isFlipped ? "order-2 lg:order-2" : "order-2 lg:order-1"} lg:flex-1 flex pt-2 pb-2 lg:pt-4 lg:pb-4`}>
