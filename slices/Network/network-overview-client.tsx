@@ -29,7 +29,7 @@ function StatItem({
   const fullNumber = String(number).trim();
   
   return (
-    <div className="flex items-start gap-3 lg:gap-4">
+    <div className="flex items-start gap-3 lg:gap-4 min-w-0">
       {/* Icon */}
       {icon?.url && (
         <div className="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14">
@@ -76,7 +76,7 @@ export function NetworkOverviewClient({ slice }: NetworkOverviewClientProps) {
     <div className="flex flex-col gap-12">
       {/* Stats Row */}
       {hasStats && (
-        <div className="flex flex-col lg:flex-row flex-wrap w-fit gap-6 lg:gap-8 xl:gap-12" data-animate="stats-row">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full gap-6 lg:gap-8 xl:gap-12" data-animate="stats-row">
           {statistics.map((stat, index) => (
             <StatItem 
               key={index}
