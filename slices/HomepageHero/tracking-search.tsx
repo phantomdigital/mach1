@@ -38,9 +38,29 @@ export function TrackingSearch({
     // Clear previous error
     setError("")
     
-    if (!trackingNumber.trim()) {
+    const trimmed = trackingNumber.trim()
+    
+    if (!trimmed) {
       setError("Please enter a tracking number")
-      // Focus input for better UX
+      inputRef.current?.focus()
+      return
+    }
+    
+    if (trimmed.length < 5) {
+      setError("Please enter at least 5 characters")
+      inputRef.current?.focus()
+      return
+    }
+    
+    if (trimmed.length > 50) {
+      setError("Tracking number is too long")
+      inputRef.current?.focus()
+      return
+    }
+    
+    // Must contain at least one letter or digit (handles paste errors, symbols-only input)
+    if (!/[a-zA-Z0-9]/.test(trimmed)) {
+      setError("Please enter a valid tracking number")
       inputRef.current?.focus()
       return
     }
@@ -48,7 +68,7 @@ export function TrackingSearch({
     if (urlPrefix) {
       // Open Logixboard search in a new tab (same behavior as TrackingWidget)
       window.open(
-        `https://${urlPrefix}.logixboard.com/search?term=${encodeURIComponent(trackingNumber.trim())}`,
+        `https://${urlPrefix}.logixboard.com/search?term=${encodeURIComponent(trimmed)}`,
         '_blank',
         'noopener,noreferrer'
       )
