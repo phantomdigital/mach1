@@ -210,7 +210,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                   />
                   {/* Hero CTAs - icon, text, link */}
                   {slice.primary.hero_ctas && slice.primary.hero_ctas.length > 0 && (
-                    <div className="mt-4 pt-4 lg:mt-4 lg:pt-4 border-t border-neutral-200 flex flex-wrap gap-4 lg:gap-6">
+                    <div className="mt-4 pt-4 lg:mt-4 lg:pt-4 border-t border-neutral-200 flex flex-wrap gap-8 lg:gap-6">
                       {slice.primary.hero_ctas.map((cta, i) => (
                         cta.cta_text && cta.cta_link && (
                           <PrismicNextLink
@@ -226,7 +226,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                                 height={32}
                               />
                             )}
-                            <span className="text-xs lg:text-sm font-medium group-hover:underline">{cta.cta_text}</span>
+                            <span className="text-[9px] lg:text-[11px] font-medium group-hover:underline">{cta.cta_text}</span>
                           </PrismicNextLink>
                         )
                       ))}
