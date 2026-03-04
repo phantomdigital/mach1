@@ -78,7 +78,7 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
       </h5>
     ),
     heading6: ({ children }) => (
-      <h6 className="text-neutral-800 text-sm lg:text-base font-semibold leading-tight mt-4 mb-2">
+      <h6 className="text-neutral-800 text-sm lg:text-base font-semibold leading-tight !mt-0 mb-0 pb-0">
         {children}
       </h6>
     ),
@@ -129,25 +129,31 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
       const field = node as unknown as ImageField & { data?: { label?: string }; label?: string };
       if (!field?.url) return null;
 
-      // Detect icon variant: via Prismic label (node.data.label) or alt convention [icon]
+      // Detect icon variant: via Prismic label (node.data.label) or alt convention [icon] or [icon:x,y]
       const altText = field.alt ?? "";
-      const isIcon = field.data?.label === "icon" || field.label === "icon" || altText.toLowerCase().startsWith("[icon]");
-      const displayAlt = isIcon && altText.toLowerCase().startsWith("[icon]")
-        ? altText.replace(/^\[icon\]\s*/i, "").trim()
+      const isIcon = field.data?.label === "icon" || field.label === "icon" || /^\[icon(\S*)\]\s*/i.test(altText);
+      const iconMatch = altText.match(/^\[icon(:\s*(\d+)\s*,\s*(\d+))?\]\s*/i);
+      const displayAlt = isIcon
+        ? altText.replace(/^\[icon(:\s*\d+\s*,\s*\d+)?\]\s*/i, "").trim()
         : altText;
+
+      // Parse [icon:x,y] for px/py in px (0–16). E.g. [icon:0,0] = no padding/margin, [icon:8,4] = 8px x, 4px y
+      const iconPx = iconMatch?.[2] != null ? Math.min(16, parseInt(iconMatch[2], 10)) : 0;
+      const iconPy = iconMatch?.[3] != null ? Math.min(16, parseInt(iconMatch[3], 10)) : 0;
+      const iconPadding = { paddingLeft: iconPx, paddingRight: iconPx, paddingTop: iconPy, paddingBottom: iconPy };
+      const iconNoMargin = iconPx === 0 && iconPy === 0;
 
       if (isIcon) {
         return (
-          <figure className="my-4 inline-block">
-            <PrismicNextImage
-              field={{ ...field, alt: displayAlt || null }}
-              className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded"
-              sizes="64px"
-            />
-            {displayAlt && (
-              <figcaption className="mt-1 text-xs text-neutral-600">{displayAlt}</figcaption>
-            )}
-          </figure>
+          <span className="not-prose block">
+            <figure className={`inline-block ${iconNoMargin ? "my-0" : "my-4"}`} style={iconPadding}>
+              <PrismicNextImage
+                field={{ ...field, alt: displayAlt || null }}
+                className="w-12 h-12 sm:w-16 sm:h-16 object-contain rounded"
+                sizes="64px"
+              />
+            </figure>
+          </span>
         );
       }
 
