@@ -3,7 +3,7 @@ import { Content, type ImageField } from "@prismicio/client";
 import { SliceComponentProps, PrismicRichText, JSXMapSerializer } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ImageIcon } from "lucide-react";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Button } from "@/components/ui/button";
@@ -126,18 +126,44 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
       );
     },
     image: ({ node }) => {
-      const field = node as unknown as ImageField;
+      const field = node as unknown as ImageField & { data?: { label?: string }; label?: string };
       if (!field?.url) return null;
+
+      // Detect icon variant: via Prismic label (node.data.label) or alt convention [icon]
+      const altText = field.alt ?? "";
+      const isIcon = field.data?.label === "icon" || field.label === "icon" || altText.toLowerCase().startsWith("[icon]");
+      const displayAlt = isIcon && altText.toLowerCase().startsWith("[icon]")
+        ? altText.replace(/^\[icon\]\s*/i, "").trim()
+        : altText;
+
+      if (isIcon) {
+        return (
+          <figure className="my-4 inline-block">
+            <PrismicNextImage
+              field={{ ...field, alt: displayAlt || null }}
+              className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded"
+              sizes="64px"
+            />
+            {displayAlt && (
+              <figcaption className="mt-1 text-xs text-neutral-600">{displayAlt}</figcaption>
+            )}
+          </figure>
+        );
+      }
+
+      const chamferClip = "polygon(0 0, calc(100% - 2.5rem) 0, 100% 2rem, 100% 100%, 0 100%)";
       return (
-        <figure className="my-6">
+        <figure className="my-6 flex flex-col gap-0">
           <PrismicNextImage
             field={field}
-            className="w-full rounded-lg overflow-hidden"
+            className="w-full object-cover block overflow-hidden shrink-0"
+            style={{ clipPath: chamferClip }}
             sizes="(max-width: 896px) 100vw, 896px"
           />
           {field.alt && (
-            <figcaption className="mt-2 text-sm text-neutral-600 text-center">
-              {field.alt}
+            <figcaption className="flex items-center gap-2 bg-neutral-50 border border-neutral-200 px-4 py-2.5 !text-[11px] text-neutral-500 shrink-0 !mt-0">
+           
+              <span className="!text-[10px]">{field.alt}</span>
             </figcaption>
           )}
         </figure>
