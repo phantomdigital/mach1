@@ -189,6 +189,17 @@ export type QuoteRequestData = z.infer<typeof quoteRequestSchema>;
 // Steps form validation schema (for quote flow - flexible for dynamic fields)
 export const stepsFormSchema = z.record(z.string(), z.any());
 
+// Tracking number validation schema
+// Format-agnostic: allows alphanumeric + common separators; used client-side, reusable for server-side
+export const trackingNumberSchema = z
+  .string()
+  .min(1, "Please enter a tracking number")
+  .min(5, "Please enter at least 5 characters")
+  .max(50, "Tracking number is too long")
+  .refine((val) => /[a-zA-Z0-9]/.test(val), "Please enter a valid tracking number");
+
+export type TrackingNumber = z.infer<typeof trackingNumberSchema>;
+
 // Common field validation helpers
 export const commonValidators = {
   email: z.string().refine((val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), "Please enter a valid email address"),

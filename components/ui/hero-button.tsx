@@ -8,10 +8,11 @@ import { cn } from "@/lib/utils"
 interface HeroButtonProps extends Omit<ButtonProps, 'variant' | 'size'> {
   children: React.ReactNode;
   size?: 'default' | 'small';
+  variant?: 'solid' | 'ghost';
 }
 
 const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
-  ({ className, children, asChild, size = 'default', ...props }, ref) => {
+  ({ className, children, asChild, size = 'default', variant = 'solid', ...props }, ref) => {
     const [isHovered, setIsHovered] = React.useState(false)
     
     const isSmall = size === 'small';
@@ -19,6 +20,7 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
     const buttonHeight = isSmall ? 'h-[41px]' : 'h-[49px]';
     const arrowContainerSize = isSmall ? 'w-[31px] h-[31px]' : 'w-[37px] h-[37px]';
     const arrowSize = isSmall ? 9 : 11;
+    const bgClasses = variant === 'solid' ? 'bg-gradient-to-b from-dark-blue to-[#0d0f28]' : '';
     
     // When using asChild, we need to clone the child and add our content
     if (asChild && React.isValidElement(children)) {
@@ -27,7 +29,8 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
       return React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
         ...childProps,
         className: cn(
-          "flex items-center justify-between bg-dark-blue text-white rounded-2xl pl-5 font-medium uppercase transition-all duration-200 group",
+          "flex items-center justify-between text-white rounded-2xl pl-5 font-medium uppercase transition-all duration-200 group",
+          bgClasses,
           buttonHeight,
           textSize,
           childProps.className,
@@ -83,8 +86,8 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
                   xmlns="http://www.w3.org/2000/svg"
                   className="absolute"
                   animate={{
-                    x: isHovered ? "150%" : "0%",
-                    y: isHovered ? "-150%" : "0%"
+                    x: isHovered ? "250%" : "0%",
+                    y: isHovered ? "-250%" : "0%"
                   }}
                   transition={{
                     duration: 0.35,
@@ -100,10 +103,10 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
                   fill="none" 
                   xmlns="http://www.w3.org/2000/svg"
                   className="absolute"
-                  initial={{ x: "-200%", y: "200%" }}
+                  initial={{ x: "-250%", y: "250%" }}
                   animate={{
-                    x: isHovered ? "0%" : "-200%",
-                    y: isHovered ? "0%" : "200%"
+                    x: isHovered ? "0%" : "-250%",
+                    y: isHovered ? "0%" : "250%"
                   }}
                   transition={{
                     duration: 0.35,
@@ -136,7 +139,8 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
     return (
       <motion.button
         className={cn(
-          "flex items-center justify-between bg-dark-blue text-white rounded-2xl pl-5 font-medium uppercase transition-all duration-200 group",
+          "flex items-center justify-between text-white rounded-2xl pl-5 font-medium uppercase transition-all duration-200 group",
+          bgClasses,
           buttonHeight,
           textSize,
           className
@@ -186,8 +190,8 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
               xmlns="http://www.w3.org/2000/svg"
               className="absolute"
               animate={{
-                x: isHovered ? "150%" : "0%",
-                y: isHovered ? "-150%" : "0%"
+                x: isHovered ? "250%" : "0%",
+                y: isHovered ? "-250%" : "0%"
               }}
               transition={{
                 duration: 0.35,
@@ -203,10 +207,10 @@ const HeroButton = React.forwardRef<HTMLButtonElement, HeroButtonProps>(
               fill="none" 
               xmlns="http://www.w3.org/2000/svg"
               className="absolute"
-              initial={{ x: "-200%", y: "200%" }}
+              initial={{ x: "-250%", y: "250%" }}
               animate={{
-                x: isHovered ? "0%" : "-200%",
-                y: isHovered ? "0%" : "200%"
+                x: isHovered ? "0%" : "-250%",
+                y: isHovered ? "0%" : "250%"
               }}
               transition={{
                 duration: 0.35,

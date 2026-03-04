@@ -105,7 +105,7 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                         )}
 
                         {slice.primary.button_2_text && slice.primary.button_2_link && (
-                          <HeroButton asChild>
+                          <HeroButton asChild variant="ghost">
                             <PrismicNextLink 
                               field={slice.primary.button_2_link}
                               className="!bg-transparent !border-2 !border-white hover:!bg-white hover:!text-dark-blue"
@@ -179,14 +179,14 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                           )}
 
                           {slice.primary.button_2_text && slice.primary.button_2_link && (
-                            <HeroButton asChild>
-                              <PrismicNextLink 
-                                field={slice.primary.button_2_link}
-                                className="!bg-transparent !border-2 !border-white hover:!bg-white hover:!text-dark-blue"
-                              >
-                                {slice.primary.button_2_text}
-                              </PrismicNextLink>
-                            </HeroButton>
+<HeroButton asChild variant="ghost">
+                            <PrismicNextLink 
+                              field={slice.primary.button_2_link}
+                              className="!bg-transparent !border-2 !border-white hover:!bg-white hover:!text-dark-blue"
+                            >
+                              {slice.primary.button_2_text}
+                            </PrismicNextLink>
+                          </HeroButton>
                           )}
                         </div>
                       </div>

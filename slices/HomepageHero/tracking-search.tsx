@@ -10,6 +10,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
+import { trackingNumberSchema } from "@/lib/validation-schemas"
 
 interface TrackingSearchProps {
   className?: string;
@@ -34,41 +35,19 @@ export function TrackingSearch({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
-    // Clear previous error
     setError("")
-    
-    const trimmed = trackingNumber.trim()
-    
-    if (!trimmed) {
-      setError("Please enter a tracking number")
+
+    const result = trackingNumberSchema.safeParse(trackingNumber.trim())
+
+    if (!result.success) {
+      setError(result.error.issues[0]?.message ?? "Please enter a valid tracking number")
       inputRef.current?.focus()
       return
     }
-    
-    if (trimmed.length < 5) {
-      setError("Please enter at least 5 characters")
-      inputRef.current?.focus()
-      return
-    }
-    
-    if (trimmed.length > 50) {
-      setError("Tracking number is too long")
-      inputRef.current?.focus()
-      return
-    }
-    
-    // Must contain at least one letter or digit (handles paste errors, symbols-only input)
-    if (!/[a-zA-Z0-9]/.test(trimmed)) {
-      setError("Please enter a valid tracking number")
-      inputRef.current?.focus()
-      return
-    }
-    
+
     if (urlPrefix) {
-      // Open Logixboard search in a new tab (same behavior as TrackingWidget)
       window.open(
-        `https://${urlPrefix}.logixboard.com/search?term=${encodeURIComponent(trimmed)}`,
+        `https://${urlPrefix}.logixboard.com/search?term=${encodeURIComponent(result.data)}`,
         '_blank',
         'noopener,noreferrer'
       )

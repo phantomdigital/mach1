@@ -19,8 +19,8 @@ export function FooterCtaButtons({ primaryButton, secondaryButton }: FooterCtaBu
   return (
     <div className="flex flex-row flex-wrap gap-2 lg:gap-4 items-start">
       {primaryButton && (
-        <HeroButton asChild size="small">
-          <PrismicNextLink 
+<HeroButton asChild size="small" variant="ghost">
+          <PrismicNextLink
             field={primaryButton.link}
             className="!bg-white/10 !text-white hover:!bg-white/20 backdrop-blur-sm border border-white/20"
           >
@@ -30,8 +30,8 @@ export function FooterCtaButtons({ primaryButton, secondaryButton }: FooterCtaBu
       )}
       
       {secondaryButton && (
-        <HeroButton asChild size="small">
-          <PrismicNextLink 
+<HeroButton asChild size="small" variant="ghost">
+          <PrismicNextLink
             field={secondaryButton.link}
             className="!bg-white/10 !text-white hover:!bg-white/20 backdrop-blur-sm border border-white/20"
           >
