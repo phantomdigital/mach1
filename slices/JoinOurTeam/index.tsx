@@ -115,7 +115,7 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
             )}
 
             {slice.primary.description && (
-              <p className="text-neutral-700">{slice.primary.description}</p>
+              <p className="text-neutral-700 text-sm lg:text-base">{slice.primary.description}</p>
             )}
 
             {(slice.primary.staff_name || slice.primary.staff_role) && (
