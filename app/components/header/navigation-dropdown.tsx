@@ -25,6 +25,7 @@ import { DropdownBackground } from "./dropdown-background";
 import { ExternalLinkIcon } from "./external-link-icon";
 import { useDropdownStore } from "./dropdown-store";
 import { NavigationItemWithPrefetch } from "./navigation-item-with-prefetch";
+import { useDropdownInteraction } from "./use-dropdown-interaction";
 import type { 
   HeaderDocumentDataNavigationItem,
   HeaderDocumentDataNavigationDropdownItemsItem 
@@ -47,7 +48,7 @@ interface NavigationDropdownProps {
   dropdownImage?: ImageField;
   /** Unique identifier for this dropdown */
   dropdownId: string;
-  /** Optional top offset for dropdown positioning (default: 38px) */
+  /** Optional top offset for dropdown positioning (default: -7px) */
   topOffset?: number;
   /** Whether this dropdown is in the compact header (uses fixed positioning) */
   isCompact?: boolean;
@@ -63,61 +64,17 @@ export function NavigationDropdown({
   dropdownItems, 
   dropdownImage,
   dropdownId,
-  topOffset = 38,
+  topOffset = -7,
   isCompact = false
 }: NavigationDropdownProps) {
+  const dropdownPanelId = `${dropdownId}-panel`;
   
   // =================================================================
   // ZUSTAND STATE
   // =================================================================
   
-  const { openDropdown, closeDropdown, isDropdownOpen, isInGracePeriod } = useDropdownStore();
+  const { openDropdown, closeDropdown, forceClose, isDropdownOpen, isInGracePeriod } = useDropdownStore();
   const isOpen = isDropdownOpen(dropdownId);
-  
-  // =================================================================
-  // DYNAMIC HEADER HEIGHT & ANNOUNCEMENT BAR DETECTION
-  // =================================================================
-  
-  const [announcementBarHeight, setAnnouncementBarHeight] = useState<number>(0);
-  
-  useEffect(() => {
-    const updateAnnouncementBarHeight = () => {
-      // Check if announcement bar exists in the DOM
-      const header = document.querySelector('header');
-      const announcementBar = header?.querySelector('div[class*="bg-dark-blue"]');
-      
-      if (announcementBar) {
-        const height = announcementBar.getBoundingClientRect().height;
-        setAnnouncementBarHeight(height);
-      } else {
-        setAnnouncementBarHeight(0);
-      }
-    };
-    
-    // Initial update with delays to ensure DOM is ready
-    updateAnnouncementBarHeight();
-    requestAnimationFrame(updateAnnouncementBarHeight);
-    setTimeout(updateAnnouncementBarHeight, 100);
-    
-    // Watch for changes
-    const observer = new MutationObserver(updateAnnouncementBarHeight);
-    const header = document.querySelector('header');
-    if (header) {
-      observer.observe(header, {
-        childList: true,
-        subtree: true,
-        attributes: true
-      });
-    }
-    
-    // Also update on resize
-    window.addEventListener('resize', updateAnnouncementBarHeight);
-    
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('resize', updateAnnouncementBarHeight);
-    };
-  }, []);
   
   // =================================================================
   // LOCAL STATE & REFS
@@ -221,64 +178,38 @@ export function NavigationDropdown({
   // =================================================================
   // EVENT HANDLERS
   // =================================================================
-  
-  const handleMouseEnter = useCallback((): void => {
+
+  const handleOpen = useCallback((): void => {
     if (!isOpen) {
       setHoveredItemIndex(0);
       previousImageRef.current = undefined;
       setImageTransitionKey(prev => prev + 1);
     }
-    openDropdown(dropdownId);
-  }, [isOpen, dropdownId, openDropdown]);
+  }, [isOpen]);
 
-  const handleMouseLeave = useCallback((): void => {
-    // Zustand store handles grace period internally
-    closeDropdown(dropdownId);
+  const handleClose = useCallback((): void => {
     setHoveredItemIndex(0);
-  }, [dropdownId, closeDropdown]);
+  }, []);
 
-  // =================================================================
-  // SHAPE-AWARE MOUSEMOVE EFFECT
-  // =================================================================
-  
-  useEffect(() => {
-    if (!isOpen) return;
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      // Skip during grace period to prevent immediate close
-      if (isInGracePeriod()) return;
-      
-      const contentEl = dropdownContentRef.current;
-      const wrapperEl = wrapperRef.current;
-      
-      if (!contentEl || !wrapperEl) return;
-      
-      const wrapperRect = wrapperEl.getBoundingClientRect();
-      const contentRect = contentEl.getBoundingClientRect();
-      
-      // Check if within wrapper
-      const inWrapper = (
-        e.clientX >= wrapperRect.left &&
-        e.clientX <= wrapperRect.right &&
-        e.clientY >= wrapperRect.top &&
-        e.clientY <= wrapperRect.bottom
-      );
-      
-      if (!inWrapper) return; // Let onMouseLeave handle it
-      
-      // Check if over trigger (above dropdown content)
-      if (e.clientY < contentRect.top) return;
-      
-      // Check if within actual SVG shape
-      if (!isPointInDropdownShape(e.clientX, e.clientY, contentRect)) {
-        closeDropdown(dropdownId);
-        setHoveredItemIndex(0);
-      }
-    };
-    
-    document.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => document.removeEventListener('mousemove', handleMouseMove);
-  }, [isOpen, dropdownId, closeDropdown, isPointInDropdownShape, isInGracePeriod]);
+  const {
+    handlePointerEnter,
+    handlePointerLeave,
+    handleBlur,
+    handleKeyDown,
+    handleFocus,
+  } = useDropdownInteraction({
+    dropdownId,
+    isOpen,
+    wrapperRef,
+    dropdownContentRef,
+    openDropdown,
+    closeDropdown,
+    forceClose,
+    isInGracePeriod,
+    isPointInDropdownShape,
+    onOpen: handleOpen,
+    onClose: handleClose,
+  });
 
   // Cleanup on unmount
   useEffect(() => {
@@ -298,12 +229,19 @@ export function NavigationDropdown({
       ref={wrapperRef}
       className="relative"
       data-dropdown-id={dropdownId}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
     >
       {/* Trigger Button */}
       <button 
+        type="button"
         className="text-black font-semibold text-[1.25rem] px-5 h-full outline-none cursor-pointer bg-transparent inline-flex items-center"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        aria-controls={dropdownPanelId}
+        onFocus={handleFocus}
       >
         <span 
           className={`
@@ -325,17 +263,15 @@ export function NavigationDropdown({
       
       {/* Dropdown Content */}
       <div 
+        id={dropdownPanelId}
+        role="menu"
         className={`absolute left-1/2 -translate-x-1/2 z-50 ${
           isOpen ? 'pointer-events-auto' : 'pointer-events-none hidden'
         }`}
         style={{ 
           top: '100%',
-          marginTop: isCompact 
-            ? '2px' 
-            : announcementBarHeight > 0 
-              ? '38px' // Original spacing when announcement bar is present
-              : '-10px', // Less spacing when no announcement bar
-          paddingTop: '4px' // Small gap for hover bridge
+          marginTop: `${isCompact ? 2 : topOffset}px`,
+          paddingTop: '4px' // Small hover bridge to avoid accidental close
         }}
       >
         <div 
@@ -397,7 +333,8 @@ export function NavigationDropdown({
                   <div 
                     key={dropdownIndex} 
                     className="relative group"
-                    onMouseEnter={() => {
+                    onPointerEnter={(e) => {
+                      if (e.pointerType !== 'mouse') return;
                       if (hoverTimeoutRef.current) {
                         clearTimeout(hoverTimeoutRef.current);
                       }
