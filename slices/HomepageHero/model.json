@@ -85,6 +85,13 @@
             "thumbnails": []
           }
         },
+        "background_video": {
+          "type": "Link",
+          "config": {
+            "label": "Hero Video (for split layout)",
+            "select": "media"
+          }
+        },
         "image_position_x": {
           "type": "Number",
           "config": {
@@ -185,6 +192,38 @@
           "config": {
             "label": "Tracking Warning Text",
             "placeholder": "This will open a new window to Logixboard tracking"
+          }
+        },
+        "hero_ctas": {
+          "type": "Group",
+          "config": {
+            "label": "Hero CTAs (below tracking)",
+            "repeat": true,
+            "fields": {
+              "cta_icon": {
+                "type": "Image",
+                "config": {
+                  "label": "Icon",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              },
+              "cta_text": {
+                "type": "Text",
+                "config": {
+                  "label": "CTA Text",
+                  "placeholder": "Make a sales enquiry"
+                }
+              },
+              "cta_link": {
+                "type": "Link",
+                "config": {
+                  "label": "Link (page or external)",
+                  "placeholder": "",
+                  "select": null
+                }
+              }
+            }
           }
         }
       },

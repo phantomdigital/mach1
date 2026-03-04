@@ -2282,202 +2282,6 @@ type FaqSliceVariation = FaqSliceDefault | FaqSliceReferenced
 export type FaqSlice = prismic.SharedSlice<"faq", FaqSliceVariation>;
 
 /**
- * Primary content in *Globe → Default → Primary*
- */
-export interface GlobeSliceDefaultPrimary {
-	/**
-	 * Subheading field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Careers
-	 * - **API ID Path**: globe.default.primary.subheading
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	subheading: prismic.KeyTextField;
-	
-	/**
-	 * Heading field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: We're on a mission to build the best developer platform
-	 * - **API ID Path**: globe.default.primary.heading
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	heading: prismic.KeyTextField;
-	
-	/**
-	 * Description field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Explore remote opportunities and join our team to help us achieve it.
-	 * - **API ID Path**: globe.default.primary.description
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	description: prismic.KeyTextField;
-	
-	/**
-	 * Button Text field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Open positions
-	 * - **API ID Path**: globe.default.primary.button_text
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	button_text: prismic.KeyTextField;
-	
-	/**
-	 * Button Link field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Link
-	 * - **Placeholder**: Link to careers page
-	 * - **API ID Path**: globe.default.primary.button_link
-	 * - **Documentation**: https://prismic.io/docs/fields/link
-	 */
-	button_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
-	
-	/**
-	 * Work Culture Heading field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: We work together, wherever we are
-	 * - **API ID Path**: globe.default.primary.work_culture_heading
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	work_culture_heading: prismic.KeyTextField;
-	
-	/**
-	 * Work Culture Description field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Working in a globally distributed team is rewarding but has its challenges. We are across many different timezones, so we use tools like Notion, Slack, and Discord to stay connected to our team, and our community.
-	 * - **API ID Path**: globe.default.primary.work_culture_description
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	work_culture_description: prismic.KeyTextField;
-	
-	/**
-	 * Philosophy Text field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: We deeply believe in the efficacy of collaborative open source
-	 * - **API ID Path**: globe.default.primary.philosophy_text
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	philosophy_text: prismic.KeyTextField;
-	
-	/**
-	 * Top Margin field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: Choose top margin
-	 * - **Default Value**: large
-	 * - **API ID Path**: globe.default.primary.margin_top
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
-	
-	/**
-	 * Padding Top (pt) field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: Select top padding
-	 * - **Default Value**: large
-	 * - **API ID Path**: globe.default.primary.padding_top
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
-	
-	/**
-	 * Padding Bottom (pb) field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: Select bottom padding
-	 * - **Default Value**: large
-	 * - **API ID Path**: globe.default.primary.padding_bottom
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
-	
-	/**
-	 * Background Color field in *Globe → Default → Primary*
-	 *
-	 * - **Field Type**: Color
-	 * - **Placeholder**: #ffffff
-	 * - **API ID Path**: globe.default.primary.background_color
-	 * - **Documentation**: https://prismic.io/docs/fields/color
-	 */
-	background_color: prismic.ColorField;
-}
-
-/**
- * Primary content in *Globe → Items*
- */
-export interface GlobeSliceDefaultItem {
-	/**
-	 * Number field in *Globe → Items*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: 180+
-	 * - **API ID Path**: globe.items[].number
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	number: prismic.KeyTextField;
-	
-	/**
-	 * Suffix (optional) field in *Globe → Items*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: + (optional)
-	 * - **API ID Path**: globe.items[].suffix
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	suffix: prismic.KeyTextField;
-	
-	/**
-	 * Label field in *Globe → Items*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: team members
-	 * - **API ID Path**: globe.items[].label
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	label: prismic.KeyTextField;
-	
-	/**
-	 * Sub-label (optional) field in *Globe → Items*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: in 35+ countries
-	 * - **API ID Path**: globe.items[].sub_label
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	sub_label: prismic.KeyTextField;
-}
-
-/**
- * Default variation for Globe Slice
- *
- * - **API ID**: `default`
- * - **Description**: Default globe layout with mission, stats, and globe
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type GlobeSliceDefault = prismic.SharedSliceVariation<"default", Simplify<GlobeSliceDefaultPrimary>, Simplify<GlobeSliceDefaultItem>>;
-
-/**
- * Slice variation for *Globe*
- */
-type GlobeSliceVariation = GlobeSliceDefault
-
-/**
- * Globe Shared Slice
- *
- * - **API ID**: `globe`
- * - **Description**: Globe section with mission statement, statistics, and spinning globe
- * - **Documentation**: https://prismic.io/docs/slices
- */
-export type GlobeSlice = prismic.SharedSlice<"globe", GlobeSliceVariation>;
-
-/**
  * Primary content in *Hero → Default → Primary*
  */
 export interface HeroSliceDefaultPrimary {
@@ -2707,6 +2511,41 @@ type HeroBlockSliceVariation = HeroBlockSliceDefault
 export type HeroBlockSlice = prismic.SharedSlice<"hero_block", HeroBlockSliceVariation>;
 
 /**
+ * Item in *HomepageHero → Default → Primary → Hero CTAs (below tracking)*
+ */
+export interface HomepageHeroSliceDefaultPrimaryHeroCtasItem {
+	/**
+	 * Icon field in *HomepageHero → Default → Primary → Hero CTAs (below tracking)*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.default.primary.hero_ctas[].cta_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	cta_icon: prismic.ImageField<never>;
+	
+	/**
+	 * CTA Text field in *HomepageHero → Default → Primary → Hero CTAs (below tracking)*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Make a sales enquiry
+	 * - **API ID Path**: homepage_hero.default.primary.hero_ctas[].cta_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	cta_text: prismic.KeyTextField;
+	
+	/**
+	 * Link (page or external) field in *HomepageHero → Default → Primary → Hero CTAs (below tracking)*
+	 *
+	 * - **Field Type**: Link
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.default.primary.hero_ctas[].cta_link
+	 * - **Documentation**: https://prismic.io/docs/fields/link
+	 */
+	cta_link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
+}
+
+/**
  * Primary content in *HomepageHero → Default → Primary*
  */
 export interface HomepageHeroSliceDefaultPrimary {
@@ -2809,6 +2648,16 @@ export interface HomepageHeroSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
 	background_image: prismic.ImageField<never>;
+	
+	/**
+	 * Hero Video (for split layout) field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Link to Media
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.default.primary.background_video
+	 * - **Documentation**: https://prismic.io/docs/fields/link-to-media
+	 */
+	background_video: prismic.LinkToMediaField<prismic.FieldState, never>;
 	
 	/**
 	 * Image Position X (%) field in *HomepageHero → Default → Primary*
@@ -2933,6 +2782,16 @@ export interface HomepageHeroSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	tracking_warning_text: prismic.KeyTextField;
+	
+	/**
+	 * Hero CTAs (below tracking) field in *HomepageHero → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: homepage_hero.default.primary.hero_ctas[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	hero_ctas: prismic.GroupField<Simplify<HomepageHeroSliceDefaultPrimaryHeroCtasItem>>;
 }
 
 /**
@@ -3666,48 +3525,48 @@ type LocationsSliceVariation = LocationsSliceDefault
 export type LocationsSlice = prismic.SharedSlice<"locations", LocationsSliceVariation>;
 
 /**
- * Item in *Network → Default → Primary → Statistics (Top Row)*
+ * Item in *Network → Network Overview → Primary → Statistics*
  */
-export interface NetworkSliceDefaultPrimaryStatisticsItem {
+export interface NetworkSliceNetworkOverviewPrimaryStatisticsItem {
 	/**
-	 * Number field in *Network → Default → Primary → Statistics (Top Row)*
+	 * Icon field in *Network → Network Overview → Primary → Statistics*
 	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: 180+
-	 * - **API ID Path**: network.default.primary.statistics[].number
-	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: network.networkOverview.primary.statistics[].stat_icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
 	 */
-	number: prismic.KeyTextField;
+	stat_icon: prismic.ImageField<never>;
 	
 	/**
-	 * Suffix (optional) field in *Network → Default → Primary → Statistics (Top Row)*
+	 * Number field in *Network → Network Overview → Primary → Statistics*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: + (optional)
-	 * - **API ID Path**: network.default.primary.statistics[].suffix
+	 * - **Placeholder**: 128+
+	 * - **API ID Path**: network.networkOverview.primary.statistics[].stat_number
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	suffix: prismic.KeyTextField;
+	stat_number: prismic.KeyTextField;
 	
 	/**
-	 * Label field in *Network → Default → Primary → Statistics (Top Row)*
+	 * Label field in *Network → Network Overview → Primary → Statistics*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: team members
-	 * - **API ID Path**: network.default.primary.statistics[].label
+	 * - **Placeholder**: Countries Served
+	 * - **API ID Path**: network.networkOverview.primary.statistics[].stat_label
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	label: prismic.KeyTextField;
+	stat_label: prismic.KeyTextField;
 	
 	/**
-	 * Sub-label (optional) field in *Network → Default → Primary → Statistics (Top Row)*
+	 * Description field in *Network → Network Overview → Primary → Statistics*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: in 35+ countries
-	 * - **API ID Path**: network.default.primary.statistics[].sub_label
+	 * - **Placeholder**: Brief explanation of this statistic
+	 * - **API ID Path**: network.networkOverview.primary.statistics[].stat_description
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	sub_label: prismic.KeyTextField;
+	stat_description: prismic.KeyTextField;
 }
 
 /**
@@ -3743,16 +3602,6 @@ export interface NetworkSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
 	description: prismic.KeyTextField;
-	
-	/**
-	 * Statistics (Top Row) field in *Network → Default → Primary*
-	 *
-	 * - **Field Type**: Group
-	 * - **Placeholder**: *None*
-	 * - **API ID Path**: network.default.primary.statistics[]
-	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
-	 */
-	statistics: prismic.GroupField<Simplify<NetworkSliceDefaultPrimaryStatisticsItem>>;
 	
 	/**
 	 * Top Margin field in *Network → Default → Primary*
@@ -3957,24 +3806,14 @@ export interface NetworkSliceNetworkOverviewPrimary {
 	map_image: prismic.ImageField<never>;
 	
 	/**
-	 * Statistic Number field in *Network → Network Overview → Primary*
+	 * Statistics field in *Network → Network Overview → Primary*
 	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: 100+
-	 * - **API ID Path**: network.networkOverview.primary.statistic_number
-	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: network.networkOverview.primary.statistics[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
 	 */
-	statistic_number: prismic.KeyTextField;
-	
-	/**
-	 * Statistic Label field in *Network → Network Overview → Primary*
-	 *
-	 * - **Field Type**: Text
-	 * - **Placeholder**: Countries Served
-	 * - **API ID Path**: network.networkOverview.primary.statistic_label
-	 * - **Documentation**: https://prismic.io/docs/fields/text
-	 */
-	statistic_label: prismic.KeyTextField;
+	statistics: prismic.GroupField<Simplify<NetworkSliceNetworkOverviewPrimaryStatisticsItem>>;
 	
 	/**
 	 * Warehouse Image field in *Network → Network Overview → Primary*
@@ -6397,7 +6236,7 @@ export interface StepsSliceSummaryPrimary {
 	 * Contact Email field in *Steps → Summary (Step 3) → Primary*
 	 *
 	 * - **Field Type**: Text
-	 * - **Placeholder**: tom@phantomdigital.au
+	 * - **Placeholder**: contact@mach1logistics.com.au
 	 * - **API ID Path**: steps.summary.primary.contact_email
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
@@ -7563,11 +7402,6 @@ declare module "@prismicio/client" {
 			FaqSliceVariation,
 			FaqSliceDefault,
 			FaqSliceReferenced,
-			GlobeSlice,
-			GlobeSliceDefaultPrimary,
-			GlobeSliceDefaultItem,
-			GlobeSliceVariation,
-			GlobeSliceDefault,
 			HeroSlice,
 			HeroSliceDefaultPrimary,
 			HeroSliceDefaultItem,
@@ -7579,6 +7413,7 @@ declare module "@prismicio/client" {
 			HeroBlockSliceVariation,
 			HeroBlockSliceDefault,
 			HomepageHeroSlice,
+			HomepageHeroSliceDefaultPrimaryHeroCtasItem,
 			HomepageHeroSliceDefaultPrimary,
 			HomepageHeroSliceDefaultItem,
 			HomepageHeroSliceVariation,
@@ -7607,9 +7442,9 @@ declare module "@prismicio/client" {
 			LocationsSliceVariation,
 			LocationsSliceDefault,
 			NetworkSlice,
-			NetworkSliceDefaultPrimaryStatisticsItem,
 			NetworkSliceDefaultPrimary,
 			NetworkSliceDefaultItem,
+			NetworkSliceNetworkOverviewPrimaryStatisticsItem,
 			NetworkSliceNetworkOverviewPrimary,
 			NetworkSliceNetworkOverviewItem,
 			NetworkSliceVariation,

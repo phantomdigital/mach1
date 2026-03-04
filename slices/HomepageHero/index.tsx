@@ -1,12 +1,11 @@
 import { Suspense } from "react";
-import { Content } from "@prismicio/client";
+import { Content, isFilled } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
-import { PrismicNextLink } from "@prismicio/next";
+import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { HomepageHeroAnimation } from "./homepage-hero-animation";
 import { HomepageHeroImage } from "./homepage-hero-image";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Button } from "@/components/ui/button";
-import { HomepageHeroTabs } from "./homepage-hero-tabs";
 import { TrackingSearch } from "./tracking-search";
 
 /**
@@ -53,29 +52,31 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
   };
 
   const textColors = getTextColorClasses();
-  const hasImage = slice.primary.background_image?.url;
+  const hasHeroImage = slice.primary.background_image?.url;
+  const hasHeroVideo = isFilled.linkToMedia(slice.primary.background_video);
+  const hasHeroMedia = hasHeroImage || hasHeroVideo;
 
   return (
     <Suspense fallback={null}>
       <section
         data-slice-type={slice.slice_type}
         data-slice-variation={slice.variation}
-        className={`w-full relative ${getBackgroundClasses()} pt-32 md:pt-32 xl:pt-40 overflow-hidden`}
+        className={`w-full relative ${getBackgroundClasses()} overflow-hidden`}
+        style={{ paddingTop: 'var(--header-height, 128px)' }}
       >
         {/* Full-width grid with no gaps */}
         <div className="relative z-10 w-full">
-          {layout === "split" && hasImage ? (
+          {layout === "split" && hasHeroMedia ? (
             <>
 
-              {/* Desktop Text Content Overlay - Hidden on mobile, positioned over the grid */}
-              <div className="hidden lg:flex lg:items-end absolute bottom-0 left-0 right-0 py-8 xl:py-12 pointer-events-none z-30 lg:top-0 lg:bottom-auto lg:h-full">
-                <div className="w-full max-w-[88rem] mx-auto px-4 xl:px-8 pointer-events-none">
+              {/* Desktop Text Content Overlay - Group aligned to bottom */}
+              <div className="hidden lg:grid lg:grid-cols-[2.15fr_1.35fr] lg:items-end absolute inset-0 pointer-events-none z-30 pb-10 xl:pb-14">
+                <div className="flex items-end justify-center px-4 xl:px-8">
                   {/* Text Content */}
-                  <div className="max-w-2xl">
+                  <div className="max-w-2xl text-left">
                     <HomepageHeroAnimation
                       subheading={slice.primary.subheading}
                       heading={slice.primary.heading}
-                      description={slice.primary.description}
                       textColors={{
                         subheading: "text-white",
                         heading: "text-white",
@@ -119,27 +120,37 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                 </div>
               </div>
               
-              {/* Grid */}
-              <div className="relative grid grid-cols-1 lg:grid-cols-[2.5fr_1fr]">
-              {/* Left Column - Hero Image with Gradient Overlay */}
-              <div className="relative min-h-[400px] md:min-h-[500px] lg:min-h-[720px] overflow-hidden">
+              {/* Full-width Video/Image Background */}
+              <div className="absolute inset-0 z-0 overflow-hidden">
                 <HomepageHeroImage 
                   image={slice.primary.background_image}
+                  video={slice.primary.background_video}
                   positionX={slice.primary.image_position_x ?? undefined}
                   positionY={slice.primary.image_position_y ?? undefined}
                 />
-                
-                {/* Gradient Overlay - Constrained to left column only */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pointer-events-none z-20" />
-                
-                {/* Mobile Text Content Overlay - Hidden on desktop, overlays this image container */}
-                <div className="lg:hidden absolute bottom-0 left-0 right-0 py-8 pointer-events-none z-30">
+                {/* Gradient Overlay - left to right + bottom to top for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent pointer-events-none" />
+                {/* Bottom-to-top gradient on mobile - covers video only, starts just below tracking card */}
+                <div 
+                  className="absolute top-0 left-0 right-0 h-[70%] pointer-events-none lg:hidden"
+                  style={{
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)',
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/25 to-transparent pointer-events-none hidden lg:block" />
+              </div>
+              
+              {/* Grid Overlay */}
+              <div className="relative grid grid-cols-1 lg:grid-cols-[2.15fr_1.35fr] min-h-[640px] md:min-h-[600px] lg:min-h-[720px] z-10">
+              {/* Left Column - Video shows through, mobile overlay here */}
+              <div className="relative flex items-end min-h-[320px] lg:min-h-0 pb-8 lg:pb-0">
+                {/* Mobile Text Content Overlay - Hidden on desktop, content anchored to bottom */}
+                <div className="lg:hidden absolute inset-0 flex flex-col justify-end -mb-4 pb-0 pt-4 pointer-events-none z-30">
                   <div className="w-full px-4 pointer-events-auto">
                     <div className="max-w-2xl">
                       <HomepageHeroAnimation
                         subheading={slice.primary.subheading}
                         heading={slice.primary.heading}
-                        description={slice.primary.description}
                         textColors={{
                           subheading: "text-white",
                           heading: "text-white",
@@ -184,39 +195,41 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                 </div>
               </div>
 
-              {/* Right Column - Stacked Content */}
-              <div className="flex flex-col">
-                {/* Top: Secondary Image */}
-                <div className="relative h-[200px] md:h-[250px] lg:flex-1 overflow-hidden bg-neutral-100">
-                  {slice.primary.secondary_image && (
-                    <HomepageHeroImage 
-                      image={slice.primary.secondary_image}
-                      positionX={slice.primary.image_position_x ?? undefined}
-                      positionY={slice.primary.image_position_y ?? undefined}
-                    />
-                  )}
-                </div>
-
-                {/* Bottom: Features/Info List */}
-                <div className="flex-1 bg-neutral-100 px-6 py-8 xl:px-16 xl:py-14">
-                  {slice.items && slice.items.length > 0 ? (
-                    <HomepageHeroTabs slice={slice} />
-                  ) : (
-                    <p className="text-sm text-neutral-500">No services configured</p>
-                  )}
-                  
+              {/* Right Column - Tracking (grouped with hero text at bottom) */}
+              <div className="flex flex-col justify-end">
+                <div
+                  className="w-full bg-neutral-100 px-4 py-5 lg:px-6 lg:py-8 xl:pl-10 xl:py-8 rounded-t-lg lg:rounded-none lg:translate-y-[1px] lg:pr-[max(2rem,calc((100vw-88rem)/2+2rem))] lg:[clip-path:polygon(0_0,calc(100%_-_2.5rem)_0,100%_2rem,100%_100%,0_100%)]"
+                >
                   {/* Tracking Search */}
-                  {slice.primary.tracking_heading && (
-                    <div className="mt-20 space-y-4">
-                      <h3 className="text-neutral-800 text-left text-base font-medium">
-                        {slice.primary.tracking_heading}
-                      </h3>
-                      <TrackingSearch 
-                        urlPrefix={slice.primary.tracking_url_prefix || "mach1logistics"}
-                        placeholder={slice.primary.tracking_placeholder_text || undefined}
-                        warningText={slice.primary.tracking_warning_text || undefined}
-                        variant="light"
-                      />
+                  <TrackingSearch 
+                    heading={slice.primary.tracking_heading || undefined}
+                    urlPrefix={slice.primary.tracking_url_prefix || "mach1logistics"}
+                    placeholder={slice.primary.tracking_placeholder_text || undefined}
+                    warningText={slice.primary.tracking_warning_text || undefined}
+                    variant="light"
+                  />
+                  {/* Hero CTAs - icon, text, link */}
+                  {slice.primary.hero_ctas && slice.primary.hero_ctas.length > 0 && (
+                    <div className="mt-4 pt-4 lg:mt-4 lg:pt-4 border-t border-neutral-200 flex flex-wrap gap-4 lg:gap-6">
+                      {slice.primary.hero_ctas.map((cta, i) => (
+                        cta.cta_text && cta.cta_link && (
+                          <PrismicNextLink
+                            key={i}
+                            field={cta.cta_link}
+                            className="flex flex-col items-center gap-2 text-neutral-800 hover:text-neutral-600 transition-colors group"
+                          >
+                            {cta.cta_icon?.url && (
+                              <PrismicNextImage
+                                field={cta.cta_icon}
+                                className="w-8 h-8 object-contain"
+                                width={32}
+                                height={32}
+                              />
+                            )}
+                            <span className="text-xs lg:text-sm font-medium group-hover:underline">{cta.cta_text}</span>
+                          </PrismicNextLink>
+                        )
+                      ))}
                     </div>
                   )}
                 </div>
@@ -229,7 +242,6 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
               <HomepageHeroAnimation
                 subheading={slice.primary.subheading}
                 heading={slice.primary.heading}
-                description={slice.primary.description}
                 textColors={textColors}
               />
 

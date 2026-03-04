@@ -49,6 +49,8 @@ interface NavigationDropdownProps {
   dropdownId: string;
   /** Optional top offset for dropdown positioning (default: 38px) */
   topOffset?: number;
+  /** Whether this dropdown is in the compact header (uses fixed positioning) */
+  isCompact?: boolean;
 }
 
 // =================================================================
@@ -61,7 +63,8 @@ export function NavigationDropdown({
   dropdownItems, 
   dropdownImage,
   dropdownId,
-  topOffset = 38
+  topOffset = 38,
+  isCompact = false
 }: NavigationDropdownProps) {
   
   // =================================================================
@@ -70,6 +73,51 @@ export function NavigationDropdown({
   
   const { openDropdown, closeDropdown, isDropdownOpen, isInGracePeriod } = useDropdownStore();
   const isOpen = isDropdownOpen(dropdownId);
+  
+  // =================================================================
+  // DYNAMIC HEADER HEIGHT & ANNOUNCEMENT BAR DETECTION
+  // =================================================================
+  
+  const [announcementBarHeight, setAnnouncementBarHeight] = useState<number>(0);
+  
+  useEffect(() => {
+    const updateAnnouncementBarHeight = () => {
+      // Check if announcement bar exists in the DOM
+      const header = document.querySelector('header');
+      const announcementBar = header?.querySelector('div[class*="bg-dark-blue"]');
+      
+      if (announcementBar) {
+        const height = announcementBar.getBoundingClientRect().height;
+        setAnnouncementBarHeight(height);
+      } else {
+        setAnnouncementBarHeight(0);
+      }
+    };
+    
+    // Initial update with delays to ensure DOM is ready
+    updateAnnouncementBarHeight();
+    requestAnimationFrame(updateAnnouncementBarHeight);
+    setTimeout(updateAnnouncementBarHeight, 100);
+    
+    // Watch for changes
+    const observer = new MutationObserver(updateAnnouncementBarHeight);
+    const header = document.querySelector('header');
+    if (header) {
+      observer.observe(header, {
+        childList: true,
+        subtree: true,
+        attributes: true
+      });
+    }
+    
+    // Also update on resize
+    window.addEventListener('resize', updateAnnouncementBarHeight);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateAnnouncementBarHeight);
+    };
+  }, []);
   
   // =================================================================
   // LOCAL STATE & REFS
@@ -282,7 +330,11 @@ export function NavigationDropdown({
         }`}
         style={{ 
           top: '100%',
-          marginTop: `${topOffset}px`,
+          marginTop: isCompact 
+            ? '2px' 
+            : announcementBarHeight > 0 
+              ? '38px' // Original spacing when announcement bar is present
+              : '-10px', // Less spacing when no announcement bar
           paddingTop: '4px' // Small gap for hover bridge
         }}
       >

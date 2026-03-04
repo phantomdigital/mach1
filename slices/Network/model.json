@@ -179,18 +179,42 @@
             "thumbnails": []
           }
         },
-        "statistic_number": {
-          "type": "Text",
+        "statistics": {
+          "type": "Group",
           "config": {
-            "label": "Statistic Number",
-            "placeholder": "100+"
-          }
-        },
-        "statistic_label": {
-          "type": "Text",
-          "config": {
-            "label": "Statistic Label",
-            "placeholder": "Countries Served"
+            "label": "Statistics",
+            "repeat": true,
+            "fields": {
+              "stat_icon": {
+                "type": "Image",
+                "config": {
+                  "label": "Icon",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              },
+              "stat_number": {
+                "type": "Text",
+                "config": {
+                  "label": "Number",
+                  "placeholder": "128+"
+                }
+              },
+              "stat_label": {
+                "type": "Text",
+                "config": {
+                  "label": "Label",
+                  "placeholder": "Countries Served"
+                }
+              },
+              "stat_description": {
+                "type": "Text",
+                "config": {
+                  "label": "Description",
+                  "placeholder": "Brief explanation of this statistic"
+                }
+              }
+            }
           }
         },
         "warehouse_image": {

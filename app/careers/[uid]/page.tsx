@@ -66,7 +66,7 @@ export default async function JobPage({
   return (
     <main>
       {/* Job Header */}
-      <section className="w-full pt-40 pb-16 lg:pt-64 lg:pb-24 bg-white">
+      <section className="w-full pb-16 lg:pb-24 bg-white" style={{ paddingTop: 'var(--header-height, 128px)' }}>
         <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Back Link */}

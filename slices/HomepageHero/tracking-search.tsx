@@ -3,10 +3,16 @@
 import * as React from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 
 interface TrackingSearchProps {
   className?: string;
+  heading?: string;
   placeholder?: string;
   urlPrefix: string;
   variant?: "light" | "dark";
@@ -15,6 +21,7 @@ interface TrackingSearchProps {
 
 export function TrackingSearch({ 
   className,
+  heading,
   placeholder = "Enter tracking number...",
   urlPrefix,
   variant = "dark",
@@ -59,6 +66,40 @@ export function TrackingSearch({
   
   return (
     <div className={cn("w-full", className)}>
+      {(heading || warningText || error) && (
+        <div className="flex items-center gap-1.5 mb-3">
+          {heading && (
+            <h3 className="text-neutral-800 text-left text-sm lg:text-base font-medium m-0">
+              {heading}
+            </h3>
+          )}
+          {warningText && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  className="text-neutral-400 hover:text-neutral-600 transition-colors p-0.5 rounded -ml-0.5"
+                  aria-label="More information"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                  </svg>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent side="top" align="start" className="max-w-[260px] p-3 text-[11px] text-neutral-600">
+                {warningText}
+              </PopoverContent>
+            </Popover>
+          )}
+          {error && (
+            <p className="text-[10px] text-red-500 ml-auto animate-in fade-in duration-200">
+              {error}
+            </p>
+          )}
+        </div>
+      )}
       <form 
         onSubmit={handleSubmit}
         className="w-full"
@@ -76,7 +117,7 @@ export function TrackingSearch({
             onChange={handleChange}
             placeholder={placeholder}
             className={cn(
-              "border-0 border-b-0 pb-0 px-2.5 py-1 text-xs flex-1 placeholder:text-xs transition-colors",
+              "border-0 border-b-0 pb-0 px-2 py-1 text-[11px] lg:text-xs flex-1 placeholder:text-[11px] lg:placeholder:text-xs transition-colors",
               isLight
                 ? "text-neutral-800 placeholder:text-neutral-500"
                 : "text-neutral-800 placeholder:text-neutral-500",
@@ -89,24 +130,12 @@ export function TrackingSearch({
           <Button 
             type="submit"
             variant="hero"
-            className="flex-shrink-0 !py-1.5 !px-4 !h-auto"
+            className="flex-shrink-0 !py-1.5 !px-3 lg:!px-4 !h-auto !text-[11px] lg:!text-sm !bg-dark-blue hover:!bg-dark-blue/90"
           >
             Track
           </Button>
         </div>
       </form>
-      {/* Reserved space for error message to prevent layout shift */}
-      <div className="h-5 mt-2">
-        {error ? (
-          <p className="text-[10px] text-red-500 text-left animate-in fade-in duration-200">
-            {error}
-          </p>
-        ) : warningText ? (
-          <p className="text-[10px] text-neutral-400 text-left">
-            {warningText}
-          </p>
-        ) : null}
-      </div>
     </div>
   )
 }

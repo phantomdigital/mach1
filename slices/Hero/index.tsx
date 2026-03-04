@@ -16,13 +16,14 @@ const Hero = ({ slice }: HeroProps): React.ReactElement => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="w-full min-h-[100dvh] relative bg-neutral-50 pt-32"
+      className="w-full min-h-[100dvh] relative bg-neutral-50"
+      style={{ paddingTop: 'var(--header-height, 128px)' }}
     >
       {/* Container matching header width and padding */}
       <div className="w-full px-4 lg:px-8 relative">
         <div className="max-w-[112rem] mx-auto">
           {/* Text Content Section - Top with standard spacing */}
-          <div className="pt-32 pb-12 lg:pt-40 lg:pb-16">
+          <div className="pt-8 pb-12 lg:pt-12 lg:pb-16">
             <div className="max-w-3xl">
               {/* Subheading */}
               {slice.primary.subheading && (

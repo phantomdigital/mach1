@@ -24,7 +24,7 @@ function PageTopperContent({ slice, getWidthClass }: {
     <PageTopperClient>
       <section className="w-full">
         {/* Dark Blue Header Section */}
-        <div className="w-full bg-dark-blue pt-48 flex items-end relative overflow-hidden" style={{ height: 'calc(var(--page-topper-vh, 1vh) * 89)' }}>
+        <div className="w-full bg-dark-blue flex items-end relative overflow-hidden" style={{ height: 'calc(var(--page-topper-vh, 1vh) * 89)', paddingTop: 'var(--header-height, 128px)' }}>
           {/* Background Image - Server rendered, client animated */}
           {slice.primary.hero_image?.url && (
             <PageTopperBgAnimation>

@@ -92,7 +92,7 @@ const NetworkDefault = ({ slice }: NetworkDefaultProps): React.ReactElement => {
       style={{ '--bg-color': backgroundColor } as React.CSSProperties & { '--bg-color': string }}
     >
       <NetworkDefaultAnimation>
-        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 overflow-visible">
+        <div className="w-full max-w-[80rem] mx-auto px-4 lg:px-8 overflow-visible">
           {/* Header with SliceHeader */}
           <div data-animate="header">
             <SliceHeader 

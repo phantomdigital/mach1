@@ -136,6 +136,7 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
         dropdownImage={item.dropdown_image}
         dropdownId={`compact-nav-${index}-${String(item.label || '').toLowerCase().replace(/\s+/g, '-')}`}
         topOffset={2}
+        isCompact={true}
       />
     );
   };

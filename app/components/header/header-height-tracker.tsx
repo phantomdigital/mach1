@@ -4,7 +4,8 @@ import { useEffect } from 'react';
 
 /**
  * Client component that tracks and updates the header height as a CSS variable.
- * This allows the mobile menu to position itself correctly below the header.
+ * This allows components to dynamically adjust based on the actual header height,
+ * which changes when the announcement bar is shown/hidden.
  * Uses getBoundingClientRect() to get the full height regardless of scroll position.
  */
 export function HeaderHeightTracker() {
@@ -12,18 +13,17 @@ export function HeaderHeightTracker() {
     const updateHeaderHeight = () => {
       const header = document.querySelector('header');
       if (header) {
-        // Get the actual position relative to the viewport
-        const rect = header.getBoundingClientRect();
-        // Use the bottom position which accounts for scroll
-        const bottomPosition = rect.bottom;
-        document.documentElement.style.setProperty('--header-height', `${bottomPosition}px`);
+        // Get the actual full height of the header
+        const height = header.offsetHeight;
+        document.documentElement.style.setProperty('--header-height', `${height}px`);
       }
     };
 
-    // Initial measurement - delay slightly to ensure header is fully rendered
-    requestAnimationFrame(() => {
-      updateHeaderHeight();
-    });
+    // Initial measurement - multiple attempts to ensure header is fully rendered
+    updateHeaderHeight();
+    requestAnimationFrame(updateHeaderHeight);
+    setTimeout(updateHeaderHeight, 100);
+    setTimeout(updateHeaderHeight, 500);
 
     // Update on resize
     window.addEventListener('resize', updateHeaderHeight);
@@ -50,11 +50,23 @@ export function HeaderHeightTracker() {
       resizeObserver.observe(header);
     }
 
+    // Also observe the announcement bar specifically
+    const announcementBar = document.querySelector('header > div:first-child');
+    let announcementObserver: ResizeObserver | null = null;
+    
+    if (announcementBar && typeof ResizeObserver !== 'undefined') {
+      announcementObserver = new ResizeObserver(updateHeaderHeight);
+      announcementObserver.observe(announcementBar);
+    }
+
     return () => {
       window.removeEventListener('resize', updateHeaderHeight);
       window.removeEventListener('scroll', handleScroll);
       if (resizeObserver) {
         resizeObserver.disconnect();
+      }
+      if (announcementObserver) {
+        announcementObserver.disconnect();
       }
     };
   }, []);

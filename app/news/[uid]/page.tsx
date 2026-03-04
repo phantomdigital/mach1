@@ -109,7 +109,7 @@ export default async function NewsArticlePage({
   return (
     <main>
       {/* Article Header */}
-      <section className="w-full pt-32 pb-12 lg:pt-56 lg:pb-20 bg-white">
+      <section className="w-full pb-12 lg:pb-20 bg-white" style={{ paddingTop: 'var(--header-height, 128px)' }}>
         <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             {/* Back Link */}
