@@ -13,6 +13,7 @@ interface CarouselItem {
 interface CarouselAnimationProps {
   items: CarouselItem[];
   imageWidth: number;
+  imageHeight?: number;
   gap: number;
   scrollSpeed: number;
 }
@@ -143,6 +144,7 @@ function horizontalLoop(items: HTMLElement[], config: any) {
 export function CarouselAnimation({
   items,
   imageWidth,
+  imageHeight,
   gap,
   scrollSpeed,
 }: CarouselAnimationProps) {
@@ -206,7 +208,7 @@ export function CarouselAnimation({
   
   return (
     <div ref={containerRef} className="relative overflow-hidden w-full">
-      <div className="flex items-start" style={{ gap: `${gap}px`, lineHeight: 0 }}>
+      <div className="flex items-center" style={{ gap: `${gap}px`, lineHeight: 0 }}>
         {Array(duplicateCount).fill(null).map((_, setIndex) => 
           items.map((item, itemIndex) => (
             <div
@@ -229,8 +231,12 @@ export function CarouselAnimation({
                   >
                     <PrismicNextImage
                       field={item.image as ImageFieldImage}
-                      className="w-full h-auto object-cover"
-                      style={{ width: `${imageWidth}px` }}
+                      className={`w-full object-cover ${imageHeight ? "object-top" : "h-auto"}`}
+                      style={
+                        imageHeight
+                          ? { width: `${imageWidth}px`, height: `${imageHeight}px` }
+                          : { width: `${imageWidth}px` }
+                      }
                       sizes={`${imageWidth}px`}
                       loading="lazy"
                       quality={85}

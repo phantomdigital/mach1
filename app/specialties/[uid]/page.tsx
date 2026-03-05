@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
-
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata } from "@/lib/metadata";
@@ -15,7 +14,13 @@ export default async function Page({ params }: { params: Promise<Params> }) {
     .getByUID("specialty", uid)
     .catch(() => notFound());
 
-  return <SliceZone slices={specialty.data.slices} components={components} />;
+  return (
+    <SliceZone
+      slices={specialty.data.slices}
+      components={components}
+      context={{ pageTitle: specialty.data.title || uid }}
+    />
+  );
 }
 
 export async function generateMetadata({

@@ -84,6 +84,9 @@
             },
             "specialties": {
               "type": "SharedSlice"
+            },
+            "service_contact": {
+              "type": "SharedSlice"
             }
           }
         }

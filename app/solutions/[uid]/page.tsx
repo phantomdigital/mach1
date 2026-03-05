@@ -15,7 +15,13 @@ export default async function Page({ params }: { params: Promise<Params> }) {
     .getByUID("solution", uid)
     .catch(() => notFound());
 
-  return <SliceZone slices={solution.data.slices} components={components} />;
+  return (
+    <SliceZone
+      slices={solution.data.slices}
+      components={components}
+      context={{ pageTitle: solution.data.title || uid }}
+    />
+  );
 }
 
 export async function generateMetadata({

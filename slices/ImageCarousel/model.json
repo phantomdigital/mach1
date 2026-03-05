@@ -21,20 +21,11 @@
             "default_value": "large"
           }
         },
-        "padding_top": {
+        "padding": {
           "type": "Select",
           "config": {
-            "label": "Padding Top (pt)",
-            "placeholder": "Select top padding",
-            "options": ["none", "small", "medium", "large"],
-            "default_value": "large"
-          }
-        },
-        "padding_bottom": {
-          "type": "Select",
-          "config": {
-            "label": "Padding Bottom (pb)",
-            "placeholder": "Select bottom padding",
+            "label": "Padding (top & bottom)",
+            "placeholder": "Select vertical padding",
             "options": ["none", "small", "medium", "large"],
             "default_value": "large"
           }
@@ -62,6 +53,13 @@
             "placeholder": "e.g., 400"
           }
         },
+        "image_height": {
+          "type": "Number",
+          "config": {
+            "label": "Image Height (px)",
+            "placeholder": "e.g., 200. Leave empty for natural aspect ratio"
+          }
+        },
         "scroll_speed": {
           "type": "Number",
           "config": {
@@ -74,6 +72,13 @@
           "config": {
             "label": "Gap Between Images (px)",
             "placeholder": "e.g., 32"
+          }
+        },
+        "background_color": {
+          "type": "Color",
+          "config": {
+            "label": "Background Color",
+            "placeholder": "#ffffff"
           }
         }
       },

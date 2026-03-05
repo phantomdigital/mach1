@@ -1,0 +1,25 @@
+[
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "heading": [
+        {
+          "type": "heading2",
+          "text": "Interested in this service? Get in touch.",
+          "spans": []
+        }
+      ],
+      "subtext": [
+        {
+          "type": "paragraph",
+          "text": "Tell us what you need and our team will get back to you shortly.",
+          "spans": []
+        }
+      ],
+      "submit_button_text": "Send Enquiry",
+      "margin_top": "large"
+    },
+    "items": []
+  }
+]

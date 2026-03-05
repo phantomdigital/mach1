@@ -1315,7 +1315,7 @@ interface PageDocumentData {
  */
 export type PageDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<PageDocumentData>, "page", Lang>;
 
-type SolutionDocumentDataSlicesSlice = SolutionsBaseSlice | FaqSlice | ContentBlockSlice | ImageWithTextSlice | HeroBlockSlice | TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice
+type SolutionDocumentDataSlicesSlice = SolutionsBaseSlice | FaqSlice | ContentBlockSlice | ImageWithTextSlice | HeroBlockSlice | TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice | ServiceContactSlice
 
 /**
  * Content for Solution documents
@@ -1419,7 +1419,7 @@ interface SolutionDocumentData {
  */
 export type SolutionDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<SolutionDocumentData>, "solution", Lang>;
 
-type SpecialtyDocumentDataSlicesSlice = TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice | SpecialtiesSlice
+type SpecialtyDocumentDataSlicesSlice = SolutionsBaseSlice | TestimonialsSlice | StatisticsV2Slice | PageTopperSlice | ImageClippedSlice | StatisticsSlice | ServicesSlice | HeroSlice | SolutionsSlice | SpecialtiesSlice | ServiceContactSlice
 
 /**
  * Content for Specialty documents
@@ -3025,26 +3025,15 @@ export interface ImageCarouselSliceDefaultPrimary {
 	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
 	
 	/**
-	 * Padding Top (pt) field in *ImageCarousel → Default → Primary*
+	 * Padding (top & bottom) field in *ImageCarousel → Default → Primary*
 	 *
 	 * - **Field Type**: Select
-	 * - **Placeholder**: Select top padding
+	 * - **Placeholder**: Select vertical padding
 	 * - **Default Value**: large
-	 * - **API ID Path**: image_carousel.default.primary.padding_top
+	 * - **API ID Path**: image_carousel.default.primary.padding
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
-	
-	/**
-	 * Padding Bottom (pb) field in *ImageCarousel → Default → Primary*
-	 *
-	 * - **Field Type**: Select
-	 * - **Placeholder**: Select bottom padding
-	 * - **Default Value**: large
-	 * - **API ID Path**: image_carousel.default.primary.padding_bottom
-	 * - **Documentation**: https://prismic.io/docs/fields/select
-	 */
-	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	padding: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
 	
 	/**
 	 * Heading field in *ImageCarousel → Default → Primary*
@@ -3077,6 +3066,16 @@ export interface ImageCarouselSliceDefaultPrimary {
 	image_width: prismic.NumberField;
 	
 	/**
+	 * Image Height (px) field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Number
+	 * - **Placeholder**: e.g., 200. Leave empty for natural aspect ratio
+	 * - **API ID Path**: image_carousel.default.primary.image_height
+	 * - **Documentation**: https://prismic.io/docs/fields/number
+	 */
+	image_height: prismic.NumberField;
+	
+	/**
 	 * Scroll Speed field in *ImageCarousel → Default → Primary*
 	 *
 	 * - **Field Type**: Number
@@ -3095,6 +3094,16 @@ export interface ImageCarouselSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/number
 	 */
 	gap: prismic.NumberField;
+	
+	/**
+	 * Background Color field in *ImageCarousel → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: image_carousel.default.primary.background_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	background_color: prismic.ColorField;
 }
 
 /**
@@ -5034,6 +5043,75 @@ type PageTopperSliceVariation = PageTopperSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type PageTopperSlice = prismic.SharedSlice<"page_topper", PageTopperSliceVariation>;
+
+/**
+ * Primary content in *Service Contact → Default → Primary*
+ */
+export interface ServiceContactSliceDefaultPrimary {
+	/**
+	 * Heading field in *Service Contact → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Interested in this service? Get in touch.
+	 * - **API ID Path**: service_contact.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Subtext field in *Service Contact → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: Tell us what you need and our team will get back to you shortly.
+	 * - **API ID Path**: service_contact.default.primary.subtext
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	subtext: prismic.RichTextField;
+	
+	/**
+	 * Submit Button Text field in *Service Contact → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: Send Enquiry
+	 * - **API ID Path**: service_contact.default.primary.submit_button_text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	submit_button_text: prismic.KeyTextField;
+	
+	/**
+	 * Top Margin field in *Service Contact → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose top margin
+	 * - **Default Value**: large
+	 * - **API ID Path**: service_contact.default.primary.margin_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+}
+
+/**
+ * Default variation for Service Contact Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Inline contact form for bottom of service pages
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ServiceContactSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ServiceContactSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Service Contact*
+ */
+type ServiceContactSliceVariation = ServiceContactSliceDefault
+
+/**
+ * Service Contact Shared Slice
+ *
+ * - **API ID**: `service_contact`
+ * - **Description**: Simple contact form for service and specialty pages
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ServiceContactSlice = prismic.SharedSlice<"service_contact", ServiceContactSliceVariation>;
 
 /**
  * Primary content in *Services → Default Grid → Primary*
@@ -8180,6 +8258,10 @@ declare module "@prismicio/client" {
 			PageTopperSliceDefaultPrimary,
 			PageTopperSliceVariation,
 			PageTopperSliceDefault,
+			ServiceContactSlice,
+			ServiceContactSliceDefaultPrimary,
+			ServiceContactSliceVariation,
+			ServiceContactSliceDefault,
 			ServicesSlice,
 			ServicesSliceDefaultPrimary,
 			ServicesSliceDefaultItem,

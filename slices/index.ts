@@ -22,6 +22,7 @@ export const components = {
   services: dynamic(() => import("./Services")),
   solutions: dynamic(() => import("./Solutions")),
   specialties: dynamic(() => import("./Specialties")),
+  service_contact: dynamic(() => import("./ServiceContact")),
   statistics: dynamic(() => import("./Statistics")),
   statistics_v2: dynamic(() => import("./StatisticsV2")),
   steps: dynamic(() => import("./Steps")),

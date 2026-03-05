@@ -93,6 +93,9 @@
             },
             "solutions": {
               "type": "SharedSlice"
+            },
+            "service_contact": {
+              "type": "SharedSlice"
             }
           }
         }

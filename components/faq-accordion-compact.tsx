@@ -18,6 +18,7 @@ interface FaqAccordionCompactProps {
   faqs: FaqItem[];
   title?: string;
   className?: string;
+  noCard?: boolean;
 }
 
 /**
@@ -29,6 +30,7 @@ export default function FaqAccordionCompact({
   faqs,
   title = "FAQs",
   className = "",
+  noCard = false,
 }: FaqAccordionCompactProps) {
   // Filter out empty FAQs
   const validFaqs = faqs.filter((faq) => faq.faq_question && faq.faq_answer);
@@ -40,7 +42,7 @@ export default function FaqAccordionCompact({
   return (
     <div className={`space-y-4 ${className}`}>
       <h5 className="text-neutral-800 text-sm">{title}</h5>
-      <div className="bg-neutral-100 p-6 rounded-md border border-[#D9D9D9]">
+      <div className={noCard ? "" : "bg-neutral-100 p-6 rounded-md border border-[#D9D9D9]"}>
         <Accordion type="single" collapsible className="w-full space-y-4">
           {validFaqs.map((faq, index) => {
             const faqId = `faq-compact-${index}`;
@@ -57,7 +59,7 @@ export default function FaqAccordionCompact({
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="pb-4 pt-0">
-                  <div className="text-neutral-600">
+                  <div className="text-neutral-600 text-sm prose prose-sm max-w-none prose-p:text-sm prose-p:my-1 prose-p:leading-relaxed">
                     <PrismicRichText field={faq.faq_answer} />
                   </div>
                 </AccordionContent>
