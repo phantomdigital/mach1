@@ -65,9 +65,9 @@ export default function StepsStart({
       <div ref={containerRef} className="flex flex-col lg:flex-row gap-8 lg:gap-26 items-stretch overflow-visible">
         {/* Left: Image with road - truck driving from horizon */}
         {imageUrl && (
-          <div className="w-full lg:w-auto lg:max-w-[400px] flex-shrink-0 self-end">
+          <div className="w-full lg:w-auto lg:max-w-[400px] flex-shrink-0 self-end flex flex-col">
             <motion.div
-              className="w-full h-auto max-h-[261px] origin-bottom overflow-hidden"
+              className="w-full flex flex-col justify-end min-h-0 max-h-[309px] md:max-h-[570px] lg:max-h-[261px] origin-bottom overflow-hidden"
               initial={{ x: -300, scale: 0 }}
               animate={isInView ? { x: 0, scale: 1 } : { x: -300, scale: 0 }}
               transition={{
@@ -80,12 +80,12 @@ export default function StepsStart({
               <img
                 src={imageUrl}
                 alt="Truck animation"
-                className="w-full h-auto object-contain"
+                className="w-full h-auto object-contain object-bottom"
               />
             </motion.div>
-            {/* Road - extends to left edge using negative margin */}
+            {/* Road - extends to left edge, -mt pulls up to cover svgator watermark */}
             <motion.div
-              className="h-8 bg-mach1-green -ml-[100vw] pl-[100vw] border-b-6 border-blue-300"
+              className="h-8 flex-shrink-0 bg-mach1-green -ml-[100vw] pl-[100vw] border-b-6 border-blue-300 -mt-10"
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
               transition={{
