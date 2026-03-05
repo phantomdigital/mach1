@@ -9,6 +9,7 @@ import {
   Hr,
   Img,
   Tailwind,
+  Preview,
 } from "@react-email/components";
 import { obfuscateMailtoLink } from "@/lib/email-obfuscation";
 
@@ -51,9 +52,16 @@ export default function ContactFormEmail({
   // Obfuscate email for display to prevent bot scraping
   const obfuscatedEmail = obfuscateMailtoLink(email);
 
+  const enquiryLabel = enquiryTypeLabels[enquiryType] || enquiryType;
+
   return (
     <Html>
-      <Head />
+      <Head>
+        <title>New Contact Form Submission - MACH1 Logistics</title>
+      </Head>
+      <Preview>
+        New contact form submission from {fullName} ({companyName}) - {enquiryLabel}
+      </Preview>
       <Tailwind
         config={{
           theme: {
@@ -166,7 +174,7 @@ export default function ContactFormEmail({
                     </td>
                     <td className="px-0 py-3 align-top text-base text-mach1-black">
                       <span className="inline-block rounded bg-mach1-green px-3 py-1 text-sm font-bold uppercase tracking-wide text-white">
-                        {enquiryTypeLabels[enquiryType] || enquiryType}
+                        {enquiryLabel}
                       </span>
                     </td>
                   </tr>

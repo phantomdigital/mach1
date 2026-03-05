@@ -68,6 +68,7 @@ export default function ContactForm({
         // Redirect to thank you page with email parameter
         const emailParam = encodeURIComponent(formData.email);
         router.push(`/contact/thank-you?email=${emailParam}`);
+        // Keep isSubmitting true until redirect completes
       } else {
         // Handle server-side validation errors
         if (result.validationErrors && result.validationErrors.length > 0) {
@@ -75,11 +76,11 @@ export default function ContactForm({
         } else {
           setError(result.error || "Failed to submit form. Please try again.");
         }
+        setIsSubmitting(false);
       }
     } catch (err) {
       console.error("Form submission error:", err);
       setError("An unexpected error occurred. Please try again.");
-    } finally {
       setIsSubmitting(false);
     }
   };

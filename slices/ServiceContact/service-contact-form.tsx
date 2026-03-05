@@ -63,14 +63,15 @@ export default function ServiceContactForm({
 
       if (!result.success) {
         setError(result.error || "Unable to send your enquiry right now.");
+        setIsSubmitting(false);
         return;
       }
 
       const emailParam = encodeURIComponent(formData.email);
       router.push(`/contact/thank-you?email=${emailParam}`);
+      // Keep isSubmitting true until redirect completes
     } catch {
       setError("An unexpected error occurred. Please try again.");
-    } finally {
       setIsSubmitting(false);
     }
   };

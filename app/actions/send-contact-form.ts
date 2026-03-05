@@ -61,12 +61,19 @@ export async function submitContactForm(
     // Normalize email address (trim and lowercase)
     const normalizedEmail = validatedData.email.trim().toLowerCase();
 
+    // Descriptive subject for inbox: "Contact from John Smith - Acme Corp"
+    const subject = `Contact from ${sanitizeForSubject(validatedData.fullName)} - ${sanitizeForSubject(validatedData.companyName)}`;
+
+    // Use business name as sender (not just email) - "MACH1 Logistics <email>"
+    const rawFrom = process.env.EMAIL_FROM || "noreply@mach1logistics.com.au";
+    const from = rawFrom.includes("<") ? rawFrom : `MACH1 Logistics <${rawFrom}>`;
+
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "MACH1 Logistics <noreply@mach1logistics.com.au>",
+      from,
       to: [process.env.EMAIL_TO || "quotes@mach1logistics.com.au"], // Main recipient
       replyTo: normalizedEmail, // Allow direct reply to customer
-      subject: `New Contact Form Submission - ${sanitizeForSubject(validatedData.enquiryType)}`,
+      subject,
       react: ContactFormEmail({
         fullName: validatedData.fullName,
         role: validatedData.role,
