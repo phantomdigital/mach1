@@ -73,7 +73,7 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
       </h4>
     ),
     heading5: ({ children }) => (
-      <h5 className="text-neutral-800 text-base lg:text-lg font-semibold leading-tight mt-4 mb-2">
+      <h5 className="text-neutral-800 text-base lg:text-lg font-semibold leading-tight mt-0 mb-2">
         {children}
       </h5>
     ),
@@ -83,7 +83,7 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
       </h6>
     ),
     paragraph: ({ children }) => (
-      <p className="text-neutral-700 text-sm lg:text-base leading-relaxed mb-4">
+      <p className="text-neutral-700 text-sm lg:text-base leading-relaxed mb-12!">
         {children}
       </p>
     ),
