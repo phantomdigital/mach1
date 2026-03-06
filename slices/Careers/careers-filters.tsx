@@ -18,6 +18,8 @@ interface CareersFiltersProps {
   initialCount: number;
   showFilters: boolean;
   isFeatured: boolean;
+  /** When no jobs exist at all, show this message instead of the filter-based empty state */
+  emptyMessage?: string;
 }
 
 export function CareersFilters({
@@ -26,6 +28,7 @@ export function CareersFilters({
   initialCount,
   showFilters,
   isFeatured,
+  emptyMessage,
 }: CareersFiltersProps) {
   const [selectedDepartment, setSelectedDepartment] = useState<string>("All");
   const [selectedState, setSelectedState] = useState<string>("All");
@@ -89,6 +92,8 @@ export function CareersFilters({
   const handleLoadMore = () => {
     setDisplayCount(displayCount + initialCount);
   };
+
+  const hasNoJobsAtAll = allJobs.length === 0 && emptyMessage;
 
   return (
     <>
@@ -164,6 +169,27 @@ export function CareersFilters({
           {displayedJobs.map((job, index) => (
             <JobCard key={job.id} job={job} index={index} isFeatured={isFeatured} />
           ))}
+        </div>
+      ) : hasNoJobsAtAll && emptyMessage ? (
+        /* Empty placeholder – same card shape as JobCard, keeps layout intact */
+        <div className="space-y-6">
+          <div
+            className="relative bg-neutral-200 p-[1.25px] min-h-[140px]"
+            style={{
+              clipPath: "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))",
+            }}
+          >
+            <div
+              className="relative p-6 lg:p-8 bg-white min-h-[130px] flex items-center justify-center"
+              style={{
+                clipPath: "polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19px 100%, 0 calc(100% - 19px))",
+              }}
+            >
+              <p className="text-neutral-500 text-base">
+                {emptyMessage}
+              </p>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="text-center py-16">

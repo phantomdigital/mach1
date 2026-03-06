@@ -68,22 +68,7 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
     return <></>;
   }
 
-  if (featuredJobs.length === 0 && allJobs.length === 0) {
-    return (
-      <section className={`${getSectionWrapperClass("white")} ${getMarginTopClass(marginTopSize)}`}>
-        <div className={getContainerClass()}>
-          {slice.primary.heading && (
-            <h2 className="text-neutral-800 text-2xl lg:text-4xl font-bold mb-8">
-              {slice.primary.heading}
-            </h2>
-          )}
-          <p className="text-neutral-600 text-lg">
-            No positions are currently available. Please check back later.
-          </p>
-        </div>
-      </section>
-    );
-  }
+  const hasNoJobs = featuredJobs.length === 0 && allJobs.length === 0;
 
   // Generate JobPosting structured data for SEO
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mach1logistics.com.au";
@@ -126,7 +111,7 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
   return (
     <>
       {/* Featured Jobs Section */}
-      {showFeaturedJobs && featuredJobs.length > 0 && (
+      {showFeaturedJobs && (featuredJobs.length > 0 || hasNoJobs) && (
         <section className={`${getSectionWrapperClass("neutral")} ${getMarginTopClass(marginTopSize)}`}>
           <div className={getContainerClass()}>
             {slice.primary.featured_heading && (
@@ -141,13 +126,14 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
               initialCount={featuredJobs.length}
               showFilters={false}
               isFeatured={true}
+              emptyMessage={hasNoJobs ? "No positions are currently available. Please check back later." : undefined}
             />
           </div>
         </section>
       )}
 
       {/* All Jobs Grid Section */}
-      {allJobs.length > 0 && (
+      {allJobs.length > 0 || hasNoJobs ? (
         <section className={`${getSectionWrapperClass("white")} ${!showFeaturedJobs || featuredJobs.length === 0 ? getMarginTopClass(marginTopSize) : ''}`}>
           <div className={getContainerClass()}>
             {/* Heading */}
@@ -171,10 +157,11 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
               initialCount={initialCount}
               showFilters={true}
               isFeatured={false}
+              emptyMessage={hasNoJobs ? "No positions are currently available. Please check back later." : undefined}
             />
           </div>
         </section>
-      )}
+      ) : null}
 
       {/* Structured Data for SEO */}
       {allJobsForSchema.length > 0 && (
