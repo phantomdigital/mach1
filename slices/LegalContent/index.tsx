@@ -170,8 +170,7 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
 
   return (
     <section className="w-full" style={{ paddingTop: 'var(--header-height, 128px)' }}>
-      {/* Gray wrapper - padding (not margin) so bg-gray-100 extends into top/bottom areas */}
-      <div className={`w-full bg-gray-100 ${getPaddingTopFromMarginSize(marginTop)} ${getPaddingBottomFromMarginSize(marginBottom)}`}>
+      <div className={`w-full bg-neutral-100 border-b-3 border-neutral-200 ${getPaddingTopFromMarginSize(marginTop)} ${getPaddingBottomFromMarginSize(marginBottom)}`}>
         {/* Page Header */}
         <div className={`w-full ${getPaddingTopClass(paddingTop)} ${getPaddingBottomClass(paddingBottom)}`}>
           <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
