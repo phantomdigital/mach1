@@ -110,8 +110,8 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
 
   return (
     <>
-      {/* Featured Jobs Section */}
-      {showFeaturedJobs && (featuredJobs.length > 0 || hasNoJobs) && (
+      {/* Featured Jobs Section - only when we have featured jobs (hide when empty to avoid neutral-50 + large margin) */}
+      {showFeaturedJobs && featuredJobs.length > 0 && (
         <section className={`${getSectionWrapperClass("neutral")} ${getMarginTopClass(marginTopSize)}`}>
           <div className={getContainerClass()}>
             {slice.primary.featured_heading && (
@@ -134,7 +134,7 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
 
       {/* All Jobs Grid Section */}
       {allJobs.length > 0 || hasNoJobs ? (
-        <section className={`${getSectionWrapperClass("white")} ${!showFeaturedJobs || featuredJobs.length === 0 ? getMarginTopClass(marginTopSize) : ''}`}>
+        <section className={`${getSectionWrapperClass("white")} ${hasNoJobs ? "pt-48 pb-48 lg:pt-72 lg:pb-72" : ""} ${!showFeaturedJobs || featuredJobs.length === 0 ? getMarginTopClass(hasNoJobs ? "none" : marginTopSize) : ''}`}>
           <div className={getContainerClass()}>
             {/* Heading */}
             {slice.primary.heading && (
