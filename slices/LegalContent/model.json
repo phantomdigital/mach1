@@ -37,12 +37,21 @@
             "default_value": "large"
           }
         },
+        "margin_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Margin Bottom",
+            "placeholder": "Select margin size",
+            "options": ["none", "small", "medium", "large", "extra-large"],
+            "default_value": "large"
+          }
+        },
         "padding_top": {
           "type": "Select",
           "config": {
             "label": "Padding Top",
             "placeholder": "Select padding size",
-            "options": ["none", "small", "medium", "large"],
+            "options": ["none", "small", "medium", "large", "extra-large", "extra-extra-large"],
             "default_value": "large"
           }
         },
@@ -51,7 +60,7 @@
           "config": {
             "label": "Padding Bottom",
             "placeholder": "Select padding size",
-            "options": ["none", "small", "medium", "large"],
+            "options": ["none", "small", "medium", "large", "extra-large", "extra-extra-large"],
             "default_value": "large"
           }
         },

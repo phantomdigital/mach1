@@ -2,7 +2,8 @@ import React from "react";
 import { Content } from "@prismicio/client";
 import { SliceComponentProps, PrismicRichText, JSXMapSerializer } from "@prismicio/react";
 import { 
-  getMarginTopClass,
+  getPaddingTopFromMarginSize,
+  getPaddingBottomFromMarginSize,
   getPaddingTopClass, 
   getPaddingBottomClass,
   type MarginTopSize,
@@ -94,6 +95,7 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
   
   // Get spacing from Prismic or use defaults
   const marginTop = ((slice.primary as any).margin_top as MarginTopSize) || "large";
+  const marginBottom = ((slice.primary as any).margin_bottom as MarginTopSize) || "large";
   const paddingTop = ((slice.primary as any).padding_top as PaddingSize) || "large";
   const paddingBottom = ((slice.primary as any).padding_bottom as PaddingSize) || "large";
 
@@ -167,27 +169,30 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
   };
 
   return (
-    <section className={`w-full bg-white ${getMarginTopClass(marginTop)}`}>
-      {/* Page Header - Centered */}
-      <div className={`w-full ${getPaddingTopClass(paddingTop)} py-24 lg:py-64`}>
-        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
-          <LegalHeader pageTitle={slice.primary.page_title} />
+    <section className="w-full" style={{ paddingTop: 'var(--header-height, 128px)' }}>
+      {/* Gray wrapper - padding (not margin) so bg-gray-100 extends into top/bottom areas */}
+      <div className={`w-full bg-gray-100 ${getPaddingTopFromMarginSize(marginTop)} ${getPaddingBottomFromMarginSize(marginBottom)}`}>
+        {/* Page Header */}
+        <div className={`w-full ${getPaddingTopClass(paddingTop)} ${getPaddingBottomClass(paddingBottom)}`}>
+          <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+            <LegalHeader pageTitle={slice.primary.page_title} />
+          </div>
         </div>
-      </div>
 
-      {/* Content Grid */}
-      <div className={`w-full ${getPaddingBottomClass(paddingBottom)}`}>
-        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-12">
-            {/* Main Content */}
-            <div className="order-2 lg:order-1 max-w-4xl">
-              <div className="prose prose-sm lg:prose-base xl:prose-lg max-w-none">
-                <PrismicRichText field={slice.primary.content} components={components} />
+        {/* Content Grid - white background */}
+        <div className={`w-full bg-white ${getPaddingBottomClass(paddingBottom)}`}>
+          <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-12">
+              {/* Main Content */}
+              <div className="order-2 lg:order-1 max-w-4xl pt-8 lg:pt-24">
+                <div className="prose prose-sm lg:prose-base xl:prose-lg max-w-none">
+                  <PrismicRichText field={slice.primary.content} components={components} />
+                </div>
               </div>
-            </div>
 
-            {/* Table of Contents - Sidebar */}
-            <TableOfContents items={tableOfContents} />
+              {/* Table of Contents - Sidebar */}
+              <TableOfContents items={tableOfContents} />
+            </div>
           </div>
         </div>
       </div>
