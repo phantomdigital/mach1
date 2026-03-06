@@ -1,4 +1,3 @@
-import type { MetadataRoute } from "next";
 import { createClient } from "@/prismicio";
 import { locales, defaultLocale, type LocaleCode } from "@/prismicio";
 
@@ -15,9 +14,16 @@ function pathForLocale(path: string, locale: LocaleCode): string {
   return `/${locale}${path === "/" ? "" : path}`;
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export interface SitemapEntry {
+  url: string;
+  lastModified?: Date;
+  changeFrequency?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+  priority?: number;
+}
+
+export async function getSitemapEntries(): Promise<SitemapEntry[]> {
   const client = createClient();
-  const entries: MetadataRoute.Sitemap = [];
+  const entries: SitemapEntry[] = [];
 
   const staticPaths = [
     { path: "/", changeFrequency: "weekly" as const, priority: 1 },
