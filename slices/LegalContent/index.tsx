@@ -50,7 +50,7 @@ const processTextForEmails = (text: string) => {
         key={`email-${index}`}
         email={encodedEmail}
         isBase64Encoded={true}
-        className="text-blue-600 hover:text-blue-800 underline"
+        className="text-mach1-green hover:text-green-700 underline"
       />
     );
     
@@ -102,13 +102,18 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
   // Create a ref to track heading index across renders
   const headingIndexRef = { current: 0 };
   
-  // Custom serializer to add IDs to headings for anchor links and obfuscate emails
+  // Custom serializer matching SolutionsBase/specialty typography, with IDs for TOC and email obfuscation
   const components: JSXMapSerializer = {
+    heading1: ({ children }) => (
+      <h1 className="text-black text-4xl lg:text-5xl font-bold leading-tight mt-12 mb-6 first:mt-0">
+        {children}
+      </h1>
+    ),
     heading2: ({ children }) => {
       headingIndexRef.current++;
       const id = `section-${headingIndexRef.current}`;
       return (
-        <h2 id={id} className="scroll-mt-32">
+        <h2 id={id} className="text-black text-3xl lg:text-4xl font-bold leading-tight mt-12 mb-6 first:mt-0 scroll-mt-32">
           {children}
         </h2>
       );
@@ -117,55 +122,86 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
       headingIndexRef.current++;
       const id = `section-${headingIndexRef.current}`;
       return (
-        <h3 id={id} className="scroll-mt-32">
+        <h3 id={id} className="text-neutral-800 text-xl lg:text-2xl font-semibold leading-tight mt-8 mb-4 scroll-mt-32">
           {children}
         </h3>
       );
     },
+    heading4: ({ children }) => (
+      <h4 className="text-neutral-800 text-lg lg:text-xl font-semibold leading-tight mt-6 mb-3">
+        {children}
+      </h4>
+    ),
+    heading5: ({ children }) => (
+      <h5 className="text-neutral-800 text-base lg:text-lg font-semibold leading-tight mt-0 mb-2">
+        {children}
+      </h5>
+    ),
+    heading6: ({ children }) => (
+      <h6 className="text-neutral-800 text-sm lg:text-base font-semibold leading-tight !mt-0 mb-0 pb-0">
+        {children}
+      </h6>
+    ),
     paragraph: ({ children }) => {
-      // Process paragraph content for emails
       const processedChildren = React.Children.map(children, (child) => {
-        if (typeof child === 'string') {
-          return processTextForEmails(child);
-        }
+        if (typeof child === 'string') return processTextForEmails(child);
         return child;
       });
-      
-      return <p>{processedChildren}</p>;
+      return (
+        <p className="text-neutral-700 text-sm lg:text-base leading-relaxed mb-4">
+          {processedChildren}
+        </p>
+      );
     },
+    list: ({ children }) => (
+      <ul className="text-neutral-700 text-sm lg:text-base leading-relaxed mb-4 ml-5 list-disc space-y-2">
+        {children}
+      </ul>
+    ),
+    oList: ({ children }) => (
+      <ol className="text-neutral-700 text-sm lg:text-base leading-relaxed mb-4 ml-5 list-decimal space-y-2">
+        {children}
+      </ol>
+    ),
     listItem: ({ children }) => {
-      // Process list item content for emails
       const processedChildren = React.Children.map(children, (child) => {
-        if (typeof child === 'string') {
-          return processTextForEmails(child);
-        }
+        if (typeof child === 'string') return processTextForEmails(child);
         return child;
       });
-      
-      return <li>{processedChildren}</li>;
+      return <li className="text-neutral-700">{processedChildren}</li>;
     },
     strong: ({ children }) => {
-      // Process strong text content for emails
       const processedChildren = React.Children.map(children, (child) => {
-        if (typeof child === 'string') {
-          return processTextForEmails(child);
-        }
+        if (typeof child === 'string') return processTextForEmails(child);
         return child;
       });
-      
-      return <strong>{processedChildren}</strong>;
+      return <strong className="font-semibold text-neutral-900">{processedChildren}</strong>;
     },
     em: ({ children }) => {
-      // Process emphasized text content for emails
       const processedChildren = React.Children.map(children, (child) => {
-        if (typeof child === 'string') {
-          return processTextForEmails(child);
-        }
+        if (typeof child === 'string') return processTextForEmails(child);
         return child;
       });
-      
-      return <em>{processedChildren}</em>;
+      return <em className="italic">{processedChildren}</em>;
     },
+    hyperlink: ({ children, node }) => {
+      const linkData = node.data as { url?: string; target?: string };
+      return (
+        <a
+          href={linkData.url}
+          {...(linkData.target ? { target: linkData.target } : {})}
+          rel={linkData.target === "_blank" ? "noopener noreferrer" : undefined}
+          className="text-mach1-green hover:text-green-700 underline transition-colors"
+        >
+          {children}
+        </a>
+      );
+    },
+    preformatted: ({ children }) => (
+      <pre className="text-neutral-700 text-sm lg:text-base leading-relaxed mb-4 p-4 bg-neutral-100 rounded overflow-x-auto">
+        {children}
+      </pre>
+    ),
   };
 
   return (
@@ -184,7 +220,7 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8 lg:gap-12">
               {/* Main Content */}
               <div className="order-2 lg:order-1 max-w-4xl pt-8 lg:pt-24">
-                <div className="prose prose-sm lg:prose-base xl:prose-lg max-w-none">
+                <div className="prose prose-sm lg:prose-base max-w-none">
                   <PrismicRichText field={slice.primary.content} components={components} />
                 </div>
               </div>
