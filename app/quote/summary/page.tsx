@@ -159,6 +159,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return generatePrismicMetadata(page, {
       url: summaryPath,
       keywords: ["quote", "summary", "MACH1 Logistics"],
+      noIndex: true,
     });
   } catch {
     // Return default metadata if page doesn't exist

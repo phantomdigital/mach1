@@ -7,7 +7,7 @@ import Footer from "./components/footer/footer";
 import LenisProvider from "@/components/lenis-provider";
 // Note: DropdownStateProvider removed - now using Zustand (no provider needed)
 
-import { generateMetadata as generateBaseMetadata, generateOrganizationSchema } from "@/lib/metadata";
+import { generateMetadata as generateBaseMetadata, generateOrganizationSchema, generateWebSiteSchema } from "@/lib/metadata";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -31,6 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const organizationSchema = generateOrganizationSchema();
+  const websiteSchema = generateWebSiteSchema();
 
   return (
     <html lang="en">
@@ -38,6 +39,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
       <body className={`${jetbrainsMono.variable} ${manrope.variable} font-sans antialiased`}>

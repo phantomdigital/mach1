@@ -129,6 +129,7 @@ export async function generateMetadata(): Promise<Metadata> {
     return generatePrismicMetadata(page, {
       url: "/contact/thank-you",
       keywords: ["contact", "thank you", "MACH1 Logistics"],
+      noIndex: true,
     });
   } catch {
     // Return default metadata if page doesn't exist

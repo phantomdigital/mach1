@@ -9,6 +9,7 @@ import type { Content, RichTextField, ImageField } from "@prismicio/client";
 import { ShareButtons } from "./share-buttons";
 import { RelatedArticles } from "./related-articles";
 import { LightboxWrapper } from "./lightbox-wrapper";
+import { generateBreadcrumbSchema } from "@/lib/metadata";
 
 type Params = { uid: string };
 
@@ -217,6 +218,18 @@ export default async function NewsArticlePage({
       <SliceZone slices={page.data.slices} components={components} />
 
       {/* JSON-LD Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            generateBreadcrumbSchema([
+              { name: "Home", url: "/" },
+              { name: "News", url: "/news" },
+              { name: page.data.title || uid, url: `/news/${uid}` },
+            ])
+          ),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

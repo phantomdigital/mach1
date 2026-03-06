@@ -22,7 +22,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPaths = [
     { path: "/", changeFrequency: "weekly" as const, priority: 1 },
     { path: "/careers/vacancies", changeFrequency: "weekly" as const, priority: 0.8 },
-    { path: "/contact/thank-you", changeFrequency: "yearly" as const, priority: 0.3 },
     { path: "/terms-of-service", changeFrequency: "yearly" as const, priority: 0.5 },
   ];
 
@@ -55,7 +54,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       client.getAllByType("author", { lang: "*" }),
     ]);
 
-    const excludePageUids = new Set(["careers-vacancies", "contact-thank-you"]);
+    const excludePageUids = new Set([
+      "careers-vacancies",
+      "contact-thank-you",
+    ]);
 
     for (const page of pages) {
       if (excludePageUids.has(page.uid ?? "")) continue;

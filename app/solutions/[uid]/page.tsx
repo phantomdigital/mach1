@@ -4,7 +4,7 @@ import { SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
-import { generatePrismicMetadata } from "@/lib/metadata";
+import { generatePrismicMetadata, generateBreadcrumbSchema } from "@/lib/metadata";
 
 type Params = { uid: string };
 
@@ -15,12 +15,24 @@ export default async function Page({ params }: { params: Promise<Params> }) {
     .getByUID("solution", uid)
     .catch(() => notFound());
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Solutions", url: "/solutions" },
+    { name: solution.data.title || uid, url: `/solutions/${uid}` },
+  ]);
+
   return (
-    <SliceZone
-      slices={solution.data.slices}
-      components={components}
-      context={{ pageTitle: solution.data.title || uid }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <SliceZone
+        slices={solution.data.slices}
+        components={components}
+        context={{ pageTitle: solution.data.title || uid }}
+      />
+    </>
   );
 }
 

@@ -144,6 +144,20 @@ export function generatePrismicMetadata(
 }
 
 // Structured data helpers
+export function generateWebSiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: baseMetadata.siteName,
+    url: baseMetadata.url,
+    description: baseMetadata.description,
+    publisher: {
+      "@type": "Organization",
+      name: baseMetadata.companyName,
+    },
+  };
+}
+
 export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",

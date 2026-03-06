@@ -10,6 +10,7 @@ import { HeroButton } from "@/components/ui/hero-button";
 import { Badge } from "@/components/ui/badge";
 import { formatAuDate } from "@/lib/date-utils";
 import { JobApplicationDialog } from "@/app/careers/job-application-dialog";
+import { generateBreadcrumbSchema } from "@/lib/metadata";
 
 type Params = { uid: string };
 
@@ -333,6 +334,18 @@ export default async function JobPage({
       </section>
 
       {/* JSON-LD Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            generateBreadcrumbSchema([
+              { name: "Home", url: "/" },
+              { name: "Careers", url: "/careers/vacancies" },
+              { name: page.data.title || uid, url: `/job/${uid}` },
+            ])
+          ),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
