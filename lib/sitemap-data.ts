@@ -28,7 +28,6 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
   const staticPaths = [
     { path: "/", changeFrequency: "weekly" as const, priority: 1 },
     { path: "/careers/vacancies", changeFrequency: "weekly" as const, priority: 0.8 },
-    { path: "/terms-of-service", changeFrequency: "yearly" as const, priority: 0.5 },
   ];
 
   for (const { path, changeFrequency, priority } of staticPaths) {
@@ -63,10 +62,13 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
     const excludePageUids = new Set([
       "careers-vacancies",
       "contact-thank-you",
+      "terms-of-service",
     ]);
 
     for (const page of pages) {
       if (excludePageUids.has(page.uid ?? "")) continue;
+      const isLegalPage = page.data.slices?.some((s) => s.slice_type === "legal_content");
+      if (isLegalPage) continue;
       const path = `/${page.uid}`;
       const lang = page.lang as LocaleCode;
       const fullPath = pathForLocale(path, lang);

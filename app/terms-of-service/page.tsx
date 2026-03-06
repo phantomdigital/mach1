@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { generateMetadata as generateCustomMetadata } from "@/lib/metadata";
 import { SliceZone } from "@prismicio/react";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
@@ -50,9 +51,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = legalContentSlice?.primary?.page_title || "Terms of Service";
 
-  return {
-    title: `${title} | MACH1 Logistics`,
+  return generateCustomMetadata({
+    title,
     description: `Read our ${title.toLowerCase()} to understand your rights and obligations.`,
-  };
+    url: "/terms-of-service",
+    keywords: ["terms of service", "MACH1 Logistics", "legal"],
+    publishedTime: page.first_publication_date || undefined,
+    modifiedTime: page.last_publication_date || undefined,
+    noIndex: true,
+  });
 }
 

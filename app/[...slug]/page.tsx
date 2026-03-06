@@ -151,6 +151,7 @@ export async function generateMetadata({
         keywords: [uid.replace(/-/g, " "), "MACH1 Logistics", "legal", title.toLowerCase()],
         publishedTime: page.first_publication_date || undefined,
         modifiedTime: page.last_publication_date || undefined,
+        noIndex: true,
       });
     }
     
