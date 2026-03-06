@@ -2,6 +2,7 @@ import React from "react";
 import { Content, isFilled } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
 import FreightServicesButton from "./freight-services-button";
+import { ContentBlockAnimation, ServiceBlockAnimation } from "./freight-services-animation";
 import {
   getMarginTopClass,
   getPaddingTopClass,
@@ -83,22 +84,28 @@ const FreightServices = ({ slice }: FreightServicesProps): React.ReactElement =>
             <div className="w-0.5 h-auto min-h-full bg-mach1-green flex-shrink-0 mr-4 lg:mr-6 self-stretch" />
             <div className="flex flex-col gap-6 min-w-0">
               {slice.primary.heading && (
-                <h2 className="text-black">
-                  {slice.primary.heading}
-                </h2>
+                <ContentBlockAnimation delay={0}>
+                  <h2 className="text-black">
+                    {slice.primary.heading}
+                  </h2>
+                </ContentBlockAnimation>
               )}
               {slice.primary.description && (
-                <p className="text-neutral-700 text-sm lg:text-base leading-relaxed">
-                  {slice.primary.description}
-                </p>
+                <ContentBlockAnimation delay={0.1}>
+                  <p className="text-neutral-700 text-sm lg:text-base leading-relaxed">
+                    {slice.primary.description}
+                  </p>
+                </ContentBlockAnimation>
               )}
               {isFilled.keyText(slice.primary.primary_button_text) && isFilled.link(slice.primary.primary_button_link) && (
-                <div className="pt-2">
-                  <FreightServicesButton
-                    buttonText={slice.primary.primary_button_text}
-                    buttonLink={slice.primary.primary_button_link}
-                  />
-                </div>
+                <ContentBlockAnimation delay={0.2}>
+                  <div className="pt-2">
+                    <FreightServicesButton
+                      buttonText={slice.primary.primary_button_text}
+                      buttonLink={slice.primary.primary_button_link}
+                    />
+                  </div>
+                </ContentBlockAnimation>
               )}
             </div>
           </div>
@@ -107,12 +114,13 @@ const FreightServices = ({ slice }: FreightServicesProps): React.ReactElement =>
           {items.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-10 lg:gap-x-12 lg:gap-y-12">
               {items.map((item, index) => (
-                <ServiceBlock
-                  key={index}
-                  icon={item.icon}
-                  title={item.title}
-                  description={item.description}
-                />
+                <ServiceBlockAnimation key={index} index={index}>
+                  <ServiceBlock
+                    icon={item.icon}
+                    title={item.title}
+                    description={item.description}
+                  />
+                </ServiceBlockAnimation>
               ))}
             </div>
           )}

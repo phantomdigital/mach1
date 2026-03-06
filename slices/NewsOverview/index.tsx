@@ -10,9 +10,13 @@ import FeaturedArticle from "./featured-article";
 import { Button } from "@/components/ui/button";
 import { PrismicNextLink } from "@prismicio/next";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
-
-// Lazy load animation component to improve initial page load
-const NewsOverviewAnimation = React.lazy(() => import("./news-overview-animation"));
+import {
+  ContentBlockAnimation,
+  SidebarAnimation,
+  FeaturedArticleAnimation,
+  PreviewCardAnimation,
+  ViewAllButtonAnimation,
+} from "./news-overview-animation";
 
 /**
  * Props for `NewsOverview`.
@@ -132,35 +136,37 @@ async function NewsOverviewData({
     <>
       {/* Featured Article */}
       {featuredArticle && (
-        <div data-animate="featured-article">
+        <FeaturedArticleAnimation>
           <FeaturedArticle article={featuredArticle} isDarkBackground={isDarkBlue} />
-        </div>
+        </FeaturedArticleAnimation>
       )}
 
       {/* Preview Articles Grid - Compact */}
       {previewArticles.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {previewArticles.map((article, index) => (
-            <div key={article.id} data-animate="preview-card">
+            <PreviewCardAnimation key={article.id} index={index}>
               <NewsCardCompact article={article} index={index} isDarkBackground={isDarkBlue} />
-            </div>
+            </PreviewCardAnimation>
           ))}
         </div>
       )}
 
       {/* View All Button */}
       {slice.primary.show_view_all_button && slice.primary.view_all_link && (
-        <div className="flex justify-center mt-8 lg:mt-12" data-animate="button">
-          <Button asChild variant="subtle" size="lg">
-            <PrismicNextLink 
-              field={slice.primary.view_all_link} 
-              className={`inline-flex items-center gap-1.5 ${isDarkBlue ? 'text-neutral-100' : 'text-neutral-800'}`}
-            >
-              <span>{slice.primary.view_all_button_text || "View All News"}</span>
-              <ExternalLinkIcon className="w-2.5 h-2.5" color={isDarkBlue ? "#f5f5f5" : "#262626"} />
-            </PrismicNextLink>
-          </Button>
-        </div>
+        <ViewAllButtonAnimation>
+          <div className="flex justify-center mt-8 lg:mt-12">
+            <Button asChild variant="subtle" size="lg">
+              <PrismicNextLink 
+                field={slice.primary.view_all_link} 
+                className={`inline-flex items-center gap-1.5 ${isDarkBlue ? 'text-neutral-100' : 'text-neutral-800'}`}
+              >
+                <span>{slice.primary.view_all_button_text || "View All News"}</span>
+                <ExternalLinkIcon className="w-2.5 h-2.5" color={isDarkBlue ? "#f5f5f5" : "#262626"} />
+              </PrismicNextLink>
+            </Button>
+          </div>
+        </ViewAllButtonAnimation>
       )}
     </>
   );
@@ -213,13 +219,13 @@ const NewsOverview = ({ slice }: NewsOverviewProps): React.ReactElement => {
       style={{ backgroundColor }}
     >
       <Suspense fallback={<NewsOverviewLoading isDarkBlue={isDarkBlue} />}>
-        <NewsOverviewAnimationWrapper isDarkBlue={isDarkBlue}>
-          <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
-            {/* Asymmetric Grid Layout: Sidebar + Content */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
-              {/* Left Sidebar - Header Info (25% width) - Renders immediately */}
-              <div className="lg:col-span-1 lg:sticky lg:top-32 lg:self-start" data-animate="sidebar">
-                <div data-animate="header">
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
+          {/* Asymmetric Grid Layout: Sidebar + Content */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
+            {/* Left Sidebar - Header Info (25% width) - Renders immediately */}
+            <SidebarAnimation className="lg:col-span-1 lg:sticky lg:top-32 lg:self-start">
+              <div>
+                <ContentBlockAnimation delay={0}>
                   <SliceHeader 
                     subheading={slice.primary.subheading} 
                     textColor={textColors.subheading}
@@ -227,42 +233,29 @@ const NewsOverview = ({ slice }: NewsOverviewProps): React.ReactElement => {
                     variant={(slice.primary.subheading_variant as "default" | "badge" | "badge-outline" | "underline" | "pill" | "accent-bar" | "minimal") || "badge"}
                     badgeVariant={(slice.primary.subheading_badge_variant as "green" | "featured" | "closed" | "success" | "pending" | "red" | "default" | "secondary" | "destructive") || "green"}
                   />
-                </div>
+                </ContentBlockAnimation>
                 
                 {isFilled.keyText(slice.primary.heading) && (
-                  <h2 className={`${textColors.heading} text-xl lg:text-2xl font-bold mt-4 leading-tight`}>
-                    {slice.primary.heading}
-                  </h2>
+                  <ContentBlockAnimation delay={0.1}>
+                    <h2 className={`${textColors.heading} text-xl lg:text-2xl font-bold mt-4 leading-tight`}>
+                      {slice.primary.heading}
+                    </h2>
+                  </ContentBlockAnimation>
                 )}
               </div>
+            </SidebarAnimation>
 
-              {/* Right Content Area (75% width) - Suspended for streaming */}
-              <div className="lg:col-span-3 space-y-8 lg:space-y-12">
-                <Suspense fallback={<NewsOverviewLoading isDarkBlue={isDarkBlue} />}>
-                  <NewsOverviewData slice={slice} isDarkBlue={isDarkBlue} textColors={textColors} />
-                </Suspense>
-              </div>
+            {/* Right Content Area (75% width) - Suspended for streaming */}
+            <div className="lg:col-span-3 space-y-8 lg:space-y-12">
+              <Suspense fallback={<NewsOverviewLoading isDarkBlue={isDarkBlue} />}>
+                <NewsOverviewData slice={slice} isDarkBlue={isDarkBlue} textColors={textColors} />
+              </Suspense>
             </div>
           </div>
-        </NewsOverviewAnimationWrapper>
+        </div>
       </Suspense>
     </section>
   );
 };
-
-// Wrapper component for lazy-loaded animation
-function NewsOverviewAnimationWrapper({ 
-  children, 
-  isDarkBlue 
-}: { 
-  children: React.ReactNode; 
-  isDarkBlue: boolean;
-}) {
-  return (
-    <Suspense fallback={<div>{children}</div>}>
-      <NewsOverviewAnimation>{children}</NewsOverviewAnimation>
-    </Suspense>
-  );
-}
 
 export default NewsOverview;

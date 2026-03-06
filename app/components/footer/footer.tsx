@@ -1,6 +1,7 @@
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { createClient } from "@/prismicio";
 import { FooterCtaButtons } from "./footer-cta-buttons";
+import { CtaTitleAnimation, CtaButtonsAnimation } from "./footer-cta-animation";
 
 // Social media icon component - extracted to prevent recreation on every render
 function SocialIcon({ platform }: { platform: string | null | undefined }) {
@@ -54,12 +55,15 @@ export default async function Footer() {
           <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 py-16 lg:py-24">
             {/* Main title */}
             {footer.data.cta_section[0]?.title && (
-              <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 lg:mb-10 max-w-4xl leading-tight">
-                {footer.data.cta_section[0].title}
-              </h2>
+              <CtaTitleAnimation>
+                <h2 className="text-white text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 lg:mb-10 max-w-4xl leading-tight">
+                  {footer.data.cta_section[0].title}
+                </h2>
+              </CtaTitleAnimation>
             )}
             
             {/* CTA Buttons */}
+            <CtaButtonsAnimation>
             <FooterCtaButtons
               primaryButton={
                 footer.data.cta_section[0]?.primary_button_text && footer.data.cta_section[0]?.primary_button_link
@@ -78,6 +82,7 @@ export default async function Footer() {
                   : undefined
               }
             />
+            </CtaButtonsAnimation>
           </div>
         </div>
         

@@ -1,101 +1,91 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
+import { ReactNode } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
+const viewport = { once: true, margin: "-50px", amount: 0.3 };
+const transition = { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const };
 
-interface NewsOverviewAnimationProps {
-  children: React.ReactNode;
+export function ContentBlockAnimation({
+  children,
+  delay = 0,
+}: {
+  children: ReactNode;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={viewport}
+      transition={{ ...transition, delay }}
+    >
+      {children}
+    </motion.div>
+  );
 }
 
-/**
- * NewsOverview Animation - Component-scoped GSAP ScrollTrigger animation.
- * Animation logic lives within this component, following React best practices.
- */
-export default function NewsOverviewAnimation({ children }: NewsOverviewAnimationProps) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      const header = section.querySelector("[data-animate='header']");
-      const sidebar = section.querySelector("[data-animate='sidebar']");
-      const featuredArticle = section.querySelector("[data-animate='featured-article']");
-      const previewCards = section.querySelectorAll("[data-animate='preview-card']");
-      const button = section.querySelector("[data-animate='button']");
-
-      if (!header && !sidebar) return;
-
-      // Create timeline with ScrollTrigger
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 85%",
-          toggleActions: "play none none none",
-          once: true,
-        },
-      });
-
-      // Animate header children
-      if (header?.children.length) {
-        tl.from(header.children, {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: "power2.out",
-        }, 0);
-      }
-
-      // Animate sidebar
-      if (sidebar) {
-        tl.from(sidebar, {
-          x: -30,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        }, 0.1);
-      }
-
-      // Animate featured article
-      if (featuredArticle) {
-        tl.from(featuredArticle, {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        }, 0.2);
-      }
-
-      // Animate preview cards
-      if (previewCards.length) {
-        tl.from(previewCards, {
-          y: 30,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: "power2.out",
-        }, 0.3);
-      }
-
-      // Animate button
-      if (button) {
-        tl.from(button, {
-          y: 20,
-          opacity: 0,
-          duration: 0.7,
-          ease: "power2.out",
-        }, 0.5);
-      }
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
-
-  return <div ref={sectionRef}>{children}</div>;
+export function SidebarAnimation({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, x: -30 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={viewport}
+      transition={transition}
+    >
+      {children}
+    </motion.div>
+  );
 }
 
+export function FeaturedArticleAnimation({ children }: { children: ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={viewport}
+      transition={{ ...transition, delay: 0.1 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+export function PreviewCardAnimation({
+  children,
+  index,
+}: {
+  children: ReactNode;
+  index: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={viewport}
+      transition={{ ...transition, delay: index * 0.08 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+export function ViewAllButtonAnimation({ children }: { children: ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={viewport}
+      transition={{ ...transition, delay: 0.2 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
