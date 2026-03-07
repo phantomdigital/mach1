@@ -137,29 +137,30 @@ function CardButton({ card, onSelect }: CardButtonProps) {
               />
               
               <div className="text-left">
-                <span
-                  className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-all duration-150 ease-out inline ${
-                    card.image && card.image.url ? 'text-white' : 'text-neutral-800'
-                  }`}
-                  style={{ 
-                    fontFamily: "var(--font-inter-tight)",
-                    lineHeight: '1.1',
-                  }}
-                >
-                  {card.label}
-                </span>
-                
-                {/* Arrow icon - inline with the last line of text */}
-                {card.hasLinkIcon && (
-                  <span className="inline-block align-baseline ml-3 sm:ml-6">
-                    <ExternalLinkIcon 
-                      className={`w-[20px] h-[20px] sm:w-[28px] sm:h-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
-                        card.image && card.image.url ? 'text-white' : 'text-neutral-800'
-                      }`}
-                      color={card.image && card.image.url ? "#FFFFFF" : "#262626"}
-                    />
+                {/* whitespace-nowrap keeps label + icon on one line; they wrap together if needed */}
+                <span className="whitespace-nowrap inline-block max-w-full">
+                  <span
+                    className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-all duration-150 ease-out ${
+                      card.image && card.image.url ? 'text-white' : 'text-neutral-800'
+                    }`}
+                    style={{ 
+                      fontFamily: "var(--font-inter-tight)",
+                      lineHeight: '1.1',
+                    }}
+                  >
+                    {card.label}
                   </span>
-                )}
+                  {card.hasLinkIcon && (
+                    <span className="inline-flex align-baseline ml-2 sm:ml-3 flex-shrink-0">
+                      <ExternalLinkIcon 
+                        className={`w-[20px] h-[20px] sm:w-[28px] sm:h-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
+                          card.image && card.image.url ? 'text-white' : 'text-neutral-800'
+                        }`}
+                        color={card.image && card.image.url ? "#FFFFFF" : "#262626"}
+                      />
+                    </span>
+                  )}
+                </span>
               </div>
             </div>
           </div>
