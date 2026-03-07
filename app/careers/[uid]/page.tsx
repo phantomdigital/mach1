@@ -379,22 +379,9 @@ export async function generateStaticParams() {
   const client = createClient();
   const pages = await client.getAllByType("job");
 
-  // Filter out jobs that closed more than 24 hours ago
-  const activePages = pages.filter((page) => {
-    const closingDate = page.data.closing_date;
-    if (!closingDate) return true; // Keep jobs without closing dates
-    
-    const closingDateTime = new Date(closingDate).getTime();
-    const now = new Date().getTime();
-    const hoursSinceClosed = (now - closingDateTime) / (1000 * 60 * 60);
-    
-    // Keep jobs that haven't closed yet, or closed within the last 24 hours
-    return hoursSinceClosed <= 24;
-  });
-
-  return activePages.map((page) => {
-    return { uid: page.uid };
-  });
+  // Include ALL job UIDs so pages exist when closing date is updated (unlapsed).
+  // Lapsed jobs are handled at render time via notFound() in the page component.
+  return pages.map((page) => ({ uid: page.uid }));
 }
 
 // Revalidate every hour to check for expired jobs

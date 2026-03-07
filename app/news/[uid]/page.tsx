@@ -10,6 +10,7 @@ import { ShareButtons } from "./share-buttons";
 import { RelatedArticles } from "./related-articles";
 import { LightboxWrapper } from "./lightbox-wrapper";
 import { generateBreadcrumbSchema } from "@/lib/metadata";
+import { createRichTextComponents } from "@/lib/rich-text-serializer";
 
 type Params = { uid: string };
 
@@ -109,107 +110,123 @@ export default async function NewsArticlePage({
 
   return (
     <main>
-      {/* Article Header */}
-      <section className="w-full pb-12 lg:pb-20 bg-white" style={{ paddingTop: 'var(--header-height, 128px)' }}>
-        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            {/* Back Link */}
-            <div className="mb-6 lg:mb-8">
-              <Link 
-                href="/news" 
-                className="inline-flex items-center gap-2 text-sm lg:text-base text-neutral-600 hover:text-dark-blue transition-colors"
-              >
-                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Back to News
-              </Link>
-            </div>
+      <article>
+        <header
+          className="w-full bg-white"
+          style={{ paddingTop: "var(--header-height, 128px)" }}
+        >
+          <div className="w-full max-w-[80rem] mx-auto px-4 lg:px-8 py-8 lg:py-12">
+            <div className="max-w-4xl mx-auto space-y-6">
+              {/* Back Link - subtle */}
+              <nav aria-label="Back navigation">
+                <Link
+                  href="/news"
+                  className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-dark-blue transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Back to News
+                </Link>
+              </nav>
 
-            {/* Category */}
-            {page.data.category && (
-              <span 
-                className="inline-block text-sky-100 text-xs lg:text-sm font-bold tracking-wider uppercase px-3 py-1.5 lg:px-4 lg:py-2 bg-mach1-green rounded-2xl mb-4 lg:mb-6"
-                style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
-              >
-                {page.data.category}
-              </span>
-            )}
+              {/* Category - topic label */}
+              {page.data.category && (
+                <span
+                  className="inline-block text-sky-100 text-xs font-bold tracking-wider uppercase px-3 py-1.5 bg-mach1-green rounded-2xl"
+                  style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
+                >
+                  {page.data.category}
+                </span>
+              )}
 
-            {/* Title */}
-            <h1 className="text-neutral-800 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 lg:mb-6 leading-tight">
-              {page.data.title}
-            </h1>
+              {/* Title */}
+              <h1 className="text-black text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
+                {page.data.title}
+              </h1>
 
-            {/* Meta */}
-            <div className="flex flex-wrap items-center gap-3 lg:gap-4 text-xs sm:text-sm text-neutral-600 mb-6 lg:mb-8">
-              {authorName && (
-                <div className="flex items-center gap-2">
-                  {authorPhoto?.url ? (
-                    <div className="relative w-8 h-8 rounded-full overflow-hidden bg-neutral-200 flex-shrink-0">
-                      <PrismicNextImage
-                        field={authorPhoto}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-dark-blue flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
-                      {getAuthorInitials(authorName)}
-                    </div>
-                  )}
-                  <span>{authorName}</span>
+              {/* Byline - grouped author, date, reading time */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-neutral-600 [&>span.sep]:text-neutral-400 [&>span.sep]:select-none">
+                {authorName && (
+                  <div className="flex items-center gap-2">
+                    {authorPhoto?.url ? (
+                      <div className="relative w-8 h-8 rounded-full overflow-hidden bg-neutral-200 flex-shrink-0 ring-1 ring-neutral-200">
+                        <PrismicNextImage
+                          field={authorPhoto}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-dark-blue flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+                        {getAuthorInitials(authorName)}
+                      </div>
+                    )}
+                    <span className="font-medium text-neutral-800">{authorName}</span>
+                  </div>
+                )}
+                {authorName && (page.first_publication_date || readingTime > 0) && (
+                  <span className="sep" aria-hidden>·</span>
+                )}
+                {page.first_publication_date && (
+                  <time dateTime={page.first_publication_date} className="text-neutral-500">
+                    {formatDate(page.first_publication_date)}
+                  </time>
+                )}
+                {page.first_publication_date && readingTime > 0 && (
+                  <span className="sep" aria-hidden>·</span>
+                )}
+                {readingTime > 0 && (
+                  <span className="text-neutral-500">{readingTime} min read</span>
+                )}
+              </div>
+
+              {/* Featured Image */}
+              {page.data.featured_image?.url && (
+                <div
+                  className="relative aspect-[16/9] bg-neutral-100 mt-8 overflow-hidden"
+                  style={{
+                    clipPath:
+                      "polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px))",
+                  }}
+                >
+                  <PrismicNextImage
+                    field={page.data.featured_image}
+                    fill
+                    sizes="(max-width: 896px) 100vw, 896px"
+                    quality={90}
+                    priority
+                    className="object-cover"
+                  />
                 </div>
               )}
-              {authorName && page.first_publication_date && <span>•</span>}
-              {page.first_publication_date && (
-                <time dateTime={page.first_publication_date}>
-                  {formatDate(page.first_publication_date)}
-                </time>
-              )}
-              {(authorName || page.first_publication_date) && readingTime > 0 && <span>•</span>}
-              {readingTime > 0 && <span>{readingTime} min read</span>}
             </div>
+          </div>
+        </header>
 
-            {/* Featured Image */}
-            {page.data.featured_image?.url && (
-              <div 
-                className="relative aspect-[16/9] bg-neutral-100 mb-8 lg:mb-12 overflow-hidden"
-                style={{
-                  clipPath: 'polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px))'
-                }}
-              >
-                <PrismicNextImage
-                  field={page.data.featured_image}
-                  fill
-                  sizes="(max-width: 896px) 100vw, 896px"
-                  quality={90}
-                  priority
-                  className="object-cover"
+        {/* Article body */}
+        <div className="w-full max-w-[80rem] mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
+          <div className="max-w-4xl mx-auto">
+            {page.data.content && (
+              <div className="prose prose-sm lg:prose-base max-w-none mb-8 lg:mb-12">
+                <PrismicRichText
+                  field={page.data.content}
+                  components={createRichTextComponents()}
                 />
               </div>
             )}
 
-            {/* Article Content */}
-            {page.data.content && (
-              <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none mb-8 lg:mb-12">
-                <PrismicRichText field={page.data.content} />
-              </div>
-            )}
-
-            {/* Lightbox functionality (client-side only) */}
-            <LightboxWrapper 
+            <LightboxWrapper
               featuredImage={page.data.featured_image}
               content={page.data.content}
             />
 
-            {/* Share Buttons */}
             <div className="pt-6 lg:pt-8 border-t border-neutral-200">
               <ShareButtons url={fullUrl} title={page.data.title || ""} />
             </div>
           </div>
         </div>
-      </section>
+      </article>
 
       {/* Related Articles */}
       <RelatedArticles articles={relatedArticles} />
