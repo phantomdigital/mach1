@@ -11,6 +11,13 @@
       "version": "initial",
       "description": "Left column with heading + intro, right column with 2x2 grid of service blocks",
       "primary": {
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": "e.g. Our Services"
+          }
+        },
         "heading": {
           "type": "Text",
           "config": {

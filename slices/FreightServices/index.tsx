@@ -78,13 +78,20 @@ const FreightServices = ({ slice }: FreightServicesProps): React.ReactElement =>
     >
       <div className="w-full max-w-[80rem] mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Left Column - Main intro with vertical accent line */}
-          <div className="flex">
-            {/* Vertical green accent line */}
-            <div className="w-0.5 h-auto min-h-full bg-mach1-green flex-shrink-0 mr-4 lg:mr-6 self-stretch" />
-            <div className="flex flex-col gap-6 min-w-0">
-              {slice.primary.heading && (
+          {/* Left Column - Main intro with vertical accent line (line height matches content, centered vertically) */}
+          <div className="flex items-center">
+            <div className="flex items-center gap-4 lg:gap-6 min-w-0">
+              <div className="w-0.5 self-stretch bg-mach1-green flex-shrink-0" />
+              <div className="flex flex-col gap-6 min-w-0">
+              {slice.primary.subheading && (
                 <ContentBlockAnimation delay={0}>
+                  <p className="text-neutral-500 text-[11px] font-semibold uppercase tracking-widest">
+                    {slice.primary.subheading}
+                  </p>
+                </ContentBlockAnimation>
+              )}
+              {slice.primary.heading && (
+                <ContentBlockAnimation delay={0.1}>
                   <h2 className="text-black">
                     {slice.primary.heading}
                   </h2>
@@ -92,7 +99,7 @@ const FreightServices = ({ slice }: FreightServicesProps): React.ReactElement =>
               )}
               {slice.primary.description && (
                 <ContentBlockAnimation delay={0.1}>
-                  <p className="text-neutral-700 text-sm lg:text-base leading-relaxed">
+                  <p className="text-neutral-700 text-sm lg:text-base">
                     {slice.primary.description}
                   </p>
                 </ContentBlockAnimation>
@@ -107,6 +114,7 @@ const FreightServices = ({ slice }: FreightServicesProps): React.ReactElement =>
                   </div>
                 </ContentBlockAnimation>
               )}
+              </div>
             </div>
           </div>
 

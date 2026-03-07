@@ -2286,6 +2286,16 @@ export type FaqSlice = prismic.SharedSlice<"faq", FaqSliceVariation>;
  */
 export interface FreightServicesSliceDefaultPrimary {
 	/**
+	 * Subheading field in *Freight Services → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: e.g. Our Services
+	 * - **API ID Path**: freight_services.default.primary.subheading
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	subheading: prismic.KeyTextField;
+	
+	/**
 	 * Main Heading field in *Freight Services → Default → Primary*
 	 *
 	 * - **Field Type**: Text
