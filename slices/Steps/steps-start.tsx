@@ -126,7 +126,7 @@ export default function StepsStart({
               </div>
             )}
 
-            <HeroButton onClick={handleStart} className="mt-auto">
+            <HeroButton onClick={handleStart} size="small" className="mt-auto">
               {buttonText || "Start Quote"}
             </HeroButton>
           </div>
