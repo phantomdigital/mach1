@@ -3,7 +3,6 @@ import { isFilled } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { Check } from "lucide-react";
-import { SliceHeader } from "@/components/slice-header";
 import { ImageBlockAnimation, ContentBlockAnimation } from "./join-our-team-animation";
 import { Button } from "@/components/ui/button";
 import JoinOurTeamButton from "./join-our-team-button";
@@ -127,7 +126,9 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
             <div className="w-full lg:max-w-[clamp(24rem,40vw,44rem)] flex flex-col justify-center items-start gap-6 lg:gap-8">
             {slice.primary.subheading && (
               <ContentBlockAnimation delay={0}>
-                <SliceHeader subheading={slice.primary.subheading} textColor="text-neutral-800" variant="badge" badgeVariant="green" />
+                <p className="text-neutral-500 text-[11px] font-semibold uppercase tracking-widest">
+                  {slice.primary.subheading}
+                </p>
               </ContentBlockAnimation>
             )}
 
