@@ -82,7 +82,7 @@ const FreightServices = ({ slice }: FreightServicesProps): React.ReactElement =>
           <div className="flex items-center">
             <div className="flex items-center gap-4 lg:gap-6 min-w-0">
               <div className="w-0.5 self-stretch bg-mach1-green flex-shrink-0" />
-              <div className="flex flex-col gap-6 min-w-0">
+              <div className="flex flex-col gap-6 min-w-0 py-5">
               {slice.primary.subheading && (
                 <ContentBlockAnimation delay={0}>
                   <p className="text-neutral-500 text-[11px] font-semibold uppercase tracking-widest">
