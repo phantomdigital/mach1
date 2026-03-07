@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatAuDate } from "@/lib/date-utils";
 import { JobApplicationDialog } from "@/app/careers/job-application-dialog";
 import { generateBreadcrumbSchema } from "@/lib/metadata";
+import { createRichTextComponents } from "@/lib/rich-text-serializer";
 
 type Params = { uid: string };
 
@@ -67,44 +68,47 @@ export default async function JobPage({
 
   return (
     <main>
-      {/* Job Header */}
-      <section className="w-full pb-12 lg:pb-20 bg-white" style={{ paddingTop: 'var(--header-height, 128px)' }}>
-        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            {/* Back Link */}
-            <div className="mb-6 lg:mb-8">
-              <Link 
-                href="/careers/vacancies" 
-                className="inline-flex items-center gap-2 text-sm lg:text-base text-neutral-600 hover:text-dark-blue transition-colors"
-              >
-                <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Back to Careers
-              </Link>
-            </div>
+      <article>
+        <header
+          className="w-full bg-white"
+          style={{ paddingTop: "var(--header-height, 128px)" }}
+        >
+          <div className="w-full max-w-[80rem] mx-auto px-4 lg:px-8 py-8 lg:py-12">
+            <div className="max-w-4xl mx-auto space-y-6">
+              {/* Back Link - subtle, matches news */}
+              <nav aria-label="Back navigation">
+                <Link
+                  href="/careers/vacancies"
+                  className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-dark-blue transition-colors"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Back to Careers
+                </Link>
+              </nav>
 
-            {/* Status Badges */}
-            <div className="flex flex-wrap gap-2 lg:gap-3 mb-4 lg:mb-6">
-              {page.data.department && (
-                <Badge variant="green" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
-                  {page.data.department}
-                </Badge>
-              )}
-              {page.data.featured && (
-                <Badge variant="featured" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
-                  Featured
-                </Badge>
-              )}
-              {(!isActive || isPastClosingDate) && (
-                <Badge variant="closed" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
-                  Position Closed
-                </Badge>
-              )}
-            </div>
+              {/* Status Badges */}
+              <div className="flex flex-wrap gap-2 lg:gap-3">
+                {page.data.department && (
+                  <Badge variant="green" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
+                    {page.data.department}
+                  </Badge>
+                )}
+                {page.data.featured && (
+                  <Badge variant="featured" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
+                    Featured
+                  </Badge>
+                )}
+                {(!isActive || isPastClosingDate) && (
+                  <Badge variant="closed" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
+                    Position Closed
+                  </Badge>
+                )}
+              </div>
 
             {/* Job Title */}
-            <h1 className="text-neutral-800 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 lg:mb-6 leading-tight">
+            <h1 className="text-black text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
               {page.data.title}
             </h1>
 
@@ -146,7 +150,13 @@ export default async function JobPage({
                 </div>
               )}
             </div>
+          </div>
+        </div>
+        </header>
 
+        {/* Article body */}
+        <div className="w-full max-w-[80rem] mx-auto px-4 lg:px-8 pb-12 lg:pb-20">
+          <div className="max-w-4xl mx-auto">
             {/* Summary */}
             {page.data.summary && (
               <div className="mb-12">
@@ -183,7 +193,7 @@ export default async function JobPage({
                     </div>
                     <div>
                       {hasApplicationUrl ? (
-                        <HeroButton asChild>
+                        <HeroButton asChild size="small">
                           <PrismicNextLink field={applicationUrl} target="_blank" rel="noopener noreferrer">
                             APPLY NOW
                           </PrismicNextLink>
@@ -194,7 +204,7 @@ export default async function JobPage({
                           applicationEmail={applicationEmail}
                           closingDate={formattedClosingDate}
                         >
-                          <HeroButton>APPLY NOW</HeroButton>
+                          <HeroButton size="small">APPLY NOW</HeroButton>
                         </JobApplicationDialog>
                       ) : null}
                     </div>
@@ -209,8 +219,8 @@ export default async function JobPage({
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
                   About the Role
                 </h2>
-                <div className="prose max-w-none">
-                  <PrismicRichText field={page.data.description} />
+                <div className="prose prose-sm lg:prose-base max-w-none">
+                  <PrismicRichText field={page.data.description} components={createRichTextComponents()} />
                 </div>
               </div>
             )}
@@ -221,8 +231,8 @@ export default async function JobPage({
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
                   Key Responsibilities
                 </h2>
-                <div className="prose max-w-none">
-                  <PrismicRichText field={page.data.responsibilities} />
+                <div className="prose prose-sm lg:prose-base max-w-none">
+                  <PrismicRichText field={page.data.responsibilities} components={createRichTextComponents()} />
                 </div>
               </div>
             )}
@@ -233,8 +243,8 @@ export default async function JobPage({
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
                   Requirements & Qualifications
                 </h2>
-                <div className="prose max-w-none">
-                  <PrismicRichText field={page.data.requirements} />
+                <div className="prose prose-sm lg:prose-base max-w-none">
+                  <PrismicRichText field={page.data.requirements} components={createRichTextComponents()} />
                 </div>
               </div>
             )}
@@ -245,8 +255,8 @@ export default async function JobPage({
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
                   What We Offer
                 </h2>
-                <div className="prose max-w-none">
-                  <PrismicRichText field={page.data.benefits} />
+                <div className="prose prose-sm lg:prose-base max-w-none">
+                  <PrismicRichText field={page.data.benefits} components={createRichTextComponents()} />
                 </div>
               </div>
             )}
@@ -260,28 +270,26 @@ export default async function JobPage({
                 }}
               >
                 <div 
-                  className="p-6 lg:p-8 bg-mach1-green text-white"
-                  style={{
-                    clipPath: 'polygon(0 0, calc(100% - 19px) 0, 100% 19px, 100% 100%, 19px 100%, 0 calc(100% - 19px))'
-                  }}
+                  className="p-6 lg:p-8 text-neutral-900 bg-[#F0FCFB]"
+                 
                 >
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     <div>
                       <h3 className="text-2xl lg:text-3xl font-bold mb-2">
                         Ready to join our team?
                       </h3>
-                      <p className="text-neutral-200">
+                      <p className="text-neutral-600">
                         Submit your application today and become part of something great.
                       </p>
                       {hasClosingDate && (
-                        <p className="text-neutral-200 text-sm mt-2">
+                        <p className="text-neutral-600 text-sm mt-2">
                           Applications close on {formatAuDate(closingDate)}
                         </p>
                       )}
                     </div>
                     <div className="flex-shrink-0">
                       {hasApplicationUrl ? (
-                        <HeroButton asChild>
+                        <HeroButton asChild size="small">
                           <PrismicNextLink field={applicationUrl} target="_blank" rel="noopener noreferrer">
                             APPLY NOW
                           </PrismicNextLink>
@@ -292,7 +300,7 @@ export default async function JobPage({
                           applicationEmail={applicationEmail}
                           closingDate={formattedClosingDate}
                         >
-                          <HeroButton>APPLY NOW</HeroButton>
+                          <HeroButton size="small">APPLY NOW</HeroButton>
                         </JobApplicationDialog>
                       ) : null}
                     </div>
@@ -331,7 +339,8 @@ export default async function JobPage({
             )}
           </div>
         </div>
-      </section>
+        
+      </article>
 
       {/* JSON-LD Schema */}
       <script
