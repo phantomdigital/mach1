@@ -7,6 +7,7 @@ import { SliceHeader } from "@/components/slice-header";
 import { ImageBlockAnimation, ContentBlockAnimation } from "./join-our-team-animation";
 import { Button } from "@/components/ui/button";
 import JoinOurTeamButton from "./join-our-team-button";
+import { CircularTextBadge, type CircularTextBadgeProps } from "./circular-text-badge";
 import { getMarginTopClass, getPaddingTopClass, getPaddingBottomClass, type MarginTopSize, type PaddingSize } from "@/lib/spacing";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import type { JoinOurTeamSlice } from "@/types.generated";
@@ -40,10 +41,15 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
         style={{ backgroundColor: panelColor }}
       />
 
-      {/* Color panel: left (default) or right (flipped) */}
+      {/* Color panel: left (default) or right (flipped) - chamfer on inner edge, bottom for left / top for right */}
       <div
         className={`absolute inset-y-0 w-1/4 xl:w-1/3 2xl:w-[45%] pointer-events-none hidden lg:block overflow-hidden ${isFlipped ? "right-0 left-auto" : "left-0 right-auto"}`}
-        style={{ backgroundColor: panelColor }}
+        style={{
+          backgroundColor: panelColor,
+          clipPath: isFlipped
+            ? "polygon(0 2rem, 2.5rem 0, 100% 0, 100% 100%, 0 100%)"
+            : "polygon(0 0, 100% 0, 100% calc(100% - 2rem), calc(100% - 2.5rem) 100%, 0 100%)",
+        }}
       >
         {/* Mapbox static map - overlays when token is set */}
         {process.env.NEXT_PUBLIC_MAPBOX_TOKEN?.trim() && (
@@ -83,7 +89,7 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
           >
             <div className={`relative w-full lg:w-[clamp(24rem,46vw,42rem)] shrink-0 ${isFlipped ? "lg:ml-auto" : "lg:mr-auto"}`}>
               <div
-                className="relative z-10 w-full h-full min-h-[320px] lg:min-h-[clamp(24rem,32vw,29rem)] overflow-hidden bg-neutral-200"
+                className="relative z-10 w-full h-full min-h-[420px] lg:min-h-[clamp(32rem,44vw,42rem)] overflow-hidden bg-neutral-200"
                 style={{
                   clipPath: isFlipped
                     ? "polygon(0 0, 100% 0, 100% 100%, 2.5rem 100%, 0 calc(100% - 2rem))"
@@ -93,25 +99,26 @@ const JoinOurTeam = ({ slice }: JoinOurTeamProps): React.ReactElement => {
                 {slice.primary.staff_image?.url ? (
                   <PrismicNextImage
                     field={slice.primary.staff_image}
-                    className={`w-full h-full object-cover ${isFlipped ? "object-right" : "object-left"}`}
+                    className="w-full h-full object-cover object-center"
+                    quality={100}
+                    sizes="(max-width: 1024px) 100vw, (max-width: 1280px) 46vw, 1172px"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-neutral-500">
                     Add a staff image
                   </div>
                 )}
-                {/* Overlay: inset shadow sits on top so it's visible (box-shadow behind content was hidden by image) */}
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    clipPath: isFlipped
-                      ? "polygon(0 0, 100% 0, 100% 100%, 2.5rem 100%, 0 calc(100% - 2rem))"
-                      : "polygon(0 0, calc(100% - 2.5rem) 0, 100% 2rem, 100% 100%, 0 100%)",
-                    boxShadow:
-                      "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset",
-                  }}
-                />
               </div>
+              {/* Badge outside clipped area so it can flow outside the image */}
+              {slice.primary.badge_enabled && (
+                <CircularTextBadge
+                  icons={slice.primary.badge_icons ?? []}
+                  circleColor={slice.primary.badge_circle_color || "#141433"}
+                  textColor={slice.primary.badge_text_color || "#ffffff"}
+                  textSegments={slice.primary.badge_text_segments ?? []}
+                  position={(slice.primary.badge_position as "top-right" | "top-left") || (isFlipped ? "top-left" : "top-right")}
+                />
+              )}
             </div>
           </ImageBlockAnimation>
 

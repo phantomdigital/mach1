@@ -3500,6 +3500,66 @@ type ImageWithTextSliceVariation = ImageWithTextSliceDefault | ImageWithTextSlic
 export type ImageWithTextSlice = prismic.SharedSlice<"image_with_text", ImageWithTextSliceVariation>;
 
 /**
+ * Item in *JoinOurTeam → Default → Primary → Badge Icons (cycle through)*
+ */
+export interface JoinOurTeamSliceDefaultPrimaryBadgeIconsItem {
+	/**
+	 * Icon field in *JoinOurTeam → Default → Primary → Badge Icons (cycle through)*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.default.primary.badge_icons[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	icon: prismic.ImageField<never>;
+}
+
+/**
+ * Item in *JoinOurTeam → Default → Primary → Badge Text (around circle, separated by dots)*
+ */
+export interface JoinOurTeamSliceDefaultPrimaryBadgeTextSegmentsItem {
+	/**
+	 * Text Segment field in *JoinOurTeam → Default → Primary → Badge Text (around circle, separated by dots)*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: CAREERS
+	 * - **API ID Path**: join_our_team.default.primary.badge_text_segments[].text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	text: prismic.KeyTextField;
+}
+
+/**
+ * Item in *JoinOurTeam → Flipped → Primary → Badge Icons (cycle through)*
+ */
+export interface JoinOurTeamSliceFlippedPrimaryBadgeIconsItem {
+	/**
+	 * Icon field in *JoinOurTeam → Flipped → Primary → Badge Icons (cycle through)*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.flipped.primary.badge_icons[].icon
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	icon: prismic.ImageField<never>;
+}
+
+/**
+ * Item in *JoinOurTeam → Flipped → Primary → Badge Text Segments (dots between each)*
+ */
+export interface JoinOurTeamSliceFlippedPrimaryBadgeTextSegmentsItem {
+	/**
+	 * Text field in *JoinOurTeam → Flipped → Primary → Badge Text Segments (dots between each)*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: CAREERS
+	 * - **API ID Path**: join_our_team.flipped.primary.badge_text_segments[].text
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	text: prismic.KeyTextField;
+}
+
+/**
  * Primary content in *JoinOurTeam → Default → Primary*
  */
 export interface JoinOurTeamSliceDefaultPrimary {
@@ -3622,6 +3682,67 @@ export interface JoinOurTeamSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/color
 	 */
 	left_panel_color: prismic.ColorField;
+	
+	/**
+	 * Show Image Badge field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.default.primary.badge_enabled
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	badge_enabled: prismic.BooleanField;
+	
+	/**
+	 * Badge Position field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose position
+	 * - **Default Value**: top-right
+	 * - **API ID Path**: join_our_team.default.primary.badge_position
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	badge_position: prismic.SelectField<"top-right" | "top-left", "filled">;
+	
+	/**
+	 * Badge Icons (cycle through) field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.default.primary.badge_icons[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	badge_icons: prismic.GroupField<Simplify<JoinOurTeamSliceDefaultPrimaryBadgeIconsItem>>;
+	
+	/**
+	 * Badge Circle Color field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #E31837
+	 * - **API ID Path**: join_our_team.default.primary.badge_circle_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	badge_circle_color: prismic.ColorField;
+	
+	/**
+	 * Badge Text Color field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: join_our_team.default.primary.badge_text_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	badge_text_color: prismic.ColorField;
+	
+	/**
+	 * Badge Text (around circle, separated by dots) field in *JoinOurTeam → Default → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.default.primary.badge_text_segments[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	badge_text_segments: prismic.GroupField<Simplify<JoinOurTeamSliceDefaultPrimaryBadgeTextSegmentsItem>>;
 	
 	/**
 	 * Top Margin field in *JoinOurTeam → Default → Primary*
@@ -3837,6 +3958,67 @@ export interface JoinOurTeamSliceFlippedPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Show Image Badge field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Boolean
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.flipped.primary.badge_enabled
+	 * - **Documentation**: https://prismic.io/docs/fields/boolean
+	 */
+	badge_enabled: prismic.BooleanField;
+	
+	/**
+	 * Badge Position field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Choose position
+	 * - **Default Value**: top-right
+	 * - **API ID Path**: join_our_team.flipped.primary.badge_position
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	badge_position: prismic.SelectField<"top-right" | "top-left", "filled">;
+	
+	/**
+	 * Badge Icons (cycle through) field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.flipped.primary.badge_icons[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	badge_icons: prismic.GroupField<Simplify<JoinOurTeamSliceFlippedPrimaryBadgeIconsItem>>;
+	
+	/**
+	 * Badge Circle Color field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #141433
+	 * - **API ID Path**: join_our_team.flipped.primary.badge_circle_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	badge_circle_color: prismic.ColorField;
+	
+	/**
+	 * Badge Text Color field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Color
+	 * - **Placeholder**: #ffffff
+	 * - **API ID Path**: join_our_team.flipped.primary.badge_text_color
+	 * - **Documentation**: https://prismic.io/docs/fields/color
+	 */
+	badge_text_color: prismic.ColorField;
+	
+	/**
+	 * Badge Text Segments (dots between each) field in *JoinOurTeam → Flipped → Primary*
+	 *
+	 * - **Field Type**: Group
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: join_our_team.flipped.primary.badge_text_segments[]
+	 * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+	 */
+	badge_text_segments: prismic.GroupField<Simplify<JoinOurTeamSliceFlippedPrimaryBadgeTextSegmentsItem>>;
 }
 
 /**
@@ -8250,8 +8432,12 @@ declare module "@prismicio/client" {
 			ImageWithTextSliceDefault,
 			ImageWithTextSliceCentered,
 			JoinOurTeamSlice,
+			JoinOurTeamSliceDefaultPrimaryBadgeIconsItem,
+			JoinOurTeamSliceDefaultPrimaryBadgeTextSegmentsItem,
 			JoinOurTeamSliceDefaultPrimary,
 			JoinOurTeamSliceDefaultItem,
+			JoinOurTeamSliceFlippedPrimaryBadgeIconsItem,
+			JoinOurTeamSliceFlippedPrimaryBadgeTextSegmentsItem,
 			JoinOurTeamSliceFlippedPrimary,
 			JoinOurTeamSliceFlippedItem,
 			JoinOurTeamSliceVariation,

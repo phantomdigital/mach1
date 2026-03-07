@@ -96,6 +96,70 @@
             "placeholder": "#E9EEE8"
           }
         },
+        "badge_enabled": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Image Badge",
+            "placeholder_false": "Off",
+            "placeholder_true": "On"
+          }
+        },
+        "badge_position": {
+          "type": "Select",
+          "config": {
+            "label": "Badge Position",
+            "placeholder": "Choose position",
+            "options": ["top-right", "top-left"],
+            "default_value": "top-right"
+          }
+        },
+        "badge_icons": {
+          "type": "Group",
+          "config": {
+            "label": "Badge Icons (cycle through)",
+            "repeat": true,
+            "fields": {
+              "icon": {
+                "type": "Image",
+                "config": {
+                  "label": "Icon",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              }
+            }
+          }
+        },
+        "badge_circle_color": {
+          "type": "Color",
+          "config": {
+            "label": "Badge Circle Color",
+            "placeholder": "#E31837"
+          }
+        },
+        "badge_text_color": {
+          "type": "Color",
+          "config": {
+            "label": "Badge Text Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "badge_text_segments": {
+          "type": "Group",
+          "config": {
+            "label": "Badge Text (around circle, separated by dots)",
+            "repeat": true,
+            "fields": {
+              "text": {
+                "type": "Text",
+                "config": {
+                  "label": "Text Segment",
+                  "placeholder": "CAREERS"
+                }
+              }
+            }
+          }
+        },
         "margin_top": {
           "type": "Select",
           "config": {
@@ -269,6 +333,70 @@
             "placeholder": "Choose bottom padding",
             "options": ["none", "small", "medium", "large", "extra-large"],
             "default_value": "large"
+          }
+        },
+        "badge_enabled": {
+          "type": "Boolean",
+          "config": {
+            "label": "Show Image Badge",
+            "placeholder_false": "Off",
+            "placeholder_true": "On"
+          }
+        },
+        "badge_position": {
+          "type": "Select",
+          "config": {
+            "label": "Badge Position",
+            "placeholder": "Choose position",
+            "options": ["top-right", "top-left"],
+            "default_value": "top-right"
+          }
+        },
+        "badge_icons": {
+          "type": "Group",
+          "config": {
+            "label": "Badge Icons (cycle through)",
+            "repeat": true,
+            "fields": {
+              "icon": {
+                "type": "Image",
+                "config": {
+                  "label": "Icon",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              }
+            }
+          }
+        },
+        "badge_circle_color": {
+          "type": "Color",
+          "config": {
+            "label": "Badge Circle Color",
+            "placeholder": "#141433"
+          }
+        },
+        "badge_text_color": {
+          "type": "Color",
+          "config": {
+            "label": "Badge Text Color",
+            "placeholder": "#ffffff"
+          }
+        },
+        "badge_text_segments": {
+          "type": "Group",
+          "config": {
+            "label": "Badge Text Segments (dots between each)",
+            "repeat": true,
+            "fields": {
+              "text": {
+                "type": "Text",
+                "config": {
+                  "label": "Text",
+                  "placeholder": "CAREERS"
+                }
+              }
+            }
           }
         }
       },
