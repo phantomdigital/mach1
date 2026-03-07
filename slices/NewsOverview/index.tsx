@@ -177,9 +177,9 @@ async function NewsOverviewData({
  * Optimized for below-the-fold rendering with Suspense boundaries.
  */
 const NewsOverview = ({ slice }: NewsOverviewProps): React.ReactElement => {
-  const marginTop = getMarginTopClass(((slice.primary.margin_top as any) as MarginTopSize) || "large");
-  const paddingTop = getPaddingTopClass(((slice.primary.padding_top as any) as PaddingSize) || "large");
-  const paddingBottom = getPaddingBottomClass(((slice.primary.padding_bottom as any) as PaddingSize) || "large");
+  const marginTop = getMarginTopClass((slice.primary.margin_top as MarginTopSize) || "large");
+  const paddingTop = getPaddingTopClass((slice.primary.padding_top as PaddingSize) || "large");
+  const paddingBottom = getPaddingBottomClass((slice.primary.padding_bottom as PaddingSize) || "large");
   
   // Background color with white default
   const backgroundColor = slice.primary.background_color || "#ffffff";

@@ -50,7 +50,7 @@ const processTextForEmails = (text: string) => {
         key={`email-${index}`}
         email={encodedEmail}
         isBase64Encoded={true}
-        className="text-mach1-green hover:text-green-700 underline"
+        className="text-dark-blue underline hover:text-mach1-green"
       />
     );
     
@@ -94,10 +94,10 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
   const tableOfContents = slice.primary.show_table_of_contents ? generateTableOfContents() : [];
   
   // Get spacing from Prismic or use defaults
-  const marginTop = ((slice.primary as any).margin_top as MarginTopSize) || "large";
-  const marginBottom = ((slice.primary as any).margin_bottom as MarginTopSize) || "large";
-  const paddingTop = ((slice.primary as any).padding_top as PaddingSize) || "large";
-  const paddingBottom = ((slice.primary as any).padding_bottom as PaddingSize) || "large";
+  const marginTop = (slice.primary.margin_top as MarginTopSize) || "large";
+  const marginBottom = (slice.primary.margin_bottom as MarginTopSize) || "large";
+  const paddingTop = (slice.primary.padding_top as PaddingSize) || "large";
+  const paddingBottom = (slice.primary.padding_bottom as PaddingSize) || "large";
 
   // Create a ref to track heading index across renders
   const headingIndexRef = { current: 0 };
@@ -191,7 +191,7 @@ const LegalContent = ({ slice }: LegalContentProps): React.ReactElement => {
           href={linkData.url}
           {...(linkData.target ? { target: linkData.target } : {})}
           rel={linkData.target === "_blank" ? "noopener noreferrer" : undefined}
-          className="text-mach1-green hover:text-green-700 underline transition-colors"
+          className="text-dark-blue underline hover:text-mach1-green transition-colors"
         >
           {children}
         </a>

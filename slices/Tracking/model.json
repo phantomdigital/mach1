@@ -102,6 +102,24 @@
             "default_value": "large"
           }
         },
+        "padding_top": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Top",
+            "placeholder": "Select padding size",
+            "options": ["none", "small", "medium", "large", "extra-large", "extra-extra-large"],
+            "default_value": "large"
+          }
+        },
+        "padding_bottom": {
+          "type": "Select",
+          "config": {
+            "label": "Padding Bottom",
+            "placeholder": "Select padding size",
+            "options": ["none", "small", "medium", "large", "extra-large", "extra-extra-large"],
+            "default_value": "large"
+          }
+        },
         "use_main_faqs": {
           "type": "Boolean",
           "config": {

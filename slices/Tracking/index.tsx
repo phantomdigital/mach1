@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Content, isFilled, RichTextField } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { createClient } from "@/prismicio";
+import { getPaddingTopClass, getPaddingBottomClass, type PaddingSize } from "@/lib/spacing";
 import TrackingClient from "./tracking-client";
 
 /**
@@ -31,12 +32,12 @@ const Tracking = async ({ slice }: TrackingProps): Promise<React.ReactElement> =
 
   // If use_main_faqs is true, fetch FAQs from linked page
   if (
-    (slice.primary as any).use_main_faqs &&
-    isFilled.contentRelationship((slice.primary as any).main_faq_slice)
+    slice.primary.use_main_faqs &&
+    isFilled.contentRelationship(slice.primary.main_faq_slice)
   ) {
     try {
       const client = createClient();
-      const linkedPage = await client.getByID((slice.primary as any).main_faq_slice.id);
+      const linkedPage = await client.getByID(slice.primary.main_faq_slice.id);
       
       // Type guard: Check if the document has slices (only Page documents have slices)
       if ('slices' in linkedPage.data && Array.isArray(linkedPage.data.slices)) {
@@ -47,7 +48,7 @@ const Tracking = async ({ slice }: TrackingProps): Promise<React.ReactElement> =
 
         if (faqSlice && 'items' in faqSlice && Array.isArray(faqSlice.items)) {
           // Get the FAQ limit from the slice (default to 5 if not set)
-          const faqLimit = (slice.primary as any).faq_limit || 5;
+          const faqLimit = slice.primary.faq_limit || 5;
           
           // Map FAQ slice items to the format expected by Tracking and apply limit
           mainFaqs = faqSlice.items
@@ -81,7 +82,7 @@ const Tracking = async ({ slice }: TrackingProps): Promise<React.ReactElement> =
   };
 
   // Determine which FAQs to use
-  const faqs = (slice.primary as any).use_main_faqs && mainFaqs.length > 0
+  const faqs = slice.primary.use_main_faqs && mainFaqs.length > 0
     ? mainFaqs
     : slice.items
         .filter(item => item.faq_question && item.faq_answer)
@@ -90,9 +91,13 @@ const Tracking = async ({ slice }: TrackingProps): Promise<React.ReactElement> =
           faq_answer: item.faq_answer,
         }));
 
+  const primary = slice.primary as typeof slice.primary & { padding_top?: PaddingSize; padding_bottom?: PaddingSize };
+  const paddingTop = (primary.padding_top as PaddingSize) || "large";
+  const paddingBottom = (primary.padding_bottom as PaddingSize) || "large";
+
   return (
     <Suspense fallback={<TrackingLoader />}>
-      <section className={`w-full py-16 lg:py-24 bg-white ${getMarginTopClass()}`}>
+      <section className="w-full bg-white" style={{ paddingTop: 'var(--header-height, 128px)' }}>
         <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
           {slice.primary.url_prefix ? (
             <TrackingClient
@@ -102,6 +107,7 @@ const Tracking = async ({ slice }: TrackingProps): Promise<React.ReactElement> =
               subheading={slice.primary.subheading}
               description={slice.primary.description}
               faqs={faqs}
+              spacingClass={`${getMarginTopClass()} ${getPaddingTopClass(paddingTop)} ${getPaddingBottomClass(paddingBottom)}`}
             />
           ) : (
             <div className="text-center text-neutral-500">

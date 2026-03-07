@@ -3914,6 +3914,17 @@ export interface LegalContentSliceDefaultPrimary {
 	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
 	
 	/**
+	 * Margin Bottom field in *LegalContent → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select margin size
+	 * - **Default Value**: large
+	 * - **API ID Path**: legal_content.default.primary.margin_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	margin_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
 	 * Padding Top field in *LegalContent → Default → Primary*
 	 *
 	 * - **Field Type**: Select
@@ -3922,7 +3933,7 @@ export interface LegalContentSliceDefaultPrimary {
 	 * - **API ID Path**: legal_content.default.primary.padding_top
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large" | "extra-extra-large", "filled">;
 	
 	/**
 	 * Padding Bottom field in *LegalContent → Default → Primary*
@@ -3933,7 +3944,7 @@ export interface LegalContentSliceDefaultPrimary {
 	 * - **API ID Path**: legal_content.default.primary.padding_bottom
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large" | "extra-extra-large", "filled">;
 	
 	/**
 	 * Content field in *LegalContent → Default → Primary*
@@ -7483,32 +7494,32 @@ export interface SubmittedSliceDefaultPrimary {
 	 * - **Field Type**: Select
 	 * - **Placeholder**: Choose top margin
 	 * - **Default Value**: large
-	 * - **API ID Path**: submitted.default.primary.top_margin
+	 * - **API ID Path**: submitted.default.primary.margin_top
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	top_margin: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
 	
 	/**
 	 * Padding Top field in *Submitted → Default → Primary*
 	 *
 	 * - **Field Type**: Select
-	 * - **Placeholder**: Choose top padding
+	 * - **Placeholder**: Select padding size
 	 * - **Default Value**: large
 	 * - **API ID Path**: submitted.default.primary.padding_top
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large" | "extra-extra-large", "filled">;
 	
 	/**
 	 * Padding Bottom field in *Submitted → Default → Primary*
 	 *
 	 * - **Field Type**: Select
-	 * - **Placeholder**: Choose bottom padding
-	 * - **Default Value**: none
+	 * - **Placeholder**: Select padding size
+	 * - **Default Value**: large
 	 * - **API ID Path**: submitted.default.primary.padding_bottom
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
-	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large", "filled">;
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large" | "extra-extra-large", "filled">;
 }
 
 /**
@@ -8024,6 +8035,28 @@ export interface TrackingSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/select
 	 */
 	margin_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large", "filled">;
+	
+	/**
+	 * Padding Top field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select padding size
+	 * - **Default Value**: large
+	 * - **API ID Path**: tracking.default.primary.padding_top
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_top: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large" | "extra-extra-large", "filled">;
+	
+	/**
+	 * Padding Bottom field in *Tracking → Default → Primary*
+	 *
+	 * - **Field Type**: Select
+	 * - **Placeholder**: Select padding size
+	 * - **Default Value**: large
+	 * - **API ID Path**: tracking.default.primary.padding_bottom
+	 * - **Documentation**: https://prismic.io/docs/fields/select
+	 */
+	padding_bottom: prismic.SelectField<"none" | "small" | "medium" | "large" | "extra-large" | "extra-extra-large", "filled">;
 	
 	/**
 	 * Use Main FAQs field in *Tracking → Default → Primary*

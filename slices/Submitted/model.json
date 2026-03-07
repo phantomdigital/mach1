@@ -128,18 +128,12 @@
             "placeholder": "5"
           }
         },
-        "top_margin": {
+        "margin_top": {
           "type": "Select",
           "config": {
             "label": "Top Margin",
             "placeholder": "Choose top margin",
-            "options": [
-              "none",
-              "small",
-              "medium",
-              "large",
-              "extra-large"
-            ],
+            "options": ["none", "small", "medium", "large", "extra-large"],
             "default_value": "large"
           }
         },
@@ -147,13 +141,8 @@
           "type": "Select",
           "config": {
             "label": "Padding Top",
-            "placeholder": "Choose top padding",
-            "options": [
-              "none",
-              "small",
-              "medium",
-              "large"
-            ],
+            "placeholder": "Select padding size",
+            "options": ["none", "small", "medium", "large", "extra-large", "extra-extra-large"],
             "default_value": "large"
           }
         },
@@ -161,14 +150,9 @@
           "type": "Select",
           "config": {
             "label": "Padding Bottom",
-            "placeholder": "Choose bottom padding",
-            "options": [
-              "none",
-              "small",
-              "medium",
-              "large"
-            ],
-            "default_value": "none"
+            "placeholder": "Select padding size",
+            "options": ["none", "small", "medium", "large", "extra-large", "extra-extra-large"],
+            "default_value": "large"
           }
         }
       },
