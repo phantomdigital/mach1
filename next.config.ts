@@ -13,15 +13,24 @@ const nextConfig: NextConfig = {
     "@react-three/drei",
   ],
   /**
-   * Do not ship WebGL / map clients inside Node serverless functions — they are only used in
-   * client components; tracing can still pull them in via shared chunks.
+   * Exclude heavy client-only deps from serverless function traces.
+   * Routes are matched with picomatch; "/" covers all app routes.
    * @see https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats
    */
   outputFileTracingExcludes: {
-    "**": [
-      "**/node_modules/three/**",
-      "**/node_modules/@react-three/**",
-      "**/node_modules/mapbox-gl/**",
+    "/": [
+      "./node_modules/three/**",
+      "./node_modules/@react-three/**",
+      "./node_modules/mapbox-gl/**",
+      "./public/**",
+      "./.git/**",
+      "./.next/cache/**",
+    ],
+    "/api/*": [
+      "./node_modules/three/**",
+      "./node_modules/@react-three/**",
+      "./node_modules/mapbox-gl/**",
+      "./public/**",
     ],
   },
   // See: https://nextjs.org/docs/app/building-your-application/routing/internationalization
