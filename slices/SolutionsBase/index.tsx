@@ -83,7 +83,7 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
       </h6>
     ),
     paragraph: ({ children }) => (
-      <p className="text-neutral-700 text-sm lg:text-base leading-relaxed mb-12!">
+      <p className="text-neutral-700 text-sm lg:text-base leading-relaxed mb-6!">
         {children}
       </p>
     ),
