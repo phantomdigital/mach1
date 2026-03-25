@@ -1,17 +1,26 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { SliceZone } from "@prismicio/react"
 import { createClient, locales, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata, generateMetadata as generateCustomMetadata } from "@/lib/metadata";
 import { LegalDatesProvider } from "@/slices/LegalContent/legal-dates-context";
 import QuoteSummaryPage from "@/app/quote/summary/page";
+import { SiteSearchResults } from "@/app/components/search/site-search-results";
 import type { Content } from "@prismicio/client";
 
 type Params = { slug: string[] };
 
-export default async function Page({ params }: { params: Promise<Params> }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<Params>;
+  searchParams: Promise<{ q?: string }>;
+}) {
   const { slug } = await params;
+  const { q } = await searchParams;
   const client = createClient();
   
   // Empty slug should be handled by app/page.tsx, not this route
@@ -56,6 +65,14 @@ export default async function Page({ params }: { params: Promise<Params> }) {
     
     uid = firstSegment;
   }
+
+  if (uid === "search") {
+    return (
+      <Suspense fallback={<div className="min-h-[40vh] pt-28" />}>
+        <SiteSearchResults locale={locale} query={q} />
+      </Suspense>
+    );
+  }
   
   // Handle page types
   // Note: More specific routes like /solutions/[uid] will be matched first by Next.js
@@ -95,10 +112,13 @@ export default async function Page({ params }: { params: Promise<Params> }) {
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<Params>;
+  searchParams: Promise<{ q?: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const { q } = await searchParams;
   const client = createClient();
   
   // Empty slug should be handled by app/page.tsx metadata
@@ -129,6 +149,14 @@ export async function generateMetadata({
   } else {
     locale = defaultLocale;
     uid = firstSegment;
+  }
+
+  if (uid === "search") {
+    const term = q?.trim();
+    return {
+      title: term ? `Search: ${term} | MACH1 Logistics` : "Search | MACH1 Logistics",
+      description: "Search pages and articles on MACH1 Logistics.",
+    };
   }
   
   try {

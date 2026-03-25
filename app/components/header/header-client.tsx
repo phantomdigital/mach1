@@ -1,6 +1,9 @@
-import { memo } from 'react';
+'use client';
+
+import { memo, useState } from 'react';
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { isFilled } from "@prismicio/client";
+import { Search } from "lucide-react";
 import { NavigationDropdown } from "./navigation-dropdown";
 import { HeaderButtons } from "./header-buttons";
 import { ScrollDropdownCloser } from "./scroll-dropdown-closer";
@@ -11,6 +14,7 @@ import { CompactHeader } from "./compact-header";
 import { ExternalLinkIcon } from "./external-link-icon";
 import { NavigationItemWithPrefetch } from "./navigation-item-with-prefetch";
 import { LogoLink } from "./logo-link";
+import { HeaderSearch } from "./header-search";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
 import { computeMaxDropdownHeight } from "./dropdown-height-utils";
 
@@ -55,10 +59,12 @@ interface HeaderClientProps {
 }
 
 function HeaderClient({ header }: HeaderClientProps) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   if (!header) {
     // Minimal loading/fallback header
     return (
-      <header className="absolute top-0 left-0 z-50 w-full h-auto">
+      <header className="absolute top-0 left-0 z-50 w-full h-auto overflow-visible">
         <HeaderHeightTracker />
         <div className="w-full relative">
           <ScrollDropdownCloser />
@@ -107,7 +113,7 @@ function HeaderClient({ header }: HeaderClientProps) {
         />
       </div>
 
-      <header className="absolute top-0 left-0 z-50 w-full h-auto">
+      <header className="absolute top-0 left-0 z-50 w-full h-auto overflow-visible">
         <HeaderHeightTracker />
         
         {/* Announcement Bar */}
@@ -135,9 +141,9 @@ function HeaderClient({ header }: HeaderClientProps) {
           </div>
         )}
 
-        <div className="w-full relative">
+        <div className="w-full relative overflow-visible">
           <ScrollDropdownCloser />
-          <div className="w-full bg-neutral-100 border-b-3 border-neutral-200">
+          <div className="w-full overflow-visible bg-neutral-100 border-b-3 border-neutral-200">
             <div className="max-w-[88rem] mx-auto px-4 lg:px-8 py-3">
               {/* Desktop Layout */}
               <div className="hidden xl:grid xl:grid-cols-[auto_1fr] gap-8">
@@ -172,7 +178,16 @@ function HeaderClient({ header }: HeaderClientProps) {
 
                 <div className="flex flex-col self-center gap-5">
                   {header.data.show_subheader && (
-                    <div className="flex items-center gap-6 justify-end border-b-2 border-gray-200 pb-3">
+                    <div className="flex items-center justify-end gap-6 border-b-2 border-gray-200 pb-3">
+                      <button
+                        type="button"
+                        onClick={() => setIsSearchOpen((prev) => !prev)}
+                        className="inline-flex items-center text-gray-700 hover:text-dark-blue transition-colors"
+                        aria-expanded={isSearchOpen}
+                        aria-label="Toggle site search"
+                      >
+                        <Search className="w-4 h-4" />
+                      </button>
                       {header.data.subheader_items && header.data.subheader_items.length > 0 && (
                         header.data.subheader_items.map((item, index) => (
                           <NavigationItemWithPrefetch
@@ -237,12 +252,24 @@ function HeaderClient({ header }: HeaderClientProps) {
                     ) : null}
                   </LogoLink>
                 </div>
-                <MobileMenu 
-                  navigation={header.data.navigation} 
-                  buttons={header.data.buttons}
-                  subheaderItems={header.data.show_subheader ? header.data.subheader_items : undefined}
-                />
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsSearchOpen((prev) => !prev)}
+                    className="xl:hidden flex items-center justify-center w-10 h-10 text-black"
+                    aria-expanded={isSearchOpen}
+                    aria-label="Toggle site search"
+                  >
+                    <Search className="h-5 w-5" />
+                  </button>
+                  <MobileMenu 
+                    navigation={header.data.navigation} 
+                    buttons={header.data.buttons}
+                    subheaderItems={header.data.show_subheader ? header.data.subheader_items : undefined}
+                  />
+                </div>
               </div>
+              <HeaderSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
             </div>
           </div>
         </div>
