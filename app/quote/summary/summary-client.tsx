@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 import { RichTextField } from "@prismicio/client";
 import StepsSummary from "@/slices/Steps/steps-summary";
 import { getContainerClass, getPaddingBottomClass } from "@/lib/spacing";
-import { getLocaleFromPathname, addLocaleToPathname } from "@/lib/locale-helpers";
+import { getLocaleFromPathname } from "@/lib/locale-helpers";
 
 interface SummaryData {
   selectedCard?: string;

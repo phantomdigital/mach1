@@ -58,7 +58,7 @@ export function ObfuscatedEmail({
     if (isBase64Encoded) {
       try {
         emailToObfuscate = typeof window !== 'undefined' ? atob(email) : email;
-      } catch (e) {
+      } catch {
         emailToObfuscate = email;
       }
     }

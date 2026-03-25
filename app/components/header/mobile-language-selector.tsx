@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown, Globe, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -21,8 +21,6 @@ export function MobileLanguageSelector({ onLocaleChange }: MobileLanguageSelecto
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
   // Extract current locale from pathname
   const getCurrentLocale = (): LocaleCode => {
     const pathParts = pathname.split('/').filter(Boolean);
@@ -149,14 +147,6 @@ export function MobileLanguageSelector({ onLocaleChange }: MobileLanguageSelecto
     
     fetchAvailableLocales();
   }, [pathname]);
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
 
   // Filter locales to only show available translations
   const filterAvailableLocales = <T extends { code: LocaleCode; name: string; flag: string }>(localeList: T[]) => {

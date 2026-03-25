@@ -1,9 +1,7 @@
 import { Metadata } from "next";
-import { headers } from "next/headers";
 import { isFilled, RichTextField } from "@prismicio/client";
 import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { generatePrismicMetadata } from "@/lib/metadata";
-import { getLocaleFromPathname } from "@/lib/locale-helpers";
 import SummaryClient from "./summary-client";
 import type { StepsSliceSummary, FaqSlice } from "@/types.generated";
 

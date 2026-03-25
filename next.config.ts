@@ -2,6 +2,28 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  /**
+   * Keep heavy client-only deps out of the server bundle trace (Vercel 250 MB unzipped limit).
+   * @see https://nextjs.org/docs/app/api-reference/config/next-config-js/serverExternalPackages
+   */
+  serverExternalPackages: [
+    "three",
+    "mapbox-gl",
+    "@react-three/fiber",
+    "@react-three/drei",
+  ],
+  /**
+   * Do not ship WebGL / map clients inside Node serverless functions — they are only used in
+   * client components; tracing can still pull them in via shared chunks.
+   * @see https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats
+   */
+  outputFileTracingExcludes: {
+    "**": [
+      "**/node_modules/three/**",
+      "**/node_modules/@react-three/**",
+      "**/node_modules/mapbox-gl/**",
+    ],
+  },
   // See: https://nextjs.org/docs/app/building-your-application/routing/internationalization
   experimental: {
     viewTransition: true,

@@ -21,21 +21,22 @@ export default function ScrollAnimationProvider({
 }: { 
   children: React.ReactNode 
 }) {
-  const observerRef = useRef<IntersectionObserver | null>(null);
   const animatedElementsRef = useRef<Set<Element>>(new Set());
 
   useEffect(() => {
+    const animatedElements = animatedElementsRef.current;
+
     // Create a single IntersectionObserver for all animations
-    observerRef.current = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !animatedElementsRef.current.has(entry.target)) {
+          if (entry.isIntersecting && !animatedElements.has(entry.target)) {
             const element = entry.target as HTMLElement;
             const animationType = element.dataset.animate;
             const staggerDelay = element.dataset.staggerDelay ? parseFloat(element.dataset.staggerDelay) : 0.1;
             
             // Mark as animated
-            animatedElementsRef.current.add(element);
+            animatedElements.add(element);
 
             // Check if this is a parent container with children to stagger
             const children = element.querySelectorAll("[data-animate-child]");
@@ -139,7 +140,7 @@ export default function ScrollAnimationProvider({
     const observeElements = () => {
       const elements = document.querySelectorAll("[data-animate]");
       elements.forEach((el) => {
-        if (!animatedElementsRef.current.has(el)) {
+        if (!animatedElements.has(el)) {
           const element = el as HTMLElement;
           const animationType = element.dataset.animate;
           
@@ -164,7 +165,7 @@ export default function ScrollAnimationProvider({
             }
           }
           
-          observerRef.current?.observe(element);
+          observer.observe(element);
         }
       });
     };
@@ -180,9 +181,9 @@ export default function ScrollAnimationProvider({
     });
 
     return () => {
-      observerRef.current?.disconnect();
+      observer.disconnect();
       mutationObserver.disconnect();
-      animatedElementsRef.current.clear();
+      animatedElements.clear();
     };
   }, []);
 

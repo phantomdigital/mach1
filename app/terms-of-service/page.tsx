@@ -6,7 +6,6 @@ import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import type { Content } from "@prismicio/client";
 import { LegalDatesProvider } from "@/slices/LegalContent/legal-dates-context";
-import type { PageDocumentDataSlicesSlice } from "@/types";
 
 export default async function TermsOfServicePage() {
   const client = createClient();
