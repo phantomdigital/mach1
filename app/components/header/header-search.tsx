@@ -130,7 +130,7 @@ export function HeaderSearch({ isOpen, onClose }: HeaderSearchProps) {
       } finally {
         setLoading(false);
       }
-    }, 150);
+    }, 300);
 
     return () => {
       window.clearTimeout(timer);

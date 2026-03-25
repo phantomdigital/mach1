@@ -1,7 +1,7 @@
 import type { PrismicDocument, RichTextField } from "@prismicio/client";
 import { asText } from "@prismicio/client/richtext";
 
-const MAX_SLICE_TEXT_CHARS = 120_000;
+const MAX_SLICE_TEXT_CHARS = 20_000;
 
 /**
  * Recursively pull searchable text from slice `primary` / repeat-group rows.

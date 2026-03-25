@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { defaultLocale } from "@/prismicio";
+import { searchSite } from "@/lib/prismic-search";
 import { SiteSearchResults } from "@/app/components/search/site-search-results";
 
 export const metadata: Metadata = {
@@ -14,10 +14,8 @@ type SearchPageProps = {
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q } = await searchParams;
+  const query = q?.trim() ?? "";
+  const results = query.length >= 2 ? await searchSite(query, defaultLocale) : [];
 
-  return (
-    <Suspense fallback={<div className="min-h-[40vh] pt-28" />}>
-      <SiteSearchResults locale={defaultLocale} query={q} />
-    </Suspense>
-  );
+  return <SiteSearchResults initialQuery={query} results={results} />;
 }

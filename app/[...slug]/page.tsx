@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { SliceZone } from "@prismicio/react"
 import { createClient, locales, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
@@ -8,6 +7,7 @@ import { generatePrismicMetadata, generateMetadata as generateCustomMetadata } f
 import { LegalDatesProvider } from "@/slices/LegalContent/legal-dates-context";
 import QuoteSummaryPage from "@/app/quote/summary/page";
 import { SiteSearchResults } from "@/app/components/search/site-search-results";
+import { searchSite } from "@/lib/prismic-search";
 import type { Content } from "@prismicio/client";
 
 type Params = { slug: string[] };
@@ -67,11 +67,9 @@ export default async function Page({
   }
 
   if (uid === "search") {
-    return (
-      <Suspense fallback={<div className="min-h-[40vh] pt-28" />}>
-        <SiteSearchResults locale={locale} query={q} />
-      </Suspense>
-    );
+    const query = q?.trim() ?? "";
+    const results = query.length >= 2 ? await searchSite(query, locale) : [];
+    return <SiteSearchResults initialQuery={query} results={results} />;
   }
   
   // Handle page types
