@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { defaultLocale } from "@/prismicio";
-import { searchSite } from "@/lib/prismic-search";
+import { MAX_SITE_SEARCH_RESULTS, searchSite } from "@/lib/prismic-search";
 import { SiteSearchResults } from "@/app/components/search/site-search-results";
 
 export const metadata: Metadata = {
@@ -15,7 +15,8 @@ type SearchPageProps = {
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q } = await searchParams;
   const query = q?.trim() ?? "";
-  const results = query.length >= 2 ? await searchSite(query, defaultLocale) : [];
+  const results =
+    query.length >= 2 ? await searchSite(query, defaultLocale, { pageSize: MAX_SITE_SEARCH_RESULTS }) : [];
 
   return <SiteSearchResults initialQuery={query} results={results} />;
 }

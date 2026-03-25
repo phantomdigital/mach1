@@ -91,7 +91,7 @@ export function SiteSearchResults({ initialQuery, results }: SiteSearchResultsPr
 
   const filterAside = showFilterColumn && (
     <aside
-      className="order-2 -mx-4 w-[calc(100%+2rem)] max-w-none px-4 pb-6 pt-6 lg:order-none lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:w-auto lg:shrink-0 lg:self-stretch lg:px-6 lg:py-5 lg:sticky lg:top-[calc(var(--header-height,128px)+1rem)] lg:min-h-0"
+      className="order-2 -mx-4 w-[calc(100%+2rem)] max-w-none px-4 pb-6 pt-6 lg:order-none lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:w-auto lg:shrink-0 lg:px-6 lg:py-5"
       style={{ backgroundColor: "#F0FCFB" }}
     >
       <p className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
@@ -142,17 +142,18 @@ export function SiteSearchResults({ initialQuery, results }: SiteSearchResultsPr
   );
 
   return (
-    <div className="min-h-[60vh] w-full">
+    <div className="w-full" style={{ minHeight: "calc(100vh - var(--header-height, 128px))" }}>
       <div
-        className="mx-auto w-full max-w-[80rem] px-4 pb-10 lg:px-8 lg:pb-14"
-        style={{ paddingTop: "calc(var(--header-height, 128px) + 1.5rem)" }}
+        className="mx-auto w-full max-w-[80rem] px-4 lg:px-8"
+        style={{ paddingTop: "var(--header-height, 128px)", minHeight: "100vh" }}
       >
         <div
           className={
             showFilterColumn
-              ? "flex flex-col lg:grid lg:grid-cols-[280px_1fr] lg:grid-rows-[auto_1fr]"
+              ? "flex flex-col lg:grid lg:grid-cols-[280px_1fr] lg:grid-rows-[auto_1fr] min-h-full"
               : ""
           }
+          style={showFilterColumn ? { minHeight: "calc(100vh - var(--header-height, 128px))" } : undefined}
         >
           {/* Grey search section - order-1 on mobile, col-2 row-1 on desktop */}
           <div
@@ -168,7 +169,7 @@ export function SiteSearchResults({ initialQuery, results }: SiteSearchResultsPr
           <div
             className={`${showFilterColumn ? "order-3 lg:order-none lg:col-start-2 lg:row-start-2" : ""}`}
           >
-            <div className="space-y-8 pt-8 pl-4 lg:pl-6">
+            <div className="space-y-8 pb-10 pt-8 pl-4 lg:pb-14 lg:pl-6">
               {!hasQuery && (
                 <p className="text-sm text-neutral-600 lg:text-base">
                   Enter at least two characters to search.

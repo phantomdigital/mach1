@@ -7,7 +7,7 @@ import { generatePrismicMetadata, generateMetadata as generateCustomMetadata } f
 import { LegalDatesProvider } from "@/slices/LegalContent/legal-dates-context";
 import QuoteSummaryPage from "@/app/quote/summary/page";
 import { SiteSearchResults } from "@/app/components/search/site-search-results";
-import { searchSite } from "@/lib/prismic-search";
+import { MAX_SITE_SEARCH_RESULTS, searchSite } from "@/lib/prismic-search";
 import type { Content } from "@prismicio/client";
 
 type Params = { slug: string[] };
@@ -68,7 +68,8 @@ export default async function Page({
 
   if (uid === "search") {
     const query = q?.trim() ?? "";
-    const results = query.length >= 2 ? await searchSite(query, locale) : [];
+    const results =
+      query.length >= 2 ? await searchSite(query, locale, { pageSize: MAX_SITE_SEARCH_RESULTS }) : [];
     return <SiteSearchResults initialQuery={query} results={results} />;
   }
   

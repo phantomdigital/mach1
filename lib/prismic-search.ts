@@ -17,6 +17,9 @@ export const SEARCHABLE_DOCUMENT_TYPES = [
   "author",
 ] as const;
 
+/** Hard cap for Prismic fetch and UI — keeps search fast and predictable. */
+export const MAX_SITE_SEARCH_RESULTS = 30;
+
 export type SiteSearchResult = {
   id: string;
   uid: string | null;
@@ -128,7 +131,10 @@ export async function searchSite(
     return [];
   }
 
-  const pageSize = Math.min(Math.max(options?.pageSize ?? 25, 1), 50);
+  const pageSize = Math.min(
+    Math.max(options?.pageSize ?? MAX_SITE_SEARCH_RESULTS, 1),
+    MAX_SITE_SEARCH_RESULTS
+  );
 
   const client = createClient({
     fetchOptions: { cache: "no-store" },
