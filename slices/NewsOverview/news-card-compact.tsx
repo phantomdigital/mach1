@@ -44,8 +44,8 @@ const NewsCardCompact = memo(function NewsCardCompact({ article, index, isDarkBa
               <PrismicNextImage
                 field={article.data.featured_image}
                 fill
-                sizes="(max-width: 768px) 96px, 160px"
-                quality={85}
+                sizes="(max-width: 1023px) 288px, 336px"
+                quality={90}
                 loading="lazy"
                 className={`object-cover transition-transform duration-300 ${imageRounding}`}
               />
