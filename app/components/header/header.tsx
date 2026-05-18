@@ -186,12 +186,7 @@ export default async function Header({ forcedLocale }: HeaderProps = {}) {
                         <PrismicNextImage
                           field={header.data.logo}
                           className="w-auto object-contain"
-                          style={{ 
-                            height: '90px',
-                            imageRendering: 'crisp-edges',
-                            WebkitFontSmoothing: 'antialiased',
-                            MozOsxFontSmoothing: 'grayscale'
-                          }}
+                          style={{ height: '90px' }}
                         />
                       ) : header.data.site_title ? (
                       <div 
@@ -267,12 +262,7 @@ export default async function Header({ forcedLocale }: HeaderProps = {}) {
                         <PrismicNextImage
                           field={header.data.logo}
                           className="w-auto object-contain"
-                          style={{ 
-                            height: '60px',
-                            imageRendering: 'crisp-edges',
-                            WebkitFontSmoothing: 'antialiased',
-                            MozOsxFontSmoothing: 'grayscale'
-                          }}
+                          style={{ height: '60px' }}
                         />
                       ) : header.data.site_title ? (
                         <div 
