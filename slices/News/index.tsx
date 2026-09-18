@@ -5,17 +5,22 @@ import { NewsFilters } from "./news-filters";
 import { FeaturedHero } from "./featured-hero";
 import { HeroButton } from "@/components/ui/hero-button";
 import { PrismicNextLink } from "@prismicio/next";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { isSimplifiedChinese } from "@/lib/localized-routes";
 
 /**
  * Props for `News`.
  */
-export type NewsProps = SliceComponentProps<Content.NewsSlice>;
+export type NewsProps = SliceComponentProps<Content.NewsSlice> & {
+  context?: { locale?: LocaleCode };
+};
 
 /**
  * Component for "News" Slices.
  */
-const News = async ({ slice }: NewsProps): Promise<React.ReactElement> => {
+const News = async ({ slice, context }: NewsProps): Promise<React.ReactElement> => {
   const client = createClient();
+  const locale = context?.locale ?? defaultLocale;
 
   // Get margin top class based on selection (responsive: smaller on mobile)
   const getMarginTopClass = () => {
@@ -47,6 +52,7 @@ const News = async ({ slice }: NewsProps): Promise<React.ReactElement> => {
   try {
     // Fetch ALL articles
     allArticles = await client.getAllByType<Content.NewsDocument>("news", {
+      lang: locale,
       limit: 100,
       orderings: [
         { field: "document.first_publication_date", direction: "desc" },
@@ -73,6 +79,7 @@ const News = async ({ slice }: NewsProps): Promise<React.ReactElement> => {
         featuredArticle = await client.getByID<Content.NewsDocument>(
           slice.primary.featured_article.id,
           {
+            lang: locale,
             graphQuery: `{
               news {
                 ...newsFields
@@ -109,7 +116,7 @@ const News = async ({ slice }: NewsProps): Promise<React.ReactElement> => {
       {showFeaturedHero && featuredArticle && (
         <section className={`w-full py-16 lg:py-24 bg-neutral-100 ${getMarginTopClass()}`}>
           <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
-            <FeaturedHero article={featuredArticle} />
+            <FeaturedHero article={featuredArticle} locale={locale} />
           </div>
         </section>
       )}
@@ -130,6 +137,7 @@ const News = async ({ slice }: NewsProps): Promise<React.ReactElement> => {
             allArticlesForFilters={allArticlesForFilters}
             enableLoadMore={enableLoadMore}
             initialCount={initialCount}
+            locale={locale}
           />
 
           {/* View All Button */}
@@ -137,7 +145,7 @@ const News = async ({ slice }: NewsProps): Promise<React.ReactElement> => {
             <div className="mt-12 flex justify-center">
               <HeroButton asChild>
                 <PrismicNextLink field={slice.primary.view_all_link}>
-                  VIEW ALL NEWS
+                  {isSimplifiedChinese(locale) ? "查看所有新闻" : "VIEW ALL NEWS"}
                 </PrismicNextLink>
               </HeroButton>
             </div>

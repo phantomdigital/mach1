@@ -2,23 +2,25 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
 
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata, generateBreadcrumbSchema } from "@/lib/metadata";
+import { isSimplifiedChinese, localizedPath } from "@/lib/localized-routes";
 
-type Params = { uid: string };
+type Params = { uid: string; locale?: LocaleCode };
 
 export default async function Page({ params }: { params: Promise<Params> }) {
-  const { uid } = await params;
+  const { uid, locale = defaultLocale } = await params;
   const client = createClient();
   const solution = await client
-    .getByUID("solution", uid)
+    .getByUID("solution", uid, { lang: locale })
     .catch(() => notFound());
+  const chinese = isSimplifiedChinese(locale);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: "/" },
-    { name: "Solutions", url: "/solutions" },
-    { name: solution.data.title || uid, url: `/solutions/${uid}` },
+    { name: chinese ? "首页" : "Home", url: localizedPath("/", locale) },
+    { name: chinese ? "解决方案" : "Solutions", url: localizedPath("/solutions", locale) },
+    { name: solution.data.title || uid, url: localizedPath(`/solutions/${uid}`, locale) },
   ]);
 
   return (
@@ -41,10 +43,10 @@ export async function generateMetadata({
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const { uid } = await params;
+  const { uid, locale = defaultLocale } = await params;
   const client = createClient();
   const solution = await client
-    .getByUID("solution", uid)
+    .getByUID("solution", uid, { lang: locale })
     .catch(() => notFound());
 
   // Generate solution-specific keywords
@@ -58,7 +60,7 @@ export async function generateMetadata({
   ];
 
   return generatePrismicMetadata(solution, {
-    url: `/solutions/${uid}`,
+    url: localizedPath(`/solutions/${uid}`, locale),
     keywords: solutionKeywords,
     type: "article",
   });

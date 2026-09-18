@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SliceZone, PrismicRichText } from "@prismicio/react";
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { PrismicNextImage } from "@prismicio/next";
 import type { Content, RichTextField, ImageField } from "@prismicio/client";
@@ -11,21 +11,29 @@ import { RelatedArticles } from "./related-articles";
 import { LightboxWrapper } from "./lightbox-wrapper";
 import { generateBreadcrumbSchema } from "@/lib/metadata";
 import { createRichTextComponents } from "@/lib/rich-text-serializer";
+import {
+  isSimplifiedChinese,
+  localeForIntl,
+  localizedNewsLabel,
+  localizedPath,
+} from "@/lib/localized-routes";
 
-type Params = { uid: string };
+type Params = { uid: string; locale?: LocaleCode };
 
 export default async function NewsArticlePage({
   params,
 }: {
   params: Promise<Params>;
 }) {
-  const { uid } = await params;
+  const { uid, locale = defaultLocale } = await params;
   const client = createClient();
+  const chinese = isSimplifiedChinese(locale);
 
   let page: Content.NewsDocument;
   try {
     try {
       page = await client.getByUID("news", uid, {
+        lang: locale,
         graphQuery: `{
           news {
             ...newsFields
@@ -41,7 +49,7 @@ export default async function NewsArticlePage({
     } catch (fetchError) {
       // If graphQuery fails (e.g., author type doesn't exist yet), try without it
       console.warn("Failed to fetch with author data, trying without:", fetchError);
-      page = await client.getByUID("news", uid);
+      page = await client.getByUID("news", uid, { lang: locale });
     }
   } catch {
     notFound();
@@ -51,6 +59,7 @@ export default async function NewsArticlePage({
   let relatedArticles: Content.NewsDocument[] = [];
   try {
     const allArticles = await client.getAllByType<Content.NewsDocument>("news", {
+      lang: locale,
       limit: 4,
       orderings: [{ field: "document.first_publication_date", direction: "desc" }],
         graphQuery: `{
@@ -73,7 +82,7 @@ export default async function NewsArticlePage({
   const formatDate = (dateString: string | null | undefined) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString(localeForIntl(locale), {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -98,7 +107,8 @@ export default async function NewsArticlePage({
 
   // Get full URL for sharing
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mach1logistics.com.au";
-  const fullUrl = `${baseUrl}/news/${uid}`;
+  const articlePath = localizedPath(`/news/${uid}`, locale);
+  const fullUrl = `${baseUrl}${articlePath}`;
 
   // Get author initials for placeholder
   const getAuthorInitials = (name: string | null | undefined) => {
@@ -120,13 +130,13 @@ export default async function NewsArticlePage({
               {/* Back Link - subtle */}
               <nav aria-label="Back navigation">
                 <Link
-                  href="/news"
+                  href={localizedPath("/news", locale)}
                   className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-dark-blue transition-colors"
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                  Back to News
+                  {chinese ? "返回新闻" : "Back to News"}
                 </Link>
               </nav>
 
@@ -136,7 +146,7 @@ export default async function NewsArticlePage({
                   className="inline-block text-sky-100 text-xs font-bold tracking-wider uppercase px-3 py-1.5 bg-mach1-green rounded-2xl"
                   style={{ fontFamily: "var(--font-jetbrains-mono), monospace" }}
                 >
-                  {page.data.category}
+                  {localizedNewsLabel(page.data.category, locale)}
                 </span>
               )}
 
@@ -177,7 +187,9 @@ export default async function NewsArticlePage({
                   <span className="sep" aria-hidden>·</span>
                 )}
                 {readingTime > 0 && (
-                  <span className="text-neutral-500">{readingTime} min read</span>
+                  <span className="text-neutral-500">
+                    {chinese ? `阅读约 ${readingTime} 分钟` : `${readingTime} min read`}
+                  </span>
                 )}
               </div>
 
@@ -222,14 +234,14 @@ export default async function NewsArticlePage({
             />
 
             <div className="pt-6 lg:pt-8 border-t border-neutral-200">
-              <ShareButtons url={fullUrl} title={page.data.title || ""} />
+              <ShareButtons url={fullUrl} title={page.data.title || ""} locale={locale} />
             </div>
           </div>
         </div>
       </article>
 
       {/* Related Articles */}
-      <RelatedArticles articles={relatedArticles} />
+      <RelatedArticles articles={relatedArticles} locale={locale} />
 
       {/* Slices */}
       <SliceZone slices={page.data.slices} components={components} />
@@ -240,9 +252,9 @@ export default async function NewsArticlePage({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             generateBreadcrumbSchema([
-              { name: "Home", url: "/" },
-              { name: "News", url: "/news" },
-              { name: page.data.title || uid, url: `/news/${uid}` },
+              { name: chinese ? "首页" : "Home", url: localizedPath("/", locale) },
+              { name: chinese ? "新闻" : "News", url: localizedPath("/news", locale) },
+              { name: page.data.title || uid, url: articlePath },
             ])
           ),
         }}
@@ -282,13 +294,14 @@ export async function generateMetadata({
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const { uid } = await params;
+  const { uid, locale = defaultLocale } = await params;
   const client = createClient();
 
   let page: Content.NewsDocument;
   try {
     try {
       page = await client.getByUID("news", uid, {
+        lang: locale,
         graphQuery: `{
           news {
             ...newsFields
@@ -304,7 +317,7 @@ export async function generateMetadata({
     } catch (fetchError) {
       // If graphQuery fails (e.g., author type doesn't exist yet), try without it
       console.warn("Failed to fetch with author data, trying without:", fetchError);
-      page = await client.getByUID("news", uid);
+      page = await client.getByUID("news", uid, { lang: locale });
     }
   } catch {
     return {
@@ -316,6 +329,7 @@ export async function generateMetadata({
   const description =
     page.data.meta_description || page.data.excerpt || undefined;
   const image = page.data.meta_image?.url || page.data.featured_image?.url;
+  const url = localizedPath(`/news/${uid}`, locale);
   
   // Get author name from relationship
   const authorName = page.data.author && typeof page.data.author !== 'string' && 'data' in page.data.author
@@ -325,10 +339,12 @@ export async function generateMetadata({
   return {
     title: `${title} | MACH1 Logistics`,
     description,
+    alternates: { canonical: url },
     openGraph: {
       title: `${title} | MACH1 Logistics`,
       description,
       type: "article",
+      url,
       publishedTime: page.first_publication_date,
       modifiedTime: page.last_publication_date,
       authors: authorName ? [authorName] : undefined,

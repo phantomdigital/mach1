@@ -1,23 +1,25 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata, generateBreadcrumbSchema } from "@/lib/metadata";
+import { isSimplifiedChinese, localizedPath } from "@/lib/localized-routes";
 
-type Params = { uid: string };
+type Params = { uid: string; locale?: LocaleCode };
 
 export default async function Page({ params }: { params: Promise<Params> }) {
-  const { uid } = await params;
+  const { uid, locale = defaultLocale } = await params;
   const client = createClient();
   const specialty = await client
-    .getByUID("specialty", uid)
+    .getByUID("specialty", uid, { lang: locale })
     .catch(() => notFound());
+  const chinese = isSimplifiedChinese(locale);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: "/" },
-    { name: "Specialties", url: "/specialties" },
-    { name: specialty.data.title || uid, url: `/specialties/${uid}` },
+    { name: chinese ? "首页" : "Home", url: localizedPath("/", locale) },
+    { name: chinese ? "专业服务" : "Specialties", url: localizedPath("/specialties", locale) },
+    { name: specialty.data.title || uid, url: localizedPath(`/specialties/${uid}`, locale) },
   ]);
 
   return (
@@ -40,10 +42,10 @@ export async function generateMetadata({
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const { uid } = await params;
+  const { uid, locale = defaultLocale } = await params;
   const client = createClient();
   const specialty = await client
-    .getByUID("specialty", uid)
+    .getByUID("specialty", uid, { lang: locale })
     .catch(() => notFound());
 
   // Generate specialty-specific keywords
@@ -57,7 +59,7 @@ export async function generateMetadata({
   ];
 
   return generatePrismicMetadata(specialty, {
-    url: `/specialties/${uid}`,
+    url: localizedPath(`/specialties/${uid}`, locale),
     keywords: specialtyKeywords,
     type: "article",
   });

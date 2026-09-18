@@ -2,15 +2,24 @@ import Link from "next/link";
 import { PrismicNextImage } from "@prismicio/next";
 import type { Content } from "@prismicio/client";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
-import { formatAuDate } from "@/lib/date-utils";
 import { memo } from "react";
+import type { LocaleCode } from "@/prismicio";
+import { localeForIntl, localizedNewsLabel, localizedPath } from "@/lib/localized-routes";
 
 interface FeaturedArticleProps {
   article: Content.NewsDocument;
   isDarkBackground?: boolean;
+  locale: LocaleCode;
 }
 
-const FeaturedArticle = memo(function FeaturedArticle({ article, isDarkBackground = false }: FeaturedArticleProps) {
+const FeaturedArticle = memo(function FeaturedArticle({ article, isDarkBackground = false, locale }: FeaturedArticleProps) {
+  const formattedDate = article.first_publication_date
+    ? new Date(article.first_publication_date).toLocaleDateString(localeForIntl(locale), {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "";
   // Text colors based on background
   const titleColor = isDarkBackground ? "text-neutral-100" : "text-neutral-800";
   const excerptColor = isDarkBackground ? "text-neutral-200" : "text-neutral-600";
@@ -27,7 +36,7 @@ const FeaturedArticle = memo(function FeaturedArticle({ article, isDarkBackgroun
   return (
     <div className={`w-full ${cardBg}`}>
       <Link
-        href={`/news/${article.uid}`}
+        href={localizedPath(`/news/${article.uid}`, locale)}
         className="group block"
       >
         <div className="flex flex-row gap-4 lg:gap-6 items-stretch">
@@ -56,12 +65,12 @@ const FeaturedArticle = memo(function FeaturedArticle({ article, isDarkBackgroun
                   className="inline-block text-sky-100 text-[11px] font-bold tracking-wider uppercase px-4 py-1 bg-mach1-green rounded-2xl"
                   style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
                 >
-                  {article.data.category}
+                  {localizedNewsLabel(article.data.category, locale)}
                 </span>
               )}
               {(article.data as any).article_type && (
                 <span className={`text-xs ${metaColor} uppercase tracking-wide`}>
-                  {(article.data as any).article_type}
+                  {localizedNewsLabel((article.data as any).article_type, locale)}
                 </span>
               )}
             </div>
@@ -89,7 +98,7 @@ const FeaturedArticle = memo(function FeaturedArticle({ article, isDarkBackgroun
             {/* Date */}
             {article.first_publication_date && (
               <time className={`text-xs ${dateColor}`} dateTime={article.first_publication_date}>
-                {formatAuDate(article.first_publication_date)}
+                {formattedDate}
               </time>
             )}
           </div>

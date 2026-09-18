@@ -3,17 +3,25 @@
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import type { Content } from "@prismicio/client";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
-import { formatAuDate } from "@/lib/date-utils";
 import { memo } from "react";
+import type { LocaleCode } from "@/prismicio";
+import { localeForIntl, localizedNewsLabel } from "@/lib/localized-routes";
 
 interface NewsCardCompactProps {
   article: Content.NewsDocument;
   index: number;
   isDarkBackground?: boolean;
+  locale: LocaleCode;
 }
 
-const NewsCardCompact = memo(function NewsCardCompact({ article, index, isDarkBackground = false }: NewsCardCompactProps) {
-  const formattedDate = formatAuDate(article.first_publication_date);
+const NewsCardCompact = memo(function NewsCardCompact({ article, index, isDarkBackground = false, locale }: NewsCardCompactProps) {
+  const formattedDate = article.first_publication_date
+    ? new Date(article.first_publication_date).toLocaleDateString(localeForIntl(locale), {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "";
 
 
 
@@ -63,7 +71,7 @@ const NewsCardCompact = memo(function NewsCardCompact({ article, index, isDarkBa
                   className="inline-block text-sky-100 text-[10px] font-bold tracking-wider uppercase px-3 py-0.5 bg-mach1-green rounded-2xl"
                   style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
                 >
-                  {article.data.category}
+                  {localizedNewsLabel(article.data.category, locale)}
                 </span>
               )}
     
@@ -92,7 +100,7 @@ const NewsCardCompact = memo(function NewsCardCompact({ article, index, isDarkBa
             {/* Date - Smaller */}
             {article.first_publication_date && (
               <time className={`text-[10px] ${dateColor}`} dateTime={article.first_publication_date}>
-                {formatAuDate(article.first_publication_date)}
+                {formattedDate}
               </time>
             )}
           </div>

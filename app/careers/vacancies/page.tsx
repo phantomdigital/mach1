@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata } from "@/lib/metadata";
+import { localizedPath } from "@/lib/localized-routes";
 
 /**
  * This page displays the careers/vacancies listing page.
@@ -11,12 +12,18 @@ import { generatePrismicMetadata } from "@/lib/metadata";
  * The UID can be changed below if you prefer a different name in Prismic.
  */
 const CAREERS_PAGE_UID = "careers-vacancies";
+type Params = { locale?: LocaleCode };
 
-export default async function CareersVacanciesPage() {
+export default async function CareersVacanciesPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { locale = defaultLocale } = await params;
   const client = createClient();
   
   try {
-    const page = await client.getByUID("page", CAREERS_PAGE_UID);
+    const page = await client.getByUID("page", CAREERS_PAGE_UID, { lang: locale });
     
     return (
       <main>
@@ -29,14 +36,19 @@ export default async function CareersVacanciesPage() {
   }
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { locale = defaultLocale } = await params;
   const client = createClient();
   
   try {
-    const page = await client.getByUID("page", CAREERS_PAGE_UID);
+    const page = await client.getByUID("page", CAREERS_PAGE_UID, { lang: locale });
     
     return generatePrismicMetadata(page, {
-      url: "/careers/vacancies",
+      url: localizedPath("/careers/vacancies", locale),
       keywords: ["careers", "jobs", "vacancies", "employment", "MACH1 Logistics"],
     });
   } catch {

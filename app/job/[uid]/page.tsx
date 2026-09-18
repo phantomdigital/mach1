@@ -3,34 +3,64 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PrismicRichText } from "@prismicio/react";
 import { PrismicNextLink } from "@prismicio/next";
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import type { Content } from "@prismicio/client";
 import { isFilled } from "@prismicio/client";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Badge } from "@/components/ui/badge";
-import { formatAuDate } from "@/lib/date-utils";
 import { JobApplicationDialog } from "@/app/careers/job-application-dialog";
 import { generateBreadcrumbSchema } from "@/lib/metadata";
 import { createRichTextComponents } from "@/lib/rich-text-serializer";
+import { isSimplifiedChinese, localeForIntl, localizedPath } from "@/lib/localized-routes";
 
-type Params = { uid: string };
+type Params = { uid: string; locale?: LocaleCode };
 
 export default async function JobPage({
   params,
 }: {
   params: Promise<Params>;
 }) {
-  const { uid } = await params;
+  const { uid, locale = defaultLocale } = await params;
   const client = createClient();
+  const chinese = isSimplifiedChinese(locale);
+  const labels = chinese
+    ? {
+        back: "返回招聘职位", featured: "精选职位", closed: "职位已关闭",
+        interested: "对此职位感兴趣？", applicationsClose: "申请截止日期",
+        apply: "立即申请", about: "职位介绍", responsibilities: "主要职责",
+        requirements: "任职要求", benefits: "我们提供",
+        ready: "准备加入我们的团队吗？",
+        readyDescription: "立即提交申请，加入我们的优秀团队。",
+        noApplications: "此职位已停止接受申请",
+        otherOpportunities: "查看我们的其他招聘机会", viewAll: "查看所有职位",
+      }
+    : {
+        back: "Back to Careers", featured: "Featured", closed: "Position Closed",
+        interested: "Interested in this role?", applicationsClose: "Applications close on",
+        apply: "APPLY NOW", about: "About the Role", responsibilities: "Key Responsibilities",
+        requirements: "Requirements & Qualifications", benefits: "What We Offer",
+        ready: "Ready to join our team?",
+        readyDescription: "Submit your application today and become part of something great.",
+        noApplications: "This position is no longer accepting applications",
+        otherOpportunities: "Check out our other current opportunities", viewAll: "VIEW ALL POSITIONS",
+      };
 
   let page: Content.JobDocument;
   try {
-    page = await client.getByUID("job", uid);
+    page = await client.getByUID("job", uid, { lang: locale });
   } catch {
     notFound();
   }
 
-  const formattedClosingDate = formatAuDate(page.data.closing_date);
+  const formatDate = (date: string | null | undefined) =>
+    date
+      ? new Date(date).toLocaleDateString(localeForIntl(locale), {
+          year: "numeric",
+          month: chinese ? "numeric" : "long",
+          day: "numeric",
+        })
+      : "";
+  const formattedClosingDate = formatDate(page.data.closing_date);
 
 
   // Check if position is still active
@@ -78,13 +108,13 @@ export default async function JobPage({
               {/* Back Link - subtle, matches news */}
               <nav aria-label="Back navigation">
                 <Link
-                  href="/careers/vacancies"
+                  href={localizedPath("/careers/vacancies", locale)}
                   className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-dark-blue transition-colors"
                 >
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                  Back to Careers
+                  {labels.back}
                 </Link>
               </nav>
 
@@ -97,12 +127,12 @@ export default async function JobPage({
                 )}
                 {page.data.featured && (
                   <Badge variant="featured" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
-                    Featured
+                    {labels.featured}
                   </Badge>
                 )}
                 {(!isActive || isPastClosingDate) && (
                   <Badge variant="closed" className="text-xs lg:text-sm px-3 py-1.5 lg:px-4 lg:py-2">
-                    Position Closed
+                    {labels.closed}
                   </Badge>
                 )}
               </div>
@@ -183,11 +213,11 @@ export default async function JobPage({
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
                       <h3 className="text-neutral-800 text-xl font-bold mb-2">
-                        Interested in this role?
+                        {labels.interested}
                       </h3>
                       {hasClosingDate && (
                         <p className="text-neutral-600 text-sm">
-                          Applications close on {formatAuDate(closingDate)}
+                          {labels.applicationsClose} {formatDate(closingDate)}
                         </p>
                       )}
                     </div>
@@ -195,7 +225,7 @@ export default async function JobPage({
                       {hasApplicationUrl ? (
                         <HeroButton asChild size="small">
                           <PrismicNextLink field={applicationUrl} target="_blank" rel="noopener noreferrer">
-                            APPLY NOW
+                            {labels.apply}
                           </PrismicNextLink>
                         </HeroButton>
                       ) : applicationEmail ? (
@@ -203,8 +233,9 @@ export default async function JobPage({
                           jobTitle={page.data.title || ""}
                           applicationEmail={applicationEmail}
                           closingDate={formattedClosingDate}
+                          locale={locale}
                         >
-                          <HeroButton size="small">APPLY NOW</HeroButton>
+                          <HeroButton size="small">{labels.apply}</HeroButton>
                         </JobApplicationDialog>
                       ) : null}
                     </div>
@@ -217,7 +248,7 @@ export default async function JobPage({
             {isFilled.richText(page.data.description) && (
               <div className="mb-12">
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
-                  About the Role
+                  {labels.about}
                 </h2>
                 <div className="prose prose-sm lg:prose-base max-w-none">
                   <PrismicRichText field={page.data.description} components={createRichTextComponents()} />
@@ -229,7 +260,7 @@ export default async function JobPage({
             {isFilled.richText(page.data.responsibilities) && (
               <div className="mb-12">
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
-                  Key Responsibilities
+                  {labels.responsibilities}
                 </h2>
                 <div className="prose prose-sm lg:prose-base max-w-none">
                   <PrismicRichText field={page.data.responsibilities} components={createRichTextComponents()} />
@@ -241,7 +272,7 @@ export default async function JobPage({
             {isFilled.richText(page.data.requirements) && (
               <div className="mb-12">
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
-                  Requirements & Qualifications
+                  {labels.requirements}
                 </h2>
                 <div className="prose prose-sm lg:prose-base max-w-none">
                   <PrismicRichText field={page.data.requirements} components={createRichTextComponents()} />
@@ -253,7 +284,7 @@ export default async function JobPage({
             {isFilled.richText(page.data.benefits) && (
               <div className="mb-12">
                 <h2 className="text-neutral-800 text-2xl lg:text-3xl font-bold mb-6">
-                  What We Offer
+                  {labels.benefits}
                 </h2>
                 <div className="prose prose-sm lg:prose-base max-w-none">
                   <PrismicRichText field={page.data.benefits} components={createRichTextComponents()} />
@@ -276,14 +307,14 @@ export default async function JobPage({
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                     <div>
                       <h3 className="text-2xl lg:text-3xl font-bold mb-2">
-                        Ready to join our team?
+                        {labels.ready}
                       </h3>
                       <p className="text-neutral-600">
-                        Submit your application today and become part of something great.
+                        {labels.readyDescription}
                       </p>
                       {hasClosingDate && (
                         <p className="text-neutral-600 text-sm mt-2">
-                          Applications close on {formatAuDate(closingDate)}
+                          {labels.applicationsClose} {formatDate(closingDate)}
                         </p>
                       )}
                     </div>
@@ -291,7 +322,7 @@ export default async function JobPage({
                       {hasApplicationUrl ? (
                         <HeroButton asChild size="small">
                           <PrismicNextLink field={applicationUrl} target="_blank" rel="noopener noreferrer">
-                            APPLY NOW
+                            {labels.apply}
                           </PrismicNextLink>
                         </HeroButton>
                       ) : applicationEmail ? (
@@ -299,8 +330,9 @@ export default async function JobPage({
                           jobTitle={page.data.title || ""}
                           applicationEmail={applicationEmail}
                           closingDate={formattedClosingDate}
+                          locale={locale}
                         >
-                          <HeroButton size="small">APPLY NOW</HeroButton>
+                          <HeroButton size="small">{labels.apply}</HeroButton>
                         </JobApplicationDialog>
                       ) : null}
                     </div>
@@ -324,14 +356,14 @@ export default async function JobPage({
                   }}
                 >
                   <h3 className="text-neutral-800 text-xl font-bold mb-2">
-                    This position is no longer accepting applications
+                    {labels.noApplications}
                   </h3>
                   <p className="text-neutral-600 mb-6">
-                    Check out our other current opportunities
+                    {labels.otherOpportunities}
                   </p>
                   <HeroButton asChild>
-                    <Link href="/careers/vacancies">
-                      VIEW ALL POSITIONS
+                    <Link href={localizedPath("/careers/vacancies", locale)}>
+                      {labels.viewAll}
                     </Link>
                   </HeroButton>
                 </div>
@@ -348,9 +380,9 @@ export default async function JobPage({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             generateBreadcrumbSchema([
-              { name: "Home", url: "/" },
-              { name: "Careers", url: "/careers/vacancies" },
-              { name: page.data.title || uid, url: `/job/${uid}` },
+              { name: chinese ? "首页" : "Home", url: localizedPath("/", locale) },
+              { name: chinese ? "招聘职位" : "Careers", url: localizedPath("/careers/vacancies", locale) },
+              { name: page.data.title || uid, url: localizedPath(`/job/${uid}`, locale) },
             ])
           ),
         }}
@@ -400,12 +432,12 @@ export async function generateMetadata({
 }: {
   params: Promise<Params>;
 }): Promise<Metadata> {
-  const { uid } = await params;
+  const { uid, locale = defaultLocale } = await params;
   const client = createClient();
 
   let page: Content.JobDocument;
   try {
-    page = await client.getByUID("job", uid);
+    page = await client.getByUID("job", uid, { lang: locale });
   } catch {
     return {
       title: "Job Not Found",
@@ -415,14 +447,17 @@ export async function generateMetadata({
   const title = page.data.meta_title || `${page.data.title} - ${page.data.department || 'Career'}`;
   const description = page.data.meta_description || page.data.summary || `Join MACH1 Logistics as a ${page.data.title}`;
   const image = page.data.meta_image?.url;
+  const url = localizedPath(`/job/${uid}`, locale);
 
   return {
     title: `${title} | MACH1 Logistics Careers`,
     description,
+    alternates: { canonical: url },
     openGraph: {
       title: `${title} | MACH1 Logistics Careers`,
       description,
       type: "website",
+      url,
       images: image ? [{ url: image }] : undefined,
     },
     twitter: {

@@ -22,12 +22,15 @@ import {
   JOB_APPLICATION_MAX_FILE_SIZE_MB,
   JOB_APPLICATION_MAX_TOTAL_SIZE_MB,
 } from "@/lib/file-utils"
+import { defaultLocale, type LocaleCode } from "@/prismicio"
+import { isSimplifiedChinese } from "@/lib/localized-routes"
 
 interface JobApplicationDialogProps {
   jobTitle: string
   applicationEmail?: string | null
   children: React.ReactNode
   closingDate?: string | null
+  locale?: LocaleCode
 }
 
 export function JobApplicationDialog({
@@ -35,7 +38,39 @@ export function JobApplicationDialog({
   applicationEmail,
   children,
   closingDate,
+  locale = defaultLocale,
 }: JobApplicationDialogProps) {
+  const chinese = isSimplifiedChinese(locale)
+  const text = chinese
+    ? {
+        thankYou: "谢谢！", applyFor: "申请", uploadResume: "请上传您的简历",
+        submitFailed: "申请提交失败，请重试。", prepareFailed: "无法准备您的申请，请重试。",
+        success: "申请提交成功！", received: "感谢您的申请！我们已收到申请，并将尽快审核。",
+        contact: "我们的团队成员将尽快与您联系。请留意电子邮件更新。",
+        description: "请填写以下表格申请此职位。我们会尽快与您联系。",
+        closes: "申请截止日期", fullName: "姓名", email: "电子邮箱", phone: "电话号码",
+        resume: "简历", uploadResumeAction: "点击上传简历", removeFile: "移除文件",
+        coverLetter: "求职信（可选）", uploadCoverLetter: "点击上传求职信",
+        supporting: "其他证明文件（可选）", addSupporting: "添加证书、作品集、推荐信等",
+        remove: "移除", submitting: "正在提交…", submit: "提交申请", max: "最大",
+        perFile: "每个文件", total: "总计",
+      }
+    : {
+        thankYou: "Thank You!", applyFor: "Apply for", uploadResume: "Please upload your resume",
+        submitFailed: "Failed to submit application. Please try again.",
+        prepareFailed: "Failed to prepare your application. Please try again.",
+        success: "Application Submitted Successfully!",
+        received: "Thank you for applying! We've received your application and will review it shortly.",
+        contact: "A member of our team will contact you soon. Please check your email for any updates.",
+        description: "Fill out the form below to apply for this position. We'll get back to you as soon as possible.",
+        closes: "Applications close on", fullName: "Full Name", email: "Email Address",
+        phone: "Phone Number", resume: "Resume / CV", uploadResumeAction: "Click to upload resume",
+        removeFile: "Remove file", coverLetter: "Cover Letter Document (Optional)",
+        uploadCoverLetter: "Click to upload cover letter", supporting: "Supporting Documents (Optional)",
+        addSupporting: "Add certificates, portfolio, references, etc.", remove: "Remove",
+        submitting: "SUBMITTING...", submit: "SUBMIT APPLICATION", max: "Max",
+        perFile: "per file", total: "total",
+      }
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -86,7 +121,7 @@ export function JobApplicationDialog({
       // Validate that resume is provided
       if (!files.resume) {
         console.error("No resume file provided")
-        setError("Please upload your resume")
+        setError(text.uploadResume)
         setIsSubmitting(false)
         return
       }
@@ -119,12 +154,12 @@ export function JobApplicationDialog({
       if (result.success) {
         setIsSubmitted(true)
       } else {
-        setError(result.error || "Failed to submit application. Please try again.")
+        setError(result.error || text.submitFailed)
       }
     } catch (error) {
       console.error("Error preparing application:", error)
       setIsSubmitting(false)
-      setError("Failed to prepare your application. Please try again.")
+      setError(text.prepareFailed)
     }
   }
 
@@ -218,7 +253,7 @@ export function JobApplicationDialog({
         {/* Sticky Header - Just Title */}
         <div className="sticky top-0 z-10 bg-white px-8 lg:px-12 pt-8 lg:pt-6 pb-6 border-b border-neutral-200">
           <DialogHeader>
-            <DialogTitle>{isSubmitted ? "Thank You!" : `Apply for ${jobTitle}`}</DialogTitle>
+            <DialogTitle>{isSubmitted ? text.thankYou : `${text.applyFor} ${jobTitle}`}</DialogTitle>
           </DialogHeader>
         </div>
 
@@ -232,13 +267,13 @@ export function JobApplicationDialog({
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-neutral-800 mb-4">
-                Application Submitted Successfully!
+                {text.success}
               </h3>
               <p className="text-neutral-600 mb-6 leading-relaxed">
-                Thank you for applying! We&apos;ve received your application and will review it shortly.
+                {text.received}
               </p>
               <p className="text-sm text-neutral-500">
-                A member of our team will contact you soon. Please check your email for any updates.
+                {text.contact}
               </p>
             </div>
           </div>
@@ -255,11 +290,10 @@ export function JobApplicationDialog({
             <div className="space-y-6">
               {/* Description moved here */}
               <DialogDescription>
-                Fill out the form below to apply for this position. We&apos;ll get back to you
-                as soon as possible.
+                {text.description}
                 {closingDate && (
                   <span className="block mt-2 text-neutral-700 font-medium">
-                    Applications close on {closingDate}
+                    {text.closes} {closingDate}
                   </span>
                 )}
               </DialogDescription>
@@ -284,7 +318,7 @@ export function JobApplicationDialog({
                 htmlFor="fullName"
                 className="block text-sm font-medium text-neutral-700 mb-2"
               >
-                Full Name *
+                {text.fullName} *
               </label>
               <Input
                 id="fullName"
@@ -303,7 +337,7 @@ export function JobApplicationDialog({
                 htmlFor="email"
                 className="block text-sm font-medium text-neutral-700 mb-2"
               >
-                Email Address *
+                {text.email} *
               </label>
               <Input
                 id="email"
@@ -322,7 +356,7 @@ export function JobApplicationDialog({
                 htmlFor="phone"
                 className="block text-sm font-medium text-neutral-700 mb-2"
               >
-                Phone Number *
+                {text.phone} *
               </label>
               <Input
                 id="phone"
@@ -343,7 +377,7 @@ export function JobApplicationDialog({
                 htmlFor="resume"
                 className="block text-sm font-medium text-neutral-700 mb-2"
               >
-                Resume / CV *
+                {text.resume} *
               </label>
               <div className="space-y-2">
                 <label
@@ -357,7 +391,7 @@ export function JobApplicationDialog({
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
-                    <span>{files.resume ? files.resume.name : "Click to upload resume"}</span>
+                    <span>{files.resume ? files.resume.name : text.uploadResumeAction}</span>
                   </div>
                   <input
                     id="resume"
@@ -369,7 +403,7 @@ export function JobApplicationDialog({
                   />
                 </label>
                 <p className="text-xs text-neutral-500">
-                  {JOB_APPLICATION_ALLOWED_TYPES_DISPLAY} • Max {JOB_APPLICATION_MAX_FILE_SIZE_MB}MB
+                  {JOB_APPLICATION_ALLOWED_TYPES_DISPLAY} • {text.max} {JOB_APPLICATION_MAX_FILE_SIZE_MB}MB
                 </p>
                 {files.resume && (
                   <button
@@ -377,7 +411,7 @@ export function JobApplicationDialog({
                     onClick={() => removeFile('resume')}
                     className="text-xs text-red-600 hover:text-red-700 underline"
                   >
-                    Remove file
+                    {text.removeFile}
                   </button>
                 )}
               </div>
@@ -389,7 +423,7 @@ export function JobApplicationDialog({
                 htmlFor="coverLetterFile"
                 className="block text-sm font-medium text-neutral-700 mb-2"
               >
-                Cover Letter Document (Optional)
+                {text.coverLetter}
               </label>
               <div className="space-y-2">
                 <label
@@ -403,7 +437,7 @@ export function JobApplicationDialog({
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                     </svg>
-                    <span>{files.coverLetterFile ? files.coverLetterFile.name : "Click to upload cover letter"}</span>
+                    <span>{files.coverLetterFile ? files.coverLetterFile.name : text.uploadCoverLetter}</span>
                   </div>
                   <input
                     id="coverLetterFile"
@@ -415,7 +449,7 @@ export function JobApplicationDialog({
                   />
                 </label>
                 <p className="text-xs text-neutral-500">
-                  {JOB_APPLICATION_ALLOWED_TYPES_DISPLAY} • Max {JOB_APPLICATION_MAX_FILE_SIZE_MB}MB
+                  {JOB_APPLICATION_ALLOWED_TYPES_DISPLAY} • {text.max} {JOB_APPLICATION_MAX_FILE_SIZE_MB}MB
                 </p>
                 {files.coverLetterFile && (
                   <button
@@ -423,7 +457,7 @@ export function JobApplicationDialog({
                     onClick={() => removeFile('coverLetterFile')}
                     className="text-xs text-red-600 hover:text-red-700 underline"
                   >
-                    Remove file
+                    {text.removeFile}
                   </button>
                 )}
               </div>
@@ -435,7 +469,7 @@ export function JobApplicationDialog({
                 htmlFor="otherDocs"
                 className="block text-sm font-medium text-neutral-700 mb-2"
               >
-                Supporting Documents (Optional)
+                {text.supporting}
               </label>
               <div className="space-y-2">
                 <label
@@ -446,7 +480,7 @@ export function JobApplicationDialog({
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
-                    <span>Add certificates, portfolio, references, etc.</span>
+                    <span>{text.addSupporting}</span>
                   </div>
                   <input
                     id="otherDocs"
@@ -459,7 +493,7 @@ export function JobApplicationDialog({
                   />
                 </label>
                 <p className="text-xs text-neutral-500">
-                  {JOB_APPLICATION_ALLOWED_TYPES_DISPLAY} • Max {JOB_APPLICATION_MAX_FILE_SIZE_MB}MB per file • Max {JOB_APPLICATION_MAX_TOTAL_SIZE_MB}MB total
+                  {JOB_APPLICATION_ALLOWED_TYPES_DISPLAY} • {text.max} {JOB_APPLICATION_MAX_FILE_SIZE_MB}MB {text.perFile} • {text.max} {JOB_APPLICATION_MAX_TOTAL_SIZE_MB}MB {text.total}
                 </p>
                 {files.other.length > 0 && (
                   <div className="space-y-1">
@@ -471,7 +505,7 @@ export function JobApplicationDialog({
                           onClick={() => removeOtherFile(index)}
                           className="text-red-600 hover:text-red-700 ml-2 underline flex-shrink-0"
                         >
-                          Remove
+                          {text.remove}
                         </button>
                       </div>
                     ))}
@@ -489,7 +523,7 @@ export function JobApplicationDialog({
               disabled={isSubmitting}
               className="w-full"
             >
-              {isSubmitting ? "SUBMITTING..." : "SUBMIT APPLICATION"}
+              {isSubmitting ? text.submitting : text.submit}
             </HeroButton>
           </div>
         </form>

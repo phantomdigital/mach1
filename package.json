@@ -9,7 +9,9 @@
     "lint": "next lint",
     "slicemachine": "start-slicemachine",
     "generate-types": "prismic-ts-codegen",
-    "email": "email dev --dir emails --port 3001"
+    "email": "email dev --dir emails --port 3001",
+    "prismic:translation": "node scripts/prismic-translation/run.mjs",
+    "prismic:translation:test": "node --test scripts/prismic-translation/core.test.mjs"
   },
   "dependencies": {
     "@prismicio/client": "^7.20.0",

@@ -9,18 +9,31 @@ import QuoteSummaryPage from "@/app/quote/summary/page";
 import { SiteSearchResults } from "@/app/components/search/site-search-results";
 import { MAX_SITE_SEARCH_RESULTS, searchSite } from "@/lib/prismic-search";
 import type { Content } from "@prismicio/client";
+import SolutionPage, { generateMetadata as generateSolutionMetadata } from "@/app/solutions/[uid]/page";
+import SpecialtyPage, { generateMetadata as generateSpecialtyMetadata } from "@/app/specialties/[uid]/page";
+import NewsArticlePage, { generateMetadata as generateNewsMetadata } from "@/app/news/[uid]/page";
+import JobPage, { generateMetadata as generateJobMetadata } from "@/app/job/[uid]/page";
+import {
+  default as CareersVacanciesPage,
+  generateMetadata as generateCareersVacanciesMetadata,
+} from "@/app/careers/vacancies/page";
+import {
+  default as ContactThankYouPage,
+  generateMetadata as generateContactThankYouMetadata,
+} from "@/app/contact/thank-you/page";
 
 type Params = { slug: string[] };
+type SearchParams = { q?: string; email?: string };
 
 export default async function Page({
   params,
   searchParams,
 }: {
   params: Promise<Params>;
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<SearchParams>;
 }) {
   const { slug } = await params;
-  const { q } = await searchParams;
+  const { q, email } = await searchParams;
   const client = createClient();
   
   // Empty slug should be handled by app/page.tsx, not this route
@@ -39,6 +52,24 @@ export default async function Page({
   // Check if first segment is a locale code
   if (validLocaleCodes.includes(firstSegment as LocaleCode)) {
     locale = firstSegment as LocaleCode;
+
+    const [, routeType, routeUid] = slug;
+    if (routeUid) {
+      const routeParams = Promise.resolve({ uid: routeUid, locale });
+      if (routeType === "solutions") return SolutionPage({ params: routeParams });
+      if (routeType === "specialties") return SpecialtyPage({ params: routeParams });
+      if (routeType === "news") return NewsArticlePage({ params: routeParams });
+      if (routeType === "job") return JobPage({ params: routeParams });
+    }
+    if (routeType === "careers" && routeUid === "vacancies") {
+      return CareersVacanciesPage({ params: Promise.resolve({ locale }) });
+    }
+    if (routeType === "contact" && routeUid === "thank-you") {
+      return ContactThankYouPage({
+        params: Promise.resolve({ locale }),
+        searchParams: Promise.resolve({ email }),
+      });
+    }
     
     // Check if this is quote/summary with locale prefix (e.g., /zh-cn/quote/summary)
     if (slug.length >= 3 && slug[1] === "quote" && slug[2] === "summary") {
@@ -51,7 +82,7 @@ export default async function Page({
     // If no uid after locale, it's a localized homepage
     if (!uid) {
       const page = await client.getSingle("home", { lang: locale }).catch(() => notFound());
-      return <SliceZone slices={page.data.slices} components={components} />;
+      return <SliceZone slices={page.data.slices} components={components} context={{ locale }} />;
     }
   } else {
     // No locale prefix, use default locale
@@ -92,7 +123,7 @@ export default async function Page({
             firstPublicationDate={page.first_publication_date}
             lastPublicationDate={page.last_publication_date}
           >
-            <SliceZone slices={page.data.slices} components={components} />
+            <SliceZone slices={page.data.slices} components={components} context={{ locale }} />
           </LegalDatesProvider>
         </main>
       );
@@ -100,7 +131,7 @@ export default async function Page({
     
     return (
       <main>
-        <SliceZone slices={page.data.slices} components={components} />
+        <SliceZone slices={page.data.slices} components={components} context={{ locale }} />
       </main>
     );
   } catch {
@@ -114,7 +145,7 @@ export async function generateMetadata({
   searchParams,
 }: {
   params: Promise<Params>;
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<SearchParams>;
 }): Promise<Metadata> {
   const { slug } = await params;
   const { q } = await searchParams;
@@ -136,6 +167,20 @@ export async function generateMetadata({
   
   if (validLocaleCodes.includes(firstSegment as LocaleCode)) {
     locale = firstSegment as LocaleCode;
+    const [, routeType, routeUid] = slug;
+    if (routeUid) {
+      const routeParams = Promise.resolve({ uid: routeUid, locale });
+      if (routeType === "solutions") return generateSolutionMetadata({ params: routeParams });
+      if (routeType === "specialties") return generateSpecialtyMetadata({ params: routeParams });
+      if (routeType === "news") return generateNewsMetadata({ params: routeParams });
+      if (routeType === "job") return generateJobMetadata({ params: routeParams });
+    }
+    if (routeType === "careers" && routeUid === "vacancies") {
+      return generateCareersVacanciesMetadata({ params: Promise.resolve({ locale }) });
+    }
+    if (routeType === "contact" && routeUid === "thank-you") {
+      return generateContactThankYouMetadata({ params: Promise.resolve({ locale }) });
+    }
     uid = slug[1];
     
     if (!uid) {
@@ -224,8 +269,33 @@ export async function generateStaticParams() {
     // Localized pages
     const pages = await client.getAllByType("page", { lang: locale });
     pages.forEach((page) => {
-      allParams.push({ slug: [locale, page.uid] });
+      if (page.uid === "careers-vacancies") {
+        allParams.push({ slug: [locale, "careers", "vacancies"] });
+      } else if (page.uid === "contact-thank-you") {
+        allParams.push({ slug: [locale, "contact", "thank-you"] });
+      } else {
+        allParams.push({ slug: [locale, page.uid] });
+      }
     });
+
+    const [solutions, specialties, news, jobs] = await Promise.all([
+      client.getAllByType("solution", { lang: locale }),
+      client.getAllByType("specialty", { lang: locale }),
+      client.getAllByType("news", { lang: locale }),
+      client.getAllByType("job", { lang: locale }),
+    ]);
+    solutions.forEach((document) =>
+      allParams.push({ slug: [locale, "solutions", document.uid] })
+    );
+    specialties.forEach((document) =>
+      allParams.push({ slug: [locale, "specialties", document.uid] })
+    );
+    news.forEach((document) =>
+      allParams.push({ slug: [locale, "news", document.uid] })
+    );
+    jobs.forEach((document) =>
+      allParams.push({ slug: [locale, "job", document.uid] })
+    );
   }
 
   return allParams;

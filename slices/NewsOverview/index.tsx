@@ -17,11 +17,14 @@ import {
   PreviewCardAnimation,
   ViewAllButtonAnimation,
 } from "./news-overview-animation";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
 
 /**
  * Props for `NewsOverview`.
  */
-export type NewsOverviewProps = SliceComponentProps<Content.NewsOverviewSlice>;
+export type NewsOverviewProps = SliceComponentProps<Content.NewsOverviewSlice> & {
+  context?: { locale?: LocaleCode };
+};
 
 // Loading skeleton component
 function NewsOverviewLoading({ isDarkBlue }: { isDarkBlue: boolean }) {
@@ -73,11 +76,13 @@ function NewsOverviewLoading({ isDarkBlue }: { isDarkBlue: boolean }) {
 async function NewsOverviewData({ 
   slice, 
   isDarkBlue, 
-  textColors 
+  textColors,
+  locale,
 }: { 
   slice: Content.NewsOverviewSlice; 
   isDarkBlue: boolean; 
   textColors: { subheading: string; heading: string; lineColor: "dark" | "light" };
+  locale: LocaleCode;
 }) {
   const client = createClient();
   const previewCount = slice.primary.preview_count || 2;
@@ -93,7 +98,8 @@ async function NewsOverviewData({
     if (isFilled.contentRelationship(slice.primary.featured_article)) {
       fetchPromises.push(
         client.getByID<Content.NewsDocument>(
-          slice.primary.featured_article.id
+          slice.primary.featured_article.id,
+          { lang: locale },
         ).catch(() => null)
       );
     } else {
@@ -103,6 +109,7 @@ async function NewsOverviewData({
     // Fetch all articles in parallel
     fetchPromises.push(
       client.getAllByType<Content.NewsDocument>("news", {
+        lang: locale,
         limit: previewCount + 1,
         orderings: [
           { field: "document.first_publication_date", direction: "desc" },
@@ -137,7 +144,7 @@ async function NewsOverviewData({
       {/* Featured Article */}
       {featuredArticle && (
         <FeaturedArticleAnimation>
-          <FeaturedArticle article={featuredArticle} isDarkBackground={isDarkBlue} />
+          <FeaturedArticle article={featuredArticle} isDarkBackground={isDarkBlue} locale={locale} />
         </FeaturedArticleAnimation>
       )}
 
@@ -146,7 +153,7 @@ async function NewsOverviewData({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {previewArticles.map((article, index) => (
             <PreviewCardAnimation key={article.id} index={index}>
-              <NewsCardCompact article={article} index={index} isDarkBackground={isDarkBlue} />
+              <NewsCardCompact article={article} index={index} isDarkBackground={isDarkBlue} locale={locale} />
             </PreviewCardAnimation>
           ))}
         </div>
@@ -176,7 +183,8 @@ async function NewsOverviewData({
  * Component for "NewsOverview" Slices.
  * Optimized for below-the-fold rendering with Suspense boundaries.
  */
-const NewsOverview = ({ slice }: NewsOverviewProps): React.ReactElement => {
+const NewsOverview = ({ slice, context }: NewsOverviewProps): React.ReactElement => {
+  const locale = context?.locale ?? defaultLocale;
   const marginTop = getMarginTopClass((slice.primary.margin_top as MarginTopSize) || "large");
   const paddingTop = getPaddingTopClass((slice.primary.padding_top as PaddingSize) || "large");
   const paddingBottom = getPaddingBottomClass((slice.primary.padding_bottom as PaddingSize) || "large");
@@ -248,7 +256,7 @@ const NewsOverview = ({ slice }: NewsOverviewProps): React.ReactElement => {
             {/* Right Content Area (75% width) - Suspended for streaming */}
             <div className="lg:col-span-3 space-y-8 lg:space-y-12">
               <Suspense fallback={<NewsOverviewLoading isDarkBlue={isDarkBlue} />}>
-                <NewsOverviewData slice={slice} isDarkBlue={isDarkBlue} textColors={textColors} />
+                <NewsOverviewData slice={slice} isDarkBlue={isDarkBlue} textColors={textColors} locale={locale} />
               </Suspense>
             </div>
           </div>

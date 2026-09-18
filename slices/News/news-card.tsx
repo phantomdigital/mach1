@@ -7,13 +7,16 @@ import { motion } from "framer-motion";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import ClippedCardShape from "../Steps/clipped-card-shape";
 import { Badge } from "@/components/ui/badge";
+import type { LocaleCode } from "@/prismicio";
+import { localeForIntl, localizedNewsLabel } from "@/lib/localized-routes";
 
 interface NewsCardProps {
   article: Content.NewsDocument;
   index: number;
+  locale: LocaleCode;
 }
 
-export function NewsCard({ article, index }: NewsCardProps) {
+export function NewsCard({ article, index, locale }: NewsCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 582, height: 579 });
 
@@ -35,7 +38,7 @@ export function NewsCard({ article, index }: NewsCardProps) {
   const formatDate = (dateString: string | null | undefined) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-AU", {
+    return date.toLocaleDateString(localeForIntl(locale), {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -98,7 +101,7 @@ export function NewsCard({ article, index }: NewsCardProps) {
           {/* Category Badge - Top Left */}
           {article.data.category && (
             <Badge variant="green" className="absolute top-4 left-4 z-10">
-              {article.data.category}
+              {localizedNewsLabel(article.data.category, locale)}
             </Badge>
           )}
         </div>
@@ -108,7 +111,7 @@ export function NewsCard({ article, index }: NewsCardProps) {
           {/* Article Type */}
           {(article.data as any).article_type && (
             <span className="text-xs text-neutral-600 uppercase tracking-wide">
-              {(article.data as any).article_type}
+              {localizedNewsLabel((article.data as any).article_type, locale)}
             </span>
           )}
 

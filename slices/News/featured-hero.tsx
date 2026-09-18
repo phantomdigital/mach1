@@ -3,16 +3,24 @@ import { PrismicNextImage } from "@prismicio/next";
 import type { Content } from "@prismicio/client";
 import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import ClippedCardShape from "../Steps/clipped-card-shape";
+import { type LocaleCode } from "@/prismicio";
+import {
+  isSimplifiedChinese,
+  localeForIntl,
+  localizedNewsLabel,
+  localizedPath,
+} from "@/lib/localized-routes";
 
 interface FeaturedHeroProps {
   article: Content.NewsDocument;
+  locale: LocaleCode;
 }
 
-export function FeaturedHero({ article }: FeaturedHeroProps) {
+export function FeaturedHero({ article, locale }: FeaturedHeroProps) {
   const formatDate = (dateString: string | null | undefined) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString(localeForIntl(locale), {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -23,11 +31,11 @@ export function FeaturedHero({ article }: FeaturedHeroProps) {
     <div>
       {/* Heading */}
       <h5 className="text-neutral-800 text-sm font-medium mb-6 uppercase tracking-wider">
-        Featured Article
+        {isSimplifiedChinese(locale) ? "精选文章" : "Featured Article"}
       </h5>
 
       <Link
-        href={`/news/${article.uid}`}
+        href={localizedPath(`/news/${article.uid}`, locale)}
         className="group block"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -95,12 +103,12 @@ export function FeaturedHero({ article }: FeaturedHeroProps) {
                 className="inline-block text-sky-100 text-xs font-bold tracking-wider uppercase px-4 py-2 bg-mach1-green rounded-2xl"
                 style={{ fontFamily: 'var(--font-jetbrains-mono), monospace' }}
               >
-                {article.data.category}
+                {localizedNewsLabel(article.data.category, locale)}
               </span>
             )}
             {(article.data as any).article_type && (
               <span className="text-xs text-neutral-600 uppercase tracking-wide">
-                {(article.data as any).article_type}
+                {localizedNewsLabel((article.data as any).article_type, locale)}
               </span>
             )}
           </div>

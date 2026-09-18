@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata } from "@/lib/metadata";
+import { localizedPath } from "@/lib/localized-routes";
 
 /**
  * This page displays the contact thank you page.
@@ -13,6 +14,7 @@ import { generatePrismicMetadata } from "@/lib/metadata";
 const CONTACT_THANK_YOU_UID = "contact-thank-you";
 
 type SearchParams = { email?: string };
+type Params = { locale?: LocaleCode };
 
 // Helper function to process rich text and replace {email} with bold email
 interface RichTextBlock {
@@ -59,23 +61,26 @@ function processRichTextField(field: RichTextBlock[], emailReplacement: string) 
 }
 
 export default async function ContactThankYouPage({
+  params,
   searchParams,
 }: {
+  params: Promise<Params>;
   searchParams: Promise<SearchParams>;
 }) {
+  const { locale = defaultLocale } = await params;
   const client = createClient();
-  const params = await searchParams;
+  const query = await searchParams;
   
   // Protect the page - only accessible with email parameter (from form submission)
-  if (!params.email) {
-    redirect("/");
+  if (!query.email) {
+    redirect(localizedPath("/", locale));
   }
   
   try {
-    const page = await client.getByUID("page", CONTACT_THANK_YOU_UID);
+    const page = await client.getByUID("page", CONTACT_THANK_YOU_UID, { lang: locale });
     
     // Determine the replacement value for {email}
-    const emailReplacement = params.email || "your email address";
+    const emailReplacement = query.email || "your email address";
 
     // Process slices to replace {email} placeholder
         const processedSlices = page.data.slices.map((slice) => {
@@ -120,14 +125,19 @@ export default async function ContactThankYouPage({
   }
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { locale = defaultLocale } = await params;
   const client = createClient();
   
   try {
-    const page = await client.getByUID("page", CONTACT_THANK_YOU_UID);
+    const page = await client.getByUID("page", CONTACT_THANK_YOU_UID, { lang: locale });
     
     return generatePrismicMetadata(page, {
-      url: "/contact/thank-you",
+      url: localizedPath("/contact/thank-you", locale),
       keywords: ["contact", "thank you", "MACH1 Logistics"],
       noIndex: true,
     });

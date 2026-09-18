@@ -11,12 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { LocaleCode } from "@/prismicio";
+import { isSimplifiedChinese, localizedNewsLabel } from "@/lib/localized-routes";
 
 interface NewsFiltersProps {
   allArticles: Content.NewsDocument[];
   allArticlesForFilters: Content.NewsDocument[];
   enableLoadMore: boolean;
   initialCount: number;
+  locale: LocaleCode;
 }
 
 export function NewsFilters({
@@ -24,7 +27,9 @@ export function NewsFilters({
   allArticlesForFilters,
   enableLoadMore,
   initialCount,
+  locale,
 }: NewsFiltersProps) {
+  const chinese = isSimplifiedChinese(locale);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedYear, setSelectedYear] = useState<string>("All");
   const [displayCount, setDisplayCount] = useState(initialCount);
@@ -86,16 +91,18 @@ export function NewsFilters({
       <div className="flex flex-col sm:flex-row gap-4 mb-8 lg:mb-12">
         <div className="flex-1">
           <label className="block text-sm font-medium text-neutral-700 mb-2">
-            Sort by Category
+            {chinese ? "按类别筛选" : "Sort by Category"}
           </label>
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
             <SelectTrigger>
-              <SelectValue placeholder="All Categories" />
+              <SelectValue placeholder={chinese ? "所有类别" : "All Categories"} />
             </SelectTrigger>
             <SelectContent>
               {categories.map((category) => (
                 <SelectItem key={category} value={category}>
-                  {category === "All" ? "All Categories" : category}
+                  {category === "All"
+                    ? chinese ? "所有类别" : "All Categories"
+                    : localizedNewsLabel(category, locale)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -104,16 +111,16 @@ export function NewsFilters({
 
         <div className="flex-1">
           <label className="block text-sm font-medium text-neutral-700 mb-2">
-            Sort by Year
+            {chinese ? "按年份筛选" : "Sort by Year"}
           </label>
           <Select value={selectedYear} onValueChange={setSelectedYear}>
             <SelectTrigger>
-              <SelectValue placeholder="All Years" />
+              <SelectValue placeholder={chinese ? "所有年份" : "All Years"} />
             </SelectTrigger>
             <SelectContent>
               {years.map((year) => (
                 <SelectItem key={year} value={year}>
-                  {year === "All" ? "All Years" : year}
+                  {year === "All" ? chinese ? "所有年份" : "All Years" : year}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -125,13 +132,13 @@ export function NewsFilters({
       {displayedArticles.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
           {displayedArticles.map((article, index) => (
-            <NewsCard key={article.id} article={article} index={index} />
+            <NewsCard key={article.id} article={article} index={index} locale={locale} />
           ))}
         </div>
       ) : (
         <div className="text-center py-16">
           <p className="text-neutral-600 text-lg">
-            No articles found for the selected filters.
+            {chinese ? "未找到符合筛选条件的文章。" : "No articles found for the selected filters."}
           </p>
         </div>
       )}
@@ -140,7 +147,7 @@ export function NewsFilters({
       {hasMore && (
         <div className="mt-12 flex justify-center">
           <Button variant="hero" onClick={handleLoadMore}>
-            LOAD MORE ARTICLES
+            {chinese ? "加载更多文章" : "LOAD MORE ARTICLES"}
           </Button>
         </div>
       )}
