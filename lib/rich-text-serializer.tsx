@@ -2,6 +2,7 @@ import React from "react";
 import type { JSXMapSerializer } from "@prismicio/react";
 import type { ImageField } from "@prismicio/client";
 import { PrismicNextImage } from "@prismicio/next";
+import { parseRichTextIconAlt } from "@/lib/rich-text-icon";
 
 /**
  * Rich text serializer matching SolutionsBase typography.
@@ -93,26 +94,16 @@ export function createRichTextComponents(): JSXMapSerializer {
       if (!field?.url) return null;
 
       const altText = field.alt ?? "";
-      const isIcon =
-        field.data?.label === "icon" ||
-        field.label === "icon" ||
-        /^\[icon(\S*)\]\s*/i.test(altText);
-      const iconMatch = altText.match(/^\[icon(:\s*(\d+)\s*,\s*(\d+))?\]\s*/i);
-      const displayAlt = isIcon
-        ? altText.replace(/^\[icon(:\s*\d+\s*,\s*\d+)?\]\s*/i, "").trim()
-        : altText;
-
-      const iconPx =
-        iconMatch?.[2] != null ? Math.min(16, parseInt(iconMatch[2], 10)) : 0;
-      const iconPy =
-        iconMatch?.[3] != null ? Math.min(16, parseInt(iconMatch[3], 10)) : 0;
+      const { isIcon, displayAlt, iconPx, iconPy, iconNoMargin } = parseRichTextIconAlt(
+        altText,
+        { label: field.label, dataLabel: field.data?.label }
+      );
       const iconPadding = {
         paddingLeft: iconPx,
         paddingRight: iconPx,
         paddingTop: iconPy,
         paddingBottom: iconPy,
       };
-      const iconNoMargin = iconPx === 0 && iconPy === 0;
 
       if (isIcon) {
         return (

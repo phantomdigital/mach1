@@ -7,6 +7,8 @@ import { RichTextField } from "@prismicio/client";
 import StepsSummary from "@/slices/Steps/steps-summary";
 import { getContainerClass, getPaddingBottomClass } from "@/lib/spacing";
 import { getLocaleFromPathname } from "@/lib/locale-helpers";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { quoteChrome, quoteCopy } from "@/lib/quote-ui";
 
 interface SummaryData {
   selectedCard?: string;
@@ -40,46 +42,72 @@ interface SummaryClientProps {
   loadingMessage?: string;
   noDataMessage?: string;
   redirectingMessage?: string;
+  locale?: LocaleCode;
 }
 
 export default function SummaryClient({
-  heading = "We have received your request.",
+  heading,
   description,
   contactEmail = "",
   contactTimeframe = "",
   faqs = [],
-  badgeText = "Quote Received",
-  goToHomeButton = "GO TO HOME",
-  detailsHeading = "DETAILS",
-  serviceTypeLabel = "Service Type",
-  packageDetailsHeading = "PACKAGE DETAILS",
-  packageLabel = "Package",
-  originLabel = "Origin",
-  destinationLabel = "Destination",
-  weightLabel = "Weight",
-  quantityLabel = "Quantity",
-  lengthLabel = "Length",
-  widthLabel = "Width",
-  heightLabel = "Height",
-  faqsTitle = "FAQs",
-  haveAChatHeading = "HAVE A CHAT",
-  getHelpHeading = "Get help",
-  contactUsButton = "CONTACT US",
-  liveChatButton = "LIVE CHAT",
-  loadingMessage = "Loading your quote summary...",
-  noDataMessage = "No quote data found",
-  redirectingMessage = "Redirecting you to the home page...",
+  badgeText,
+  goToHomeButton,
+  detailsHeading,
+  serviceTypeLabel,
+  packageDetailsHeading,
+  packageLabel,
+  originLabel,
+  destinationLabel,
+  weightLabel,
+  quantityLabel,
+  lengthLabel,
+  widthLabel,
+  heightLabel,
+  faqsTitle,
+  haveAChatHeading,
+  getHelpHeading,
+  contactUsButton,
+  liveChatButton,
+  loadingMessage,
+  noDataMessage,
+  redirectingMessage,
+  locale: localeProp,
 }: SummaryClientProps = {}) {
   const router = useRouter();
   const pathname = usePathname();
+  const locale = localeProp ?? getLocaleFromPathname(pathname) ?? defaultLocale;
+  const copy = quoteCopy(locale);
   const [summaryData, setSummaryData] = useState<SummaryData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Default description if not provided
+  heading = quoteChrome(heading, copy.weReceived, locale);
+  badgeText = quoteChrome(badgeText, copy.quoteReceived, locale);
+  goToHomeButton = quoteChrome(goToHomeButton, copy.goHome, locale);
+  detailsHeading = quoteChrome(detailsHeading, copy.details, locale);
+  serviceTypeLabel = quoteChrome(serviceTypeLabel, copy.serviceType, locale);
+  packageDetailsHeading = quoteChrome(packageDetailsHeading, copy.packageDetails, locale);
+  packageLabel = quoteChrome(packageLabel, copy.packageWord, locale);
+  originLabel = quoteChrome(originLabel, copy.origin, locale);
+  destinationLabel = quoteChrome(destinationLabel, copy.destination, locale);
+  weightLabel = quoteChrome(weightLabel, copy.weight, locale);
+  quantityLabel = quoteChrome(quantityLabel, copy.quantity, locale);
+  lengthLabel = quoteChrome(lengthLabel, copy.length, locale);
+  widthLabel = quoteChrome(widthLabel, copy.width, locale);
+  heightLabel = quoteChrome(heightLabel, copy.height, locale);
+  faqsTitle = quoteChrome(faqsTitle, copy.faqs, locale);
+  haveAChatHeading = quoteChrome(haveAChatHeading, copy.haveAChat, locale);
+  getHelpHeading = quoteChrome(getHelpHeading, copy.getHelp, locale);
+  contactUsButton = quoteChrome(contactUsButton, copy.contactUs, locale);
+  liveChatButton = quoteChrome(liveChatButton, copy.liveChat, locale);
+  loadingMessage = quoteChrome(loadingMessage, copy.loadingSummary, locale);
+  noDataMessage = quoteChrome(noDataMessage, copy.noData, locale);
+  redirectingMessage = quoteChrome(redirectingMessage, copy.redirecting, locale);
+
   const defaultDescription = [
     {
       type: "paragraph",
-      text: "One of our logistics specialists will contact you at {email} within 24 hours to discuss your requirements. We're looking forward to learning how we can help optimise your supply chain.",
+      text: copy.weReceivedBody,
       spans: []
     }
   ] as RichTextField;
@@ -183,6 +211,7 @@ export default function SummaryClient({
             formData={summaryData.formData}
             faqs={faqs}
             onReset={handleReset}
+            locale={locale}
             badgeText={badgeText}
             goToHomeButton={goToHomeButton}
             detailsHeading={detailsHeading}

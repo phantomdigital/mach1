@@ -1,7 +1,9 @@
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
-import { createClient } from "@/prismicio";
 import { FooterCtaButtons } from "./footer-cta-buttons";
 import { CtaTitleAnimation, CtaButtonsAnimation } from "./footer-cta-animation";
+import { isSimplifiedChinese } from "@/lib/localized-routes";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import type { FooterDocument } from "@/types.generated";
 
 // Social media icon component - extracted to prevent recreation on every render
 function SocialIcon({ platform }: { platform: string | null | undefined }) {
@@ -41,14 +43,21 @@ function SocialIcon({ platform }: { platform: string | null | undefined }) {
   }
 }
 
-// Server component for footer
-export default async function Footer() {
-  const client = createClient();
-  
-  try {
-    const footer = await client.getSingle("footer");
-    
+export default function Footer({ footer }: { footer: FooterDocument | null }) {
+  if (!footer) {
     return (
+      <footer className="bg-dark-blue text-white py-16">
+        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 text-center">
+          <p>Footer content unavailable</p>
+        </div>
+      </footer>
+    );
+  }
+
+  const locale = (footer.lang as LocaleCode) || defaultLocale;
+  const chinese = isSimplifiedChinese(locale);
+
+  return (
       <>
         {/* CTA Section - Lighter Dark Blue */}
         <div className="bg-dark-blue ">
@@ -120,7 +129,7 @@ export default async function Footer() {
               {footer.data.contact_section[0] && (
                 <div className="w-full lg:w-auto">
                   <h3 className="text-base lg:text-lg font-semibold text-white mb-4 lg:mb-6">
-                    {footer.data.contact_section[0].title || 'Contact Us'}
+                    {footer.data.contact_section[0].title || (chinese ? "联系我们" : "Contact Us")}
                   </h3>
                   
                   {/* Addresses Section with Location Icon */}
@@ -140,7 +149,7 @@ export default async function Footer() {
                         </div>
                         <div className="flex-1">
                           <h5 className="text-neutral-400 text-xs font-medium mb-3 lg:mb-4 uppercase tracking-wider">
-                            Locations
+                            {chinese ? "网点" : "Locations"}
                           </h5>
                           <div className="space-y-3 lg:space-y-4">
                             {footer.data.contact_section[0].addresses.map((item, index: number) => (
@@ -278,14 +287,4 @@ export default async function Footer() {
         </footer>
       </>
     );
-  } catch (error) {
-    console.error("Error fetching footer:", error);
-    return (
-      <footer className="bg-dark-blue text-white py-16">
-        <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8 text-center">
-          <p>Footer content unavailable</p>
-        </div>
-      </footer>
-    );
-  }
 }

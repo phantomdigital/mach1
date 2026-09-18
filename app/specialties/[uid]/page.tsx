@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: Promise<Params> }) {
       <SliceZone
         slices={specialty.data.slices}
         components={components}
-        context={{ pageTitle: specialty.data.title || uid }}
+        context={{ pageTitle: specialty.data.title || uid, locale }}
       />
     </>
   );

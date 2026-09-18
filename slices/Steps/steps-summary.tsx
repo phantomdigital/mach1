@@ -6,6 +6,8 @@ import type { RichTextField } from "@prismicio/client";
 import { PrismicRichText } from "@prismicio/react";
 import FaqAccordionCompact from "@/components/faq-accordion-compact";
 import { getMarginTopClass } from "@/lib/spacing";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { quoteCopy } from "@/lib/quote-ui";
 
 interface FaqItem {
   faq_question: string | null;
@@ -39,6 +41,7 @@ interface StepsSummaryProps {
   getHelpHeading?: string;
   contactUsButton?: string;
   liveChatButton?: string;
+  locale?: LocaleCode;
 }
 
 export default function StepsSummary({
@@ -48,25 +51,45 @@ export default function StepsSummary({
   formData,
   faqs = [],
   onReset,
-  badgeText = "Quote Received",
-  goToHomeButton = "GO TO HOME",
-  detailsHeading = "DETAILS",
-  serviceTypeLabel = "Service Type",
-  packageDetailsHeading = "PACKAGE DETAILS",
-  packageLabel = "Package",
-  originLabel = "Origin",
-  destinationLabel = "Destination",
-  weightLabel = "Weight",
-  quantityLabel = "Quantity",
-  lengthLabel = "Length",
-  widthLabel = "Width",
-  heightLabel = "Height",
-  faqsTitle = "FAQs",
-  haveAChatHeading = "HAVE A CHAT",
-  getHelpHeading = "Get help",
-  contactUsButton = "CONTACT US",
-  liveChatButton = "LIVE CHAT",
+  badgeText,
+  goToHomeButton,
+  detailsHeading,
+  serviceTypeLabel,
+  packageDetailsHeading,
+  packageLabel,
+  originLabel,
+  destinationLabel,
+  weightLabel,
+  quantityLabel,
+  lengthLabel,
+  widthLabel,
+  heightLabel,
+  faqsTitle,
+  haveAChatHeading,
+  getHelpHeading,
+  contactUsButton,
+  liveChatButton,
+  locale = defaultLocale,
 }: StepsSummaryProps) {
+  const copy = quoteCopy(locale);
+  badgeText = badgeText ?? copy.quoteReceived;
+  goToHomeButton = goToHomeButton ?? copy.goHome;
+  detailsHeading = detailsHeading ?? copy.details;
+  serviceTypeLabel = serviceTypeLabel ?? copy.serviceType;
+  packageDetailsHeading = packageDetailsHeading ?? copy.packageDetails;
+  packageLabel = packageLabel ?? copy.packageWord;
+  originLabel = originLabel ?? copy.origin;
+  destinationLabel = destinationLabel ?? copy.destination;
+  weightLabel = weightLabel ?? copy.weight;
+  quantityLabel = quantityLabel ?? copy.quantity;
+  lengthLabel = lengthLabel ?? copy.length;
+  widthLabel = widthLabel ?? copy.width;
+  heightLabel = heightLabel ?? copy.height;
+  faqsTitle = faqsTitle ?? copy.faqs;
+  haveAChatHeading = haveAChatHeading ?? copy.haveAChat;
+  getHelpHeading = getHelpHeading ?? copy.getHelp;
+  contactUsButton = contactUsButton ?? copy.contactUs;
+  liveChatButton = liveChatButton ?? copy.liveChat;
 
   // Parse packages from form data
   let packages = [];
@@ -215,7 +238,7 @@ export default function StepsSummary({
                   {formData && Object.entries(formData).filter(([key]) => key !== 'packages').map(([key, value]) => (
                     <div key={key}>
                       <p className="text-xs text-neutral-500 mb-1">{formatFieldName(key)}</p>
-                      <p className="text-neutral-800 text-sm">{value || 'N/A'}</p>
+                      <p className="text-neutral-800 text-sm">{value || copy.na}</p>
                     </div>
                   ))}
                 </div>

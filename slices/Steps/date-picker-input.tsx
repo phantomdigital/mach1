@@ -2,6 +2,10 @@
 
 import * as React from "react";
 import { format } from "date-fns";
+import { zhCN } from "date-fns/locale";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { isSimplifiedChinese } from "@/lib/localized-routes";
+import { quoteCopy } from "@/lib/quote-ui";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -17,6 +21,7 @@ interface DatePickerInputProps {
   placeholder?: string;
   required?: boolean;
   label: string;
+  locale?: LocaleCode;
 }
 
 export default function DatePickerInput({
@@ -26,7 +31,10 @@ export default function DatePickerInput({
   placeholder,
   required,
   label,
+  locale = defaultLocale,
 }: DatePickerInputProps) {
+  const copy = quoteCopy(locale);
+  const dateLocale = isSimplifiedChinese(locale) ? zhCN : undefined;
   const [date, setDate] = React.useState<Date | undefined>(
     value ? new Date(value) : undefined
   );
@@ -61,7 +69,7 @@ export default function DatePickerInput({
             className="w-full bg-transparent border-b border-neutral-300 pb-2 text-left text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-800 transition-colors flex items-center justify-between gap-2"
           >
             <span className={date ? "text-neutral-800" : "text-neutral-400"}>
-              {date ? format(date, "PPP") : placeholder || "Select date"}
+              {date ? format(date, "PPP", dateLocale ? { locale: dateLocale } : undefined) : placeholder || copy.selectDate}
             </span>
             <CalendarIcon className="w-4 h-4 text-neutral-400 flex-shrink-0" />
           </button>
@@ -78,6 +86,7 @@ export default function DatePickerInput({
             month={month}
             onMonthChange={setMonth}
             initialFocus
+            locale={dateLocale}
           />
         </PopoverContent>
       </Popover>

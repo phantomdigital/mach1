@@ -7,6 +7,8 @@ import AddressAutocompleteInput from "./address-autocomplete-input";
 import DatePickerInput from "./date-picker-input";
 import { motion, AnimatePresence } from "framer-motion";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { quoteCopy } from "@/lib/quote-ui";
 
 interface FormField {
   label: string;
@@ -25,6 +27,7 @@ interface StepsFormProps {
   fields: FormField[];
   onSubmit: (data: Record<string, string>) => Promise<void> | void;
   initialData?: Record<string, string> | null;
+  locale?: LocaleCode;
 }
 
 export default function StepsForm({
@@ -32,7 +35,9 @@ export default function StepsForm({
   fields,
   onSubmit,
   initialData,
+  locale = defaultLocale,
 }: StepsFormProps) {
+  const copy = quoteCopy(locale);
   const [formData, setFormData] = useState<Record<string, string>>(initialData || {});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -85,14 +90,14 @@ export default function StepsForm({
       
       // Required field validation
       if (field.required && (!value || value.trim() === '')) {
-        errors[field.name] = `${field.label} is required`;
+        errors[field.name] = copy.required(field.label);
       }
       
       // Email validation
       if (field.type === 'email' && value) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(value)) {
-          errors[field.name] = 'Please enter a valid email address';
+          errors[field.name] = copy.validEmail;
         }
       }
       
@@ -100,7 +105,7 @@ export default function StepsForm({
       if (field.type === 'tel' && value) {
         const phoneRegex = /^[\+]?[\d\s\-\(\)]{10,}$/;
         if (!phoneRegex.test(value)) {
-          errors[field.name] = 'Please enter a valid phone number';
+          errors[field.name] = copy.validPhone;
         }
       }
       
@@ -108,7 +113,7 @@ export default function StepsForm({
       if (field.type === 'number' && value && value !== '') {
         const numValue = parseFloat(value);
         if (isNaN(numValue) || numValue <= 0) {
-          errors[field.name] = `${field.label} must be a positive number`;
+          errors[field.name] = copy.positiveNumber(field.label);
         }
       }
     });
@@ -208,6 +213,7 @@ export default function StepsForm({
               placeholder={field.placeholder}
               required={field.required}
               label={field.label}
+              locale={locale}
             />
             {hasError && (
               <p className="text-red-500 text-xs mt-1">{validationErrors[field.name]}</p>
@@ -234,6 +240,7 @@ export default function StepsForm({
               placeholder={field.placeholder}
               required={field.required}
               label={field.label}
+              locale={locale}
             />
             {hasError && (
               <p className="text-red-500 text-xs mt-1">{validationErrors[field.name]}</p>
@@ -309,7 +316,7 @@ export default function StepsForm({
               onChange={handleChange}
               className={baseInputClass}
             >
-              <option value="">{field.placeholder || "Select an option"}</option>
+              <option value="">{field.placeholder || copy.selectOption}</option>
               {field.options?.map((option) => (
                 <option
                   key={option}
@@ -413,7 +420,7 @@ export default function StepsForm({
           >
             <Alert variant="destructive">
               <AlertDescription>
-                <div className="font-medium mb-2">Please fix the following errors:</div>
+                <div className="font-medium mb-2">{copy.fixErrors}</div>
                 <ul className="list-disc list-inside space-y-1 text-sm">
                   {Object.entries(validationErrors).map(([field, error]) => (
                     <li key={field}>{error}</li>
@@ -485,7 +492,7 @@ export default function StepsForm({
                 disabled={isSubmitting}
                 className="w-full"
               >
-                SUBMIT
+                {isSubmitting ? copy.submitting : copy.submit}
               </Button>
               
               {/* Development Skip Button */}
@@ -497,7 +504,7 @@ export default function StepsForm({
                     onClick={() => onSubmit({})}
                     disabled={isSubmitting}
                   >
-                    SKIP
+                    {copy.skip}
                   </Button>
                 </div>
               )}

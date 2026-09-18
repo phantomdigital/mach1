@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { MapPin, X } from "lucide-react";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { quoteCopy } from "@/lib/quote-ui";
 
 interface AddressAutocompleteInputProps {
   name: string;
@@ -11,6 +13,7 @@ interface AddressAutocompleteInputProps {
   required?: boolean;
   label: string;
   country?: string; // Optional country filter (e.g., 'AU', 'US', 'GB')
+  locale?: LocaleCode;
 }
 
 const COUNTRY_NAMES: Record<string, string> = {
@@ -36,7 +39,9 @@ export default function AddressAutocompleteInput({
   required,
   label,
   country,
+  locale = defaultLocale,
 }: AddressAutocompleteInputProps) {
+  const copy = quoteCopy(locale);
   const [suggestions, setSuggestions] = useState<MapboxFeature[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -200,11 +205,11 @@ export default function AddressAutocompleteInput({
         <p className="mt-2 text-xs text-neutral-500">
           {!selectedFromSuggestions && inputValue ? (
             <span className="text-amber-600">
-              ⚠️ Please select an address from the dropdown to ensure it's in {COUNTRY_NAMES[country] || country}
+              ⚠️ {copy.countrySelect(copy.countries[country] || COUNTRY_NAMES[country] || country)}
             </span>
           ) : (
             <span>
-              Only {COUNTRY_NAMES[country] || country} addresses accepted. Select from suggestions.
+              {copy.countryOnly(copy.countries[country] || COUNTRY_NAMES[country] || country)}
             </span>
           )}
         </p>

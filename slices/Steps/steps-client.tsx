@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Content, RichTextField } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,20 +18,27 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { StepIndicator } from "./step-indicator";
 import { stepContentVariants } from "./step-animations";
 import { getMarginTopClass } from "@/lib/spacing";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { getLocaleFromPathname } from "@/lib/locale-helpers";
+import { quoteChrome, quoteCopy, readQuoteLoadingMessages, writeQuoteLoadingMessages } from "@/lib/quote-ui";
 
 /**
  * Props for `Steps`.
  */
 export type StepsProps = SliceComponentProps<Content.StepsSlice> & {
   mainFaqs?: Array<{ faq_question: string | null; faq_answer: RichTextField | null }>;
+  context?: { locale?: LocaleCode };
 };
 
 /**
  * Component for "Steps" Slices.
  * Each variation renders as a different step in the multi-step flow.
  */
-const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement | null => {
+const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.ReactElement | null => {
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = context?.locale ?? getLocaleFromPathname(pathname) ?? defaultLocale;
+  const copy = quoteCopy(locale);
   const sliceRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoadingStep1, setIsLoadingStep1] = useState(false);
@@ -57,16 +64,16 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
     setLoadingMessages,
   } = useStepsFlow(stepNumber);
 
-  // Store loading messages from start slice in sessionStorage when it renders
+  // Store locale-aware loading copy from the start slice
   useEffect(() => {
     if (slice.variation === "start" && typeof window !== "undefined") {
-      const messages = {
-        loading: (slice.primary as any).loading_message || "Loading your quote form...",
-        loadingSubMessage: (slice.primary as any).loading_submessage || "Please wait a moment"
-      };
-      sessionStorage.setItem("steps_loading_messages", JSON.stringify(messages));
+      writeQuoteLoadingMessages(
+        locale,
+        (slice.primary as any).loading_message,
+        (slice.primary as any).loading_submessage
+      );
     }
-  }, [slice.variation, slice.primary]);
+  }, [slice.variation, slice.primary, locale]);
 
   // Reset loading state when flow is reset (back to step 0)
   useEffect(() => {
@@ -124,7 +131,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
         if (!result.success) {
           console.error("Failed to send quote email:", result.error);
           // Show error to user
-          setEmailError(result.error || "Failed to send quote request. Please try again.");
+          setEmailError(result.error || copy.sendFailed);
           // Don't proceed to summary if validation failed
           if (result.validationErrors) {
             return;
@@ -133,7 +140,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
         }
       } catch (error) {
         console.error("Error sending quote email:", error);
-        setEmailError("An unexpected error occurred. Please try again.");
+        setEmailError(copy.unexpectedError);
         // For unexpected errors, still proceed to summary
       }
       
@@ -165,7 +172,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
       if (!result.success) {
         console.error("Failed to send quote email:", result.error);
         // Show error to user
-        setEmailError(result.error || "Failed to send quote request. Please try again.");
+        setEmailError(result.error || copy.sendFailed);
         // Don't proceed to summary if validation failed
         if (result.validationErrors) {
           return;
@@ -174,7 +181,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
       }
     } catch (error) {
       console.error("Error sending quote email:", error);
-      setEmailError("An unexpected error occurred. Please try again.");
+      setEmailError(copy.unexpectedError);
       // For unexpected errors, still proceed to summary
     }
     
@@ -204,9 +211,10 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
             <div className="w-full mb-16 md:mb-16 relative">
               <StepIndicator
                 stepNumber={currentStep}
-                stepTitle={slice.primary.step_title || "Step"}
+                stepTitle={quoteChrome(slice.primary.step_title, copy.stepFallback, locale)}
                 totalSteps={4}
                 onBack={currentStep > 1 ? () => goToPreviousStep() : undefined}
+                locale={locale}
               />
             </div>
           )}
@@ -227,7 +235,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
                   <button
                     onClick={() => setEmailError(null)}
                     className="absolute right-4 top-4 text-red-400 hover:text-red-600 transition-colors"
-                    aria-label="Dismiss error"
+                    aria-label={copy.dismissError}
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -254,8 +262,9 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
                   image={(slice.primary as any).start_image}
                   heading={(slice.primary as any).start_heading}
                   description={(slice.primary as any).start_description}
-                  buttonText={(slice.primary as any).start_button_text}
+                  buttonText={quoteChrome((slice.primary as any).start_button_text, copy.startQuote, locale)}
                   onStart={() => goToNextStep(true)}
+                  locale={locale}
                 />
               )}
 
@@ -266,28 +275,10 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
                     <div className="text-center">
                       <Loader2 className="w-12 h-12 text-dark-blue animate-spin mx-auto mb-4" />
                       <p className="text-neutral-800 font-medium">
-                        {(() => {
-                          if (typeof window !== "undefined") {
-                            const stored = sessionStorage.getItem("steps_loading_messages");
-                            if (stored) {
-                              const messages = JSON.parse(stored);
-                              return messages.loading || "Loading your quote form...";
-                            }
-                          }
-                          return "Loading your quote form...";
-                        })()}
+                        {readQuoteLoadingMessages(locale).loading}
                       </p>
                       <p className="text-neutral-500 text-sm mt-2">
-                        {(() => {
-                          if (typeof window !== "undefined") {
-                            const stored = sessionStorage.getItem("steps_loading_messages");
-                            if (stored) {
-                              const messages = JSON.parse(stored);
-                              return messages.loadingSubMessage || "Please wait a moment";
-                            }
-                          }
-                          return "Please wait a moment";
-                        })()}
+                        {readQuoteLoadingMessages(locale).loadingSubMessage}
                       </p>
                     </div>
                   </div>
@@ -315,8 +306,8 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
                       selectedCard.toLowerCase().includes('storage') ||
                       selectedCard.toLowerCase().includes('warehouse')
                     )
-                      ? "WAREHOUSING DETAILS"
-                      : (slice.primary.form_heading || "DETAILS")
+                      ? copy.warehousingDetails
+                      : quoteChrome(slice.primary.form_heading, copy.details, locale)
                   }
                   fields={slice.items.map((item) => ({
                     label: item.field_label || "",
@@ -338,22 +329,24 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
                   }))}
                   onSubmit={handleFormSubmit}
                   initialData={formData}
+                  locale={locale}
                 />
               )}
 
               {/* Step 2b: Packages */}
               {slice.variation === ("packages" as any) && (
                 <StepsPackages
-                  packagesHeading={(slice.primary as any).packages_heading || "PACKAGE DETAILS"}
+                  packagesHeading={quoteChrome((slice.primary as any).packages_heading, copy.packageDetails, locale)}
                   selectedCard={selectedCard}
                   onSubmit={handlePackagesSubmit}
+                  locale={locale}
                 />
               )}
 
               {/* Step 3: Summary */}
               {slice.variation === "summary" && (
                 <StepsSummary
-                  heading={slice.primary.summary_heading || "Thank you!"}
+                  heading={quoteChrome(slice.primary.summary_heading, copy.thankYou, locale)}
                   description={slice.primary.summary_description || []}
                   contactEmail={slice.primary.contact_email || ""}
                   contactTimeframe={slice.primary.contact_timeframe || ""}
@@ -369,6 +362,7 @@ const Steps = ({ slice, index, mainFaqs = [] }: StepsProps): React.ReactElement 
                         }))
                   }
                   onReset={resetFlow}
+                  locale={locale}
                 />
               )}
             </motion.div>

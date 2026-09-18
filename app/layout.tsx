@@ -3,7 +3,7 @@ import { JetBrains_Mono, Manrope } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import HeaderServerWrapper from "./components/header/header-server-wrapper";
-import Footer from "./components/footer/footer";
+import FooterServerWrapper from "./components/footer/footer-server-wrapper";
 import LenisProvider from "@/components/lenis-provider";
 // Note: DropdownStateProvider removed - now using Zustand (no provider needed)
 
@@ -49,7 +49,7 @@ export default function RootLayout({
           <LenisProvider>
             <HeaderServerWrapper />
             <main>{children}</main>
-            <Footer />
+            <FooterServerWrapper />
           </LenisProvider>
           <Script
             src="https://plausible.io/js/pa-URrITWEbkA-vPSKi-oc0v.js"

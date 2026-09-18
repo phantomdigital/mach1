@@ -14,18 +14,33 @@ import {
   type MarginTopSize,
   type PaddingSize 
 } from "@/lib/spacing";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { isSimplifiedChinese, localizedPath } from "@/lib/localized-routes";
+import { parseRichTextIconAlt } from "@/lib/rich-text-icon";
 
 /**
  * Props for `SolutionsBase`.
  */
-export type SolutionsBaseProps = SliceComponentProps<Content.SolutionsBaseSlice>;
+export type SolutionsBaseProps = SliceComponentProps<Content.SolutionsBaseSlice> & {
+  context?: { locale?: LocaleCode; pageTitle?: string };
+};
 
 /**
  * Component for "SolutionsBase" Slices.
  * A flexible content slice with header image, breadcrumbs, rich text, and full-width images.
  */
-const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
+const SolutionsBase = ({ slice, context }: SolutionsBaseProps): React.ReactElement => {
   const primary = slice.primary;
+  const locale = context?.locale ?? defaultLocale;
+  const chinese = isSimplifiedChinese(locale);
+  const cardDescription =
+    slice.primary.card_description ||
+    (chinese
+      ? "立即联系我们，获取定制货运方案。我们的团队随时准备协助您解决物流需求。"
+      : "Contact us today for a customised freight solution. Our team is ready to help with your logistics needs.");
+  const quoteLabel = chinese ? "获取报价" : "Get a Quote";
+  const contactLabel = chinese ? "联系我们" : "Contact Us";
+  const onThisPageLabel = chinese ? "本页目录" : "On this page";
   // Get spacing from Prismic or use defaults
   const marginTop = (primary.margin_top as MarginTopSize) || "large";
   const paddingTop = (primary.padding_top as PaddingSize) || "large";
@@ -129,19 +144,12 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
       const field = node as unknown as ImageField & { data?: { label?: string }; label?: string };
       if (!field?.url) return null;
 
-      // Detect icon variant: via Prismic label (node.data.label) or alt convention [icon] or [icon:x,y]
       const altText = field.alt ?? "";
-      const isIcon = field.data?.label === "icon" || field.label === "icon" || /^\[icon(\S*)\]\s*/i.test(altText);
-      const iconMatch = altText.match(/^\[icon(:\s*(\d+)\s*,\s*(\d+))?\]\s*/i);
-      const displayAlt = isIcon
-        ? altText.replace(/^\[icon(:\s*\d+\s*,\s*\d+)?\]\s*/i, "").trim()
-        : altText;
-
-      // Parse [icon:x,y] for px/py in px (0–16). E.g. [icon:0,0] = no padding/margin, [icon:8,4] = 8px x, 4px y
-      const iconPx = iconMatch?.[2] != null ? Math.min(16, parseInt(iconMatch[2], 10)) : 0;
-      const iconPy = iconMatch?.[3] != null ? Math.min(16, parseInt(iconMatch[3], 10)) : 0;
+      const { isIcon, displayAlt, iconPx, iconPy, iconNoMargin } = parseRichTextIconAlt(
+        altText,
+        { label: field.label, dataLabel: field.data?.label }
+      );
       const iconPadding = { paddingLeft: iconPx, paddingRight: iconPx, paddingTop: iconPy, paddingBottom: iconPy };
-      const iconNoMargin = iconPx === 0 && iconPy === 0;
 
       if (isIcon) {
         return (
@@ -223,7 +231,7 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
               <nav className="flex items-center gap-2 py-3 lg:hidden">
                 {slice.primary.breadcrumb_home_text && (
                   <>
-                    <Link href="/" className="text-sm text-neutral-600 hover:text-neutral-900 transition-colors">
+                    <Link href={localizedPath("/", locale)} className="text-sm text-neutral-600 hover:text-neutral-900 transition-colors">
                       {slice.primary.breadcrumb_home_text}
                     </Link>
                     {slice.primary.breadcrumb_current_text && <ChevronRight className="w-4 h-4 text-neutral-400" />}
@@ -236,7 +244,7 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
             )}
 
             <p className="text-neutral-600 text-[11px] leading-relaxed">
-              {slice.primary.card_description || "Contact us today for a customised freight solution. Our team is ready to help with your logistics needs."}
+              {cardDescription}
             </p>
 
             {slice.items && slice.items.length > 0 && (
@@ -258,14 +266,14 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
 
             <div className="flex flex-wrap items-center gap-2 lg:gap-4 mt-2">
               <HeroButton asChild size="small">
-                <Link href="/quote">Get a Quote</Link>
+                <Link href={localizedPath("/quote", locale)}>{quoteLabel}</Link>
               </HeroButton>
               <Button asChild variant="subtle" className="!px-0 !no-underline hover:!underline">
                 <Link 
-                  href="/contact" 
+                  href={localizedPath("/contact", locale)} 
                   className="group inline-flex items-center gap-1.5 text-neutral-800"
                 >
-                  <span>Contact Us</span>
+                  <span>{contactLabel}</span>
                   <ExternalLinkIcon 
                     className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity" 
                     color="currentColor"
@@ -279,7 +287,7 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
                 <div className="border-t border-neutral-300 pt-4 mt-4" />
                 <nav>
                   <h4 className="text-neutral-800 text-[11px] font-semibold uppercase tracking-wider mb-3">
-                    On this page
+                    {onThisPageLabel}
                   </h4>
                   <ol className="space-y-1.5 text-[11px]">
                     {tableOfContents.map((item) => (
@@ -309,7 +317,7 @@ const SolutionsBase = ({ slice }: SolutionsBaseProps): React.ReactElement => {
               <nav className="hidden lg:flex items-center gap-2 mb-8 pt-8">
                 {slice.primary.breadcrumb_home_text && (
                   <>
-                    <Link href="/" className="text-sm text-neutral-600 hover:text-neutral-900 transition-colors">
+                    <Link href={localizedPath("/", locale)} className="text-sm text-neutral-600 hover:text-neutral-900 transition-colors">
                       {slice.primary.breadcrumb_home_text}
                     </Link>
                     {slice.primary.breadcrumb_current_text && <ChevronRight className="w-4 h-4 text-neutral-400" />}

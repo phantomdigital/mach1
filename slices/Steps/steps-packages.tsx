@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { NumberInputWithUnit } from "@/components/ui/number-input-with-unit";
 import AddressAutocompleteInput from "./address-autocomplete-input";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { quoteCopy } from "@/lib/quote-ui";
 
 interface Package {
   id: string;
@@ -25,13 +27,16 @@ interface StepsPackagesProps {
   packagesHeading: string;
   selectedCard?: string;
   onSubmit: (packages: Package[]) => void;
+  locale?: LocaleCode;
 }
 
 export default function StepsPackages({
   packagesHeading,
   selectedCard,
   onSubmit,
+  locale = defaultLocale,
 }: StepsPackagesProps) {
+  const copy = quoteCopy(locale);
   // Determine country filter based on selected card
   const getCountryFilter = () => {
     if (!selectedCard) return undefined;
@@ -193,7 +198,7 @@ export default function StepsPackages({
                     animate={{ color: isExpanded ? '#141433' : '#262626' }}
                     transition={{ duration: 0.2 }}
                   >
-                    Package {index + 1}
+                    {copy.packageN(index + 1)}
                   </motion.h6>
                   <AnimatePresence mode="wait">
                     {hasData && !isExpanded && (
@@ -222,7 +227,7 @@ export default function StepsPackages({
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                       className="text-neutral-400 hover:text-red-500 transition-colors p-2 cursor-pointer"
-                      aria-label="Remove package"
+                      aria-label={copy.removePackage}
                     >
                       <Trash2 className="w-4 h-4" />
                     </motion.button>
@@ -264,7 +269,7 @@ export default function StepsPackages({
               {/* Description */}
               <div className="w-full">
                 <label className="block text-neutral-800 text-sm mb-2">
-                  What are you shipping? <span className="text-red-500">*</span>
+                  {copy.shippingWhat} <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -272,7 +277,7 @@ export default function StepsPackages({
                   onChange={(e) =>
                     updatePackage(pkg.id, "description", e.target.value)
                   }
-                  placeholder="Enter what you are shipping..."
+                  placeholder={copy.shippingPlaceholder}
                   required
                   className="w-full bg-transparent border-b border-neutral-300 pb-2 text-base text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-800 transition-colors"
                 />
@@ -284,19 +289,21 @@ export default function StepsPackages({
                   name={`origin-${pkg.id}`}
                   value={pkg.origin}
                   onChange={(_, value) => updatePackage(pkg.id, "origin", value)}
-                  placeholder="Enter pickup address..."
+                  placeholder={copy.pickupPlaceholder}
                   required
-                  label="Pickup Address"
+                  label={copy.pickup}
                   country={countryFilter}
+                  locale={locale}
                 />
                 <AddressAutocompleteInput
                   name={`destination-${pkg.id}`}
                   value={pkg.destination}
                   onChange={(_, value) => updatePackage(pkg.id, "destination", value)}
-                  placeholder="Enter delivery address..."
+                  placeholder={copy.deliveryPlaceholder}
                   required
-                  label="Delivery Address"
+                  label={copy.delivery}
                   country={countryFilter}
+                  locale={locale}
                 />
               </div>
 
@@ -313,7 +320,7 @@ export default function StepsPackages({
                         onChange={(_, value) =>
                           updatePackage(pkg.id, "weight", value)
                         }
-                        label="Weight"
+                        label={copy.weight}
                         required
                         placeholder="1"
                         unit={pkg.weightUnit}
@@ -330,7 +337,7 @@ export default function StepsPackages({
                         onChange={(_, value) =>
                           updatePackage(pkg.id, "quantity", value)
                         }
-                        label="Quantity"
+                        label={copy.quantity}
                         required
                         placeholder="1"
                         unitOptions={["box", "pallet", "container"]}
@@ -346,7 +353,7 @@ export default function StepsPackages({
                     onChange={(_, value) =>
                       updatePackage(pkg.id, "length", value)
                     }
-                    label="Length"
+                    label={copy.length}
                     required
                     placeholder="2200"
                     unit={pkg.dimensionUnit}
@@ -366,7 +373,7 @@ export default function StepsPackages({
                     onChange={(_, value) =>
                       updatePackage(pkg.id, "width", value)
                     }
-                    label="Width"
+                    label={copy.width}
                     required
                     placeholder="2200"
                     unit={pkg.dimensionUnit}
@@ -383,7 +390,7 @@ export default function StepsPackages({
                     onChange={(_, value) =>
                       updatePackage(pkg.id, "height", value)
                     }
-                    label="Height"
+                    label={copy.height}
                     required
                     placeholder="2200"
                     unit={pkg.dimensionUnit}
@@ -423,7 +430,7 @@ export default function StepsPackages({
           >
             <Plus className="w-4 h-4" />
           </motion.div>
-          Add Another Package
+          {copy.addPackage}
         </motion.button>
       </motion.div>
 
@@ -435,7 +442,7 @@ export default function StepsPackages({
           disabled={isSubmitting}
           className="w-full"
         >
-          {isSubmitting ? "SUBMITTING..." : "CONTINUE"}
+          {isSubmitting ? copy.submitting : copy.continue}
         </Button>
         
         {/* Development Skip Button */}
@@ -447,7 +454,7 @@ export default function StepsPackages({
               onClick={() => onSubmit([])}
               disabled={isSubmitting}
             >
-              SKIP
+              {copy.skip}
             </Button>
           </div>
         )}
@@ -475,8 +482,8 @@ export default function StepsPackages({
           >
             <div className="text-center">
               <Loader2 className="w-12 h-12 text-dark-blue animate-spin mx-auto mb-4" />
-              <p className="text-neutral-800 font-medium">Processing your quote request...</p>
-              <p className="text-neutral-500 text-sm mt-2">Please wait while we send your request...</p>
+              <p className="text-neutral-800 font-medium">{copy.processing}</p>
+              <p className="text-neutral-500 text-sm mt-2">{copy.processingWait}</p>
             </div>
           </motion.div>
         )}

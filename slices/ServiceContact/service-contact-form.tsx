@@ -8,10 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { submitContactForm } from "@/app/actions/send-contact-form";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { isSimplifiedChinese, localizedPath } from "@/lib/localized-routes";
 
 interface ServiceContactFormProps {
   pageTitle: string;
   submitButtonText: string;
+  locale?: LocaleCode;
 }
 
 interface ServiceContactState {
@@ -33,13 +36,18 @@ const initialState: ServiceContactState = {
 export default function ServiceContactForm({
   pageTitle,
   submitButtonText,
+  locale = defaultLocale,
 }: ServiceContactFormProps) {
   const router = useRouter();
   const [formData, setFormData] = useState<ServiceContactState>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const chinese = isSimplifiedChinese(locale);
 
-  const normalizedPageTitle = useMemo(() => pageTitle?.trim() || "Unknown Service Page", [pageTitle]);
+  const normalizedPageTitle = useMemo(
+    () => pageTitle?.trim() || (chinese ? "未知服务页面" : "Unknown Service Page"),
+    [pageTitle, chinese],
+  );
 
   const handleChange = (field: keyof ServiceContactState, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -62,16 +70,16 @@ export default function ServiceContactForm({
       });
 
       if (!result.success) {
-        setError(result.error || "Unable to send your enquiry right now.");
+        setError(result.error || (chinese ? "目前无法发送您的询盘。" : "Unable to send your enquiry right now."));
         setIsSubmitting(false);
         return;
       }
 
       const emailParam = encodeURIComponent(formData.email);
-      router.push(`/contact/thank-you?email=${emailParam}`);
+      router.push(`${localizedPath("/contact/thank-you", locale)}?email=${emailParam}`);
       // Keep isSubmitting true until redirect completes
     } catch {
-      setError("An unexpected error occurred. Please try again.");
+      setError(chinese ? "发生意外错误，请重试。" : "An unexpected error occurred. Please try again.");
       setIsSubmitting(false);
     }
   };
@@ -91,14 +99,14 @@ export default function ServiceContactForm({
           name="fullName"
           value={formData.fullName}
           onChange={(e) => handleChange("fullName", e.target.value)}
-          placeholder="Full name"
+          placeholder={chinese ? "姓名" : "Full name"}
           required
         />
         <Input
           name="companyName"
           value={formData.companyName}
           onChange={(e) => handleChange("companyName", e.target.value)}
-          placeholder="Company name"
+          placeholder={chinese ? "公司名称" : "Company name"}
           required
         />
         <Input
@@ -106,7 +114,7 @@ export default function ServiceContactForm({
           type="email"
           value={formData.email}
           onChange={(e) => handleChange("email", e.target.value)}
-          placeholder="Email address"
+          placeholder={chinese ? "电子邮箱" : "Email address"}
           required
         />
         <Input
@@ -114,14 +122,14 @@ export default function ServiceContactForm({
           type="tel"
           value={formData.phone}
           onChange={(e) => handleChange("phone", e.target.value)}
-          placeholder="Phone number"
+          placeholder={chinese ? "联系电话" : "Phone number"}
           required
         />
         <Textarea
           name="message"
           value={formData.message}
           onChange={(e) => handleChange("message", e.target.value)}
-          placeholder="How can we help?"
+          placeholder={chinese ? "我们能为您提供什么帮助？" : "How can we help?"}
           rows={5}
           required
         />
@@ -132,7 +140,7 @@ export default function ServiceContactForm({
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Sending...
+              {chinese ? "发送中..." : "Sending..."}
             </>
           ) : (
             submitButtonText

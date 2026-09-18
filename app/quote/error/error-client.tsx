@@ -7,10 +7,14 @@ import Image from "next/image";
 import { HeroButton } from "@/components/ui/hero-button";
 import { getContainerClass } from "@/lib/spacing";
 import { getLocaleFromPathname, addLocaleToPathname } from "@/lib/locale-helpers";
+import { localizedPath } from "@/lib/localized-routes";
+import { quoteCopy } from "@/lib/quote-ui";
 
 export default function ErrorClient() {
   const router = useRouter();
   const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const copy = quoteCopy(locale);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [hasQuoteData, setHasQuoteData] = useState(false);
 
@@ -71,15 +75,15 @@ export default function ErrorClient() {
           {/* Text hierarchy: label → heading → description */}
           <div className="space-y-3 mb-6">
             <p className="text-neutral-500 text-[11px] font-semibold uppercase tracking-widest">
-              Quote Error
+              {copy.quoteError}
             </p>
             <h1 className="text-neutral-800 text-2xl lg:text-4xl font-bold leading-tight">
-              Something went wrong
+              {copy.somethingWrong}
             </h1>
           </div>
 
           <p className="text-neutral-600 text-sm lg:text-base leading-relaxed max-w-sm mx-auto mb-8">
-            {errorMessage || "We encountered an issue processing your quote request. You can try submitting again or start over."}
+            {errorMessage || copy.errorDescription}
           </p>
 
           {/* Action Buttons - header style (size="small") */}
@@ -87,17 +91,17 @@ export default function ErrorClient() {
             {hasQuoteData && (
               <HeroButton asChild size="small">
                 <button onClick={handleRetry} className="cursor-pointer w-full sm:w-auto">
-                  Try Again
+                  {copy.tryAgain}
                 </button>
               </HeroButton>
             )}
             <HeroButton asChild size="small">
               <button onClick={handleStartOver} className="cursor-pointer w-full sm:w-auto">
-                Start Over
+                {copy.startOver}
               </button>
             </HeroButton>
             <HeroButton asChild size="small">
-              <Link href="/">Back to Home</Link>
+              <Link href={localizedPath("/", locale)}>{copy.backHome}</Link>
             </HeroButton>
           </div>
         </div>

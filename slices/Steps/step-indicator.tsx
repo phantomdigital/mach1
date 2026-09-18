@@ -3,12 +3,15 @@
 import { useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { quoteCopy } from "@/lib/quote-ui";
 
 interface StepIndicatorProps {
   stepNumber: number;
   stepTitle: string;
   totalSteps: number;
   onBack?: () => void;
+  locale?: LocaleCode;
 }
 
 interface TickerDigitProps {
@@ -53,7 +56,9 @@ export function StepIndicator({
   stepTitle,
   totalSteps,
   onBack,
+  locale = defaultLocale,
 }: StepIndicatorProps) {
+  const copy = quoteCopy(locale);
   const previousStepRef = useRef<number>(stepNumber);
   const currentDigits = String(stepNumber).padStart(2, "0").split("");
   const previousDigits = String(previousStepRef.current).padStart(2, "0").split("");
@@ -75,7 +80,7 @@ export function StepIndicator({
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           className="w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center bg-neutral-200 hover:bg-neutral-300 text-neutral-800 cursor-pointer transition-colors duration-200 flex-shrink-0"
-          aria-label="Previous step"
+          aria-label={copy.previousStep}
         >
           <ChevronLeft className="w-5 h-5" />
         </motion.button>
@@ -119,7 +124,7 @@ export function StepIndicator({
         {/* Progress info - subtle text above line */}
         <div className="flex items-center justify-between px-1">
           <span className="text-xs text-neutral-400" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
-            Step {stepNumber}/{totalSteps}
+            {copy.stepOf(stepNumber, totalSteps)}
           </span>
           <motion.span 
             className="text-xs font-medium text-neutral-600"
@@ -146,7 +151,7 @@ export function StepIndicator({
       <div className="md:hidden absolute left-0 right-0 -bottom-8 px-4">
         <div className="flex items-center justify-between mb-1.5">
           <span className="text-xs text-neutral-400" style={{ fontFamily: "var(--font-jetbrains-mono)" }}>
-            Step {stepNumber}/{totalSteps}
+            {copy.stepOf(stepNumber, totalSteps)}
           </span>
           <motion.span 
             className="text-xs font-medium text-neutral-600"

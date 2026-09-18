@@ -1,17 +1,20 @@
 import { Suspense } from "react";
 import { Content, isFilled, RichTextField } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import Steps from "./steps-client";
+import { quoteCopy } from "@/lib/quote-ui";
 
-export type StepsProps = SliceComponentProps<Content.StepsSlice>;
+export type StepsProps = SliceComponentProps<Content.StepsSlice> & {
+  context?: { locale?: LocaleCode };
+};
 
-function StepsLoader() {
+function StepsLoader({ locale }: { locale: LocaleCode }) {
   return (
     <section className="w-full bg-white py-16 lg:py-24">
       <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         <div className="w-full flex items-center justify-center py-20">
-          <div className="animate-pulse text-neutral-400">Loading...</div>
+          <div className="animate-pulse text-neutral-400">{quoteCopy(locale).loading}</div>
         </div>
       </div>
     </section>
@@ -19,6 +22,7 @@ function StepsLoader() {
 }
 
 export default async function StepsWrapper(props: StepsProps) {
+  const locale = props.context?.locale ?? defaultLocale;
   let mainFaqs: Array<{ faq_question: string | null; faq_answer: RichTextField | null }> = [];
 
   // If this is a summary variation and use_main_faqs is true, fetch FAQs from linked page
@@ -29,7 +33,9 @@ export default async function StepsWrapper(props: StepsProps) {
   ) {
     try {
       const client = createClient();
-      const linkedPage = await client.getByID((props.slice.primary as any).main_faq_slice.id);
+      const linkedPage = await client.getByID((props.slice.primary as any).main_faq_slice.id, {
+        lang: locale,
+      });
       
       // Type guard: Check if the document has slices (only Page documents have slices)
       if ('slices' in linkedPage.data && Array.isArray(linkedPage.data.slices)) {
@@ -57,7 +63,7 @@ export default async function StepsWrapper(props: StepsProps) {
   }
 
   return (
-    <Suspense fallback={<StepsLoader />}>
+    <Suspense fallback={<StepsLoader locale={locale} />}>
       <Steps {...props} mainFaqs={mainFaqs} />
     </Suspense>
   );

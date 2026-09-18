@@ -5,6 +5,8 @@ import { PrismicRichText } from "@prismicio/react";
 import { RichTextField, LinkField } from "@prismicio/client";
 import { HeroButton } from "@/components/ui/hero-button";
 import { motion } from "framer-motion";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { quoteCopy } from "@/lib/quote-ui";
 
 interface StepsStartProps {
   image: LinkField;
@@ -12,6 +14,7 @@ interface StepsStartProps {
   description: RichTextField;
   buttonText: string | null;
   onStart: () => void;
+  locale?: LocaleCode;
 }
 
 export default function StepsStart({
@@ -20,7 +23,9 @@ export default function StepsStart({
   description,
   buttonText,
   onStart,
+  locale = defaultLocale,
 }: StepsStartProps) {
+  const copy = quoteCopy(locale);
   const [isInView, setIsInView] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageUrl = image && 'url' in image ? image.url : null;
@@ -127,7 +132,7 @@ export default function StepsStart({
             )}
 
             <HeroButton onClick={handleStart} size="small" className="mt-auto">
-              {buttonText || "Start Quote"}
+              {buttonText || copy.startQuote}
             </HeroButton>
           </div>
         </motion.div>

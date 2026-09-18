@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { isFilled, RichTextField } from "@prismicio/client";
 import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { generatePrismicMetadata } from "@/lib/metadata";
+import { quoteChrome, quoteCopy } from "@/lib/quote-ui";
 import SummaryClient from "./summary-client";
 import type { StepsSliceSummary, FaqSlice } from "@/types.generated";
 
@@ -49,8 +50,10 @@ export default async function QuoteSummaryPage({ params }: Props) {
     
     if (!summarySlice) {
       console.warn("No Steps summary slice found on quote-summary page");
-      return <SummaryClient />;
+      return <SummaryClient locale={locale} />;
     }
+
+    const copy = quoteCopy(locale);
     
     // Access summary variation fields with proper typing
     const primary = summarySlice.primary;
@@ -98,38 +101,39 @@ export default async function QuoteSummaryPage({ params }: Props) {
     // Pass Prismic content to client component
     return (
       <SummaryClient 
-        heading={primary.summary_heading || "We have received your request."}
+        heading={quoteChrome(primary.summary_heading, copy.weReceived, locale)}
         description={primary.summary_description}
         contactEmail={primary.contact_email || ""}
         contactTimeframe={primary.contact_timeframe || ""}
         faqs={faqs}
-        badgeText={primary.badge_text || "Quote Received"}
-        goToHomeButton={primary.go_to_home_button || "GO TO HOME"}
-        detailsHeading={primary.details_heading || "DETAILS"}
-        serviceTypeLabel={primary.service_type_label || "Service Type"}
-        packageDetailsHeading={primary.package_details_heading || "PACKAGE DETAILS"}
-        packageLabel={primary.package_label || "Package"}
-        originLabel={primary.origin_label || "Origin"}
-        destinationLabel={primary.destination_label || "Destination"}
-        weightLabel={primary.weight_label || "Weight"}
-        quantityLabel={primary.quantity_label || "Quantity"}
-        lengthLabel={primary.length_label || "Length"}
-        widthLabel={primary.width_label || "Width"}
-        heightLabel={primary.height_label || "Height"}
-        faqsTitle={primary.faqs_title || "FAQs"}
-        haveAChatHeading={primary.have_a_chat_heading || "HAVE A CHAT"}
-        getHelpHeading={primary.get_help_heading || "Get help"}
-        contactUsButton={primary.contact_us_button || "CONTACT US"}
-        liveChatButton={primary.live_chat_button || "LIVE CHAT"}
-        loadingMessage={primary.loading_message || "Loading your quote summary..."}
-        noDataMessage={primary.no_data_message || "No quote data found"}
-        redirectingMessage={primary.redirecting_message || "Redirecting you to the home page..."}
+        badgeText={quoteChrome(primary.badge_text, copy.quoteReceived, locale)}
+        goToHomeButton={quoteChrome(primary.go_to_home_button, copy.goHome, locale)}
+        detailsHeading={quoteChrome(primary.details_heading, copy.details, locale)}
+        serviceTypeLabel={quoteChrome(primary.service_type_label, copy.serviceType, locale)}
+        packageDetailsHeading={quoteChrome(primary.package_details_heading, copy.packageDetails, locale)}
+        packageLabel={quoteChrome(primary.package_label, copy.packageWord, locale)}
+        originLabel={quoteChrome(primary.origin_label, copy.origin, locale)}
+        destinationLabel={quoteChrome(primary.destination_label, copy.destination, locale)}
+        weightLabel={quoteChrome(primary.weight_label, copy.weight, locale)}
+        quantityLabel={quoteChrome(primary.quantity_label, copy.quantity, locale)}
+        lengthLabel={quoteChrome(primary.length_label, copy.length, locale)}
+        widthLabel={quoteChrome(primary.width_label, copy.width, locale)}
+        heightLabel={quoteChrome(primary.height_label, copy.height, locale)}
+        faqsTitle={quoteChrome(primary.faqs_title, copy.faqs, locale)}
+        haveAChatHeading={quoteChrome(primary.have_a_chat_heading, copy.haveAChat, locale)}
+        getHelpHeading={quoteChrome(primary.get_help_heading, copy.getHelp, locale)}
+        contactUsButton={quoteChrome(primary.contact_us_button, copy.contactUs, locale)}
+        liveChatButton={quoteChrome(primary.live_chat_button, copy.liveChat, locale)}
+        loadingMessage={quoteChrome(primary.loading_message, copy.loadingSummary, locale)}
+        noDataMessage={quoteChrome(primary.no_data_message, copy.noData, locale)}
+        redirectingMessage={quoteChrome(primary.redirecting_message, copy.redirecting, locale)}
+        locale={locale}
       />
     );
   } catch (error) {
     // Page not found - use default content
     console.error('Error fetching quote-summary page:', error);
-    return <SummaryClient />;
+    return <SummaryClient locale={locale} />;
   }
 }
 
