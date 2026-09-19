@@ -45,6 +45,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: '*.cdn.prismic.io',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'images.unsplash.com',
         pathname: '/**',
       },
@@ -62,7 +67,8 @@ const nextConfig: NextConfig = {
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://challenges.cloudflare.com https://api.mapbox.com https://static.cdn.prismic.io",
       "style-src 'self' 'unsafe-inline' https://api.mapbox.com",
-      "img-src 'self' data: blob: https://images.prismic.io https://images.unsplash.com https://api.mapbox.com https://*.mapbox.com https://*.cloudflare.com",
+      "img-src 'self' data: blob: https://images.prismic.io https://*.cdn.prismic.io https://images.unsplash.com https://api.mapbox.com https://*.mapbox.com https://*.cloudflare.com",
+      "media-src 'self' blob: https://images.prismic.io https://*.cdn.prismic.io https://prismic-io.s3.amazonaws.com",
       "connect-src 'self' ws: wss: https://plausible.io https://*.mapbox.com https://api.mapbox.com https://*.prismic.io https://*.cdn.prismic.io https://challenges.cloudflare.com",
       "frame-src https://challenges.cloudflare.com",
       "font-src 'self' data:",
