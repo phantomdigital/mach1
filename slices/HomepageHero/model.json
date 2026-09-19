@@ -194,6 +194,13 @@
             "placeholder": "This will open a new window to Logixboard tracking"
           }
         },
+        "tracking_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Tracking Button Text",
+            "placeholder": "Track"
+          }
+        },
         "hero_ctas": {
           "type": "Group",
           "config": {

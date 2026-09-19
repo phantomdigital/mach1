@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import { submitContactForm } from "@/app/actions/send-contact-form";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { isSimplifiedChinese, localizedPath } from "@/lib/localized-routes";
+import { localizedChrome, localizedPath } from "@/lib/localized-routes";
 
 interface ServiceContactFormProps {
   pageTitle: string;
@@ -42,11 +42,11 @@ export default function ServiceContactForm({
   const [formData, setFormData] = useState<ServiceContactState>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const chinese = isSimplifiedChinese(locale);
-
   const normalizedPageTitle = useMemo(
-    () => pageTitle?.trim() || (chinese ? "未知服务页面" : "Unknown Service Page"),
-    [pageTitle, chinese],
+    () =>
+      pageTitle?.trim() ||
+      localizedChrome(locale, "Unknown Service Page", "未知服务页面", "अज्ञात सेवा पृष्ठ"),
+    [pageTitle, locale],
   );
 
   const handleChange = (field: keyof ServiceContactState, value: string) => {
@@ -70,7 +70,15 @@ export default function ServiceContactForm({
       });
 
       if (!result.success) {
-        setError(result.error || (chinese ? "目前无法发送您的询盘。" : "Unable to send your enquiry right now."));
+        setError(
+          result.error ||
+            localizedChrome(
+              locale,
+              "Unable to send your enquiry right now.",
+              "目前无法发送您的询盘。",
+              "अभी आपकी पूछताछ नहीं भेजी जा सकी।",
+            ),
+        );
         setIsSubmitting(false);
         return;
       }
@@ -79,7 +87,14 @@ export default function ServiceContactForm({
       router.push(`${localizedPath("/contact/thank-you", locale)}?email=${emailParam}`);
       // Keep isSubmitting true until redirect completes
     } catch {
-      setError(chinese ? "发生意外错误，请重试。" : "An unexpected error occurred. Please try again.");
+      setError(
+        localizedChrome(
+          locale,
+          "An unexpected error occurred. Please try again.",
+          "发生意外错误，请重试。",
+          "एक अप्रत्याशित त्रुटि हुई। कृपया फिर से प्रयास करें।",
+        ),
+      );
       setIsSubmitting(false);
     }
   };
@@ -99,14 +114,14 @@ export default function ServiceContactForm({
           name="fullName"
           value={formData.fullName}
           onChange={(e) => handleChange("fullName", e.target.value)}
-          placeholder={chinese ? "姓名" : "Full name"}
+          placeholder={localizedChrome(locale, "Full name", "姓名", "पूरा नाम")}
           required
         />
         <Input
           name="companyName"
           value={formData.companyName}
           onChange={(e) => handleChange("companyName", e.target.value)}
-          placeholder={chinese ? "公司名称" : "Company name"}
+          placeholder={localizedChrome(locale, "Company name", "公司名称", "कंपनी का नाम")}
           required
         />
         <Input
@@ -114,7 +129,7 @@ export default function ServiceContactForm({
           type="email"
           value={formData.email}
           onChange={(e) => handleChange("email", e.target.value)}
-          placeholder={chinese ? "电子邮箱" : "Email address"}
+          placeholder={localizedChrome(locale, "Email address", "电子邮箱", "ईमेल पता")}
           required
         />
         <Input
@@ -122,14 +137,14 @@ export default function ServiceContactForm({
           type="tel"
           value={formData.phone}
           onChange={(e) => handleChange("phone", e.target.value)}
-          placeholder={chinese ? "联系电话" : "Phone number"}
+          placeholder={localizedChrome(locale, "Phone number", "联系电话", "फ़ोन नंबर")}
           required
         />
         <Textarea
           name="message"
           value={formData.message}
           onChange={(e) => handleChange("message", e.target.value)}
-          placeholder={chinese ? "我们能为您提供什么帮助？" : "How can we help?"}
+          placeholder={localizedChrome(locale, "How can we help?", "我们能为您提供什么帮助？", "हम आपकी कैसे मदद कर सकते हैं?")}
           rows={5}
           required
         />
@@ -140,7 +155,7 @@ export default function ServiceContactForm({
           {isSubmitting ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {chinese ? "发送中..." : "Sending..."}
+              {localizedChrome(locale, "Sending...", "发送中...", "भेजा जा रहा है...")}
             </>
           ) : (
             submitButtonText

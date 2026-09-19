@@ -6,7 +6,7 @@ import { FeaturedHero } from "./featured-hero";
 import { HeroButton } from "@/components/ui/hero-button";
 import { PrismicNextLink } from "@prismicio/next";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { isSimplifiedChinese } from "@/lib/localized-routes";
+import { localizedChrome } from "@/lib/localized-routes";
 
 /**
  * Props for `News`.
@@ -145,7 +145,7 @@ const News = async ({ slice, context }: NewsProps): Promise<React.ReactElement> 
             <div className="mt-12 flex justify-center">
               <HeroButton asChild>
                 <PrismicNextLink field={slice.primary.view_all_link}>
-                  {isSimplifiedChinese(locale) ? "查看所有新闻" : "VIEW ALL NEWS"}
+                  {localizedChrome(locale, "VIEW ALL NEWS", "查看所有新闻", "सभी समाचार देखें")}
                 </PrismicNextLink>
               </HeroButton>
             </div>

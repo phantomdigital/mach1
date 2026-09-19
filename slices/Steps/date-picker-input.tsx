@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import { format } from "date-fns";
-import { zhCN } from "date-fns/locale";
+import { hi, zhCN } from "date-fns/locale";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { isSimplifiedChinese } from "@/lib/localized-routes";
+import { isHindi, isSimplifiedChinese } from "@/lib/localized-routes";
 import { quoteCopy } from "@/lib/quote-ui";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -34,7 +34,7 @@ export default function DatePickerInput({
   locale = defaultLocale,
 }: DatePickerInputProps) {
   const copy = quoteCopy(locale);
-  const dateLocale = isSimplifiedChinese(locale) ? zhCN : undefined;
+  const dateLocale = isSimplifiedChinese(locale) ? zhCN : isHindi(locale) ? hi : undefined;
   const [date, setDate] = React.useState<Date | undefined>(
     value ? new Date(value) : undefined
   );

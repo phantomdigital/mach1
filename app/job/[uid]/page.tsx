@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { JobApplicationDialog } from "@/app/careers/job-application-dialog";
 import { generateBreadcrumbSchema } from "@/lib/metadata";
 import { createRichTextComponents } from "@/lib/rich-text-serializer";
-import { isSimplifiedChinese, localeForIntl, localizedPath } from "@/lib/localized-routes";
+import { isHindi, isSimplifiedChinese, localeForIntl, localizedChrome, localizedPath } from "@/lib/localized-routes";
 
 type Params = { uid: string; locale?: LocaleCode };
 
@@ -23,6 +23,7 @@ export default async function JobPage({
   const { uid, locale = defaultLocale } = await params;
   const client = createClient();
   const chinese = isSimplifiedChinese(locale);
+  const hindi = isHindi(locale);
   const labels = chinese
     ? {
         back: "返回招聘职位", featured: "精选职位", closed: "职位已关闭",
@@ -33,6 +34,17 @@ export default async function JobPage({
         readyDescription: "立即提交申请，加入我们的优秀团队。",
         noApplications: "此职位已停止接受申请",
         otherOpportunities: "查看我们的其他招聘机会", viewAll: "查看所有职位",
+      }
+    : hindi
+    ? {
+        back: "करियर पर वापस जाएँ", featured: "विशेष पद", closed: "पद बंद",
+        interested: "इस भूमिका में रुचि है?", applicationsClose: "आवेदन की अंतिम तिथि",
+        apply: "अभी आवेदन करें", about: "भूमिका के बारे में", responsibilities: "मुख्य जिम्मेदारियाँ",
+        requirements: "आवश्यकताएँ और योग्यताएँ", benefits: "हम क्या देते हैं",
+        ready: "हमारी टीम में शामिल होने के लिए तैयार हैं?",
+        readyDescription: "आज ही आवेदन जमा करें और हमारी टीम का हिस्सा बनें।",
+        noApplications: "यह पद अब आवेदन स्वीकार नहीं कर रहा है",
+        otherOpportunities: "हमारे अन्य वर्तमान अवसर देखें", viewAll: "सभी पद देखें",
       }
     : {
         back: "Back to Careers", featured: "Featured", closed: "Position Closed",
@@ -380,8 +392,8 @@ export default async function JobPage({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             generateBreadcrumbSchema([
-              { name: chinese ? "首页" : "Home", url: localizedPath("/", locale) },
-              { name: chinese ? "招聘职位" : "Careers", url: localizedPath("/careers/vacancies", locale) },
+              { name: localizedChrome(locale, "Home", "首页", "होम"), url: localizedPath("/", locale) },
+              { name: localizedChrome(locale, "Careers", "招聘职位", "करियर"), url: localizedPath("/careers/vacancies", locale) },
               { name: page.data.title || uid, url: localizedPath(`/job/${uid}`, locale) },
             ])
           ),

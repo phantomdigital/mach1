@@ -15,7 +15,7 @@ import {
   type PaddingSize 
 } from "@/lib/spacing";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { isSimplifiedChinese, localizedPath } from "@/lib/localized-routes";
+import { localizedChrome, localizedPath } from "@/lib/localized-routes";
 import { parseRichTextIconAlt } from "@/lib/rich-text-icon";
 
 /**
@@ -32,15 +32,17 @@ export type SolutionsBaseProps = SliceComponentProps<Content.SolutionsBaseSlice>
 const SolutionsBase = ({ slice, context }: SolutionsBaseProps): React.ReactElement => {
   const primary = slice.primary;
   const locale = context?.locale ?? defaultLocale;
-  const chinese = isSimplifiedChinese(locale);
   const cardDescription =
     slice.primary.card_description ||
-    (chinese
-      ? "立即联系我们，获取定制货运方案。我们的团队随时准备协助您解决物流需求。"
-      : "Contact us today for a customised freight solution. Our team is ready to help with your logistics needs.");
-  const quoteLabel = chinese ? "获取报价" : "Get a Quote";
-  const contactLabel = chinese ? "联系我们" : "Contact Us";
-  const onThisPageLabel = chinese ? "本页目录" : "On this page";
+    localizedChrome(
+      locale,
+      "Contact us today for a customised freight solution. Our team is ready to help with your logistics needs.",
+      "立即联系我们，获取定制货运方案。我们的团队随时准备协助您解决物流需求。",
+      "आज ही कस्टमाइज़्ड फ्रेट समाधान के लिए हमसे संपर्क करें। हमारी टीम आपकी लॉजिस्टिक्स ज़रूरतों में मदद के लिए तैयार है।",
+    );
+  const quoteLabel = localizedChrome(locale, "Get a Quote", "获取报价", "कोटेशन प्राप्त करें");
+  const contactLabel = localizedChrome(locale, "Contact Us", "联系我们", "हमसे संपर्क करें");
+  const onThisPageLabel = localizedChrome(locale, "On this page", "本页目录", "इस पृष्ठ पर");
   // Get spacing from Prismic or use defaults
   const marginTop = (primary.margin_top as MarginTopSize) || "large";
   const paddingTop = (primary.padding_top as PaddingSize) || "large";

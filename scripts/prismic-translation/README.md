@@ -1,6 +1,8 @@
-# Prismic Chinese migration
+# Prismic locale migration
 
-This directory contains reusable, manifest-driven tooling for migrating `en-us` Prismic content to `zh-cn`. Validation is read-only. Staging creates or updates drafts in a Prismic Migration Release; this runner has no publishing command or publishing API call.
+This directory contains reusable, manifest-driven tooling for migrating `en-us` Prismic content to `zh-cn` and `hi-in`. Validation is read-only. Staging creates or updates drafts in a Prismic Migration Release; this runner has no publishing command or publishing API call.
+
+Chinese manifests live in `manifests/`. Hindi manifests live in `manifests/hi-in/`. Pass `--lang hi-in` to use the Hindi set; `--lang` defaults to `zh-cn`.
 
 ## Manifests
 
@@ -41,12 +43,17 @@ npm run prismic:translation -- --validate --batch foundation-core
 npm run prismic:translation -- --validate --batch foundation-pages
 npm run prismic:translation -- --validate --batch services
 npm run prismic:translation -- --validate --batch editorial
+npm run prismic:translation -- --validate --batch foundation-core --lang hi-in
+npm run prismic:translation -- --validate --batch foundation-pages --lang hi-in
+npm run prismic:translation -- --validate --batch services --lang hi-in
+npm run prismic:translation -- --validate --batch editorial --lang hi-in
 ```
 
 Validate every batch:
 
 ```powershell
 npm run prismic:translation -- --validate --batch all
+npm run prismic:translation -- --validate --batch all --lang hi-in
 ```
 
 Stage drafts only after validation succeeds. Set the token in the current PowerShell process; the runner does not read or modify `.env.local` and never prints the token:
@@ -62,6 +69,7 @@ To stage all approved batches:
 ```powershell
 $env:PRISMIC_WRITE_TOKEN = Read-Host -MaskInput "Prismic write token"
 npm run prismic:translation -- --stage --batch all
+npm run prismic:translation -- --stage --batch all --lang hi-in
 Remove-Item Env:PRISMIC_WRITE_TOKEN
 ```
 
@@ -70,8 +78,8 @@ Remove-Item Env:PRISMIC_WRITE_TOKEN
 ## Safety and behavior
 
 - All Prismic SDK requests are started no faster than one request per second.
-- Existing Chinese alternates are updated; missing alternates are created with the same UID and their English source as `masterLanguageDocument`.
-- Document links are changed to an included or existing Chinese alternate. Web and Media links are preserved.
+- Existing locale alternates are updated; missing alternates are created with the same UID and their English source as `masterLanguageDocument`.
+- Document links are changed to an included or existing alternate in the target locale. Web and Media links are preserved.
 - Header/footer rows with labels or button text fail validation when their actionable link is empty.
 - `--stage` is the only write mode and only stages a Migration Release. Publishing is intentionally impossible from this runner.
 - Reports list each planned create/update, translated path count, and rewired relationship count.

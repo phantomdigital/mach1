@@ -7,17 +7,21 @@ import { HomepageHeroImage } from "./homepage-hero-image";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Button } from "@/components/ui/button";
 import { TrackingSearch } from "./tracking-search";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
 
 /**
  * Props for `HomepageHero`.
  */
-export type HomepageHeroProps = SliceComponentProps<Content.HomepageHeroSlice>;
+export type HomepageHeroProps = SliceComponentProps<Content.HomepageHeroSlice> & {
+  context?: { locale?: LocaleCode };
+};
 
 /**
  * Component for "HomepageHero" Slices.
  * Modern, minimal hero section with split layout and natural image presentation.
  */
-const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
+const HomepageHero = ({ slice, context }: HomepageHeroProps): React.ReactElement => {
+  const locale = context?.locale ?? defaultLocale;
   const layout = slice.primary.layout || "split";
   const backgroundStyle = slice.primary.background_style || "light";
 
@@ -206,7 +210,9 @@ const HomepageHero = ({ slice }: HomepageHeroProps): React.ReactElement => {
                     urlPrefix={slice.primary.tracking_url_prefix || "mach1logistics"}
                     placeholder={slice.primary.tracking_placeholder_text || undefined}
                     warningText={slice.primary.tracking_warning_text || undefined}
+                    buttonText={(slice.primary as { tracking_button_text?: string | null }).tracking_button_text}
                     variant="light"
+                    locale={locale}
                   />
                   {/* Hero CTAs - icon, text, link */}
                   {slice.primary.hero_ctas && slice.primary.hero_ctas.length > 0 && (

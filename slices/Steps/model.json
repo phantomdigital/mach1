@@ -166,6 +166,13 @@
             "label": "Form Heading",
             "placeholder": "DETAILS"
           }
+        },
+        "submit_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Submit Button Text",
+            "placeholder": "SUBMIT"
+          }
         }
       },
       "items": {
@@ -279,6 +286,13 @@
           "config": {
             "label": "Packages Heading",
             "placeholder": "PACKAGE DETAILS"
+          }
+        },
+        "continue_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Continue Button Text",
+            "placeholder": "CONTINUE"
           }
         }
       },

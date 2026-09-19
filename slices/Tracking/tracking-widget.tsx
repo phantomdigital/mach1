@@ -3,13 +3,28 @@
 import { useState, FormEvent } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { defaultLocale, type LocaleCode } from '@/prismicio';
+import { quoteChrome } from '@/lib/quote-ui';
+import { trackingCopy } from '@/lib/tracking-ui';
 
 interface TrackingWidgetProps {
   urlPrefix: string;
   placeholderText?: string;
+  inputLabel?: string | null;
+  submitButtonText?: string | null;
+  warningText?: string | null;
+  locale?: LocaleCode;
 }
 
-export function TrackingWidget({ urlPrefix, placeholderText }: TrackingWidgetProps) {
+export function TrackingWidget({
+  urlPrefix,
+  placeholderText,
+  inputLabel,
+  submitButtonText,
+  warningText,
+  locale = defaultLocale,
+}: TrackingWidgetProps) {
+  const copy = trackingCopy(locale);
   const [trackingNumber, setTrackingNumber] = useState('');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -28,14 +43,14 @@ export function TrackingWidget({ urlPrefix, placeholderText }: TrackingWidgetPro
     <form onSubmit={handleSubmit} className="w-full space-y-4">
       <div>
         <label htmlFor="tracking-number" className="block text-sm text-neutral-900 mb-2 font-medium">
-          Tracking number
+          {quoteChrome(inputLabel, copy.trackingNumber, locale)}
         </label>
         <Input
           id="tracking-number"
           type="text"
           value={trackingNumber}
           onChange={(e) => setTrackingNumber(e.target.value)}
-          placeholder={placeholderText || 'Enter tracking number...'}
+          placeholder={quoteChrome(placeholderText, copy.placeholder, locale)}
           required
         />
       </div>
@@ -45,10 +60,10 @@ export function TrackingWidget({ urlPrefix, placeholderText }: TrackingWidgetPro
           variant="hero"
           className="w-full"
         >
-          Track
+          {quoteChrome(submitButtonText, copy.track, locale)}
         </Button>
         <p className="text-xs text-neutral-400 text-left pt-4">
-          This will open a new window to Logixboard tracking
+          {quoteChrome(warningText, copy.warning, locale)}
         </p>
       </div>
     </form>

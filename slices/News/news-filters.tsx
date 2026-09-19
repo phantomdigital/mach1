@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { LocaleCode } from "@/prismicio";
-import { isSimplifiedChinese, localizedNewsLabel } from "@/lib/localized-routes";
+import { localizedChrome, localizedNewsLabel } from "@/lib/localized-routes";
 
 interface NewsFiltersProps {
   allArticles: Content.NewsDocument[];
@@ -29,7 +29,6 @@ export function NewsFilters({
   initialCount,
   locale,
 }: NewsFiltersProps) {
-  const chinese = isSimplifiedChinese(locale);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedYear, setSelectedYear] = useState<string>("All");
   const [displayCount, setDisplayCount] = useState(initialCount);
@@ -91,17 +90,17 @@ export function NewsFilters({
       <div className="flex flex-col sm:flex-row gap-4 mb-8 lg:mb-12">
         <div className="flex-1">
           <label className="block text-sm font-medium text-neutral-700 mb-2">
-            {chinese ? "按类别筛选" : "Sort by Category"}
+            {localizedChrome(locale, "Sort by Category", "按类别筛选", "श्रेणी से छाँटें")}
           </label>
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
             <SelectTrigger>
-              <SelectValue placeholder={chinese ? "所有类别" : "All Categories"} />
+              <SelectValue placeholder={localizedChrome(locale, "All Categories", "所有类别", "सभी श्रेणियाँ")} />
             </SelectTrigger>
             <SelectContent>
               {categories.map((category) => (
                 <SelectItem key={category} value={category}>
                   {category === "All"
-                    ? chinese ? "所有类别" : "All Categories"
+                    ? localizedChrome(locale, "All Categories", "所有类别", "सभी श्रेणियाँ")
                     : localizedNewsLabel(category, locale)}
                 </SelectItem>
               ))}
@@ -111,16 +110,16 @@ export function NewsFilters({
 
         <div className="flex-1">
           <label className="block text-sm font-medium text-neutral-700 mb-2">
-            {chinese ? "按年份筛选" : "Sort by Year"}
+            {localizedChrome(locale, "Sort by Year", "按年份筛选", "वर्ष से छाँटें")}
           </label>
           <Select value={selectedYear} onValueChange={setSelectedYear}>
             <SelectTrigger>
-              <SelectValue placeholder={chinese ? "所有年份" : "All Years"} />
+              <SelectValue placeholder={localizedChrome(locale, "All Years", "所有年份", "सभी वर्ष")} />
             </SelectTrigger>
             <SelectContent>
               {years.map((year) => (
                 <SelectItem key={year} value={year}>
-                  {year === "All" ? chinese ? "所有年份" : "All Years" : year}
+                  {year === "All" ? localizedChrome(locale, "All Years", "所有年份", "सभी वर्ष") : year}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -138,7 +137,7 @@ export function NewsFilters({
       ) : (
         <div className="text-center py-16">
           <p className="text-neutral-600 text-lg">
-            {chinese ? "未找到符合筛选条件的文章。" : "No articles found for the selected filters."}
+            {localizedChrome(locale, "No articles found for the selected filters.", "未找到符合筛选条件的文章。", "चयनित फ़िल्टर के लिए कोई लेख नहीं मिला।")}
           </p>
         </div>
       )}
@@ -147,7 +146,7 @@ export function NewsFilters({
       {hasMore && (
         <div className="mt-12 flex justify-center">
           <Button variant="hero" onClick={handleLoadMore}>
-            {chinese ? "加载更多文章" : "LOAD MORE ARTICLES"}
+            {localizedChrome(locale, "LOAD MORE ARTICLES", "加载更多文章", "और लेख लोड करें")}
           </Button>
         </div>
       )}

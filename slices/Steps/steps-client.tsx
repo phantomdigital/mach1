@@ -330,6 +330,7 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
                   onSubmit={handleFormSubmit}
                   initialData={formData}
                   locale={locale}
+                  submitButtonText={(slice.primary as { submit_button_text?: string | null }).submit_button_text}
                 />
               )}
 
@@ -340,6 +341,7 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
                   selectedCard={selectedCard}
                   onSubmit={handlePackagesSubmit}
                   locale={locale}
+                  continueButtonText={(slice.primary as { continue_button_text?: string | null }).continue_button_text}
                 />
               )}
 

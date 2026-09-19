@@ -47,6 +47,62 @@
             "placeholder": "Enter tracking number..."
           }
         },
+        "input_label": {
+          "type": "Text",
+          "config": {
+            "label": "Input Label",
+            "placeholder": "Tracking number"
+          }
+        },
+        "submit_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Submit Button Text",
+            "placeholder": "Track"
+          }
+        },
+        "warning_text": {
+          "type": "Text",
+          "config": {
+            "label": "Warning Text",
+            "placeholder": "This will open a new window to Logixboard tracking"
+          }
+        },
+        "help_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Help Heading",
+            "placeholder": "HAVE A CHAT"
+          }
+        },
+        "help_subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Help Subheading",
+            "placeholder": "Get help"
+          }
+        },
+        "contact_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Contact Button Text",
+            "placeholder": "CONTACT US"
+          }
+        },
+        "live_chat_button_text": {
+          "type": "Text",
+          "config": {
+            "label": "Live Chat Button Text",
+            "placeholder": "LIVE CHAT"
+          }
+        },
+        "faqs_title": {
+          "type": "Text",
+          "config": {
+            "label": "FAQs Title",
+            "placeholder": "FAQs"
+          }
+        },
         "variant": {
           "type": "Select",
           "config": {

@@ -3,6 +3,8 @@ import { SliceComponentProps } from "@prismicio/react";
 import ContactForm from "./contact-form";
 import { encodeEmailForJS } from "@/lib/email-obfuscation";
 import { ObfuscatedEmail } from "@/components/obfuscated-email";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { localizedChrome } from "@/lib/localized-routes";
 
 /**
  * Props for `ContactUs`.
@@ -12,7 +14,8 @@ export type ContactUsProps = SliceComponentProps<any>;
 /**
  * Component for "ContactUs" Slices.
  */
-const ContactUs = ({ slice }: ContactUsProps): React.ReactElement => {
+const ContactUs = ({ slice, context }: ContactUsProps): React.ReactElement => {
+  const locale = ((context as { locale?: LocaleCode } | undefined)?.locale ?? defaultLocale) as LocaleCode;
   // Get margin top class based on selection (responsive: smaller on mobile)
   const getMarginTopClass = () => {
     switch (slice.primary.margin_top) {
@@ -78,12 +81,38 @@ const ContactUs = ({ slice }: ContactUsProps): React.ReactElement => {
 
           {/* Right Column - Contact Form */}
           <div>
-            <ContactForm 
-              successMessage={slice.primary.success_message || "Thank you! We'll be in touch soon."}
-              thankYouHeading={slice.primary.thank_you_heading || "Message Received!"}
-              thankYouDescription={slice.primary.thank_you_description || "We've received your enquiry and a member of our team will get back to you as soon as possible."}
-              thankYouInfoTitle={slice.primary.thank_you_info_title || "What happens next?"}
-              thankYouInfoText={slice.primary.thank_you_info_text || "Our team typically responds within 24 hours during business days. For urgent enquiries, please call us directly."}
+            <ContactForm
+              locale={locale}
+              successMessage={
+                slice.primary.success_message ||
+                localizedChrome(locale, "Thank you! We'll be in touch soon.", "谢谢！我们会尽快与您联系。", "धन्यवाद! हम जल्द ही आपसे संपर्क करेंगे।")
+              }
+              thankYouHeading={
+                slice.primary.thank_you_heading ||
+                localizedChrome(locale, "Message Received!", "已收到您的消息！", "संदेश प्राप्त हुआ!")
+              }
+              thankYouDescription={
+                slice.primary.thank_you_description ||
+                localizedChrome(
+                  locale,
+                  "We've received your enquiry and a member of our team will get back to you as soon as possible.",
+                  "我们已收到您的询盘，团队成员将尽快与您联系。",
+                  "हमें आपकी पूछताछ मिल गई है, और हमारी टीम जल्द ही आपसे संपर्क करेगी।",
+                )
+              }
+              thankYouInfoTitle={
+                slice.primary.thank_you_info_title ||
+                localizedChrome(locale, "What happens next?", "接下来会怎样？", "आगे क्या होगा?")
+              }
+              thankYouInfoText={
+                slice.primary.thank_you_info_text ||
+                localizedChrome(
+                  locale,
+                  "Our team typically responds within 24 hours during business days. For urgent enquiries, please call us directly.",
+                  "我们的团队通常会在工作日 24 小时内回复。如需紧急协助，请直接致电。",
+                  "हमारी टीम आमतौर पर कार्य दिवसों में 24 घंटे के भीतर जवाब देती है। तत्काल पूछताछ के लिए कृपया हमें सीधे कॉल करें।",
+                )
+              }
             />
           </div>
         </div>

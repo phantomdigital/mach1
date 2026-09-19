@@ -1,14 +1,17 @@
 import { Suspense } from "react";
 import { Content, isFilled, RichTextField } from "@prismicio/client";
 import { SliceComponentProps } from "@prismicio/react";
-import { createClient } from "@/prismicio";
+import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { getPaddingTopClass, getPaddingBottomClass, type PaddingSize } from "@/lib/spacing";
+import { trackingCopy } from "@/lib/tracking-ui";
 import TrackingClient from "./tracking-client";
 
 /**
  * Props for `Tracking`.
  */
-export type TrackingProps = SliceComponentProps<Content.TrackingSlice>;
+export type TrackingProps = SliceComponentProps<Content.TrackingSlice> & {
+  context?: { locale?: LocaleCode };
+};
 
 function TrackingLoader() {
   return (
@@ -27,7 +30,9 @@ function TrackingLoader() {
 /**
  * Component for "Tracking" Slices.
  */
-const Tracking = async ({ slice }: TrackingProps): Promise<React.ReactElement> => {
+const Tracking = async ({ slice, context }: TrackingProps): Promise<React.ReactElement> => {
+  const locale = context?.locale ?? defaultLocale;
+  const copy = trackingCopy(locale);
   let mainFaqs: Array<{ faq_question: string | null; faq_answer: RichTextField | null }> = [];
 
   // If use_main_faqs is true, fetch FAQs from linked page
@@ -37,7 +42,7 @@ const Tracking = async ({ slice }: TrackingProps): Promise<React.ReactElement> =
   ) {
     try {
       const client = createClient();
-      const linkedPage = await client.getByID(slice.primary.main_faq_slice.id);
+      const linkedPage = await client.getByID(slice.primary.main_faq_slice.id, { lang: locale });
       
       // Type guard: Check if the document has slices (only Page documents have slices)
       if ('slices' in linkedPage.data && Array.isArray(linkedPage.data.slices)) {
@@ -108,10 +113,19 @@ const Tracking = async ({ slice }: TrackingProps): Promise<React.ReactElement> =
               description={slice.primary.description}
               faqs={faqs}
               spacingClass={`${getMarginTopClass()} ${getPaddingTopClass(paddingTop)} ${getPaddingBottomClass(paddingBottom)}`}
+              locale={locale}
+              inputLabel={(slice.primary as { input_label?: string | null }).input_label}
+              submitButtonText={(slice.primary as { submit_button_text?: string | null }).submit_button_text}
+              warningText={(slice.primary as { warning_text?: string | null }).warning_text}
+              helpHeading={(slice.primary as { help_heading?: string | null }).help_heading}
+              helpSubheading={(slice.primary as { help_subheading?: string | null }).help_subheading}
+              contactButtonText={(slice.primary as { contact_button_text?: string | null }).contact_button_text}
+              liveChatButtonText={(slice.primary as { live_chat_button_text?: string | null }).live_chat_button_text}
+              faqsTitle={(slice.primary as { faqs_title?: string | null }).faqs_title}
             />
           ) : (
             <div className="text-center text-neutral-500">
-              Please configure the Logixboard URL prefix in Prismic
+              {copy.configurePrefix}
             </div>
           )}
         </div>

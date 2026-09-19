@@ -23,7 +23,7 @@ import {
   JOB_APPLICATION_MAX_TOTAL_SIZE_MB,
 } from "@/lib/file-utils"
 import { defaultLocale, type LocaleCode } from "@/prismicio"
-import { isSimplifiedChinese } from "@/lib/localized-routes"
+import { isHindi, isSimplifiedChinese } from "@/lib/localized-routes"
 
 interface JobApplicationDialogProps {
   jobTitle: string
@@ -41,6 +41,7 @@ export function JobApplicationDialog({
   locale = defaultLocale,
 }: JobApplicationDialogProps) {
   const chinese = isSimplifiedChinese(locale)
+  const hindi = isHindi(locale)
   const text = chinese
     ? {
         thankYou: "谢谢！", applyFor: "申请", uploadResume: "请上传您的简历",
@@ -54,6 +55,20 @@ export function JobApplicationDialog({
         supporting: "其他证明文件（可选）", addSupporting: "添加证书、作品集、推荐信等",
         remove: "移除", submitting: "正在提交…", submit: "提交申请", max: "最大",
         perFile: "每个文件", total: "总计",
+      }
+    : hindi
+    ? {
+        thankYou: "धन्यवाद!", applyFor: "आवेदन करें", uploadResume: "कृपया अपना रिज़्यूमे अपलोड करें",
+        submitFailed: "आवेदन जमा नहीं हो सका। कृपया फिर से प्रयास करें।", prepareFailed: "आपका आवेदन तैयार नहीं हो सका। कृपया फिर से प्रयास करें।",
+        success: "आवेदन सफलतापूर्वक जमा हो गया!", received: "आवेदन करने के लिए धन्यवाद! हमें आपका आवेदन मिल गया है और हम जल्द ही उसकी समीक्षा करेंगे।",
+        contact: "हमारी टीम का कोई सदस्य जल्द ही आपसे संपर्क करेगा। अपडेट के लिए अपना ईमेल देखें।",
+        description: "इस पद के लिए आवेदन करने हेतु नीचे दिया गया फ़ॉर्म भरें। हम जल्द ही आपसे संपर्क करेंगे।",
+        closes: "आवेदन की अंतिम तिथि", fullName: "पूरा नाम", email: "ईमेल पता", phone: "फ़ोन नंबर",
+        resume: "रिज़्यूमे / सीवी", uploadResumeAction: "रिज़्यूमे अपलोड करने के लिए क्लिक करें", removeFile: "फ़ाइल हटाएँ",
+        coverLetter: "कवर लेटर दस्तावेज़ (वैकल्पिक)", uploadCoverLetter: "कवर लेटर अपलोड करने के लिए क्लिक करें",
+        supporting: "सहायक दस्तावेज़ (वैकल्पिक)", addSupporting: "प्रमाणपत्र, पोर्टफोलियो, संदर्भ आदि जोड़ें",
+        remove: "हटाएँ", submitting: "जमा हो रहा है…", submit: "आवेदन जमा करें", max: "अधिकतम",
+        perFile: "प्रति फ़ाइल", total: "कुल",
       }
     : {
         thankYou: "Thank You!", applyFor: "Apply for", uploadResume: "Please upload your resume",

@@ -8,7 +8,7 @@ import DatePickerInput from "./date-picker-input";
 import { motion, AnimatePresence } from "framer-motion";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { quoteCopy } from "@/lib/quote-ui";
+import { quoteChrome, quoteCopy } from "@/lib/quote-ui";
 
 interface FormField {
   label: string;
@@ -28,6 +28,7 @@ interface StepsFormProps {
   onSubmit: (data: Record<string, string>) => Promise<void> | void;
   initialData?: Record<string, string> | null;
   locale?: LocaleCode;
+  submitButtonText?: string | null;
 }
 
 export default function StepsForm({
@@ -36,6 +37,7 @@ export default function StepsForm({
   onSubmit,
   initialData,
   locale = defaultLocale,
+  submitButtonText,
 }: StepsFormProps) {
   const copy = quoteCopy(locale);
   const [formData, setFormData] = useState<Record<string, string>>(initialData || {});
@@ -492,7 +494,7 @@ export default function StepsForm({
                 disabled={isSubmitting}
                 className="w-full"
               >
-                {isSubmitting ? copy.submitting : copy.submit}
+                {isSubmitting ? copy.submitting : quoteChrome(submitButtonText, copy.submit, locale)}
               </Button>
               
               {/* Development Skip Button */}

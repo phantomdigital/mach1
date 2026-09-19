@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { NumberInputWithUnit } from "@/components/ui/number-input-with-unit";
 import AddressAutocompleteInput from "./address-autocomplete-input";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { quoteCopy } from "@/lib/quote-ui";
+import { quoteChrome, quoteCopy } from "@/lib/quote-ui";
 
 interface Package {
   id: string;
@@ -28,6 +28,7 @@ interface StepsPackagesProps {
   selectedCard?: string;
   onSubmit: (packages: Package[]) => void;
   locale?: LocaleCode;
+  continueButtonText?: string | null;
 }
 
 export default function StepsPackages({
@@ -35,6 +36,7 @@ export default function StepsPackages({
   selectedCard,
   onSubmit,
   locale = defaultLocale,
+  continueButtonText,
 }: StepsPackagesProps) {
   const copy = quoteCopy(locale);
   // Determine country filter based on selected card
@@ -442,7 +444,7 @@ export default function StepsPackages({
           disabled={isSubmitting}
           className="w-full"
         >
-          {isSubmitting ? copy.submitting : copy.continue}
+          {isSubmitting ? copy.submitting : quoteChrome(continueButtonText, copy.continue, locale)}
         </Button>
         
         {/* Development Skip Button */}

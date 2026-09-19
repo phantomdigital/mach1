@@ -5,6 +5,10 @@ import { HeroButton } from "@/components/ui/hero-button";
 import { TrackingWidget } from "./tracking-widget";
 import type { RichTextField } from "@prismicio/client";
 import FaqAccordionCompact from "@/components/faq-accordion-compact";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { localizedPath } from "@/lib/localized-routes";
+import { quoteChrome } from "@/lib/quote-ui";
+import { trackingCopy } from "@/lib/tracking-ui";
 
 interface FAQ {
   faq_question: string | null;
@@ -20,6 +24,15 @@ interface TrackingClientProps {
   faqs: FAQ[];
   /** Spacing utils (margin, padding) - applied ONLY to the left column wrapper */
   spacingClass?: string;
+  locale?: LocaleCode;
+  inputLabel?: string | null;
+  submitButtonText?: string | null;
+  warningText?: string | null;
+  helpHeading?: string | null;
+  helpSubheading?: string | null;
+  contactButtonText?: string | null;
+  liveChatButtonText?: string | null;
+  faqsTitle?: string | null;
 }
 
 export default function TrackingClient({
@@ -30,7 +43,18 @@ export default function TrackingClient({
   description,
   faqs,
   spacingClass = "mt-30 lg:mt-48 pt-16 lg:pt-24 pb-16 lg:pb-24",
+  locale = defaultLocale,
+  inputLabel,
+  submitButtonText,
+  warningText,
+  helpHeading,
+  helpSubheading,
+  contactButtonText,
+  liveChatButtonText,
+  faqsTitle,
 }: TrackingClientProps) {
+  const copy = trackingCopy(locale);
+  const contactHref = localizedPath("/contact", locale);
 
   return (
     <div className="w-full">
@@ -57,6 +81,10 @@ export default function TrackingClient({
             <TrackingWidget
               urlPrefix={urlPrefix}
               placeholderText={placeholderText}
+              inputLabel={inputLabel}
+              submitButtonText={submitButtonText}
+              warningText={warningText}
+              locale={locale}
             />
           </div>
           </div>
@@ -66,7 +94,7 @@ export default function TrackingClient({
         <div className="order-1 lg:col-start-2 lg:row-start-1 -mx-4 lg:mx-0 pt-6 lg:pt-16 px-6 lg:px-8 pb-6 lg:pb-8 space-y-4 lg:sticky lg:top-[calc(var(--header-height,128px)+1rem)]" style={{ backgroundColor: "#F0FCFB" }}>
           {/* FAQs */}
           {faqs.length > 0 && (
-            <FaqAccordionCompact faqs={faqs} title="FAQs" noCard tight />
+            <FaqAccordionCompact faqs={faqs} title={quoteChrome(faqsTitle, copy.faqs, locale)} noCard tight />
           )}
 
           {faqs.length > 0 && (
@@ -75,15 +103,19 @@ export default function TrackingClient({
 
           {/* Get Help - SolutionsBase contact style */}
           <div className="space-y-1">
-            <p className="text-xs text-neutral-500 uppercase tracking-wide">HAVE A CHAT</p>
-            <p className="text-neutral-800 font-medium text-sm">Get help</p>
+            <p className="text-xs text-neutral-500 uppercase tracking-wide">
+              {quoteChrome(helpHeading, copy.haveAChat, locale)}
+            </p>
+            <p className="text-neutral-800 font-medium text-sm">
+              {quoteChrome(helpSubheading, copy.getHelp, locale)}
+            </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 lg:gap-4 mt-2">
             <HeroButton asChild size="small">
-              <Link href="/contact">CONTACT US</Link>
+              <Link href={contactHref}>{quoteChrome(contactButtonText, copy.contactUs, locale)}</Link>
             </HeroButton>
             <HeroButton asChild size="small">
-              <Link href="/contact">LIVE CHAT</Link>
+              <Link href={contactHref}>{quoteChrome(liveChatButtonText, copy.liveChat, locale)}</Link>
             </HeroButton>
           </div>
         </div>

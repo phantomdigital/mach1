@@ -1,5 +1,11 @@
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { isSimplifiedChinese } from "@/lib/localized-routes";
+import { isHindi, isSimplifiedChinese } from "@/lib/localized-routes";
+
+function hasNativeScript(value: string, locale: LocaleCode) {
+  if (isSimplifiedChinese(locale)) return /[\u4e00-\u9fff]/.test(value);
+  if (isHindi(locale)) return /[\u0900-\u097F]/.test(value);
+  return true;
+}
 
 const LOADING_MESSAGES_KEY = "steps_loading_messages";
 
@@ -10,7 +16,7 @@ export function quoteChrome(
   locale: LocaleCode = defaultLocale
 ) {
   if (!value?.trim()) return fallback;
-  if (isSimplifiedChinese(locale) && !/[\u4e00-\u9fff]/.test(value) && /[A-Za-z]{3,}/.test(value)) {
+  if (locale !== defaultLocale && !hasNativeScript(value, locale) && /[A-Za-z]{3,}/.test(value)) {
     return fallback;
   }
   return value;
@@ -138,6 +144,85 @@ export function quoteCopy(locale: LocaleCode = defaultLocale) {
       startOver: "重新开始",
       backHome: "返回首页",
       na: "无",
+    };
+  }
+
+  if (isHindi(locale)) {
+    return {
+      loadingForm: "आपका कोट फ़ॉर्म लोड हो रहा है...",
+      loadingWait: "कृपया प्रतीक्षा करें",
+      loading: "लोड हो रहा है...",
+      loadingSummary: "कोट सारांश लोड हो रहा है...",
+      submit: "सबमिट करें",
+      continue: "जारी रखें",
+      submitting: "भेजा जा रहा है...",
+      skip: "छोड़ें",
+      stepFallback: "चरण",
+      stepOf: (step: number, total: number) => `चरण ${step} / ${total}`,
+      previousStep: "पिछला चरण",
+      details: "विवरण",
+      warehousingDetails: "वेयरहाउसिंग विवरण",
+      packageDetails: "माल की जानकारी",
+      thankYou: "धन्यवाद!",
+      weReceived: "हमें आपका अनुरोध मिल गया है।",
+      weReceivedBody:
+        "हमारा लॉजिस्टिक्स विशेषज्ञ 24 घंटे के भीतर {email} पर आपसे संपर्क करेगा। हम आपकी आपूर्ति श्रृंखला को बेहतर बनाने में मदद करने के लिए उत्सुक हैं।",
+      startQuote: "कोट शुरू करें",
+      selectOption: "विकल्प चुनें",
+      required: (label: string) => `${label} आवश्यक है`,
+      validEmail: "कृपया मान्य ईमेल दर्ज करें",
+      validPhone: "कृपया मान्य फ़ोन नंबर दर्ज करें",
+      positiveNumber: (label: string) => `${label} धनात्मक संख्या होनी चाहिए`,
+      fixErrors: "कृपया ये त्रुटियाँ सुधारें:",
+      dismissError: "त्रुटि बंद करें",
+      sendFailed: "कोट अनुरोध नहीं भेजा जा सका। कृपया फिर कोशिश करें।",
+      unexpectedError: "अप्रत्याशित त्रुटि हुई। कृपया फिर कोशिश करें।",
+      processing: "आपका कोट अनुरोध प्रोसेस हो रहा है...",
+      processingWait: "कृपया प्रतीक्षा करें, आपका अनुरोध भेजा जा रहा है...",
+      packageWord: "पैकेज",
+      packageN: (n: number) => `पैकेज ${n}`,
+      removePackage: "पैकेज हटाएँ",
+      addPackage: "एक और पैकेज जोड़ें",
+      shippingWhat: "आप क्या भेज रहे हैं?",
+      shippingPlaceholder: "माल का विवरण दर्ज करें……",
+      pickup: "पिकअप पता",
+      pickupPlaceholder: "पिकअप पता दर्ज करें……",
+      delivery: "डिलीवरी पता",
+      deliveryPlaceholder: "डिलीवरी पता दर्ज करें……",
+      weight: "वज़न",
+      quantity: "मात्रा",
+      length: "लंबाई",
+      width: "चौड़ाई",
+      height: "ऊँचाई",
+      selectDate: "तारीख चुनें",
+      countrySelect: (country: string) => `सुनिश्चित करें कि पता ${country} में है — सूची से चुनें`,
+      countryOnly: (country: string) => `केवल ${country} पते स्वीकार हैं। सुझावों में से चुनें।`,
+      countries: {
+        AU: "ऑस्ट्रेलिया",
+        US: "संयुक्त राज्य",
+        GB: "यूनाइटेड किंगडम",
+        CA: "कनाडा",
+        NZ: "न्यूज़ीलैंड",
+      } as Record<string, string>,
+      quoteReceived: "कोट अनुरोध प्राप्त",
+      goHome: "होम पर जाएँ",
+      serviceType: "सेवा प्रकार",
+      origin: "उद्गम",
+      destination: "गंतव्य",
+      faqs: "सामान्य प्रश्न",
+      haveAChat: "बात करें",
+      getHelp: "मदद लें",
+      contactUs: "संपर्क करें",
+      liveChat: "लाइव चैट",
+      noData: "कोट डेटा नहीं मिला",
+      redirecting: "होम पेज पर जा रहे हैं...",
+      quoteError: "कोट त्रुटि",
+      somethingWrong: "कुछ गलत हो गया",
+      errorDescription: "आपका कोट अनुरोध प्रोसेस करते समय समस्या हुई। आप फिर से भेज सकते हैं या शुरू से शुरू कर सकते हैं।",
+      tryAgain: "फिर कोशिश करें",
+      startOver: "फिर से शुरू करें",
+      backHome: "होम पर वापस",
+      na: "उपलब्ध नहीं",
     };
   }
 

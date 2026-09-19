@@ -1,7 +1,7 @@
 import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
 import ServiceContactForm from "./service-contact-form";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { isSimplifiedChinese } from "@/lib/localized-routes";
+import { localizedChrome } from "@/lib/localized-routes";
 
 type ServiceContactProps = SliceComponentProps<any>;
 
@@ -18,17 +18,23 @@ const marginTopClasses: Record<string, string> = {
  */
 const ServiceContact = ({ slice, context }: ServiceContactProps): React.ReactElement => {
   const locale = ((context as { locale?: LocaleCode } | undefined)?.locale ?? defaultLocale) as LocaleCode;
-  const chinese = isSimplifiedChinese(locale);
   const pageTitle =
     (context as { pageTitle?: string } | undefined)?.pageTitle ||
-    (chinese ? "此项服务" : "this service");
+    localizedChrome(locale, "this service", "此项服务", "यह सेवा");
   const mtClass = marginTopClasses[slice.primary?.margin_top || "large"] || marginTopClasses.large;
-  const submitButtonText = slice.primary?.submit_button_text || (chinese ? "发送询盘" : "Send Enquiry");
+  const submitButtonText =
+    slice.primary?.submit_button_text ||
+    localizedChrome(locale, "Send Enquiry", "发送询盘", "पूछताछ भेजें");
 
   const defaultHeading = [
     {
       type: "heading2",
-      text: chinese ? `对此服务感兴趣？欢迎联系我们` : `Interested in ${pageTitle}? Get in touch.`,
+      text: localizedChrome(
+        locale,
+        `Interested in ${pageTitle}? Get in touch.`,
+        `对此服务感兴趣？欢迎联系我们`,
+        `${pageTitle} में रुचि है? हमसे संपर्क करें।`,
+      ),
       spans: [],
     },
   ];
@@ -36,9 +42,12 @@ const ServiceContact = ({ slice, context }: ServiceContactProps): React.ReactEle
   const defaultSubtext = [
     {
       type: "paragraph",
-      text: chinese
-        ? "请告诉我们您的需求，我们的团队将尽快回复。"
-        : "Tell us what you need and our team will get back to you shortly.",
+      text: localizedChrome(
+        locale,
+        "Tell us what you need and our team will get back to you shortly.",
+        "请告诉我们您的需求，我们的团队将尽快回复。",
+        "हमें बताएं कि आपको क्या चाहिए, हमारी टीम जल्द ही आपसे संपर्क करेगी।",
+      ),
       spans: [],
     },
   ];

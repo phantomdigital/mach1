@@ -34,43 +34,53 @@ const EMPTY_LINK_FALLBACKS = {
     ["data.link_sections[1].links[2].link", "aXWRyBEAACIAVxzr"],
   ],
 };
-// This unpublished Chinese draft predates the migration and is not returned by
-// the public Content API, but Prismic still reserves it as the English page's
-// zh-cn alternate. Updating it avoids creating a duplicate translation.
-const UNPUBLISHED_TARGET_IDS = new Map([
-  ["aLAI-hAAACQA6PTG", "aqyxcBEAAC4Aw_u1"],
-  ["aO4G5RIAACEAZBKV", "aqyxchEAACgAw_u5"],
-  ["aPl28hAAACIARP1H", "aqyxdREAACoAw_vB"],
-  ["aPMcXRAAACQAqkT0", "aqyxdxEAACgAw_vF"],
-  ["aPH7PBIAACAAaw4I", "aqyxeREAACkAw_vM"],
-  ["aPLxbxAAACQAqgee", "aqyxfBEAAC0Aw_vQ"],
-  ["aPXNkxAAACIArj-g", "aqyxfhEAACgAw_vY"],
-  ["aNjwNhAAACMAAh8y", "aqyxgREAACcAw_vc"],
-  ["aNx-vhIAACMAhPuX", "aqyxgxEAACwAw_vh"],
-  ["aQrqnREAACMATxeq", "aQryYREAACEATyN4"],
-  ["aO76UBIAACIAZc9R", "aqyzRhEAAC0Aw_6W"],
-  ["aQruKhEAACEATx02", "aqyzSBEAACsAw_6c"],
-  ["aNx5ohIAACYAhPOF", "aqyzShEAACkAw_6h"],
-  ["aaiw_BIAACcA1aof", "aqyzTREAAC4Aw_6n"],
-  ["aM0MhhEAACEAiJqm", "aqyzTxEAACwAw_6s"],
-  ["aM0GVxEAACIAiJDL", "aqyzUhEAACkAw_6y"],
-  ["acNeuBEAAJEso3wk", "aqyzVBEAAC0Aw_62"],
-  ["aai8JhIAACcA1brv", "aqyzVhEAACgAw_66"],
-  ["aQaw2xEAACMASABe", "aqyzWBEAACwAw_7B"],
-  ["aXWRyBEAACIAVxzr", "aqyzWxEAAC4Aw_7F"],
-  ["aO8_RBIAAB8AZjRo", "aqyzXREAAC4Aw_7L"],
-  ["aO8-vhIAACIAZjOM", "aqyzXxEAAC0Aw_7P"],
-  ["aO87VhIAACAAZi5T", "aqyzYREAACkAw_7W"],
-  ["aPH7qRIAACEAaw7b", "aqyzZBEAACsAw_7a"],
-  ["aO7-CBIAACIAZdUR", "aqyzZhEAACkAw_7g"],
-]);
+// Unpublished locale drafts are not returned by the public Content API, but
+// Prismic still reserves them as the English document's alternate. Updating
+// them avoids creating a duplicate translation.
+const UNPUBLISHED_TARGET_IDS = {
+  "zh-cn": new Map([
+    ["aLAI-hAAACQA6PTG", "aqyxcBEAAC4Aw_u1"],
+    ["aO4G5RIAACEAZBKV", "aqyxchEAACgAw_u5"],
+    ["aPl28hAAACIARP1H", "aqyxdREAACoAw_vB"],
+    ["aPMcXRAAACQAqkT0", "aqyxdxEAACgAw_vF"],
+    ["aPH7PBIAACAAaw4I", "aqyxeREAACkAw_vM"],
+    ["aPLxbxAAACQAqgee", "aqyxfBEAAC0Aw_vQ"],
+    ["aPXNkxAAACIArj-g", "aqyxfhEAACgAw_vY"],
+    ["aNjwNhAAACMAAh8y", "aqyxgREAACcAw_vc"],
+    ["aNx-vhIAACMAhPuX", "aqyxgxEAACwAw_vh"],
+    ["aQrqnREAACMATxeq", "aQryYREAACEATyN4"],
+    ["aO76UBIAACIAZc9R", "aqyzRhEAAC0Aw_6W"],
+    ["aQruKhEAACEATx02", "aqyzSBEAACsAw_6c"],
+    ["aNx5ohIAACYAhPOF", "aqyzShEAACkAw_6h"],
+    ["aaiw_BIAACcA1aof", "aqyzTREAAC4Aw_6n"],
+    ["aM0MhhEAACEAiJqm", "aqyzTxEAACwAw_6s"],
+    ["aM0GVxEAACIAiJDL", "aqyzUhEAACkAw_6y"],
+    ["acNeuBEAAJEso3wk", "aqyzVBEAAC0Aw_62"],
+    ["aai8JhIAACcA1brv", "aqyzVhEAACgAw_66"],
+    ["aQaw2xEAACMASABe", "aqyzWBEAACwAw_7B"],
+    ["aXWRyBEAACIAVxzr", "aqyzWxEAAC4Aw_7F"],
+    ["aO8_RBIAAB8AZjRo", "aqyzXREAAC4Aw_7L"],
+    ["aO8-vhIAACIAZjOM", "aqyzXxEAAC0Aw_7P"],
+    ["aO87VhIAACAAZi5T", "aqyzYREAACkAw_7W"],
+    ["aPH7qRIAACEAaw7b", "aqyzZBEAACsAw_7a"],
+    ["aO7-CBIAACIAZdUR", "aqyzZhEAACkAw_7g"],
+  ]),
+  "hi-in": new Map([
+    ["aLAI-hAAACQA6PTG", "aq3ecBIAACoA0INM"],
+    ["aO7zhRIAACIAZcUb", "aq3ecxIAACcA0INR"],
+    ["aPc9jxIAACEAh_eA", "aXVhJxEAACQAVtaw"],
+  ]),
+};
+const TARGET_LANGS = ["zh-cn", "hi-in"];
+
 function usage() {
-  return `Prismic Chinese migration runner
+  return `Prismic locale migration runner
 
 Usage:
-  node scripts/prismic-translation/run.mjs --validate --batch <${BATCHES.join("|")}|all>
-  node scripts/prismic-translation/run.mjs --stage --batch <${BATCHES.join("|")}|all>
+  node scripts/prismic-translation/run.mjs --validate --batch <${BATCHES.join("|")}|all> [--lang zh-cn|hi-in]
+  node scripts/prismic-translation/run.mjs --stage --batch <${BATCHES.join("|")}|all> [--lang zh-cn|hi-in]
 
+--lang defaults to zh-cn. Hindi manifests live in manifests/hi-in/.
 --validate performs read-only repository validation.
 --stage creates or updates drafts in a Migration Release. It never publishes.`;
 }
@@ -85,10 +95,19 @@ function parseArguments(argv) {
   if (![...BATCHES, "all"].includes(batch)) {
     throw new Error(`--batch must be one of ${[...BATCHES, "all"].join(", ")}`);
   }
-  const recognized = new Set(["--validate", "--stage", "--batch", batch]);
+  const langIndex = argv.indexOf("--lang");
+  const lang = langIndex >= 0 ? argv[langIndex + 1] : TARGET_LANG;
+  if (!TARGET_LANGS.includes(lang)) {
+    throw new Error(`--lang must be one of ${TARGET_LANGS.join(", ")}`);
+  }
+  const recognized = new Set(["--validate", "--stage", "--batch", batch, "--lang", lang]);
   const unknown = argv.filter((argument) => !recognized.has(argument));
   if (unknown.length) throw new Error(`Unknown argument(s): ${unknown.join(", ")}`);
-  return { validate, stage, batch };
+  return { validate, stage, batch, lang };
+}
+
+function manifestDirectoryFor(lang) {
+  return lang === "hi-in" ? path.join(MANIFEST_DIRECTORY, "hi-in") : MANIFEST_DIRECTORY;
 }
 
 function loadModels() {
@@ -192,7 +211,8 @@ async function main() {
     return;
   }
 
-  const manifestEntries = loadManifests(MANIFEST_DIRECTORY, options.batch);
+  const targetLang = options.lang;
+  const manifestEntries = loadManifests(manifestDirectoryFor(targetLang), options.batch);
   if (!manifestEntries.length) {
     console.log(`No entries in batch "${options.batch}". Nothing to ${options.stage ? "stage" : "validate"}.`);
     return;
@@ -221,37 +241,37 @@ async function main() {
     validateEntry(entry, source, customType, slices);
 
     let target = null;
-    const targetId = alternateId(source);
+    const targetId = alternateId(source, targetLang);
     if (targetId) {
-      target = await limited(() => client.getByID(targetId, { lang: TARGET_LANG }));
+      target = await limited(() => client.getByID(targetId, { lang: targetLang }));
     } else {
       target = await limited(async () => {
         try {
           return entry.uid
-            ? await client.getByUID(entry.type, entry.uid, { lang: TARGET_LANG })
-            : await client.getSingle(entry.type, { lang: TARGET_LANG });
+            ? await client.getByUID(entry.type, entry.uid, { lang: targetLang })
+            : await client.getSingle(entry.type, { lang: targetLang });
         } catch (error) {
           if (isNotFoundError(error)) return null;
           throw error;
         }
       });
     }
-    if (!target && UNPUBLISHED_TARGET_IDS.has(source.id)) {
+    if (!target && UNPUBLISHED_TARGET_IDS[targetLang]?.has(source.id)) {
       target = {
         ...clone(source),
-        id: UNPUBLISHED_TARGET_IDS.get(source.id),
-        lang: TARGET_LANG,
+        id: UNPUBLISHED_TARGET_IDS[targetLang].get(source.id),
+        lang: targetLang,
         alternate_languages: [],
       };
     }
     if (target && (target.type !== entry.type || (target.uid ?? null) !== (entry.uid || null))) {
-      throw new Error(`Chinese target identity mismatch for ${entry.sourceId}`);
+      throw new Error(`${targetLang} target identity mismatch for ${entry.sourceId}`);
     }
     targetBySourceId.set(entry.sourceId, target);
   }
 
   const linkedSourceCache = new Map();
-  async function resolveExistingChineseTarget(link) {
+  async function resolveExistingTarget(link) {
     if (!link.id) return null;
     if (!linkedSourceCache.has(link.id)) {
       linkedSourceCache.set(
@@ -264,8 +284,8 @@ async function main() {
             if (isNotFoundError(error)) return null;
             throw error;
           }
-          const id = alternateId(linkedSource);
-          return id ? limited(() => client.getByID(id, { lang: TARGET_LANG })) : null;
+          const id = alternateId(linkedSource, targetLang);
+          return id ? limited(() => client.getByID(id, { lang: targetLang })) : null;
         }),
       );
     }
@@ -293,9 +313,9 @@ async function main() {
         pendingIncludedLinks.push(slot);
         continue;
       }
-      const chineseTarget = await resolveExistingChineseTarget(slot.link);
-      if (chineseTarget) {
-        slot.parent[slot.key] = toDocumentLink(chineseTarget);
+      const localizedTarget = await resolveExistingTarget(slot.link);
+      if (localizedTarget) {
+        slot.parent[slot.key] = toDocumentLink(localizedTarget);
         report.linksRewired += 1;
       }
     }
@@ -312,7 +332,7 @@ async function main() {
       : {
           type: entry.type,
           uid: entry.uid || undefined,
-          lang: TARGET_LANG,
+          lang: targetLang,
           tags: clone(source.tags ?? []),
           data,
         };
@@ -366,7 +386,7 @@ async function main() {
         const replacement = existing
           ? toDocumentLink(existing)
           : migrationReferences.get(slot.link.id);
-        if (!replacement) throw new Error(`No Chinese target prepared for relationship ${slot.path}`);
+        if (!replacement) throw new Error(`No ${targetLang} target prepared for relationship ${slot.path}`);
         slot.parent[slot.key] = replacement;
         report.linksRewired += 1;
       }

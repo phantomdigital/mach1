@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { isSimplifiedChinese } from "@/lib/localized-routes";
+import { localizedChrome } from "@/lib/localized-routes";
 
 interface RelatedArticlesProps {
   articles: Content.NewsDocument[];
@@ -27,7 +27,7 @@ export function RelatedArticles({
     <section className="w-full py-12 lg:py-20 bg-neutral-50">
       <div className="w-full max-w-[88rem] mx-auto px-4 lg:px-8">
         <h2 className="text-neutral-800 text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 lg:mb-10">
-          {isSimplifiedChinese(locale) ? "相关文章" : "Related Articles"}
+          {localizedChrome(locale, "Related Articles", "相关文章", "संबंधित लेख")}
         </h2>
         
         {/* Mobile Carousel */}

@@ -5,8 +5,8 @@ import { ExternalLinkIcon } from "@/app/components/header/external-link-icon";
 import ClippedCardShape from "../Steps/clipped-card-shape";
 import { type LocaleCode } from "@/prismicio";
 import {
-  isSimplifiedChinese,
   localeForIntl,
+  localizedChrome,
   localizedNewsLabel,
   localizedPath,
 } from "@/lib/localized-routes";
@@ -31,7 +31,7 @@ export function FeaturedHero({ article, locale }: FeaturedHeroProps) {
     <div>
       {/* Heading */}
       <h5 className="text-neutral-800 text-sm font-medium mb-6 uppercase tracking-wider">
-        {isSimplifiedChinese(locale) ? "精选文章" : "Featured Article"}
+        {localizedChrome(locale, "Featured Article", "精选文章", "विशेष लेख")}
       </h5>
 
       <Link

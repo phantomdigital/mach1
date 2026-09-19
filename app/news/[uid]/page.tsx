@@ -12,8 +12,8 @@ import { LightboxWrapper } from "./lightbox-wrapper";
 import { generateBreadcrumbSchema } from "@/lib/metadata";
 import { createRichTextComponents } from "@/lib/rich-text-serializer";
 import {
-  isSimplifiedChinese,
   localeForIntl,
+  localizedChrome,
   localizedNewsLabel,
   localizedPath,
 } from "@/lib/localized-routes";
@@ -27,8 +27,6 @@ export default async function NewsArticlePage({
 }) {
   const { uid, locale = defaultLocale } = await params;
   const client = createClient();
-  const chinese = isSimplifiedChinese(locale);
-
   let page: Content.NewsDocument;
   try {
     try {
@@ -136,7 +134,7 @@ export default async function NewsArticlePage({
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
-                  {chinese ? "返回新闻" : "Back to News"}
+                  {localizedChrome(locale, "Back to News", "返回新闻", "समाचार पर वापस जाएँ")}
                 </Link>
               </nav>
 
@@ -188,7 +186,12 @@ export default async function NewsArticlePage({
                 )}
                 {readingTime > 0 && (
                   <span className="text-neutral-500">
-                    {chinese ? `阅读约 ${readingTime} 分钟` : `${readingTime} min read`}
+                    {localizedChrome(
+                      locale,
+                      `${readingTime} min read`,
+                      `阅读约 ${readingTime} 分钟`,
+                      `${readingTime} मिनट का पाठ`,
+                    )}
                   </span>
                 )}
               </div>
@@ -252,8 +255,8 @@ export default async function NewsArticlePage({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
             generateBreadcrumbSchema([
-              { name: chinese ? "首页" : "Home", url: localizedPath("/", locale) },
-              { name: chinese ? "新闻" : "News", url: localizedPath("/news", locale) },
+              { name: localizedChrome(locale, "Home", "首页", "होम"), url: localizedPath("/", locale) },
+              { name: localizedChrome(locale, "News", "新闻", "समाचार"), url: localizedPath("/news", locale) },
               { name: page.data.title || uid, url: articlePath },
             ])
           ),

@@ -6,11 +6,28 @@ export function localizedPath(path: string, locale: LocaleCode = defaultLocale) 
 }
 
 export function localeForIntl(locale: LocaleCode) {
-  return locale === "zh-cn" ? "zh-CN" : "en-AU";
+  if (locale === "zh-cn") return "zh-CN";
+  if (locale === "hi-in") return "hi-IN";
+  return "en-AU";
 }
 
 export function isSimplifiedChinese(locale: LocaleCode) {
   return locale === "zh-cn";
+}
+
+export function isHindi(locale: LocaleCode) {
+  return locale === "hi-in";
+}
+
+export function localizedChrome(
+  locale: LocaleCode,
+  english: string,
+  chinese: string,
+  hindi: string
+) {
+  if (isSimplifiedChinese(locale)) return chinese;
+  if (isHindi(locale)) return hindi;
+  return english;
 }
 
 const simplifiedChineseNewsLabels: Record<string, string> = {
@@ -26,6 +43,21 @@ const simplifiedChineseNewsLabels: Record<string, string> = {
   Event: "活动",
 };
 
+const hindiNewsLabels: Record<string, string> = {
+  "Company News": "कंपनी समाचार",
+  "Industry Insights": "उद्योग अंतर्दृष्टि",
+  "Case Studies": "केस स्टडी",
+  "Product Updates": "सेवा अपडेट",
+  Events: "इवेंट",
+  Article: "लेख",
+  "Press Release": "प्रेस विज्ञप्ति",
+  Update: "अपडेट",
+  Announcement: "घोषणा",
+  Event: "इवेंट",
+};
+
 export function localizedNewsLabel(value: string, locale: LocaleCode) {
-  return isSimplifiedChinese(locale) ? simplifiedChineseNewsLabels[value] ?? value : value;
+  if (isSimplifiedChinese(locale)) return simplifiedChineseNewsLabels[value] ?? value;
+  if (isHindi(locale)) return hindiNewsLabels[value] ?? value;
+  return value;
 }

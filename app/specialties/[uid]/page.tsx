@@ -4,7 +4,7 @@ import { SliceZone } from "@prismicio/react";
 import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata, generateBreadcrumbSchema } from "@/lib/metadata";
-import { isSimplifiedChinese, localizedPath } from "@/lib/localized-routes";
+import { localizedChrome, localizedPath } from "@/lib/localized-routes";
 
 type Params = { uid: string; locale?: LocaleCode };
 
@@ -14,11 +14,9 @@ export default async function Page({ params }: { params: Promise<Params> }) {
   const specialty = await client
     .getByUID("specialty", uid, { lang: locale })
     .catch(() => notFound());
-  const chinese = isSimplifiedChinese(locale);
-
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: chinese ? "首页" : "Home", url: localizedPath("/", locale) },
-    { name: chinese ? "专业服务" : "Specialties", url: localizedPath("/specialties", locale) },
+    { name: localizedChrome(locale, "Home", "首页", "होम"), url: localizedPath("/", locale) },
+    { name: localizedChrome(locale, "Specialties", "专业服务", "विशेष सेवाएँ"), url: localizedPath("/specialties", locale) },
     { name: specialty.data.title || uid, url: localizedPath(`/specialties/${uid}`, locale) },
   ]);
 

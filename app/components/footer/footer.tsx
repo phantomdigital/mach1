@@ -1,7 +1,7 @@
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { FooterCtaButtons } from "./footer-cta-buttons";
 import { CtaTitleAnimation, CtaButtonsAnimation } from "./footer-cta-animation";
-import { isSimplifiedChinese } from "@/lib/localized-routes";
+import { localizedChrome } from "@/lib/localized-routes";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
 import type { FooterDocument } from "@/types.generated";
 
@@ -55,7 +55,6 @@ export default function Footer({ footer }: { footer: FooterDocument | null }) {
   }
 
   const locale = (footer.lang as LocaleCode) || defaultLocale;
-  const chinese = isSimplifiedChinese(locale);
 
   return (
       <>
@@ -129,7 +128,7 @@ export default function Footer({ footer }: { footer: FooterDocument | null }) {
               {footer.data.contact_section[0] && (
                 <div className="w-full lg:w-auto">
                   <h3 className="text-base lg:text-lg font-semibold text-white mb-4 lg:mb-6">
-                    {footer.data.contact_section[0].title || (chinese ? "联系我们" : "Contact Us")}
+                    {footer.data.contact_section[0].title || localizedChrome(locale, "Contact Us", "联系我们", "संपर्क करें")}
                   </h3>
                   
                   {/* Addresses Section with Location Icon */}
@@ -149,7 +148,7 @@ export default function Footer({ footer }: { footer: FooterDocument | null }) {
                         </div>
                         <div className="flex-1">
                           <h5 className="text-neutral-400 text-xs font-medium mb-3 lg:mb-4 uppercase tracking-wider">
-                            {chinese ? "网点" : "Locations"}
+                            {localizedChrome(locale, "Locations", "网点", "केंद्र")}
                           </h5>
                           <div className="space-y-3 lg:space-y-4">
                             {footer.data.contact_section[0].addresses.map((item, index: number) => (

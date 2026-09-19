@@ -16,6 +16,8 @@ import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { contactFormSchema, safeValidate } from "@/lib/validation-schemas";
 import { submitContactForm } from "@/app/actions/send-contact-form";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { localizedChrome, localizedPath } from "@/lib/localized-routes";
 
 interface ValidationError {
   field: string;
@@ -23,6 +25,7 @@ interface ValidationError {
 }
 
 interface ContactFormProps {
+  locale?: LocaleCode;
   successMessage: string;
   thankYouHeading: string;
   thankYouDescription: string;
@@ -30,7 +33,8 @@ interface ContactFormProps {
   thankYouInfoText: string;
 }
 
-export default function ContactForm({ 
+export default function ContactForm({
+  locale = defaultLocale,
 }: ContactFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,20 +71,35 @@ export default function ContactForm({
       if (result.success) {
         // Redirect to thank you page with email parameter
         const emailParam = encodeURIComponent(formData.email);
-        router.push(`/contact/thank-you?email=${emailParam}`);
+        router.push(`${localizedPath("/contact/thank-you", locale)}?email=${emailParam}`);
         // Keep isSubmitting true until redirect completes
       } else {
         // Handle server-side validation errors
         if (result.validationErrors && result.validationErrors.length > 0) {
           setValidationErrors(result.validationErrors);
         } else {
-          setError(result.error || "Failed to submit form. Please try again.");
+          setError(
+            result.error ||
+              localizedChrome(
+                locale,
+                "Failed to submit form. Please try again.",
+                "表单提交失败，请重试。",
+                "फ़ॉर्म जमा नहीं हो सका। कृपया फिर से प्रयास करें।",
+              ),
+          );
         }
         setIsSubmitting(false);
       }
     } catch (err) {
       console.error("Form submission error:", err);
-      setError("An unexpected error occurred. Please try again.");
+      setError(
+        localizedChrome(
+          locale,
+          "An unexpected error occurred. Please try again.",
+          "发生意外错误，请重试。",
+          "एक अप्रत्याशित त्रुटि हुई। कृपया फिर से प्रयास करें।",
+        ),
+      );
       setIsSubmitting(false);
     }
   };
@@ -112,7 +131,7 @@ export default function ContactForm({
       {validationErrors.length > 0 && !error && (
         <Alert variant="destructive">
           <AlertDescription>
-            Please fix the following errors:
+            {localizedChrome(locale, "Please fix the following errors:", "请修正以下错误：", "कृपया निम्न त्रुटियाँ ठीक करें:")}
             <ul className="mt-2 list-disc list-inside space-y-1">
               {validationErrors.map((err, index) => (
                 <li key={index} className="text-sm">{err.message}</li>
@@ -125,14 +144,14 @@ export default function ContactForm({
       {/* Full Name */}
       <div>
         <label htmlFor="fullName" className="block text-sm text-neutral-900 mb-2">
-          Full Name <span className="text-red-500">*</span>
+          {localizedChrome(locale, "Full Name", "姓名", "पूरा नाम")} <span className="text-red-500">*</span>
         </label>
         <Input
           id="fullName"
           type="text"
           value={formData.fullName}
           onChange={(e) => handleChange("fullName", e.target.value)}
-          placeholder="Enter first name..."
+          placeholder={localizedChrome(locale, "Enter first name...", "请输入姓名……", "पहला नाम दर्ज करें……")}
           required
         />
       </div>
@@ -140,14 +159,14 @@ export default function ContactForm({
       {/* Role or Position */}
       <div>
         <label htmlFor="role" className="block text-sm text-neutral-900 mb-2">
-          Role or position <span className="text-red-500">*</span>
+          {localizedChrome(locale, "Role or position", "职位", "भूमिका या पद")} <span className="text-red-500">*</span>
         </label>
         <Input
           id="role"
           type="text"
           value={formData.role}
           onChange={(e) => handleChange("role", e.target.value)}
-          placeholder="Enter role or position..."
+          placeholder={localizedChrome(locale, "Enter role or position...", "请输入职位……", "भूमिका या पद दर्ज करें……")}
           required
         />
       </div>
@@ -155,14 +174,14 @@ export default function ContactForm({
       {/* Contact Number */}
       <div>
         <label htmlFor="contactNumber" className="block text-sm text-neutral-900 mb-2">
-          Contact Number <span className="text-red-500">*</span>
+          {localizedChrome(locale, "Contact Number", "联系电话", "संपर्क नंबर")} <span className="text-red-500">*</span>
         </label>
         <Input
           id="contactNumber"
           type="tel"
           value={formData.contactNumber}
           onChange={(e) => handleChange("contactNumber", e.target.value)}
-          placeholder="Enter contact number..."
+          placeholder={localizedChrome(locale, "Enter contact number...", "请输入联系电话……", "संपर्क नंबर दर्ज करें……")}
           required
         />
       </div>
@@ -170,14 +189,14 @@ export default function ContactForm({
       {/* Company Name */}
       <div>
         <label htmlFor="companyName" className="block text-sm text-neutral-900 mb-2">
-          Company Name <span className="text-red-500">*</span>
+          {localizedChrome(locale, "Company Name", "公司名称", "कंपनी का नाम")} <span className="text-red-500">*</span>
         </label>
         <Input
           id="companyName"
           type="text"
           value={formData.companyName}
           onChange={(e) => handleChange("companyName", e.target.value)}
-          placeholder="Enter company name..."
+          placeholder={localizedChrome(locale, "Enter company name...", "请输入公司名称……", "कंपनी का नाम दर्ज करें……")}
           required
         />
       </div>
@@ -185,14 +204,14 @@ export default function ContactForm({
       {/* Email Address */}
       <div>
         <label htmlFor="email" className="block text-sm text-neutral-900 mb-2">
-          Email Address <span className="text-red-500">*</span>
+          {localizedChrome(locale, "Email Address", "电子邮箱", "ईमेल पता")} <span className="text-red-500">*</span>
         </label>
         <Input
           id="email"
           type="email"
           value={formData.email}
           onChange={(e) => handleChange("email", e.target.value)}
-          placeholder="Enter email address..."
+          placeholder={localizedChrome(locale, "Enter email address...", "请输入电子邮箱……", "ईमेल पता दर्ज करें……")}
           required
         />
       </div>
@@ -200,7 +219,7 @@ export default function ContactForm({
       {/* Enquiry Type */}
       <div>
         <label htmlFor="enquiryType" className="block text-sm text-neutral-900 mb-2">
-          Enquiry Type <span className="text-red-500">*</span>
+          {localizedChrome(locale, "Enquiry Type", "询盘类型", "पूछताछ का प्रकार")} <span className="text-red-500">*</span>
         </label>
         <Select
           value={formData.enquiryType}
@@ -208,14 +227,14 @@ export default function ContactForm({
           required
         >
           <SelectTrigger id="enquiryType">
-            <SelectValue placeholder="Select an enquiry type" />
+            <SelectValue placeholder={localizedChrome(locale, "Select an enquiry type", "请选择询盘类型", "पूछताछ का प्रकार चुनें")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="general">General Enquiry</SelectItem>
-            <SelectItem value="quote">Request a Quote</SelectItem>
-            <SelectItem value="tracking">Tracking Support</SelectItem>
-            <SelectItem value="partnership">Partnership Opportunity</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
+            <SelectItem value="general">{localizedChrome(locale, "General Enquiry", "一般询盘", "सामान्य पूछताछ")}</SelectItem>
+            <SelectItem value="quote">{localizedChrome(locale, "Request a Quote", "获取报价", "कोटेशन का अनुरोध")}</SelectItem>
+            <SelectItem value="tracking">{localizedChrome(locale, "Tracking Support", "追踪支持", "ट्रैकिंग सहायता")}</SelectItem>
+            <SelectItem value="partnership">{localizedChrome(locale, "Partnership Opportunity", "合作机会", "साझेदारी अवसर")}</SelectItem>
+            <SelectItem value="other">{localizedChrome(locale, "Other", "其他", "अन्य")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -223,13 +242,13 @@ export default function ContactForm({
       {/* Message */}
       <div>
         <label htmlFor="message" className="block text-sm text-neutral-900 mb-2">
-          Message <span className="text-red-500">*</span>
+          {localizedChrome(locale, "Message", "留言", "संदेश")} <span className="text-red-500">*</span>
         </label>
         <Textarea
           id="message"
           value={formData.message}
           onChange={(e) => handleChange("message", e.target.value)}
-          placeholder="Enter your message..."
+          placeholder={localizedChrome(locale, "Enter your message...", "请输入您的留言……", "अपना संदेश दर्ज करें……")}
           required
           rows={6}
         />
@@ -240,10 +259,10 @@ export default function ContactForm({
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            SUBMITTING...
+            {localizedChrome(locale, "SUBMITTING...", "正在提交…", "जमा हो रहा है…")}
           </>
         ) : (
-          "SUBMIT"
+          localizedChrome(locale, "SUBMIT", "提交", "सबमिट करें")
         )}
       </Button>
     </form>

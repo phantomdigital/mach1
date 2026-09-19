@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { trackingNumberSchema } from "@/lib/validation-schemas"
+import { defaultLocale, type LocaleCode } from "@/prismicio"
+import { quoteChrome } from "@/lib/quote-ui"
+import { trackingCopy } from "@/lib/tracking-ui"
 
 interface TrackingSearchProps {
   className?: string;
@@ -19,16 +22,23 @@ interface TrackingSearchProps {
   urlPrefix: string;
   variant?: "light" | "dark";
   warningText?: string;
+  buttonText?: string | null;
+  locale?: LocaleCode;
 }
 
 export function TrackingSearch({ 
   className,
   heading,
-  placeholder = "Enter tracking number...",
+  placeholder,
   urlPrefix,
   variant = "dark",
-  warningText = "This will open a new window to Logixboard tracking"
+  warningText,
+  buttonText,
+  locale = defaultLocale,
 }: TrackingSearchProps) {
+  const copy = trackingCopy(locale)
+  placeholder = quoteChrome(placeholder, copy.placeholder, locale)
+  warningText = quoteChrome(warningText, copy.warning, locale)
   const [trackingNumber, setTrackingNumber] = React.useState("")
   const [error, setError] = React.useState("")
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -40,7 +50,7 @@ export function TrackingSearch({
     const result = trackingNumberSchema.safeParse(trackingNumber.trim())
 
     if (!result.success) {
-      setError(result.error.issues[0]?.message ?? "Please enter a valid tracking number")
+      setError(result.error.issues[0]?.message ?? copy.validTracking)
       inputRef.current?.focus()
       return
     }
@@ -85,7 +95,7 @@ export function TrackingSearch({
                 <button
                   type="button"
                   className="text-neutral-400 hover:text-neutral-600 transition-colors p-0.5 rounded -ml-0.5"
-                  aria-label="More information"
+                  aria-label={copy.moreInfo}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
                     <circle cx="12" cy="12" r="10" />
@@ -134,7 +144,7 @@ export function TrackingSearch({
                   variant="hero"
                   className="flex-shrink-0 !py-1.5 !px-3 lg:!px-4 !h-auto !text-[11px] lg:!text-sm !bg-dark-blue hover:!bg-dark-blue/90"
                 >
-                  Track
+                  {quoteChrome(buttonText, copy.track, locale)}
                 </Button>
               </div>
             </form>
@@ -153,7 +163,7 @@ export function TrackingSearch({
               type="button"
               onClick={() => setError("")}
               className="absolute top-3 right-2 p-0.5 rounded text-red-500 hover:text-red-600 transition-colors"
-              aria-label="Dismiss error"
+              aria-label={copy.dismissError}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
                 <path d="M18 6 6 18" />
@@ -192,7 +202,7 @@ export function TrackingSearch({
               variant="hero"
               className="flex-shrink-0 !py-1.5 !px-3 lg:!px-4 !h-auto !text-[11px] lg:!text-sm !bg-dark-blue hover:!bg-dark-blue/90"
             >
-              Track
+              {quoteChrome(buttonText, copy.track, locale)}
             </Button>
           </div>
         </form>
