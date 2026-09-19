@@ -11,6 +11,7 @@ import {
   Link,
   Tailwind,
 } from "@react-email/components";
+import { formatServiceType } from "@/lib/quote-ui";
 
 interface QuoteRequestConfirmationEmailProps {
   customerName: string;
@@ -75,7 +76,7 @@ export default function QuoteRequestConfirmationEmail({
             </Text>
 
             <Text className="mx-0 my-4 px-10 text-base leading-7 text-neutral-600">
-              Thank you for requesting a quote{serviceType ? ` for ${serviceType}` : ''} with MACH1 Logistics. 
+              Thank you for requesting a quote{serviceType ? ` for ${formatServiceType(serviceType)}` : ''} with MACH1 Logistics. 
               We have received your request and our team is currently reviewing your requirements.
             </Text>
 

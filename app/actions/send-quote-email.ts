@@ -7,6 +7,7 @@ import QuoteRequestConfirmationEmail from "@/emails/quote-request-confirmation-e
 import { quoteRequestSchema, packageSchema } from "@/lib/validation-schemas";
 import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
 import { z } from "zod";
+import { formatServiceType } from "@/lib/quote-ui";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -92,6 +93,7 @@ export async function sendQuoteEmail({
     // Sanitize and validate email addresses
     const customerEmail = (formData.email || formData.Email || '').trim().toLowerCase();
     const customerName = (formData.fullName || formData.name || 'Customer').trim();
+    const formattedServiceType = serviceType ? formatServiceType(serviceType) : undefined;
 
     // Basic email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -128,9 +130,9 @@ export async function sendQuoteEmail({
     const { data: companyData, error: companyError } = await resend.emails.send({
       from: process.env.EMAIL_FROM || "MACH1 Logistics <noreply@mach1logistics.com.au>",
       to: process.env.EMAIL_TO,
-      subject: `New Quote Request${serviceType ? ` - ${sanitizeForSubject(serviceType)}` : ''}${customerName ? ` from ${sanitizeForSubject(customerName)}` : ''}`,
+      subject: `New Quote Request${formattedServiceType ? ` - ${sanitizeForSubject(formattedServiceType)}` : ''}${customerName ? ` from ${sanitizeForSubject(customerName)}` : ''}`,
       react: QuoteRequestEmail({
-        serviceType,
+        serviceType: formattedServiceType,
         formData,
         packages,
       }),
@@ -153,7 +155,7 @@ export async function sendQuoteEmail({
         subject: `Quote Request Received - MACH1 Logistics`,
         react: QuoteRequestConfirmationEmail({
           customerName,
-          serviceType,
+          serviceType: formattedServiceType,
         }),
       });
 

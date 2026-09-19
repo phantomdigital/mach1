@@ -11,6 +11,7 @@ import {
   Tailwind,
 } from "@react-email/components";
 import { obfuscateMailtoLink } from "@/lib/email-obfuscation";
+import { formatServiceType } from "@/lib/quote-ui";
 
 interface Package {
   id: string;
@@ -53,12 +54,6 @@ export default function QuoteRequestEmail({
       .replace(/^./, str => str.toUpperCase())
       .replace(/_/g, ' ')
       .trim();
-  };
-
-  // Format service type
-  const formatServiceType = (type: string) => {
-    const withoutUnderscores = type.replace(/_/g, ' ');
-    return withoutUnderscores.charAt(0).toUpperCase() + withoutUnderscores.slice(1);
   };
 
   return (

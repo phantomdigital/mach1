@@ -7,7 +7,7 @@ import { PrismicRichText } from "@prismicio/react";
 import FaqAccordionCompact from "@/components/faq-accordion-compact";
 import { getMarginTopClass } from "@/lib/spacing";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
-import { quoteCopy } from "@/lib/quote-ui";
+import { formatServiceType, quoteCopy } from "@/lib/quote-ui";
 
 interface FaqItem {
   faq_question: string | null;
@@ -106,12 +106,6 @@ export default function StepsSummary({
       .replace(/([A-Z])/g, ' $1')
       .replace(/^./, str => str.toUpperCase())
       .trim();
-  };
-
-  // Format service type (remove underscores, capitalize first letter)
-  const formatServiceType = (type: string) => {
-    const withoutUnderscores = type.replace(/_/g, ' ');
-    return withoutUnderscores.charAt(0).toUpperCase() + withoutUnderscores.slice(1);
   };
 
   // Replace placeholders like {email}, {origin}, {destination} with actual form data

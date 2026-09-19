@@ -9,6 +9,23 @@ function hasNativeScript(value: string, locale: LocaleCode) {
 
 const LOADING_MESSAGES_KEY = "steps_loading_messages";
 
+const SERVICE_TYPE_ACRONYMS = new Set(["3pl", "aqis", "fcl", "lcl"]);
+const SERVICE_TYPE_SMALL_WORDS = new Set(["and", "or", "of", "the", "a", "an", "to", "for"]);
+
+export function formatServiceType(type: string) {
+  return type
+    .replace(/[_-]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .map((word, index) => {
+      const lower = word.toLowerCase();
+      if (SERVICE_TYPE_ACRONYMS.has(lower)) return lower.toUpperCase();
+      if (index > 0 && SERVICE_TYPE_SMALL_WORDS.has(lower)) return lower;
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join(" ");
+}
+
 export function skipsQuotePackages(selectedCard: string | null | undefined) {
   if (!selectedCard) return false;
   const value = selectedCard.toLowerCase();
