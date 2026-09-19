@@ -8,8 +8,6 @@ const nextConfig: NextConfig = {
    */
   serverExternalPackages: [
     "three",
-    "@react-three/fiber",
-    "@react-three/drei",
   ],
   /**
    * Exclude heavy client-only deps from serverless function traces.
@@ -19,7 +17,6 @@ const nextConfig: NextConfig = {
   outputFileTracingExcludes: {
     "/": [
       "./node_modules/three/**",
-      "./node_modules/@react-three/**",
       "./node_modules/mapbox-gl/**",
       "./public/**",
       "./.git/**",
@@ -27,7 +24,6 @@ const nextConfig: NextConfig = {
     ],
     "/api/*": [
       "./node_modules/three/**",
-      "./node_modules/@react-three/**",
       "./node_modules/mapbox-gl/**",
       "./public/**",
     ],
@@ -52,6 +48,20 @@ const nextConfig: NextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
     qualities: [50, 75, 85, 90, 95, 100],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/package-tracking",
+        destination: "/tracking",
+        permanent: true,
+      },
+      {
+        source: "/:locale(zh-cn|hi-in)/package-tracking",
+        destination: "/:locale/tracking",
+        permanent: true,
+      },
+    ];
   },
   compiler: {
     // Remove console logs in production builds

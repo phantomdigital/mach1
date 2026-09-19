@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import {
   SliceSimulator,
   SliceSimulatorParams,
@@ -16,6 +17,10 @@ export const metadata: Metadata = {
 export default async function SliceSimulatorPage({
   searchParams,
 }: SliceSimulatorParams) {
+  if (process.env.NODE_ENV === "production") {
+    notFound();
+  }
+
   const { state } = await searchParams;
   const slices = getSlices(state);
 
