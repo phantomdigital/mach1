@@ -9,6 +9,17 @@ function hasNativeScript(value: string, locale: LocaleCode) {
 
 const LOADING_MESSAGES_KEY = "steps_loading_messages";
 
+export function skipsQuotePackages(selectedCard: string | null | undefined) {
+  if (!selectedCard) return false;
+  const value = selectedCard.toLowerCase();
+  return (
+    value.includes("warehousing") ||
+    value.includes("3pl") ||
+    value.includes("storage") ||
+    value.includes("warehouse")
+  );
+}
+
 /** CMS chrome copied from English still looks Latin; keep real Chinese values. */
 export function quoteChrome(
   value: string | null | undefined,

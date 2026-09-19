@@ -29,6 +29,8 @@ interface StepsFormProps {
   initialData?: Record<string, string> | null;
   locale?: LocaleCode;
   submitButtonText?: string | null;
+  continueButtonText?: string | null;
+  isFinalSubmit?: boolean;
 }
 
 export default function StepsForm({
@@ -38,8 +40,13 @@ export default function StepsForm({
   initialData,
   locale = defaultLocale,
   submitButtonText,
+  continueButtonText,
+  isFinalSubmit = true,
 }: StepsFormProps) {
   const copy = quoteCopy(locale);
+  const actionLabel = isFinalSubmit
+    ? quoteChrome(submitButtonText, copy.submit, locale)
+    : quoteChrome(continueButtonText, copy.continue, locale);
   const [formData, setFormData] = useState<Record<string, string>>(initialData || {});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -494,7 +501,7 @@ export default function StepsForm({
                 disabled={isSubmitting}
                 className="w-full"
               >
-                {isSubmitting ? copy.submitting : quoteChrome(submitButtonText, copy.submit, locale)}
+                {isSubmitting && isFinalSubmit ? copy.submitting : actionLabel}
               </Button>
               
               {/* Development Skip Button */}

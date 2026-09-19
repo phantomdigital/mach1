@@ -20,7 +20,7 @@ import { stepContentVariants } from "./step-animations";
 import { getMarginTopClass } from "@/lib/spacing";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
 import { getLocaleFromPathname } from "@/lib/locale-helpers";
-import { quoteChrome, quoteCopy, readQuoteLoadingMessages, writeQuoteLoadingMessages } from "@/lib/quote-ui";
+import { quoteChrome, quoteCopy, readQuoteLoadingMessages, skipsQuotePackages, writeQuoteLoadingMessages } from "@/lib/quote-ui";
 import { trackPlausible } from "@/lib/plausible";
 
 /**
@@ -112,14 +112,7 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
     const finalFormData = { ...(formData || {}), ...data };
     setFormData(finalFormData);
     
-    // Check if selected service requires packages step
-    // Skip packages for warehousing, 3PL, or storage services
-    const skipPackages = selectedCard && (
-      selectedCard.toLowerCase().includes('warehousing') ||
-      selectedCard.toLowerCase().includes('3pl') ||
-      selectedCard.toLowerCase().includes('storage') ||
-      selectedCard.toLowerCase().includes('warehouse')
-    );
+    const skipPackages = skipsQuotePackages(selectedCard);
     
     if (skipPackages) {
       // Send quote email for services without packages
@@ -309,12 +302,7 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
               {slice.variation === "form" && (
                 <StepsForm
                   formHeading={
-                    selectedCard && (
-                      selectedCard.toLowerCase().includes('warehousing') ||
-                      selectedCard.toLowerCase().includes('3pl') ||
-                      selectedCard.toLowerCase().includes('storage') ||
-                      selectedCard.toLowerCase().includes('warehouse')
-                    )
+                    skipsQuotePackages(selectedCard)
                       ? copy.warehousingDetails
                       : quoteChrome(slice.primary.form_heading, copy.details, locale)
                   }
@@ -339,7 +327,9 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
                   onSubmit={handleFormSubmit}
                   initialData={formData}
                   locale={locale}
+                  isFinalSubmit={skipsQuotePackages(selectedCard)}
                   submitButtonText={(slice.primary as { submit_button_text?: string | null }).submit_button_text}
+                  continueButtonText={(slice.primary as { continue_button_text?: string | null }).continue_button_text}
                 />
               )}
 
