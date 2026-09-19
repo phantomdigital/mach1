@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Clone the request headers
   const requestHeaders = new Headers(request.headers);
   
@@ -16,7 +16,6 @@ export function middleware(request: NextRequest) {
   });
 }
 
-// Configure which routes should be processed by this middleware
 export const config = {
   matcher: [
     /*
@@ -29,4 +28,3 @@ export const config = {
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };
-

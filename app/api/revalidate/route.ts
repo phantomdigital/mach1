@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
     }
     
     // 6. Revalidate Prismic content only for actual updates
-    revalidateTag("prismic");
+    revalidateTag("prismic", "max");
     
     console.log('Successfully revalidated Prismic content');
     

@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
    */
   serverExternalPackages: [
     "three",
-    "mapbox-gl",
     "@react-three/fiber",
     "@react-three/drei",
   ],
@@ -32,10 +31,6 @@ const nextConfig: NextConfig = {
       "./node_modules/mapbox-gl/**",
       "./public/**",
     ],
-  },
-  // See: https://nextjs.org/docs/app/building-your-application/routing/internationalization
-  experimental: {
-    viewTransition: true,
   },
   images: {
     remotePatterns: [
