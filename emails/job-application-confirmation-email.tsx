@@ -10,6 +10,7 @@ import {
   Img,
   Tailwind,
 } from "@react-email/components";
+import { emailSiteUrl } from "@/lib/email-from";
 
 interface JobApplicationConfirmationEmailProps {
   fullName: string;
@@ -26,14 +27,7 @@ export default function JobApplicationConfirmationEmail({
   coverLetterFileName,
   otherFileNames = [],
 }: JobApplicationConfirmationEmailProps) {
-  // Base URL for assets - must be absolute URL for emails
-  // Use localhost in development for React Email preview
-  const baseUrl = process.env.NODE_ENV === 'development' 
-    ? "http://localhost:3000" 
-    : (process.env.NEXT_PUBLIC_BASE_URL || "https://mach1logistics.com.au");
-  
-  // Logo URL - using PNG format for better email compatibility
-  const logoUrl = `${baseUrl}/logo/email-logo.png`;
+  const logoUrl = `${emailSiteUrl}/logo/email-logo.png`;
 
   return (
     <Html>
@@ -265,7 +259,7 @@ export default function JobApplicationConfirmationEmail({
               </Text>
               
               <Text className="m-0 mt-4 text-base font-bold leading-6 text-white">
-                <a href={baseUrl} className="font-semibold text-white no-underline">
+                <a href={emailSiteUrl} className="font-semibold text-white no-underline">
                   mach1logistics.com.au
                 </a>
               </Text>

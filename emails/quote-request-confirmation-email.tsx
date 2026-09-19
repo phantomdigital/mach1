@@ -12,6 +12,7 @@ import {
   Tailwind,
 } from "@react-email/components";
 import { formatServiceType } from "@/lib/quote-ui";
+import { emailSiteUrl } from "@/lib/email-from";
 
 interface QuoteRequestConfirmationEmailProps {
   customerName: string;
@@ -22,10 +23,7 @@ export default function QuoteRequestConfirmationEmail({
   customerName,
   serviceType,
 }: QuoteRequestConfirmationEmailProps) {
-  const baseUrl = process.env.NODE_ENV === 'development' 
-    ? "http://localhost:3000" 
-    : (process.env.NEXT_PUBLIC_BASE_URL || "https://mach1logistics.com.au");
-  const logoUrl = `${baseUrl}/logo/email-logo.png`;
+  const logoUrl = `${emailSiteUrl}/logo/email-logo.png`;
 
   return (
     <Html>

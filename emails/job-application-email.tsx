@@ -11,6 +11,7 @@ import {
   Tailwind,
 } from "@react-email/components";
 import { obfuscateMailtoLink } from "@/lib/email-obfuscation";
+import { emailSiteUrl } from "@/lib/email-from";
 
 interface JobApplicationEmailProps {
   fullName: string;
@@ -31,14 +32,7 @@ export default function JobApplicationEmail({
   coverLetterFileName,
   otherFileNames = [],
 }: JobApplicationEmailProps) {
-  // Base URL for assets - must be absolute URL for emails
-  // Use localhost in development for React Email preview
-  const baseUrl = process.env.NODE_ENV === 'development' 
-    ? "http://localhost:3000" 
-    : (process.env.NEXT_PUBLIC_BASE_URL || "https://mach1logistics.com.au");
-  
-  // Logo URL - using PNG format for better email compatibility
-  const logoUrl = `${baseUrl}/logo/email-logo.png`;
+  const logoUrl = `${emailSiteUrl}/logo/email-logo.png`;
 
   // Obfuscate email for display to prevent bot scraping
   const obfuscatedEmail = obfuscateMailtoLink(email);
@@ -257,7 +251,7 @@ export default function JobApplicationEmail({
                 This application was submitted from the careers page on
               </Text>
               <Text className="m-0 mt-2 text-base font-bold leading-6 text-white">
-                <a href={baseUrl} className="font-semibold text-mach1-green no-underline">
+                <a href={emailSiteUrl} className="font-semibold text-mach1-green no-underline">
                   mach1logistics.com.au
                 </a>
               </Text>

@@ -8,6 +8,7 @@ import { quoteRequestSchema, packageSchema } from "@/lib/validation-schemas";
 import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
 import { z } from "zod";
 import { formatServiceType } from "@/lib/quote-ui";
+import { companyEmailFrom, customerEmailFrom, teamReplyTo } from "@/lib/email-from";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -128,7 +129,7 @@ export async function sendQuoteEmail({
 
     // Send email to company
     const { data: companyData, error: companyError } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "MACH1 Logistics <noreply@mach1logistics.com.au>",
+      from: companyEmailFrom(),
       to: process.env.EMAIL_TO,
       subject: `New Quote Request${formattedServiceType ? ` - ${sanitizeForSubject(formattedServiceType)}` : ''}${customerName ? ` from ${sanitizeForSubject(customerName)}` : ''}`,
       react: QuoteRequestEmail({
@@ -150,8 +151,9 @@ export async function sendQuoteEmail({
     // Send confirmation email to customer (if they provided an email)
     if (customerEmail) {
       const { data: customerData, error: customerError } = await resend.emails.send({
-        from: process.env.EMAIL_FROM_CUSTOMER || process.env.EMAIL_FROM || "MACH1 Logistics <team@mach1logistics.com.au>",
+        from: customerEmailFrom(),
         to: customerEmail,
+        replyTo: teamReplyTo(),
         subject: `Quote Request Received - MACH1 Logistics`,
         react: QuoteRequestConfirmationEmail({
           customerName,

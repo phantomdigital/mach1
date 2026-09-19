@@ -12,6 +12,7 @@ import {
 } from "@react-email/components";
 import { obfuscateMailtoLink } from "@/lib/email-obfuscation";
 import { formatServiceType } from "@/lib/quote-ui";
+import { emailSiteUrl } from "@/lib/email-from";
 
 interface Package {
   id: string;
@@ -38,13 +39,7 @@ export default function QuoteRequestEmail({
   formData,
   packages = [],
 }: QuoteRequestEmailProps) {
-  // Base URL for assets - must be absolute URL for emails
-  // Use localhost in development for React Email preview
-  const baseUrl = process.env.NODE_ENV === 'development' 
-    ? "http://localhost:3000" 
-    : (process.env.NEXT_PUBLIC_BASE_URL || "https://mach1logistics.com.au");
-  
-  // Logo URL - using PNG format for better email compatibility
+  const baseUrl = emailSiteUrl;
   const logoUrl = `${baseUrl}/logo/email-logo.png`;
 
   // Format field name for display

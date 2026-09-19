@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import ContactFormEmail from "@/emails/contact-form-email";
 import { contactFormSchema, safeValidate } from "@/lib/validation-schemas";
 import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
+import { companyEmailFrom } from "@/lib/email-from";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -64,13 +65,8 @@ export async function submitContactForm(
     // Descriptive subject for inbox: "Contact from John Smith - Acme Corp"
     const subject = `Contact from ${sanitizeForSubject(validatedData.fullName)} - ${sanitizeForSubject(validatedData.companyName)}`;
 
-    // Use business name as sender (not just email) - "MACH1 Logistics <email>"
-    const rawFrom = process.env.EMAIL_FROM || "noreply@mach1logistics.com.au";
-    const from = rawFrom.includes("<") ? rawFrom : `MACH1 Logistics <${rawFrom}>`;
-
-    // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from,
+      from: companyEmailFrom(),
       to: [process.env.EMAIL_TO || "quotes@mach1logistics.com.au"], // Main recipient
       replyTo: normalizedEmail, // Allow direct reply to customer
       subject,

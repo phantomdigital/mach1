@@ -7,6 +7,7 @@ import JobApplicationEmail from "@/emails/job-application-email";
 import JobApplicationConfirmationEmail from "@/emails/job-application-confirmation-email";
 import { jobApplicationSchema, safeValidate } from "@/lib/validation-schemas";
 import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
+import { companyEmailFrom, customerEmailFrom } from "@/lib/email-from";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -92,7 +93,7 @@ export async function submitJobApplication(
 
     // Send email to HR/hiring team with attachments
     const { data: hrEmailData, error: hrEmailError } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "Mach1 Logistics <noreply@mach1logistics.com.au>",
+      from: companyEmailFrom(),
       to: [recipientEmail],
       replyTo: validatedData.email, // Allow direct reply to applicant
       subject: `Job Application: ${sanitizeForSubject(validatedData.jobTitle)} - ${sanitizeForSubject(validatedData.fullName)}`,
@@ -120,8 +121,9 @@ export async function submitJobApplication(
 
     // Send confirmation email to applicant (no attachments needed)
     const { data: confirmationEmailData, error: confirmationEmailError } = await resend.emails.send({
-      from: process.env.EMAIL_FROM_CUSTOMER || process.env.EMAIL_FROM || "Mach1 Logistics <team@mach1logistics.com.au>",
+      from: customerEmailFrom(),
       to: [validatedData.email],
+      replyTo: recipientEmail,
       subject: `Application Received: ${sanitizeForSubject(validatedData.jobTitle)} Position`,
       react: JobApplicationConfirmationEmail({
         fullName: validatedData.fullName,
