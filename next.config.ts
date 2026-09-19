@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
    */
   serverExternalPackages: [
     "three",
+    "redis",
   ],
   /**
    * Exclude heavy client-only deps from serverless function traces.
@@ -48,6 +49,38 @@ const nextConfig: NextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
     qualities: [50, 75, 85, 90, 95, 100],
+  },
+  async headers() {
+    const csp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io https://challenges.cloudflare.com https://api.mapbox.com https://static.cdn.prismic.io",
+      "style-src 'self' 'unsafe-inline' https://api.mapbox.com",
+      "img-src 'self' data: blob: https://images.prismic.io https://images.unsplash.com https://api.mapbox.com https://*.mapbox.com https://*.cloudflare.com",
+      "connect-src 'self' ws: wss: https://plausible.io https://*.mapbox.com https://api.mapbox.com https://*.prismic.io https://*.cdn.prismic.io https://challenges.cloudflare.com",
+      "frame-src https://challenges.cloudflare.com",
+      "font-src 'self' data:",
+      "worker-src 'self' blob:",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'self'",
+      "upgrade-insecure-requests",
+    ].join("; ");
+
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-DNS-Prefetch-Control", value: "on" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
+          { key: "Content-Security-Policy", value: csp },
+        ],
+      },
+    ];
   },
   async redirects() {
     return [

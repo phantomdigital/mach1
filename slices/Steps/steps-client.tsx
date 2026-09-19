@@ -109,7 +109,8 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
 
   const handleFormSubmit = async (data: Record<string, string>) => {
     // Merge with existing formData instead of replacing
-    const finalFormData = { ...(formData || {}), ...data };
+    const { turnstileToken, ...fields } = data;
+    const finalFormData = { ...(formData || {}), ...fields };
     setFormData(finalFormData);
     
     const skipPackages = skipsQuotePackages(selectedCard);
@@ -121,6 +122,7 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
           serviceType: selectedCard || undefined,
           formData: finalFormData,
           packages: [],
+          turnstileToken,
         });
 
         if (!result.success) {
@@ -153,7 +155,7 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
     }
   };
 
-  const handlePackagesSubmit = async (packages: any[]) => {
+  const handlePackagesSubmit = async (packages: any[], turnstileToken?: string) => {
     // Merge packages with existing formData
     const finalFormData = { ...(formData || {}), packages: JSON.stringify(packages) };
     setFormData(finalFormData);
@@ -164,6 +166,7 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
         serviceType: selectedCard || undefined,
         formData: formData || {},
         packages,
+        turnstileToken,
       });
 
       if (!result.success) {

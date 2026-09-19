@@ -244,7 +244,7 @@ export default async function JobPage({
                       ) : applicationEmail ? (
                         <JobApplicationDialog
                           jobTitle={page.data.title || ""}
-                          applicationEmail={applicationEmail}
+                          jobUid={page.uid}
                           closingDate={formattedClosingDate}
                           locale={locale}
                         >
@@ -341,7 +341,7 @@ export default async function JobPage({
                       ) : applicationEmail ? (
                         <JobApplicationDialog
                           jobTitle={page.data.title || ""}
-                          applicationEmail={applicationEmail}
+                          jobUid={page.uid}
                           closingDate={formattedClosingDate}
                           locale={locale}
                         >

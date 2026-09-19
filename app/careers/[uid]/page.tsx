@@ -180,7 +180,7 @@ export default async function JobPage({
                       ) : applicationEmail ? (
                         <JobApplicationDialog
                           jobTitle={page.data.title || ""}
-                          applicationEmail={applicationEmail}
+                          jobUid={page.uid}
                           closingDate={formattedClosingDate}
                         >
                           <HeroButton>APPLY NOW</HeroButton>
@@ -266,7 +266,7 @@ export default async function JobPage({
                     ) : applicationEmail ? (
                       <JobApplicationDialog
                         jobTitle={page.data.title || ""}
-                        applicationEmail={applicationEmail}
+                        jobUid={page.uid}
                         closingDate={formattedClosingDate}
                       >
                         <HeroButton>APPLY NOW</HeroButton>

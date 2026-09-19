@@ -9,6 +9,7 @@ import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
 import { z } from "zod";
 import { formatServiceType } from "@/lib/quote-ui";
 import { companyEmailFrom, customerEmailFrom, teamReplyTo } from "@/lib/email-from";
+import { verifyTurnstileToken } from "@/lib/turnstile";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -30,12 +31,14 @@ interface SendQuoteEmailParams {
   serviceType?: string;
   formData: Record<string, string>;
   packages?: Package[];
+  turnstileToken?: string;
 }
 
 export async function sendQuoteEmail({
   serviceType,
   formData,
   packages = [],
+  turnstileToken,
 }: SendQuoteEmailParams) {
   try {
     // Rate limiting check (5 requests per hour per IP)
@@ -51,11 +54,20 @@ export async function sendQuoteEmail({
       };
     }
 
-    // SERVER-SIDE VALIDATION
-    // Validate the entire request
+    const verified = await verifyTurnstileToken(turnstileToken, clientId);
+    if (!verified) {
+      return { success: false, error: "Verification failed. Please try again." };
+    }
+
+    const cleanedFormData = Object.fromEntries(
+      Object.entries(formData || {})
+        .filter(([key]) => key !== "packages" && key !== "turnstileToken" && key !== "_turnstileToken")
+        .map(([key, value]) => [key, String(value ?? "")])
+    );
+
     const validationResult = quoteRequestSchema.safeParse({
       serviceType,
-      formData,
+      formData: cleanedFormData,
       packages,
     });
 
@@ -92,8 +104,8 @@ export async function sendQuoteEmail({
     }
 
     // Sanitize and validate email addresses
-    const customerEmail = (formData.email || formData.Email || '').trim().toLowerCase();
-    const customerName = (formData.fullName || formData.name || 'Customer').trim();
+    const customerEmail = (cleanedFormData.email || cleanedFormData.Email || '').trim().toLowerCase();
+    const customerName = (cleanedFormData.fullName || cleanedFormData.name || 'Customer').trim();
     const formattedServiceType = serviceType ? formatServiceType(serviceType) : undefined;
 
     // Basic email format validation
@@ -134,7 +146,7 @@ export async function sendQuoteEmail({
       subject: `New Quote Request${formattedServiceType ? ` - ${sanitizeForSubject(formattedServiceType)}` : ''}${customerName ? ` from ${sanitizeForSubject(customerName)}` : ''}`,
       react: QuoteRequestEmail({
         serviceType: formattedServiceType,
-        formData,
+        formData: cleanedFormData,
         packages,
       }),
       // Optional: Add reply-to if customer provided email
@@ -143,7 +155,7 @@ export async function sendQuoteEmail({
 
     if (companyError) {
       console.error("Error sending quote email to company:", companyError);
-      return { success: false, error: companyError.message };
+      return { success: false, error: "Failed to send email. Please try again later." };
     }
 
     console.log("Quote email sent to company successfully:", companyData);

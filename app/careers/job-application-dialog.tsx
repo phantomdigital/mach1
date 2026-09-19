@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { HeroButton } from "@/components/ui/hero-button"
 import { cn } from "@/lib/utils"
 import { submitJobApplication } from "@/app/actions/submit-job-application"
+import { TurnstileField } from "@/components/turnstile-field"
 import { trackPlausible } from "@/lib/plausible"
 import { 
   fileToFileData, 
@@ -28,7 +29,7 @@ import { isHindi, isSimplifiedChinese } from "@/lib/localized-routes"
 
 interface JobApplicationDialogProps {
   jobTitle: string
-  applicationEmail?: string | null
+  jobUid: string
   children: React.ReactNode
   closingDate?: string | null
   locale?: LocaleCode
@@ -36,7 +37,7 @@ interface JobApplicationDialogProps {
 
 export function JobApplicationDialog({
   jobTitle,
-  applicationEmail,
+  jobUid,
   children,
   closingDate,
   locale = defaultLocale,
@@ -105,6 +106,7 @@ export function JobApplicationDialog({
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState("")
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
@@ -159,7 +161,9 @@ export function JobApplicationDialog({
         email: formData.email,
         phone: formData.phone,
         jobTitle,
-        applicationEmail: applicationEmail || "careers@mach1logistics.com.au",
+        jobUid,
+        locale,
+        turnstileToken,
         resume: resumeData,
         coverLetter: coverLetterData,
         otherFiles: otherFilesData,
@@ -531,6 +535,10 @@ export function JobApplicationDialog({
               </div>
             </div>
             </div>
+          </div>
+
+          <div className="px-8 lg:px-12 pb-2">
+            <TurnstileField onToken={setTurnstileToken} />
           </div>
 
           {/* Sticky Footer */}

@@ -8,6 +8,7 @@ import { NumberInputWithUnit } from "@/components/ui/number-input-with-unit";
 import AddressAutocompleteInput from "./address-autocomplete-input";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
 import { quoteChrome, quoteCopy } from "@/lib/quote-ui";
+import { TurnstileField } from "@/components/turnstile-field";
 
 interface Package {
   id: string;
@@ -26,7 +27,7 @@ interface Package {
 interface StepsPackagesProps {
   packagesHeading: string;
   selectedCard?: string;
-  onSubmit: (packages: Package[]) => void;
+  onSubmit: (packages: Package[], turnstileToken?: string) => void;
   locale?: LocaleCode;
   continueButtonText?: string | null;
 }
@@ -74,6 +75,7 @@ export default function StepsPackages({
     new Set(["1"])
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   // Prevent scrolling during submission
   useEffect(() => {
@@ -155,7 +157,7 @@ export default function StepsPackages({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-     onSubmit(packages);
+    onSubmit(packages, turnstileToken);
     // Note: navigation happens in parent, so we don't need to reset isSubmitting
   };
 
@@ -438,6 +440,7 @@ export default function StepsPackages({
 
       {/* Submit Button */}
       <div className="mt-12 space-y-4">
+        <TurnstileField onToken={setTurnstileToken} />
         <Button 
           type="submit" 
           variant="hero"

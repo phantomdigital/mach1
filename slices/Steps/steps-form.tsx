@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
 import { quoteChrome, quoteCopy } from "@/lib/quote-ui";
+import { TurnstileField } from "@/components/turnstile-field";
 
 interface FormField {
   label: string;
@@ -50,6 +51,7 @@ export default function StepsForm({
   const [formData, setFormData] = useState<Record<string, string>>(initialData || {});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   // Update form data if initialData changes (e.g., when navigating back)
   useEffect(() => {
@@ -149,7 +151,7 @@ export default function StepsForm({
     
     setIsSubmitting(true);
     try {
-      await onSubmit(formData);
+      await onSubmit(isFinalSubmit ? { ...formData, turnstileToken } : formData);
     } finally {
       setIsSubmitting(false);
     }
@@ -495,6 +497,7 @@ export default function StepsForm({
             
             {/* Submit Button - in left column */}
             <div className="mt-12 space-y-4">
+              {isFinalSubmit && <TurnstileField onToken={setTurnstileToken} />}
               <Button 
                 type="submit" 
                 variant="hero"

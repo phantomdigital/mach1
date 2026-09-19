@@ -4,8 +4,11 @@ import { Resend } from "resend";
 import { headers } from "next/headers";
 import ContactFormEmail from "@/emails/contact-form-email";
 import { contactFormSchema, safeValidate } from "@/lib/validation-schemas";
+import { cookies } from "next/headers";
 import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
 import { companyEmailFrom } from "@/lib/email-from";
+import { CONTACT_THANK_YOU_COOKIE, CONTACT_THANK_YOU_MAX_AGE } from "@/lib/contact-cookie";
+import { verifyTurnstileToken } from "@/lib/turnstile";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -52,6 +55,15 @@ export async function submitContactForm(
       };
     }
 
+    const turnstileToken =
+      typeof formData === "object" && formData && "turnstileToken" in formData
+        ? String((formData as { turnstileToken?: string }).turnstileToken || "")
+        : "";
+    const verified = await verifyTurnstileToken(turnstileToken, clientId);
+    if (!verified) {
+      return { success: false, error: "Verification failed. Please try again." };
+    }
+
     const validatedData = validation.data;
 
     // Sanitize subject line inputs to prevent header injection
@@ -89,7 +101,14 @@ export async function submitContactForm(
       };
     }
 
-    console.log("Email sent successfully:", data?.id);
+    const cookieStore = await cookies();
+    cookieStore.set(CONTACT_THANK_YOU_COOKIE, normalizedEmail, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: CONTACT_THANK_YOU_MAX_AGE,
+      path: "/",
+    });
 
     return {
       success: true,

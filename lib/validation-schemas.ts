@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { DOCUMENT_CONTENT_TYPES } from "@/lib/security";
 
 /**
  * Shared validation schemas using Zod
@@ -76,9 +77,11 @@ export const jobApplicationSchema = z.object({
     .string()
     .min(1, "Job title is required"),
   
-  applicationEmail: z
+  jobUid: z
     .string()
-    .min(1, "Application email is required"),
+    .min(1, "Job is required")
+    .max(200)
+    .regex(/^[a-z0-9][-a-z0-9]*$/i, "Invalid job"),
   
   resume: fileAttachmentSchema.refine(
     (file) => file.size <= 5 * 1024 * 1024, // 5MB max
@@ -96,9 +99,12 @@ export const jobApplicationSchema = z.object({
     "Cover letter must be PDF, DOC, or DOCX"
   ),
   
-  otherFiles: z.array(fileAttachmentSchema).optional().default([]).refine(
+  otherFiles: z.array(fileAttachmentSchema).max(8).optional().default([]).refine(
     (files) => files.every(file => file.size <= 5 * 1024 * 1024), // 5MB max per file
     "Each file must be less than 5MB"
+  ).refine(
+    (files) => files.every(file => DOCUMENT_CONTENT_TYPES.includes(file.contentType as (typeof DOCUMENT_CONTENT_TYPES)[number])),
+    "Supporting files must be PDF, DOC, or DOCX"
   ).refine(
     (files) => {
       const totalSize = files.reduce((sum, file) => sum + file.size, 0);
@@ -179,9 +185,15 @@ export const quoteFormBaseSchema = z.object({
 
 // Full quote request validation schema (with packages)
 export const quoteRequestSchema = z.object({
-  serviceType: z.string().optional(),
-  formData: z.record(z.string(), z.any()), // Allow any form fields
-  packages: z.array(packageSchema).optional().default([]),
+  serviceType: z.string().max(120).optional(),
+  formData: z
+    .record(z.string().max(80), z.string().max(2000))
+    .refine((fields) => Object.keys(fields).length <= 40, "Too many form fields")
+    .refine((fields) => {
+      const email = fields.email || fields.Email;
+      return Boolean(email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+    }, "A valid email is required"),
+  packages: z.array(packageSchema).max(20).optional().default([]),
 });
 
 export type QuoteRequestData = z.infer<typeof quoteRequestSchema>;

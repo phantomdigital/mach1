@@ -4,7 +4,9 @@ import { SliceZone } from "@prismicio/react";
 import { createClient, defaultLocale, type LocaleCode } from "@/prismicio";
 import { components } from "@/slices";
 import { generatePrismicMetadata } from "@/lib/metadata";
+import { cookies } from "next/headers";
 import { localizedPath } from "@/lib/localized-routes";
+import { CONTACT_THANK_YOU_COOKIE } from "@/lib/contact-cookie";
 
 /**
  * This page displays the contact thank you page.
@@ -69,18 +71,18 @@ export default async function ContactThankYouPage({
 }) {
   const { locale = defaultLocale } = await params;
   const client = createClient();
-  const query = await searchParams;
+  await searchParams;
+  const cookieStore = await cookies();
+  const submittedEmail = cookieStore.get(CONTACT_THANK_YOU_COOKIE)?.value;
   
-  // Protect the page - only accessible with email parameter (from form submission)
-  if (!query.email) {
+  if (!submittedEmail) {
     redirect(localizedPath("/", locale));
   }
   
   try {
     const page = await client.getByUID("page", CONTACT_THANK_YOU_UID, { lang: locale });
     
-    // Determine the replacement value for {email}
-    const emailReplacement = query.email || "your email address";
+    const emailReplacement = submittedEmail;
 
     // Process slices to replace {email} placeholder
         const processedSlices = page.data.slices.map((slice) => {

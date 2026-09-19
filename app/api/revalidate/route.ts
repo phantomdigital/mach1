@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
+import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
+import { safeEqual } from "@/lib/security";
 
 // Mark this route as dynamic
 export const dynamic = 'force-dynamic';
-
-// Rate limiting: Track last webhook call timestamp per IP
-const rateLimitMap = new Map<string, number>();
-const RATE_LIMIT_WINDOW = 10000; // 10 seconds minimum between requests
 
 // Prismic webhook payload type
 interface PrismicWebhookPayload {
@@ -20,11 +18,7 @@ interface PrismicWebhookPayload {
   tags?: Record<string, unknown>;
 }
 
-/**
- * Validates the webhook secret from multiple sources (query params and body)
- * Following Prismic's documentation, the secret can be in either location
- */
-function validateSecret(querySecret: string | null, bodySecret: string | null | undefined): boolean {
+function validateSecret(bodySecret: string | null | undefined): boolean {
   const expectedSecret = process.env.PRISMIC_WEBHOOK_SECRET;
   
   if (!expectedSecret) {
@@ -32,44 +26,12 @@ function validateSecret(querySecret: string | null, bodySecret: string | null | 
     return false;
   }
   
-  // Check both query params and body (Prismic sends it in the body)
-  const providedSecret = querySecret || bodySecret;
-  
-  if (!providedSecret) {
+  if (!bodySecret) {
     console.warn('No secret provided in webhook request');
     return false;
   }
   
-  // Use timing-safe comparison to prevent timing attacks
-  return providedSecret === expectedSecret;
-}
-
-/**
- * Rate limiting check: Prevents abuse by limiting requests from same IP
- */
-function checkRateLimit(ip: string | null): boolean {
-  if (!ip) return true; // Allow if we can't determine IP (local dev)
-  
-  const now = Date.now();
-  const lastRequest = rateLimitMap.get(ip);
-  
-  if (lastRequest && now - lastRequest < RATE_LIMIT_WINDOW) {
-    return false;
-  }
-  
-  rateLimitMap.set(ip, now);
-  
-  // Clean up old entries (prevent memory leak)
-  if (rateLimitMap.size > 100) {
-    const cutoff = now - RATE_LIMIT_WINDOW * 2;
-    for (const [key, timestamp] of rateLimitMap.entries()) {
-      if (timestamp < cutoff) {
-        rateLimitMap.delete(key);
-      }
-    }
-  }
-  
-  return true;
+  return safeEqual(bodySecret, expectedSecret);
 }
 
 /**
@@ -96,8 +58,9 @@ function isValidPrismicPayload(body: unknown): body is PrismicWebhookPayload {
 export async function POST(request: NextRequest) {
   try {
     // 1. Rate limiting check
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip');
-    if (!checkRateLimit(ip)) {
+    const ip = getClientIdentifier(request.headers);
+    const rate = await checkRateLimit(`prismic-webhook:${ip}`, 30, 60_000);
+    if (!rate.allowed) {
       console.warn(`Rate limit exceeded for IP: ${ip}`);
       return NextResponse.json(
         { error: 'Too many requests' },
@@ -125,14 +88,11 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // 3. Secret validation (from both query params and body)
-    const querySecret = request.nextUrl.searchParams.get('secret');
     const bodySecret = body.secret;
     
-    if (!validateSecret(querySecret, bodySecret)) {
+    if (!validateSecret(bodySecret)) {
       console.warn('Invalid webhook secret received', {
         ip,
-        hasQuerySecret: !!querySecret,
         hasBodySecret: !!bodySecret,
       });
       return NextResponse.json(

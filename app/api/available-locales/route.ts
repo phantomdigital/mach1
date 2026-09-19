@@ -1,18 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/prismicio';
+import { createClient, locales } from '@/prismicio';
 import type { AlternateLanguage, PrismicDocument } from '@prismicio/client';
+import { checkRateLimit, getClientIdentifier } from '@/lib/rate-limit';
+
+const ALLOWED_DOC_TYPES = new Set(['home', 'page', 'solution', 'specialty', 'news', 'job', 'author']);
+const ALLOWED_LANGS = locales.map((locale) => locale.code);
 
 // Mark this route as dynamic
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
+    const rate = await checkRateLimit(`available-locales:${getClientIdentifier(request.headers)}`, 60, 60_000);
+    if (!rate.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const docType = searchParams.get('type');
     const uid = searchParams.get('uid');
     const lang = searchParams.get('lang') || 'en-us';
-    
-    if (!docType) {
+
+    if (!docType || !ALLOWED_DOC_TYPES.has(docType) || !ALLOWED_LANGS.includes(lang as (typeof ALLOWED_LANGS)[number])) {
       return NextResponse.json(
         { error: 'Document type is required' },
         { status: 400 }
@@ -59,7 +68,7 @@ export async function GET(request: NextRequest) {
     
     // Also check if the document exists in other locales by trying to fetch them
     // This handles cases where alternate_languages might not be fully populated
-    const allLocales = ['en-us', 'zh-cn', 'hi-in'];
+    const allLocales = [...ALLOWED_LANGS];
     for (const locale of allLocales) {
       if (locale === lang) continue; // Skip current locale
       

@@ -19,6 +19,7 @@ import { submitContactForm } from "@/app/actions/send-contact-form";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
 import { localizedChrome, localizedPath } from "@/lib/localized-routes";
 import { trackPlausible } from "@/lib/plausible";
+import { TurnstileField } from "@/components/turnstile-field";
 
 interface ValidationError {
   field: string;
@@ -50,6 +51,7 @@ export default function ContactForm({
     enquiryType: "",
     message: "",
   });
+  const [turnstileToken, setTurnstileToken] = useState("");
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -67,13 +69,11 @@ export default function ContactForm({
     }
 
     try {
-      const result = await submitContactForm(formData);
+      const result = await submitContactForm({ ...formData, turnstileToken });
 
       if (result.success) {
         trackPlausible("Contact Submit", { page: "contact" });
-        // Redirect to thank you page with email parameter
-        const emailParam = encodeURIComponent(formData.email);
-        router.push(`${localizedPath("/contact/thank-you", locale)}?email=${emailParam}`);
+        router.push(localizedPath("/contact/thank-you", locale));
         // Keep isSubmitting true until redirect completes
       } else {
         // Handle server-side validation errors
@@ -255,6 +255,8 @@ export default function ContactForm({
           rows={6}
         />
       </div>
+
+      <TurnstileField onToken={setTurnstileToken} />
 
       {/* Submit Button */}
       <Button type="submit" variant="hero" className="w-full" disabled={isSubmitting}>

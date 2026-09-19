@@ -8,6 +8,10 @@ import JobApplicationConfirmationEmail from "@/emails/job-application-confirmati
 import { jobApplicationSchema, safeValidate } from "@/lib/validation-schemas";
 import { checkRateLimit, getClientIdentifier } from "@/lib/rate-limit";
 import { companyEmailFrom, customerEmailFrom } from "@/lib/email-from";
+import { resolveJobApplicationRecipient } from "@/lib/job-recipient";
+import { sanitizeAttachmentFilename } from "@/lib/security";
+import { verifyTurnstileToken } from "@/lib/turnstile";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -54,38 +58,53 @@ export async function submitJobApplication(
       };
     }
 
+    const payload = formData as { turnstileToken?: string; locale?: LocaleCode };
+    const verified = await verifyTurnstileToken(payload.turnstileToken, clientId);
+    if (!verified) {
+      return { success: false, error: "Verification failed. Please try again." };
+    }
+
     const validatedData = validation.data;
 
-    // Sanitize subject line inputs to prevent header injection
     const sanitizeForSubject = (str: string): string => {
-      return str.replace(/[\r\n]/g, '').substring(0, 50); // Remove newlines and limit length
+      return str.replace(/[\r\n]/g, '').substring(0, 50);
     };
 
-    // Determine the recipient email (use application-specific email if provided, otherwise use env var)
-    const recipientEmail = validatedData.applicationEmail || process.env.EMAIL_TO || "careers@mach1logistics.com.au";
+    let recipientEmail: string;
+    try {
+      recipientEmail = await resolveJobApplicationRecipient(
+        validatedData.jobUid,
+        payload.locale || defaultLocale
+      );
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "This position is no longer accepting applications.",
+      };
+    }
 
     // Prepare attachments for Resend
     const attachments: Attachment[] = [];
 
     // Add resume
     attachments.push({
-      filename: validatedData.resume.filename,
-      content: validatedData.resume.content,
-    });
+          filename: sanitizeAttachmentFilename(validatedData.resume.filename),
+          content: validatedData.resume.content,
+        });
 
     // Add cover letter if provided
     if (validatedData.coverLetter) {
-      attachments.push({
-        filename: validatedData.coverLetter.filename,
-        content: validatedData.coverLetter.content,
-      });
+        attachments.push({
+          filename: sanitizeAttachmentFilename(validatedData.coverLetter.filename),
+          content: validatedData.coverLetter.content,
+        });
     }
 
     // Add other files if provided
     if (validatedData.otherFiles && validatedData.otherFiles.length > 0) {
       validatedData.otherFiles.forEach((file) => {
         attachments.push({
-          filename: file.filename,
+          filename: sanitizeAttachmentFilename(file.filename),
           content: file.content,
         });
       });

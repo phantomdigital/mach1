@@ -71,19 +71,9 @@ export default function AddressAutocompleteInput({
     setIsLoading(true);
 
     try {
-      const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-      if (!token) {
-        console.error("Mapbox token not found");
-        setIsLoading(false);
-        return;
-      }
-
-      // Build URL with optional country filter
-      const countryParam = country ? `&country=${country}` : '';
+      const countryParam = country ? `&country=${country}` : "";
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-          query
-        )}.json?access_token=${token}${countryParam}&limit=5&types=address,place,postcode`
+        `/api/mapbox/geocode?q=${encodeURIComponent(query)}${countryParam}`
       );
 
       if (!response.ok) throw new Error("Failed to fetch suggestions");
