@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import { NavigationDropdown } from "./navigation-dropdown";
+import { LogoLink } from "./logo-link";
 import { HeaderButtons } from "./header-buttons";
 import { computeMaxDropdownHeight } from "./dropdown-height-utils";
 import type { HeaderDocument, HeaderDocumentDataNavigationItem } from "@/types.generated";
@@ -156,7 +157,7 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
         <div className="flex items-center justify-between gap-4">
           {/* Compact Logo */}
           <div className="flex items-center">
-            <PrismicNextLink href="/" className="block">
+            <LogoLink className="block">
               {logo.url ? (
                 <img
                   src={logo.url}
@@ -180,7 +181,7 @@ export function CompactHeader({ logo, siteTitle, navigation, buttons }: CompactH
                   {siteTitle}
                 </div>
               ) : null}
-            </PrismicNextLink>
+            </LogoLink>
           </div>
 
           {/* Navigation */}

@@ -1,7 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { PrismicNextLink } from "@prismicio/next";
+import { defaultLocale } from "@/prismicio";
+import { getLocaleFromPathname } from "@/lib/locale-helpers";
 
 interface LogoLinkProps {
   children: React.ReactNode;
@@ -35,6 +37,9 @@ interface WindowWithIdleCallback extends Window {
  */
 export function LogoLink({ children, className }: LogoLinkProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const homeHref = locale === defaultLocale ? "/" : `/${locale}`;
 
   const handleMouseEnter = () => {
     // Check if user is on a slow connection
@@ -47,7 +52,7 @@ export function LogoLink({ children, className }: LogoLinkProps) {
 
     // Prefetch home page when idle
     const prefetchHome = () => {
-      router.prefetch('/');
+      router.prefetch(homeHref);
     };
 
     if ('requestIdleCallback' in window) {
@@ -59,7 +64,7 @@ export function LogoLink({ children, className }: LogoLinkProps) {
 
   return (
     <PrismicNextLink 
-      href="/" 
+      href={homeHref} 
       className={className}
       onMouseEnter={handleMouseEnter}
     >
