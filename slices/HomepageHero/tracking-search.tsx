@@ -14,6 +14,7 @@ import { trackingNumberSchema } from "@/lib/validation-schemas"
 import { defaultLocale, type LocaleCode } from "@/prismicio"
 import { quoteChrome } from "@/lib/quote-ui"
 import { trackingCopy } from "@/lib/tracking-ui"
+import { trackPlausible } from "@/lib/plausible"
 
 interface TrackingSearchProps {
   className?: string;
@@ -56,6 +57,7 @@ export function TrackingSearch({
     }
 
     if (urlPrefix) {
+      trackPlausible("Track Shipment", { source: "homepage" })
       window.open(
         `https://${urlPrefix}.logixboard.com/search?term=${encodeURIComponent(result.data)}`,
         '_blank',

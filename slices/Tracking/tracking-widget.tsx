@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { defaultLocale, type LocaleCode } from '@/prismicio';
 import { quoteChrome } from '@/lib/quote-ui';
 import { trackingCopy } from '@/lib/tracking-ui';
+import { trackPlausible } from '@/lib/plausible';
 
 interface TrackingWidgetProps {
   urlPrefix: string;
@@ -30,6 +31,7 @@ export function TrackingWidget({
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (trackingNumber.trim()) {
+      trackPlausible('Track Shipment', { source: 'tracking' });
       // Open Logixboard search in a new tab
       window.open(
         `https://${urlPrefix}.logixboard.com/search?term=${encodeURIComponent(trackingNumber.trim())}`,

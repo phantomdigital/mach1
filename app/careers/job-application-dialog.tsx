@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { HeroButton } from "@/components/ui/hero-button"
 import { cn } from "@/lib/utils"
 import { submitJobApplication } from "@/app/actions/submit-job-application"
+import { trackPlausible } from "@/lib/plausible"
 import { 
   fileToFileData, 
   validateFiles,
@@ -167,6 +168,7 @@ export function JobApplicationDialog({
       setIsSubmitting(false)
 
       if (result.success) {
+        trackPlausible("Job Application Submit", { job: jobTitle })
         setIsSubmitted(true)
       } else {
         setError(result.error || text.submitFailed)

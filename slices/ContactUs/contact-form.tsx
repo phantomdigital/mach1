@@ -18,6 +18,7 @@ import { contactFormSchema, safeValidate } from "@/lib/validation-schemas";
 import { submitContactForm } from "@/app/actions/send-contact-form";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
 import { localizedChrome, localizedPath } from "@/lib/localized-routes";
+import { trackPlausible } from "@/lib/plausible";
 
 interface ValidationError {
   field: string;
@@ -69,6 +70,7 @@ export default function ContactForm({
       const result = await submitContactForm(formData);
 
       if (result.success) {
+        trackPlausible("Contact Submit", { page: "contact" });
         // Redirect to thank you page with email parameter
         const emailParam = encodeURIComponent(formData.email);
         router.push(`${localizedPath("/contact/thank-you", locale)}?email=${emailParam}`);

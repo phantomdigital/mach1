@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown, Globe, Loader2 } from 'lucide-react';
 import { locales, defaultLocale, type LocaleCode } from '@/prismicio';
 import { writeLocalePreference } from '@/lib/locale-preference';
+import { trackPlausible } from '@/lib/plausible';
 
 // Group locales by category
 const groupedLocales = {
@@ -59,6 +60,9 @@ export function RegionLanguageSelector() {
     }
 
     writeLocalePreference(newLocaleCode);
+    if (newLocaleCode !== currentLocale) {
+      trackPlausible('Language Switch', { from: currentLocale, to: newLocaleCode });
+    }
     router.push(newPath || '/');
     setIsOpen(false);
   };

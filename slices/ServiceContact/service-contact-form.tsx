@@ -10,6 +10,7 @@ import { Loader2 } from "lucide-react";
 import { submitContactForm } from "@/app/actions/send-contact-form";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
 import { localizedChrome, localizedPath } from "@/lib/localized-routes";
+import { trackPlausible } from "@/lib/plausible";
 
 interface ServiceContactFormProps {
   pageTitle: string;
@@ -83,6 +84,7 @@ export default function ServiceContactForm({
         return;
       }
 
+      trackPlausible("Contact Submit", { page: "service" });
       const emailParam = encodeURIComponent(formData.email);
       router.push(`${localizedPath("/contact/thank-you", locale)}?email=${emailParam}`);
       // Keep isSubmitting true until redirect completes

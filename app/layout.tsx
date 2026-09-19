@@ -5,6 +5,7 @@ import "./globals.css";
 import HeaderServerWrapper from "./components/header/header-server-wrapper";
 import FooterServerWrapper from "./components/footer/footer-server-wrapper";
 import { LanguageSuggestion } from "./components/language-suggestion";
+import { PlausibleClicks } from "./components/plausible-clicks";
 import LenisProvider from "@/components/lenis-provider";
 // Note: DropdownStateProvider removed - now using Zustand (no provider needed)
 
@@ -52,6 +53,7 @@ export default function RootLayout({
             <main>{children}</main>
             <FooterServerWrapper />
             <LanguageSuggestion />
+            <PlausibleClicks />
           </LenisProvider>
           <Script
             src="https://plausible.io/js/pa-URrITWEbkA-vPSKi-oc0v.js"

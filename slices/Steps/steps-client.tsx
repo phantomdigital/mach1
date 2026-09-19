@@ -21,6 +21,7 @@ import { getMarginTopClass } from "@/lib/spacing";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
 import { getLocaleFromPathname } from "@/lib/locale-helpers";
 import { quoteChrome, quoteCopy, readQuoteLoadingMessages, writeQuoteLoadingMessages } from "@/lib/quote-ui";
+import { trackPlausible } from "@/lib/plausible";
 
 /**
  * Props for `Steps`.
@@ -102,6 +103,7 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
 
   const handleCardSelect = (value: string) => {
     setSelectedCard(value);
+    trackPlausible("Quote Step", { step: "service", service: value });
     goToNextStep();
   };
 
@@ -149,9 +151,11 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
       
       // Show loading state for better UX
       await new Promise(resolve => setTimeout(resolve, 1500));
+      trackPlausible("Quote Submit", { service: selectedCard || "unknown" });
       goToSummary();
     } else {
       // Transport/shipping services need package details
+      trackPlausible("Quote Step", { step: "details", service: selectedCard || "unknown" });
       goToNextStep();
     }
   };
@@ -190,6 +194,8 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
     
     // Show loading state for better UX
     await new Promise(resolve => setTimeout(resolve, 1500));
+    trackPlausible("Quote Step", { step: "packages", service: selectedCard || "unknown" });
+    trackPlausible("Quote Submit", { service: selectedCard || "unknown" });
     goToSummary();
   };
 
@@ -263,7 +269,10 @@ const Steps = ({ slice, index, mainFaqs = [], context }: StepsProps): React.Reac
                   heading={(slice.primary as any).start_heading}
                   description={(slice.primary as any).start_description}
                   buttonText={quoteChrome((slice.primary as any).start_button_text, copy.startQuote, locale)}
-                  onStart={() => goToNextStep(true)}
+                  onStart={() => {
+                    trackPlausible("Quote Step", { step: "start" });
+                    goToNextStep(true);
+                  }}
                   locale={locale}
                 />
               )}

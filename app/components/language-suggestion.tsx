@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Globe } from "lucide-react";
 import { defaultLocale, type LocaleCode } from "@/prismicio";
@@ -12,6 +12,7 @@ import {
   suggestionCopy,
   writeLocalePreference,
 } from "@/lib/locale-preference";
+import { trackPlausible } from "@/lib/plausible";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,7 @@ export function LanguageSuggestion() {
   const pathname = usePathname();
   const router = useRouter();
   const [suggested, setSuggested] = useState<LocaleCode | null>(null);
+  const switchingRef = useRef(false);
 
   useEffect(() => {
     const currentLocale = getLocaleFromPathname(pathname);
@@ -57,12 +59,23 @@ export function LanguageSuggestion() {
   }, [pathname]);
 
   const dismiss = () => {
+    if (switchingRef.current) {
+      switchingRef.current = false;
+      setSuggested(null);
+      return;
+    }
+    if (suggested) {
+      trackPlausible("Language Prompt", { action: "stay", locale: suggested });
+    }
     writeLocalePreference("dismissed");
     setSuggested(null);
   };
 
   const switchLocale = () => {
     if (!suggested) return;
+    switchingRef.current = true;
+    trackPlausible("Language Prompt", { action: "switch", locale: suggested });
+    trackPlausible("Language Switch", { from: defaultLocale, to: suggested });
     writeLocalePreference(suggested);
     setSuggested(null);
     router.push(pathForLocale(pathname, suggested));
