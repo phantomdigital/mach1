@@ -52,6 +52,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [{ type: "host", value: "mach1logistics.com.au" }],
+        destination: "https://www.mach1logistics.com.au/:path*",
+        permanent: true,
+      },
+      {
         source: "/package-tracking",
         destination: "/tracking",
         permanent: true,

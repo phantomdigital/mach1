@@ -9,7 +9,8 @@ import { isFilled } from "@prismicio/client";
 import { HeroButton } from "@/components/ui/hero-button";
 import { Badge } from "@/components/ui/badge";
 import { JobApplicationDialog } from "@/app/careers/job-application-dialog";
-import { generateBreadcrumbSchema } from "@/lib/metadata";
+import { generateBreadcrumbSchema, languageAlternateMap, ogAlternateLocales, ogLocale } from "@/lib/metadata";
+import { SITE_URL, absoluteUrl } from "@/lib/site-url";
 import { createRichTextComponents } from "@/lib/rich-text-serializer";
 import { isHindi, isSimplifiedChinese, localeForIntl, localizedChrome, localizedPath } from "@/lib/localized-routes";
 
@@ -413,7 +414,7 @@ export default async function JobPage({
             hiringOrganization: {
               "@type": "Organization",
               name: "MACH1 Logistics",
-              sameAs: "https://mach1logistics.com.au",
+              sameAs: SITE_URL,
             },
             jobLocation: (page.data.city || page.data.state) ? {
               "@type": "Place",
@@ -464,12 +465,17 @@ export async function generateMetadata({
   return {
     title: `${title} | MACH1 Logistics Careers`,
     description,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: absoluteUrl(url),
+      languages: languageAlternateMap(url),
+    },
     openGraph: {
       title: `${title} | MACH1 Logistics Careers`,
       description,
       type: "website",
-      url,
+      url: absoluteUrl(url),
+      locale: ogLocale(locale),
+      alternateLocale: ogAlternateLocales(locale),
       images: image ? [{ url: image }] : undefined,
     },
     twitter: {

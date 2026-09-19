@@ -20,6 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return generatePrismicMetadata(page, {
     url: "/",
+    locale: defaultLocale,
     keywords: ["home", "logistics solutions", "freight services", "MACH1"],
   });
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { JetBrains_Mono, Manrope } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -7,8 +8,9 @@ import FooterServerWrapper from "./components/footer/footer-server-wrapper";
 import { LanguageSuggestion } from "./components/language-suggestion";
 import { PlausibleClicks } from "./components/plausible-clicks";
 import LenisProvider from "@/components/lenis-provider";
-// Note: DropdownStateProvider removed - now using Zustand (no provider needed)
-
+import { getLocaleFromPathname } from "@/lib/locale-helpers";
+import { localeForIntl } from "@/lib/localized-routes";
+import { SITE_URL } from "@/lib/site-url";
 import { generateMetadata as generateBaseMetadata, generateOrganizationSchema, generateWebSiteSchema } from "@/lib/metadata";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -21,22 +23,30 @@ const manrope = Manrope({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = generateBaseMetadata({
-  title: "Professional Logistics & Transportation Services",
-  description: "MACH1 Logistics provides expert logistics solutions including FCL/LCL import/export, dangerous goods handling, airfreight services, and specialized transportation across Australia.",
-  keywords: ["professional logistics", "transportation services", "freight forwarding", "Australia logistics"],
-});
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  ...generateBaseMetadata({
+    title: "Professional Logistics & Transportation Services",
+    description: "MACH1 Logistics provides expert logistics solutions including FCL/LCL import/export, dangerous goods handling, airfreight services, and specialized transportation across Australia.",
+    keywords: ["professional logistics", "transportation services", "freight forwarding", "Australia logistics"],
+    url: "/",
+    locale: "en-us",
+  }),
+};
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerList = await headers();
+  const pathname = headerList.get("x-pathname") || "/";
+  const lang = localeForIntl(getLocaleFromPathname(pathname));
   const organizationSchema = generateOrganizationSchema();
   const websiteSchema = generateWebSiteSchema();
 
   return (
-    <html lang="en">
+    <html lang={lang}>
       <head>
         <script
           type="application/ld+json"

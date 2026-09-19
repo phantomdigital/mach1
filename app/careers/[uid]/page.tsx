@@ -10,6 +10,8 @@ import { HeroButton } from "@/components/ui/hero-button";
 import { Badge } from "@/components/ui/badge";
 import { JobApplicationDialog } from "@/app/careers/job-application-dialog";
 import { formatAuDate } from "@/lib/date-utils";
+import { languageAlternateMap, ogAlternateLocales, ogLocale } from "@/lib/metadata";
+import { SITE_URL, absoluteUrl } from "@/lib/site-url";
 
 type Params = { uid: string };
 
@@ -310,7 +312,7 @@ export default async function JobPage({
             hiringOrganization: {
               "@type": "Organization",
               name: "MACH1 Logistics",
-              sameAs: "https://mach1logistics.com.au",
+              sameAs: SITE_URL,
             },
             jobLocation: (page.data.city || page.data.state) ? {
               "@type": "Place",
@@ -357,13 +359,22 @@ export async function generateMetadata({
   const description = page.data.meta_description || page.data.summary || `Join MACH1 Logistics as a ${page.data.title}`;
   const image = page.data.meta_image?.url;
 
+  const url = `/careers/${uid}`;
+
   return {
     title: `${title} | MACH1 Logistics Careers`,
     description,
+    alternates: {
+      canonical: absoluteUrl(url),
+      languages: languageAlternateMap(url),
+    },
     openGraph: {
       title: `${title} | MACH1 Logistics Careers`,
       description,
       type: "website",
+      url: absoluteUrl(url),
+      locale: ogLocale(),
+      alternateLocale: ogAlternateLocales(),
       images: image ? [{ url: image }] : undefined,
     },
     twitter: {

@@ -3,6 +3,7 @@ import { SliceComponentProps } from "@prismicio/react";
 import { createClient } from "@/prismicio";
 import { CareersFilters } from "./careers-filters";
 import { getMarginTopClass, getContainerClass, getSectionWrapperClass } from "@/lib/spacing";
+import { SITE_URL } from "@/lib/site-url";
 import type { MarginTopSize } from "@/lib/spacing";
 
 /**
@@ -71,7 +72,7 @@ const Careers = async ({ slice }: CareersProps): Promise<React.ReactElement> => 
   const hasNoJobs = featuredJobs.length === 0 && allJobs.length === 0;
 
   // Generate JobPosting structured data for SEO
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mach1logistics.com.au";
+  const baseUrl = SITE_URL;
   const allJobsForSchema = [...featuredJobs, ...allJobs];
   
   const jobPostingsSchema = allJobsForSchema.map((job) => ({

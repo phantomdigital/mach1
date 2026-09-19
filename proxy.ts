@@ -1,19 +1,20 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getLocaleFromPathname } from '@/lib/locale-helpers';
+import { localeForIntl } from '@/lib/localized-routes';
 
 export function proxy(request: NextRequest) {
-  // Clone the request headers
   const requestHeaders = new Headers(request.headers);
-  
-  // Set the pathname in a custom header so server components can access it
-  requestHeaders.set('x-pathname', request.nextUrl.pathname);
-  
-  // Return the response with the new header
-  return NextResponse.next({
+  const pathname = request.nextUrl.pathname;
+  requestHeaders.set('x-pathname', pathname);
+
+  const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
+  response.headers.set('Content-Language', localeForIntl(getLocaleFromPathname(pathname)));
+  return response;
 }
 
 export const config = {

@@ -4,11 +4,9 @@ export const LOCALE_PREFERENCE_KEY = "mach1-locale-preference";
 
 export type LocalePreference = LocaleCode | "dismissed";
 
-/** Localhost-only: `?suggest=zh-cn` or `?suggest=hi-in` to preview the prompt. */
+/** `?suggest=zh-cn` or `?suggest=hi-in` to preview the prompt. */
 export function readSuggestOverride(): LocaleCode | null {
   if (typeof window === "undefined") return null;
-  const host = window.location.hostname;
-  if (host !== "localhost" && host !== "127.0.0.1") return null;
 
   const value = new URLSearchParams(window.location.search).get("suggest");
   if (value === "zh-cn" || value === "hi-in") return value;

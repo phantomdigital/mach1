@@ -138,6 +138,7 @@ export async function generateMetadata({
     
     return generatePrismicMetadata(page, {
       url: localizedPath("/contact/thank-you", locale),
+      locale,
       keywords: ["contact", "thank you", "MACH1 Logistics"],
       noIndex: true,
     });

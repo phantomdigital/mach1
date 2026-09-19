@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import type { KeyTextField, ImageField } from "@prismicio/client";
+import { defaultLocale, type LocaleCode } from "@/prismicio";
+import { getPathnameWithoutLocale } from "@/lib/locale-helpers";
+import { localizedPath } from "@/lib/localized-routes";
+import { SITE_URL, absoluteUrl } from "@/lib/site-url";
 
-// Base metadata for MACH1 Logistics
 export const baseMetadata = {
   siteName: "MACH1 Logistics",
   companyName: "MACH1 Logistics",
@@ -21,10 +24,48 @@ export const baseMetadata = {
     "dangerous goods",
     "specialty transport"
   ],
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://mach1logistics.com.au",
+  url: SITE_URL,
   locale: "en_AU",
   type: "website" as const,
 };
+
+export const HREFLANG_BY_LOCALE = {
+  "en-us": "en-AU",
+  "zh-cn": "zh-CN",
+  "hi-in": "hi-IN",
+} as const;
+
+export const OG_LOCALE_BY_LOCALE = {
+  "en-us": "en_AU",
+  "zh-cn": "zh_CN",
+  "hi-in": "hi_IN",
+} as const;
+
+export function languageAlternateMap(path = "/"): Record<string, string> {
+  const bare = getPathnameWithoutLocale(path);
+  const normalized = bare === "" ? "/" : bare;
+  const href = (locale: LocaleCode) => {
+    if (normalized === "/") {
+      return absoluteUrl(locale === defaultLocale ? "/" : `/${locale}`);
+    }
+    return absoluteUrl(localizedPath(normalized, locale));
+  };
+
+  return {
+    "en-AU": href("en-us"),
+    "zh-CN": href("zh-cn"),
+    "hi-IN": href("hi-in"),
+    "x-default": href("en-us"),
+  };
+}
+
+export function ogLocale(locale: LocaleCode = defaultLocale) {
+  return OG_LOCALE_BY_LOCALE[locale];
+}
+
+export function ogAlternateLocales(locale: LocaleCode = defaultLocale) {
+  return Object.values(OG_LOCALE_BY_LOCALE).filter((value) => value !== ogLocale(locale));
+}
 
 interface MetadataOptions {
   title?: string;
@@ -32,6 +73,7 @@ interface MetadataOptions {
   keywords?: string[];
   image?: string;
   url?: string;
+  locale?: LocaleCode;
   type?: "website" | "article";
   publishedTime?: string;
   modifiedTime?: string;
@@ -45,38 +87,36 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
     keywords = [],
     image,
     url,
+    locale = defaultLocale,
     type = "website",
     publishedTime,
     modifiedTime,
     noIndex = false,
   } = options;
 
-  // Title generation with proper hierarchy
-  const fullTitle = title 
+  const fullTitle = title
     ? `${title} | ${baseMetadata.siteName}`
     : baseMetadata.siteName;
 
-  // Combine base keywords with page-specific ones
   const allKeywords = [...baseMetadata.keywords, ...keywords];
+  const canonical = url ? absoluteUrl(url) : SITE_URL;
 
   const metadata: Metadata = {
+    metadataBase: new URL(SITE_URL),
     title: fullTitle,
     description,
     keywords: allKeywords.join(", "),
-    
-    // Robots and indexing
-    robots: noIndex 
+    robots: noIndex
       ? { index: false, follow: false }
       : { index: true, follow: true },
-    
-    // Open Graph
     openGraph: {
       title: fullTitle,
       description,
       siteName: baseMetadata.siteName,
-      locale: baseMetadata.locale,
+      locale: ogLocale(locale),
+      alternateLocale: ogAlternateLocales(locale),
       type,
-      url: url ? `${baseMetadata.url}${url}` : baseMetadata.url,
+      url: canonical,
       ...(image && {
         images: [
           {
@@ -90,26 +130,19 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
       ...(publishedTime && { publishedTime }),
       ...(modifiedTime && { modifiedTime }),
     },
-
-    // Twitter Card
     twitter: {
       card: "summary_large_image",
       title: fullTitle,
       description,
       ...(image && { images: [image] }),
     },
-
-    // Additional SEO metadata
     alternates: {
-      canonical: url ? `${baseMetadata.url}${url}` : baseMetadata.url,
+      canonical,
+      ...(!noIndex && { languages: languageAlternateMap(url || "/") }),
     },
-
-    // Author and organization
     authors: [{ name: baseMetadata.companyName }],
     creator: baseMetadata.companyName,
     publisher: baseMetadata.companyName,
-
-    // Structured data will be handled separately
     other: {
       "format-detection": "telephone=no",
     },
@@ -118,15 +151,14 @@ export function generateMetadata(options: MetadataOptions = {}): Metadata {
   return metadata;
 }
 
-// Helper for Prismic documents
 export function generatePrismicMetadata(
   doc: {
     data: {
       meta_title?: KeyTextField;
       meta_description?: KeyTextField;
       meta_image?: ImageField;
-      title?: KeyTextField; // Fallback title from content
-      description?: KeyTextField; // Fallback description from content
+      title?: KeyTextField;
+      description?: KeyTextField;
     };
     last_publication_date?: string;
     first_publication_date?: string;
@@ -143,14 +175,14 @@ export function generatePrismicMetadata(
   });
 }
 
-// Structured data helpers
 export function generateWebSiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: baseMetadata.siteName,
-    url: baseMetadata.url,
+    url: SITE_URL,
     description: baseMetadata.description,
+    inLanguage: ["en-AU", "zh-CN", "hi-IN"],
     publisher: {
       "@type": "Organization",
       name: baseMetadata.companyName,
@@ -163,16 +195,14 @@ export function generateOrganizationSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: baseMetadata.companyName,
-    url: baseMetadata.url,
+    url: SITE_URL,
     description: baseMetadata.description,
-    sameAs: [
-      // Add social media URLs when available
-    ],
+    sameAs: [SITE_URL],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
       areaServed: "AU",
-      availableLanguage: "English",
+      availableLanguage: ["English", "Chinese", "Hindi"],
     },
     serviceArea: {
       "@type": "Country",
@@ -189,7 +219,7 @@ export function generateBreadcrumbSchema(breadcrumbs: Array<{ name: string; url:
       "@type": "ListItem",
       position: index + 1,
       name: crumb.name,
-      item: `${baseMetadata.url}${crumb.url}`,
+      item: absoluteUrl(crumb.url),
     })),
   };
 }

@@ -49,6 +49,7 @@ export async function generateMetadata({
     
     return generatePrismicMetadata(page, {
       url: localizedPath("/careers/vacancies", locale),
+      locale,
       keywords: ["careers", "jobs", "vacancies", "employment", "MACH1 Logistics"],
     });
   } catch {

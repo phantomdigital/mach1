@@ -6,6 +6,8 @@ import { SiteSearchResults } from "@/app/components/search/site-search-results";
 export const metadata: Metadata = {
   title: "Search | MACH1 Logistics",
   description: "Search pages and articles on MACH1 Logistics.",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/search" },
 };
 
 type SearchPageProps = {

@@ -160,6 +160,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     
     return generatePrismicMetadata(page, {
       url: summaryPath,
+      locale,
       keywords: ["quote", "summary", "MACH1 Logistics"],
       noIndex: true,
     });

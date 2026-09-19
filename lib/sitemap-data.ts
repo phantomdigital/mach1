@@ -1,13 +1,7 @@
 import { createClient } from "@/prismicio";
 import { locales, defaultLocale, type LocaleCode } from "@/prismicio";
-
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "https://www.mach1logistics.com.au");
+import { SITE_URL } from "@/lib/site-url";
+import { languageAlternateMap } from "@/lib/metadata";
 
 function pathForLocale(path: string, locale: LocaleCode): string {
   if (locale === defaultLocale) return path;
@@ -19,6 +13,7 @@ export interface SitemapEntry {
   lastModified?: Date;
   changeFrequency?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
   priority?: number;
+  alternates: Record<string, string>;
 }
 
 export async function getSitemapEntries(): Promise<SitemapEntry[]> {
@@ -34,29 +29,22 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
     for (const locale of locales) {
       const fullPath = pathForLocale(path, locale.code);
       entries.push({
-        url: `${BASE_URL}${fullPath}`,
+        url: `${SITE_URL}${fullPath}`,
         lastModified: new Date(),
         changeFrequency,
         priority,
+        alternates: languageAlternateMap(path),
       });
     }
   }
 
   try {
-    const [
-      pages,
-      solutions,
-      specialties,
-      newsArticles,
-      jobs,
-      authors,
-    ] = await Promise.all([
+    const [pages, solutions, specialties, newsArticles, jobs] = await Promise.all([
       client.getAllByType("page", { lang: "*" }),
       client.getAllByType("solution", { lang: "*" }),
       client.getAllByType("specialty", { lang: "*" }),
       client.getAllByType("news", { lang: "*" }),
       client.getAllByType("job", { lang: "*" }),
-      client.getAllByType("author", { lang: "*" }),
     ]);
 
     const excludePageUids = new Set([
@@ -65,91 +53,74 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
       "terms-of-service",
     ]);
 
+    const pushDocument = (
+      path: string,
+      lang: LocaleCode,
+      lastPublicationDate: string | null | undefined,
+      changeFrequency: SitemapEntry["changeFrequency"],
+      priority: number
+    ) => {
+      const fullPath = pathForLocale(path, lang);
+      entries.push({
+        url: `${SITE_URL}${fullPath}`,
+        lastModified: lastPublicationDate ? new Date(lastPublicationDate) : new Date(),
+        changeFrequency,
+        priority,
+        alternates: languageAlternateMap(path),
+      });
+    };
+
     for (const page of pages) {
       if (excludePageUids.has(page.uid ?? "")) continue;
       const isLegalPage = page.data.slices?.some((s) => s.slice_type === "legal_content");
       if (isLegalPage) continue;
-      const path = `/${page.uid}`;
-      const lang = page.lang as LocaleCode;
-      const fullPath = pathForLocale(path, lang);
-      entries.push({
-        url: `${BASE_URL}${fullPath}`,
-        lastModified: page.last_publication_date
-          ? new Date(page.last_publication_date)
-          : new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.8,
-      });
+      pushDocument(
+        `/${page.uid}`,
+        page.lang as LocaleCode,
+        page.last_publication_date,
+        "monthly",
+        0.8
+      );
     }
 
     for (const solution of solutions) {
-      const path = `/solutions/${solution.uid}`;
-      const lang = solution.lang as LocaleCode;
-      const fullPath = pathForLocale(path, lang);
-      entries.push({
-        url: `${BASE_URL}${fullPath}`,
-        lastModified: solution.last_publication_date
-          ? new Date(solution.last_publication_date)
-          : new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.8,
-      });
+      pushDocument(
+        `/solutions/${solution.uid}`,
+        solution.lang as LocaleCode,
+        solution.last_publication_date,
+        "monthly",
+        0.8
+      );
     }
 
     for (const specialty of specialties) {
-      const path = `/specialties/${specialty.uid}`;
-      const lang = specialty.lang as LocaleCode;
-      const fullPath = pathForLocale(path, lang);
-      entries.push({
-        url: `${BASE_URL}${fullPath}`,
-        lastModified: specialty.last_publication_date
-          ? new Date(specialty.last_publication_date)
-          : new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.8,
-      });
+      pushDocument(
+        `/specialties/${specialty.uid}`,
+        specialty.lang as LocaleCode,
+        specialty.last_publication_date,
+        "monthly",
+        0.8
+      );
     }
 
     for (const article of newsArticles) {
-      const path = `/news/${article.uid}`;
-      const lang = article.lang as LocaleCode;
-      const fullPath = pathForLocale(path, lang);
-      entries.push({
-        url: `${BASE_URL}${fullPath}`,
-        lastModified: article.last_publication_date
-          ? new Date(article.last_publication_date)
-          : new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      });
+      pushDocument(
+        `/news/${article.uid}`,
+        article.lang as LocaleCode,
+        article.last_publication_date,
+        "monthly",
+        0.6
+      );
     }
 
     for (const job of jobs) {
-      const path = `/job/${job.uid}`;
-      const lang = job.lang as LocaleCode;
-      const fullPath = pathForLocale(path, lang);
-      entries.push({
-        url: `${BASE_URL}${fullPath}`,
-        lastModified: job.last_publication_date
-          ? new Date(job.last_publication_date)
-          : new Date(),
-        changeFrequency: "weekly" as const,
-        priority: 0.7,
-      });
-    }
-
-    for (const author of authors) {
-      const path = `/authors/${author.uid}`;
-      const lang = author.lang as LocaleCode;
-      const fullPath = pathForLocale(path, lang);
-      entries.push({
-        url: `${BASE_URL}${fullPath}`,
-        lastModified: author.last_publication_date
-          ? new Date(author.last_publication_date)
-          : new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.5,
-      });
+      pushDocument(
+        `/job/${job.uid}`,
+        job.lang as LocaleCode,
+        job.last_publication_date,
+        "weekly",
+        0.7
+      );
     }
   } catch (error) {
     console.error("Error generating sitemap:", error);
@@ -157,3 +128,5 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
 
   return entries;
 }
+
+export { SITE_URL };

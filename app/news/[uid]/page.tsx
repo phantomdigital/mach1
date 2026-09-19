@@ -9,7 +9,8 @@ import type { Content, RichTextField, ImageField } from "@prismicio/client";
 import { ShareButtons } from "./share-buttons";
 import { RelatedArticles } from "./related-articles";
 import { LightboxWrapper } from "./lightbox-wrapper";
-import { generateBreadcrumbSchema } from "@/lib/metadata";
+import { generateBreadcrumbSchema, languageAlternateMap, ogAlternateLocales, ogLocale } from "@/lib/metadata";
+import { SITE_URL, absoluteUrl } from "@/lib/site-url";
 import { createRichTextComponents } from "@/lib/rich-text-serializer";
 import {
   localeForIntl,
@@ -104,9 +105,8 @@ export default async function NewsArticlePage({
   const authorPhoto = authorData?.profile_photo;
 
   // Get full URL for sharing
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mach1logistics.com.au";
   const articlePath = localizedPath(`/news/${uid}`, locale);
-  const fullUrl = `${baseUrl}${articlePath}`;
+  const fullUrl = absoluteUrl(articlePath);
 
   // Get author initials for placeholder
   const getAuthorInitials = (name: string | null | undefined) => {
@@ -282,7 +282,7 @@ export default async function NewsArticlePage({
               name: "MACH1 Logistics",
               logo: {
                 "@type": "ImageObject",
-                url: `${baseUrl}/logo.png`,
+                url: `${SITE_URL}/logo.png`,
               },
             },
           }),
@@ -342,12 +342,17 @@ export async function generateMetadata({
   return {
     title: `${title} | MACH1 Logistics`,
     description,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: absoluteUrl(url),
+      languages: languageAlternateMap(url),
+    },
     openGraph: {
       title: `${title} | MACH1 Logistics`,
       description,
       type: "article",
-      url,
+      url: absoluteUrl(url),
+      locale: ogLocale(locale),
+      alternateLocale: ogAlternateLocales(locale),
       publishedTime: page.first_publication_date,
       modifiedTime: page.last_publication_date,
       authors: authorName ? [authorName] : undefined,

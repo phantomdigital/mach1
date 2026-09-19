@@ -187,6 +187,7 @@ export async function generateMetadata({
       const page = await client.getSingle("home", { lang: locale }).catch(() => notFound());
       return generatePrismicMetadata(page, {
         url: `/${locale}`,
+        locale,
         keywords: ["home", "logistics solutions", "freight services", "MACH1"],
       });
     }
@@ -200,6 +201,8 @@ export async function generateMetadata({
     return {
       title: term ? `Search: ${term} | MACH1 Logistics` : "Search | MACH1 Logistics",
       description: "Search pages and articles on MACH1 Logistics.",
+      robots: { index: false, follow: false },
+      alternates: { canonical: locale === defaultLocale ? "/search" : `/${locale}/search` },
     };
   }
   
@@ -220,6 +223,7 @@ export async function generateMetadata({
         title: title,
         description: `Read our ${title.toLowerCase()} to understand your rights and obligations.`,
         url,
+        locale,
         keywords: [uid.replace(/-/g, " "), "MACH1 Logistics", "legal", title.toLowerCase()],
         publishedTime: page.first_publication_date || undefined,
         modifiedTime: page.last_publication_date || undefined,
@@ -229,6 +233,7 @@ export async function generateMetadata({
     
     return generatePrismicMetadata(page, {
       url,
+      locale,
       keywords: [uid.replace(/-/g, " "), "MACH1 Logistics", "logistics services"],
     });
   } catch {

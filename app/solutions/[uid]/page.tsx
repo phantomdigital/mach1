@@ -59,6 +59,7 @@ export async function generateMetadata({
 
   return generatePrismicMetadata(solution, {
     url: localizedPath(`/solutions/${uid}`, locale),
+    locale,
     keywords: solutionKeywords,
     type: "article",
   });
