@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown, Globe, Loader2 } from 'lucide-react';
 import { locales, defaultLocale, type LocaleCode } from '@/prismicio';
+import { writeLocalePreference } from '@/lib/locale-preference';
 
 // Group locales by category
 const groupedLocales = {
@@ -57,7 +58,7 @@ export function RegionLanguageSelector() {
       newPath = newLocaleCode === defaultLocale ? pathname : `/${newLocaleCode}${pathname}`;
     }
 
-    // Navigate to new path
+    writeLocalePreference(newLocaleCode);
     router.push(newPath || '/');
     setIsOpen(false);
   };
@@ -73,7 +74,7 @@ export function RegionLanguageSelector() {
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false);
-    }, 300);
+    }, 450);
   };
 
   // Fetch available translations for current page
@@ -189,7 +190,7 @@ export function RegionLanguageSelector() {
     europe: filterAvailableLocales(groupedLocales.europe),
   };
 
-  const dropdownWidth = 280;
+  const dropdownWidth = 220;
 
   return (
     <div 
@@ -199,10 +200,17 @@ export function RegionLanguageSelector() {
     >
       {/* Trigger Button */}
       <button 
-        className="text-sm text-gray-700 flex items-center gap-1.5 outline-none cursor-pointer"
+        className="relative z-50 text-sm text-gray-700 flex items-center gap-1.5 outline-none cursor-pointer"
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label="Select language"
+        onClick={() => {
+          if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
+          }
+          setIsOpen((open) => !open);
+        }}
       >
         <Globe className="w-4 h-4 transition-transform duration-200 flex-shrink-0" />
         <span className="hidden sm:inline-block text-base leading-none align-middle">{currentLocaleData.flag}</span>
@@ -214,40 +222,32 @@ export function RegionLanguageSelector() {
         />
       </button>
 
-      {/* Hover Bridge - covers gap between button and dropdown */}
-      <div 
-        className={`absolute top-full left-0 right-0 bg-transparent z-40 transition-opacity duration-200 ${
-          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        style={{ height: '0.75rem' }}
+      {/* Full-width hover catcher: the menu is right-aligned and wider than the
+          trigger, so this keeps the pointer inside the open state while moving. */}
+      <div
+        className={`absolute top-0 right-0 z-40 ${isOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+        style={{ width: dropdownWidth, height: "calc(100% + 10px)" }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       />
 
       {/* Dropdown Content */}
       <div 
-        className={`absolute right-0 z-50 transition-all duration-200 ease-out ${
+        className={`absolute right-0 z-50 pt-1.5 transition-all duration-150 ease-out ${
           isOpen 
             ? 'opacity-100 translate-y-0 pointer-events-auto visible' 
-            : 'opacity-0 -translate-y-2 pointer-events-none invisible'
+            : 'opacity-0 -translate-y-1 pointer-events-none invisible'
         }`}
-        style={{ top: 'calc(100% + 0.25rem)' }}
+        style={{ top: "100%", width: dropdownWidth }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
         {/* Background Container */}
-        <div 
-          className="relative bg-neutral-100 shadow-lg border border-gray-200"
-          style={{ 
-            width: `${dropdownWidth}px`
-          }}
-        >
+        <div className="relative bg-neutral-100 shadow-lg border border-gray-200">
           {/* Content Container */}
-          <div 
-            className="px-5 pt-5 pb-6"
-          >
+          <div className="px-3 pt-3 pb-3">
             {/* Header */}
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-2 flex items-center justify-between">
               <h6 
                 className="font-medium text-gray-500 uppercase tracking-widest" 
                 style={{ 
@@ -255,7 +255,7 @@ export function RegionLanguageSelector() {
                   fontSize: '0.55rem'
                 }}
               >
-                Select Region & Language
+                Region & Language
               </h6>
               {isLoadingLocales && (
                 <Loader2 className="w-3 h-3 text-neutral-400 animate-spin" />
@@ -264,8 +264,8 @@ export function RegionLanguageSelector() {
 
             {/* English Section */}
             {filteredGroupedLocales.english.length > 0 && (
-            <div className="mb-3">
-              <div className="mb-2">
+            <div className="mb-1.5">
+              <div className="mb-1">
                 <p 
                   className="font-medium text-gray-500 uppercase tracking-widest px-2" 
                   style={{ 
@@ -295,7 +295,7 @@ export function RegionLanguageSelector() {
                   
                   <button
                     onClick={() => handleLocaleChange(locale.code)}
-                    className={`w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer relative ${
+                    className={`w-full px-2.5 py-1.5 text-left flex items-center gap-2 transition-colors cursor-pointer relative ${
                       currentLocale === locale.code 
                         ? 'text-black' 
                         : 'text-gray-700 hover:text-black'
@@ -303,7 +303,7 @@ export function RegionLanguageSelector() {
                     style={{
                       fontFamily: 'var(--font-inter-tight), sans-serif',
                       fontWeight: 500,
-                      fontSize: '0.95rem',
+                      fontSize: '0.875rem',
                       lineHeight: '100%'
                     }}
                   >
@@ -317,8 +317,8 @@ export function RegionLanguageSelector() {
 
             {/* Asia Pacific Section */}
             {filteredGroupedLocales.asiaPacific.length > 0 && (
-              <div className="mb-3 pt-3" style={{ borderTop: '1px solid #DFDFDF' }}>
-                <div className="mb-2">
+              <div className="mb-1.5 pt-2" style={{ borderTop: '1px solid #DFDFDF' }}>
+                <div className="mb-1">
                   <p 
                     className="font-medium text-gray-500 uppercase tracking-widest px-2" 
                     style={{ 
@@ -347,7 +347,7 @@ export function RegionLanguageSelector() {
                     
                     <button
                       onClick={() => handleLocaleChange(locale.code)}
-                      className={`w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer relative ${
+                      className={`w-full px-2.5 py-1.5 text-left flex items-center gap-2 transition-colors cursor-pointer relative ${
                         currentLocale === locale.code 
                           ? 'text-black' 
                           : 'text-gray-700 hover:text-black'
@@ -355,7 +355,7 @@ export function RegionLanguageSelector() {
                       style={{
                         fontFamily: 'var(--font-inter-tight), sans-serif',
                         fontWeight: 500,
-                        fontSize: '0.95rem',
+                        fontSize: '0.875rem',
                         lineHeight: '100%'
                       }}
                     >
@@ -369,8 +369,8 @@ export function RegionLanguageSelector() {
 
             {/* Europe Section */}
             {filteredGroupedLocales.europe.length > 0 && (
-              <div className="pt-3" style={{ borderTop: '1px solid #DFDFDF' }}>
-                <div className="mb-2">
+              <div className="pt-2" style={{ borderTop: '1px solid #DFDFDF' }}>
+                <div className="mb-1">
                   <p 
                     className="font-medium text-gray-500 uppercase tracking-widest px-2" 
                     style={{ 
@@ -399,7 +399,7 @@ export function RegionLanguageSelector() {
                     
                     <button
                       onClick={() => handleLocaleChange(locale.code)}
-                      className={`w-full px-4 py-2.5 text-left flex items-center gap-2.5 transition-colors cursor-pointer relative ${
+                      className={`w-full px-2.5 py-1.5 text-left flex items-center gap-2 transition-colors cursor-pointer relative ${
                         currentLocale === locale.code 
                           ? 'text-black' 
                           : 'text-gray-700 hover:text-black'
@@ -407,7 +407,7 @@ export function RegionLanguageSelector() {
                       style={{
                         fontFamily: 'var(--font-inter-tight), sans-serif',
                         fontWeight: 500,
-                        fontSize: '0.95rem',
+                        fontSize: '0.875rem',
                         lineHeight: '100%'
                       }}
                     >

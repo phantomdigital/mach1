@@ -50,3 +50,10 @@ export function addLocaleToPathname(pathname: string, locale: LocaleCode): strin
   return `/${locale}${cleanPath}`;
 }
 
+export function pathForLocale(pathname: string, locale: LocaleCode): string {
+  const withoutLocale = getPathnameWithoutLocale(pathname);
+  const path = withoutLocale === "" ? "/" : withoutLocale;
+  if (locale === defaultLocale) return path;
+  return addLocaleToPathname(path, locale);
+}
+

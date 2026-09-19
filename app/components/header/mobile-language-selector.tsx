@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown, Globe, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { locales, defaultLocale, type LocaleCode } from '@/prismicio';
+import { writeLocalePreference } from '@/lib/locale-preference';
 
 // Group locales by category
 const groupedLocales = {
@@ -59,7 +60,7 @@ export function MobileLanguageSelector({ onLocaleChange }: MobileLanguageSelecto
       newPath = newLocaleCode === defaultLocale ? pathname : `/${newLocaleCode}${pathname}`;
     }
 
-    // Navigate to new path
+    writeLocalePreference(newLocaleCode);
     router.push(newPath || '/');
     setIsOpen(false);
     onLocaleChange?.(); // Close mobile menu if callback provided

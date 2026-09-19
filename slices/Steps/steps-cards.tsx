@@ -123,9 +123,8 @@ function CardButton({ card, onSelect }: CardButtonProps) {
 
 
           {/* Content */}
-          <div className="relative h-full flex items-center justify-center px-4 sm:px-8 md:px-12">
-            {/* Text container centered in card with text left-aligned inside */}
-            <div className="relative" style={{ maxWidth: '85%' }}>
+          <div className="relative h-full flex min-w-0 items-center justify-start pl-6 sm:pl-10 md:pl-14 pr-[28%] md:pr-[30%]">
+            <div className="relative min-w-0 w-full">
               {/* Vertical hover bar - positioned to the left of text */}
               <div 
                 className="absolute w-0.5 bg-white transition-all duration-300 ease-out origin-bottom scale-y-0 group-hover:scale-y-100 hidden sm:block"
@@ -137,21 +136,18 @@ function CardButton({ card, onSelect }: CardButtonProps) {
               />
               
               <div className="text-left">
-                {/* whitespace-nowrap keeps label + icon on one line; they wrap together if needed */}
-                <span className="whitespace-nowrap inline-block max-w-full">
-                  <span
-                    className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold transition-all duration-150 ease-out ${
-                      card.image && card.image.url ? 'text-white' : 'text-neutral-800'
-                    }`}
-                    style={{ 
-                      fontFamily: "var(--font-inter-tight)",
-                      lineHeight: '1.1',
-                    }}
-                  >
-                    {card.label}
-                  </span>
+                <span
+                  className={`block w-full text-2xl sm:text-3xl md:text-4xl font-bold break-words [overflow-wrap:anywhere] transition-all duration-150 ease-out ${
+                    card.image && card.image.url ? "text-white" : "text-neutral-800"
+                  }`}
+                  style={{ 
+                    fontFamily: "var(--font-inter-tight)",
+                    lineHeight: '1.15',
+                  }}
+                >
+                  {card.label}
                   {card.hasLinkIcon && (
-                    <span className="inline-flex align-baseline ml-2 sm:ml-3 flex-shrink-0">
+                    <span className="inline-flex align-middle ml-2 sm:ml-3">
                       <ExternalLinkIcon 
                         className={`w-[20px] h-[20px] sm:w-[28px] sm:h-[28px] opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
                           card.image && card.image.url ? 'text-white' : 'text-neutral-800'
