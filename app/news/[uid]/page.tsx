@@ -98,11 +98,12 @@ export default async function NewsArticlePage({
   const readingTime = calculateReadingTime(page.data.content);
 
   // Get author data from relationship
-  const authorData = page.data.author && typeof page.data.author !== 'string' && 'data' in page.data.author
-    ? (page.data.author as { data?: { name?: string; profile_photo?: ImageField } }).data
+  const authorDoc = page.data.author && typeof page.data.author !== 'string' && 'data' in page.data.author
+    ? (page.data.author as { uid?: string; data?: { name?: string; profile_photo?: ImageField } })
     : null;
-  const authorName = authorData?.name;
-  const authorPhoto = authorData?.profile_photo;
+  const authorName = authorDoc?.data?.name;
+  const authorPhoto = authorDoc?.data?.profile_photo;
+  const authorUid = authorDoc?.uid;
 
   // Get full URL for sharing
   const articlePath = localizedPath(`/news/${uid}`, locale);
@@ -170,7 +171,13 @@ export default async function NewsArticlePage({
                         {getAuthorInitials(authorName)}
                       </div>
                     )}
-                    <span className="font-medium text-neutral-800">{authorName}</span>
+                    {authorUid ? (
+                      <Link href={localizedPath(`/authors/${authorUid}`, locale)} className="font-medium text-neutral-800 hover:text-dark-blue">
+                        {authorName}
+                      </Link>
+                    ) : (
+                      <span className="font-medium text-neutral-800">{authorName}</span>
+                    )}
                   </div>
                 )}
                 {authorName && (page.first_publication_date || readingTime > 0) && (

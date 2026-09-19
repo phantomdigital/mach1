@@ -13,6 +13,7 @@ import SolutionPage, { generateMetadata as generateSolutionMetadata } from "@/ap
 import SpecialtyPage, { generateMetadata as generateSpecialtyMetadata } from "@/app/specialties/[uid]/page";
 import NewsArticlePage, { generateMetadata as generateNewsMetadata } from "@/app/news/[uid]/page";
 import JobPage, { generateMetadata as generateJobMetadata } from "@/app/job/[uid]/page";
+import AuthorPage, { generateMetadata as generateAuthorMetadata } from "@/app/authors/[uid]/page";
 import {
   default as CareersVacanciesPage,
   generateMetadata as generateCareersVacanciesMetadata,
@@ -60,6 +61,7 @@ export default async function Page({
       if (routeType === "specialties") return SpecialtyPage({ params: routeParams });
       if (routeType === "news") return NewsArticlePage({ params: routeParams });
       if (routeType === "job") return JobPage({ params: routeParams });
+      if (routeType === "authors") return AuthorPage({ params: routeParams });
     }
     if (routeType === "careers" && routeUid === "vacancies") {
       return CareersVacanciesPage({ params: Promise.resolve({ locale }) });
@@ -174,6 +176,7 @@ export async function generateMetadata({
       if (routeType === "specialties") return generateSpecialtyMetadata({ params: routeParams });
       if (routeType === "news") return generateNewsMetadata({ params: routeParams });
       if (routeType === "job") return generateJobMetadata({ params: routeParams });
+      if (routeType === "authors") return generateAuthorMetadata({ params: routeParams });
     }
     if (routeType === "careers" && routeUid === "vacancies") {
       return generateCareersVacanciesMetadata({ params: Promise.resolve({ locale }) });
@@ -283,11 +286,12 @@ export async function generateStaticParams() {
       }
     });
 
-    const [solutions, specialties, news, jobs] = await Promise.all([
+    const [solutions, specialties, news, jobs, authors] = await Promise.all([
       client.getAllByType("solution", { lang: locale }),
       client.getAllByType("specialty", { lang: locale }),
       client.getAllByType("news", { lang: locale }),
       client.getAllByType("job", { lang: locale }),
+      client.getAllByType("author", { lang: locale }),
     ]);
     solutions.forEach((document) =>
       allParams.push({ slug: [locale, "solutions", document.uid] })
@@ -300,6 +304,9 @@ export async function generateStaticParams() {
     );
     jobs.forEach((document) =>
       allParams.push({ slug: [locale, "job", document.uid] })
+    );
+    authors.forEach((document) =>
+      allParams.push({ slug: [locale, "authors", document.uid] })
     );
   }
 

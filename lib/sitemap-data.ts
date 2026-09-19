@@ -39,12 +39,13 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
   }
 
   try {
-    const [pages, solutions, specialties, newsArticles, jobs] = await Promise.all([
+    const [pages, solutions, specialties, newsArticles, jobs, authors] = await Promise.all([
       client.getAllByType("page", { lang: "*" }),
       client.getAllByType("solution", { lang: "*" }),
       client.getAllByType("specialty", { lang: "*" }),
       client.getAllByType("news", { lang: "*" }),
       client.getAllByType("job", { lang: "*" }),
+      client.getAllByType("author", { lang: "*" }),
     ]);
 
     const excludePageUids = new Set([
@@ -114,12 +115,26 @@ export async function getSitemapEntries(): Promise<SitemapEntry[]> {
     }
 
     for (const job of jobs) {
+      const isActive = job.data.active !== false;
+      const closingDate = job.data.closing_date;
+      const isClosed = Boolean(closingDate && new Date(closingDate) < new Date());
+      if (!isActive || isClosed) continue;
       pushDocument(
         `/job/${job.uid}`,
         job.lang as LocaleCode,
         job.last_publication_date,
         "weekly",
         0.7
+      );
+    }
+
+    for (const author of authors) {
+      pushDocument(
+        `/authors/${author.uid}`,
+        author.lang as LocaleCode,
+        author.last_publication_date,
+        "monthly",
+        0.4
       );
     }
   } catch (error) {
