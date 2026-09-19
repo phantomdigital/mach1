@@ -45,7 +45,6 @@ function horizontalLoop(items: HTMLElement[], config: any) {
     const widths: number[] = [];
     const spaceBefore: number[] = [];
     const xPercents: number[] = [];
-    let curIndex = 0;
     const pixelsPerSecond = (config.speed || 1) * 100;
     const snap = config.snap === false ? (v: number) => v : gsap.utils.snap(config.snap || 1);
     const container = items[0].parentNode as HTMLElement;

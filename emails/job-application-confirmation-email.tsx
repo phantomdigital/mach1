@@ -227,7 +227,7 @@ export default function JobApplicationConfirmationEmail({
                     2
                   </div>
                   <Text className="m-0 text-base text-mach1-black">
-                    <span className="font-semibold">Initial Screening:</span> If your profile matches our requirements, we'll contact you within 5-7 business days.
+                    <span className="font-semibold">Initial Screening:</span> If your profile matches our requirements, we will contact you within 5-7 business days.
                   </Text>
                 </div>
                 
@@ -255,7 +255,7 @@ export default function JobApplicationConfirmationEmail({
               </Text>
               
               <Text className="m-0 text-sm leading-6 text-neutral-200">
-                If you have any questions about your application, please don't hesitate to contact us.
+                If you have any questions about your application, please do not hesitate to contact us.
               </Text>
               
               <Text className="m-0 mt-4 text-base font-bold leading-6 text-white">

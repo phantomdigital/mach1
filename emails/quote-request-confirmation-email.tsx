@@ -125,7 +125,7 @@ export default function QuoteRequestConfirmationEmail({
             </Section>
 
             <Text className="mx-0 my-4 px-10 text-base leading-7 text-neutral-600">
-              In the meantime, if you have any urgent questions or need to provide additional information, please don't hesitate to reach out.
+              In the meantime, if you have any urgent questions or need to provide additional information, please do not hesitate to reach out.
             </Text>
 
             <Hr className="mx-10 my-8 border-neutral-200" />
