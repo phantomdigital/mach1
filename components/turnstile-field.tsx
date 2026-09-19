@@ -26,7 +26,9 @@ interface TurnstileFieldProps {
 }
 
 export function TurnstileField({ onToken }: TurnstileFieldProps) {
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const siteKey =
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
+    process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY;
   const elementRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const onTokenRef = useRef(onToken);

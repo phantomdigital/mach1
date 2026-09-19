@@ -2,6 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  env: {
+    NEXT_PUBLIC_TURNSTILE_SITE_KEY:
+      process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
+      process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ||
+      process.env.CLOUDFLARE_TURNSTILE_SITE_KEY ||
+      "",
+  },
   /**
    * Keep heavy client-only deps out of the server bundle trace (Vercel 250 MB unzipped limit).
    * @see https://nextjs.org/docs/app/api-reference/config/next-config-js/serverExternalPackages

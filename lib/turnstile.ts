@@ -1,7 +1,7 @@
 export async function verifyTurnstileToken(token: string | undefined, ip?: string) {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
+  const secret = process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY || process.env.TURNSTILE_SECRET_KEY;
   if (!secret) {
-    console.error("TURNSTILE_SECRET_KEY is not configured; form verification is skipped");
+    console.error("Turnstile secret is not configured; form verification is skipped");
     return true;
   }
 
